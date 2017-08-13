@@ -1,0 +1,52 @@
+{
+  "Items": [
+	{
+      "Key": "ButtonStartGame",
+      "Value": "Iniciar Jogo"
+    },
+	{
+      "Key": "ButtonOptions",
+      "Value": "Opções"
+    },
+	{
+      "Key": "ButtonMinigame1",
+      "Value": "Minijogo 1"
+    },
+	{
+      "Key": "ButtonPlataform",
+      "Value": "Jogo Plataforma"
+    },
+	{
+      "Key": "ButtonReturn",
+      "Value": "Voltar"
+    },
+	{
+      "Key": "ButtonSelectLanguage",
+      "Value": "Alterar Idioma"
+    },
+	{
+      "Key": "f1_help",
+      "Value": "F1: Painel de Ajuda"
+    },
+	{
+      "Key": "f2_restart",
+      "Value": "F2: Reiniciar Fase"
+    },
+	{
+      "Key": "f3_manualControl",
+      "Value": "F3: Controle Manual"
+    },
+	{
+      "Key": "f6_reconnSerial",
+      "Value": "F6: Reconectar Serial"
+    },
+	{
+      "Key": "esc_exit",
+      "Value": "ESC: Voltar Menu Princ."
+    },
+	{
+      "Key": "ButtonQuitGame",
+      "Value": "Sair do Jogo"
+    }
+  ]
+}
