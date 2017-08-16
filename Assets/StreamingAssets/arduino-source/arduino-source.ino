@@ -6,7 +6,7 @@ const float MPX5010DP_VOLT_OFFSET = 0.2;
 int readValue = 0;
 float outputVolt = 0;  
 float intToVolt = 5.0/1024.0; // https://www.arduino.cc/en/Reference/AnalogRead
-float diffpress = 0;
+float diffPressure = 0;
 float flowValue = 0;
 
 bool requestEnabled = false;
@@ -36,21 +36,21 @@ void loop()
 		{
 			requestEnabled = !requestEnabled;
 		}
-		
-		//ANSWER
-		if(requestEnabled)
+	}	
+	
+	//ANSWER
+	if(requestEnabled)
+	{
+		diffPressure = 0.0;
+		for(i = 0; i < MEAN_CALCULATOR; i++)
 		{
-			diffpress = 0.0;
-			for(i = 0; i < MEAN_CALCULATOR; i++)
-			{
-				readValue = analogRead(MPX5010DP_PIN);
-				outputVolt = readValue * intToVolt;
-				outputVolt -= MPX5010DP_VOLT_OFFSET;
-				diffpress += TransferFunction(outputVolt) * 1000;
-			}
-			diffPressure /= MEAN_CALCULATOR;
-			Serial.println(diffPressure, 4);
+			readValue = analogRead(MPX5010DP_PIN);
+			outputVolt = readValue * intToVolt;
+			outputVolt -= MPX5010DP_VOLT_OFFSET;
+			diffPressure += TransferFunction(outputVolt) * 1000;
 		}
+		diffPressure /= MEAN_CALCULATOR;
+		Serial.println(diffPressure, 4);
 	}
 
 	delay(1); 
