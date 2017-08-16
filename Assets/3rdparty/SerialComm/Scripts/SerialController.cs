@@ -77,7 +77,8 @@ public class SerialController : MonoBehaviour
     // ------------------------------------------------------------------------
     void OnDisable()
     {
-        serialThread.SendMessage("r");
+        //I Blue It Arduino EndRequest
+        serialThread.SendMessage("f");
 
         // If there is a user-defined tear-down function, execute it before
         // closing the underlying COM port.
