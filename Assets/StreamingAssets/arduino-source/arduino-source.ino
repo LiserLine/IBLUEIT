@@ -31,11 +31,18 @@ void loop()
 			Serial.println("echo");
 		}
 		
-		//ENABLE/DISABLE REQUEST
+		//ENABLE REQUEST
 		else if (cmd == 'r' || cmd == 'R')
 		{
-			requestEnabled = !requestEnabled;
+			requestEnabled = true;
 		}
+
+    //DISABLE REQUEST
+    else if (cmd == 'f' || cmd == 'F')
+    {
+      requestEnabled = false;
+    }
+   
 	}	
 	
 	//ANSWER
