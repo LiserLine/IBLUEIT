@@ -1,58 +1,62 @@
 // I Blue It Serial Connection
 
+const unsigned char MPX5010DP_PIN = 2;
+const float MPX5010DP_VOLT_OFFSET = 0.2;
+
 int readValue = 0;
 float outputVolt = 0;  
 float intToVolt = 5.0/1024.0; // https://www.arduino.cc/en/Reference/AnalogRead
 float diffpress = 0;
 float flowValue = 0;
 
-const int meanSelector = 140;
+bool requestEnabled = false;
 
-const unsigned char MPX5010DP_PIN = 2;
-const float MPX5010DP_OFFSET = 0.2;
+const int MEAN_CALCULATOR = 140;
 
 void setup() 
 {
 	Serial.begin(115200);
 }
 
+int i = 0;
 void loop()
 {
 	if (Serial.available() > 0)
 	{
 		char cmd = Serial.read();
 		
-		if (cmd == 'e' || cmd == 'E') //echo
-			echoHandler();
+		//ECHO
+		if (cmd == 'e' || cmd == 'E') 
+		{
+			Serial.println("echo");
+		}
 		
-		else if (cmd == 'r' || cmd == 'R') //req
-			requestHandler();
+		//ENABLE/DISABLE REQUEST
+		else if (cmd == 'r' || cmd == 'R')
+		{
+			requestEnabled = !requestEnabled;
+		}
+		
+		//ANSWER
+		if(requestEnabled)
+		{
+			diffpress = 0.0;
+			for(i = 0; i < MEAN_CALCULATOR; i++)
+			{
+				readValue = analogRead(MPX5010DP_PIN);
+				outputVolt = readValue * intToVolt;
+				outputVolt -= MPX5010DP_VOLT_OFFSET;
+				diffpress += TransferFunction(outputVolt) * 1000;
+			}
+			diffPressure /= MEAN_CALCULATOR;
+			Serial.println(diffPressure, 4);
+		}
 	}
 
 	delay(1); 
 }
 
-int i = 0;
-void requestHandler()
-{
-	diffpress = 0.0;
-	for(i = 0; i < meanSelector; i++)
-	{
-		readValue = analogRead(MPX5010DP_PIN);
-		outputVolt = readValue * intToVolt;
-		outputVolt -= MPX5010DP_OFFSET;
-		diffpress += TransferFunction(outputVolt) * 1000;
-	}
-	diffpress /= meanSelector;
-	Serial.println(diffpress, 4);
-}
-
-void echoHandler()
-{
-	Serial.println("echo");
-}
-
-// Ref: Datasheet
+// Ref: Datasheet MXP5010DP
 float TransferFunction(float outputVolt) 
 {
 	return ((outputVolt / 5.0) + 0.04) / 0.09;
