@@ -21,7 +21,6 @@ public class PlayerController : MonoBehaviour
         #region Running Toggles
 
         ToggleSetPlayerBehaviour();
-        ToggleSerialRequest();
 
         #endregion
 
@@ -30,28 +29,12 @@ public class PlayerController : MonoBehaviour
 
     private void OnDestroy()
     {
-        SerialConnectionManager.Instance.DisabeRequest();
+       
     }
 
     private void SetPlayerYPos()
     {
-        if (SerialConnectionManager.Instance.IsRequestEnabled)
-        {
-            float resultY = -(SerialConnectionManager.Instance.SensorValue * Scale);
 
-            if (PlayerPosition == PlayerControlBehaviour.Absolute)
-            {
-                _transform.position = Vector3.Lerp(_transform.position,
-                    new Vector3(_transform.position.x, resultY, _transform.position.z), Time.deltaTime * 10f);
-            }
-            else //relative
-            {
-                if (resultY > 3f || resultY < -3f)
-                {
-                    _transform.position += new Vector3(0f, resultY * 0.1f, 0f);
-                }
-            }
-        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -76,23 +59,6 @@ public class PlayerController : MonoBehaviour
             }
 
             Debug.LogFormat("PlayerPosition: {0}", PlayerPosition);
-        }
-    }
-
-    private void ToggleSerialRequest()
-    {
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            if (SerialConnectionManager.Instance.IsRequestEnabled)
-            {
-                SerialConnectionManager.Instance.DisabeRequest();
-            }
-            else
-            {
-                SerialConnectionManager.Instance.EnableRequest();
-            }
-
-            Debug.LogFormat("IsRequestEnabled: {0}", SerialConnectionManager.Instance.IsRequestEnabled);
         }
     }
 

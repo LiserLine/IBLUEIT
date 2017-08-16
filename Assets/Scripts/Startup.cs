@@ -7,8 +7,7 @@ public class Startup : MonoBehaviour
     private IEnumerator Start()
     {
         while (!LocalizationManager.Instance.IsReady
-                || !GameDataManager.Instance.IsReady
-                || !SerialConnectionManager.Instance.IsReady)
+                || !GameDataManager.Instance.IsReady)
         {
             yield return null;
         }
