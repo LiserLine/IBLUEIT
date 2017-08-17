@@ -15,10 +15,10 @@ public class KeepChangingColor : MonoBehaviour
     private void Update()
     {
         _delta += Time.deltaTime;
-        if (_delta >= Frequency)
-        {
-            _material.color = new Color(Random.value, Random.value, Random.value, 1.0f); ;
-            _delta = 0;
-        }
+
+        if (!(_delta >= Frequency)) return;
+
+        _material.color = new Color(Random.value, Random.value, Random.value, 1.0f); ;
+        _delta = 0;
     }
 }

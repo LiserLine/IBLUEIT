@@ -5,7 +5,7 @@ public static class GameUtilities
 {
     public static void WriteAllText(string filepath, string contents)
     {
-        string directory = filepath.Split('/')[0];
+        var directory = filepath.Split('/')[0];
         if (!Directory.Exists(Path.GetDirectoryName(directory)))
         {
             Directory.CreateDirectory(directory);

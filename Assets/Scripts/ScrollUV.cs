@@ -10,11 +10,11 @@ public class ScrollUV : MonoBehaviour
         _mr = gameObject.GetComponent<MeshRenderer>();
     }
 
-    Vector2 offset;
+    private Vector2 _offset;
     private void Update()
     {
-        offset = _mr.material.mainTextureOffset;
-        offset.x += Time.deltaTime / (1f/BackgroundSpeed);
-        _mr.material.mainTextureOffset = offset;
+        _offset = _mr.material.mainTextureOffset;
+        _offset.x += Time.deltaTime / (1f/BackgroundSpeed);
+        _mr.material.mainTextureOffset = _offset;
     }
 }

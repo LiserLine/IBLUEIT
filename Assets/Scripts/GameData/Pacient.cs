@@ -1,64 +1,25 @@
-﻿public static class Pacient
+﻿
+public class Pacient
 {
-    private const float _pacientValueModifier = 0.75f;
+    public uint Id;
+    public string Name;
 
-    /// <summary>
-    /// The pacient's name
-    /// </summary>
-    public static string Name { get; set; }
+    public float InspiratoryPeakFlow;
+    public float ExpiratoryPeakFlow;
 
-    /// <summary>
-    /// PacientID on save file
-    /// </summary>
-    public static int ID { get; set; }
+    public float InspiratoryFlowTime;
+    public float ExpiratoryFlowTime;
 
-    /// <summary>
-    /// Expiratory Pressure Peak (score)
-    /// </summary>
-    public static float EPP
+    public float RespirationFrequency;
+
+    public byte LastPhase;
+    public byte OpenPhases;
+
+    public uint TotalScore;
+
+    public Pacient()
     {
-        get
-        {
-            return _epp * _pacientValueModifier;
-        }
-        set
-        {
-            _epp = value;
-        }
+        
     }
 
-    /// <summary>
-    /// Inspiratory Pressure Peak
-    /// </summary>
-    public static float IPP
-    {
-        get
-        {
-            return _ipp * _pacientValueModifier;
-        }
-        set
-        {
-            _ipp = value;
-        }
-    }
-
-    /// <summary>
-    /// Max Respiratory Frequency
-    /// </summary>
-    public static float MaxRespiratoryFrequency
-    {
-        get
-        {
-            return _mrf * _pacientValueModifier;
-        }
-        set
-        {
-            _mrf = value;
-        }
-    }
-
-
-    private static float _epp;
-    private static float _ipp;
-    private static float _mrf;
 }

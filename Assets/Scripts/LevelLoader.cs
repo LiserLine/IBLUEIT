@@ -5,17 +5,17 @@ using UnityEngine.UI;
 
 public class LevelLoader : MonoBehaviour
 {
-    public GameObject loadingScreen;
+    public GameObject LoadingScreen;
     public Slider Slider;
 
     private IEnumerator LoadSceneAsync(int sceneIndex)
     {
-        loadingScreen.SetActive(true);
+        LoadingScreen.SetActive(true);
 
         var operation = SceneManager.LoadSceneAsync(sceneIndex);
         while (!operation.isDone)
         {
-            float progress = Mathf.Clamp01(operation.progress / 0.9f);
+            var progress = Mathf.Clamp01(operation.progress / 0.9f);
             
             Slider.value = progress;
 
