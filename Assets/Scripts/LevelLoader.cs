@@ -1,29 +1,19 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class LoadingScreen : MonoBehaviour
+public class LevelLoader : MonoBehaviour
 {
-    public static LoadingScreen Instance;
+    private static LevelLoader _instance;
 
-    // Use this for initialization
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else if (Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        DontDestroyOnLoad(gameObject);
-    }
+    public GameObject loadingScreen;
+    public Slider Slider;
 
     private IEnumerator LoadSceneAsync(int sceneIndex)
     {
+        loadingScreen.SetActive(true);
+
         var operation = SceneManager.LoadSceneAsync(sceneIndex);
         while (!operation.isDone)
         {
@@ -32,7 +22,7 @@ public class LoadingScreen : MonoBehaviour
             Debug.LogFormat("LoadingScene - sceneIndex:{0} progress:{1}",
                 sceneIndex, progress);
 
-            //Slider.value = progress;
+            Slider.value = progress;
 
             yield return null;
         }
