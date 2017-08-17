@@ -8,9 +8,11 @@ public class LocalizationSceneButtons : MonoBehaviour
     {
         if (string.IsNullOrEmpty(LocalizationFileName))
         {
-            Debug.LogError("Localization file name not set to " + this.gameObject.name);
+            Debug.LogErrorFormat("Localization file name not set to {0}", this.gameObject.name);
             return;
         }
+
+        GameUtilities.WriteAllText(GameConstants.LocalizationPath, LocalizationFileName);
 
         LocalizationManager.Instance.LoadLocalizationData(LocalizationFileName);
     }

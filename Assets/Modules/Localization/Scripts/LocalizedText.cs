@@ -4,11 +4,11 @@ using UnityEngine.UI;
 public class LocalizedText : MonoBehaviour
 {
     public string Key;
-    private Text text;
+    private Text _text;
 
     private void Start()
     {
-        text = this.GetComponent<Text>();
-        text.text = LocalizationManager.Instance.GetLocalizedValue(Key);
+        _text = this.GetComponent<Text>();
+        _text.text = LocalizationManager.Instance.GetLocalizedValue(Key);
     }
 }
