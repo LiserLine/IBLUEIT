@@ -1,25 +1,18 @@
-﻿
-public class Pacient
+﻿public class Pacient
 {
-    public uint Id;
-    public string Name;
+    public uint Id { get; set; }
+    public string Name { get; set; }
 
-    public float InspiratoryPeakFlow;
-    public float ExpiratoryPeakFlow;
+    public float InspiratoryPeakFlow { get; set; }
+    public float ExpiratoryPeakFlow { get; set; }
 
-    public float InspiratoryFlowTime;
-    public float ExpiratoryFlowTime;
+    public float InspiratoryFlowTime { get; set; }
+    public float ExpiratoryFlowTime { get; set; }
 
-    public float RespirationFrequency;
+    public float RespirationFrequency { get; set; }
 
-    public byte LastPhase;
-    public byte OpenPhases;
+    public byte LastPhase { get; set; }
+    public byte OpenPhases { get; set; }
 
-    public uint TotalScore;
-
-    public Pacient()
-    {
-        
-    }
-
+    public uint TotalScore { get; set; }
 }
