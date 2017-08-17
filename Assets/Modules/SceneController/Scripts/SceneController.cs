@@ -19,7 +19,6 @@ public class SceneController : MonoBehaviour
     {
         ToggleShowHelp(); // F1
         ToggleResetStage(); // F2
-        ToggleForceReconnectSerial(); // F5
         ToggleQuitOnEscape(); // ESC
     }
 
@@ -46,14 +45,6 @@ public class SceneController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             SceneManager.LoadScene(PreviousScene);
-        }
-    }
-
-    private void ToggleForceReconnectSerial()
-    {
-        if (Input.GetKeyDown(KeyCode.F5))
-        {
-            SerialConnectionManager.Instance.Disconnect(true);
         }
     }
 }

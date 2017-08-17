@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 /// <summary>
 /// This script is set to the player
@@ -6,50 +7,56 @@
 public class PlayerController : MonoBehaviour
 {
     private Transform _transform;
+    private SerialMessenger _serialMessager;
 
     [Header("Settings")]
-    public float Scale;
-    public PlayerControlBehaviour PlayerPosition = PlayerControlBehaviour.Absolute;
+    public float Sensitivity;
+    public ControlBehaviour Behaviour;
 
     private void Start()
     {
         _transform = this.GetComponent<Transform>();
+        _serialMessager = GetComponent<SerialMessenger>();
     }
 
     private void Update()
     {
         #region Running Toggles
 
-        ToggleSetPlayerBehaviour();
-        ToggleSerialRequest();
+        ToggleControlBehaviour();
 
         #endregion
 
-        SetPlayerYPos();
+        SetPlayerPosition();
     }
 
-    private void OnDestroy()
-    {
-        SerialConnectionManager.Instance.DisabeRequest();
-    }
 
-    private void SetPlayerYPos()
+    private void SetPlayerPosition()
     {
-        if (SerialConnectionManager.Instance.IsRequestEnabled)
+        var message = _serialMessager.MessageReceived;
+        if (message.Length < 1) return;
+
+        message = message.Replace('.', ',');
+
+        float newYPos;
+
+        try { newYPos = float.Parse(message); }
+        catch { return; }
+
+        newYPos -= 416f; //ToDo - Automatic Offset
+        newYPos *= (Sensitivity / 10f);
+
+        if (Behaviour == ControlBehaviour.Absolute)
         {
-            float resultY = -(SerialConnectionManager.Instance.SensorValue * Scale);
-
-            if (PlayerPosition == PlayerControlBehaviour.Absolute)
+            _transform.position = Vector3.Lerp(_transform.position,
+                new Vector3(_transform.position.x, newYPos, _transform.position.z), Time.deltaTime * 10f);
+        }
+        else
+        {
+            if (newYPos > 3f || newYPos < -3f)
             {
-                _transform.position = Vector3.Lerp(_transform.position,
-                    new Vector3(_transform.position.x, resultY, _transform.position.z), Time.deltaTime * 10f);
-            }
-            else //relative
-            {
-                if (resultY > 3f || resultY < -3f)
-                {
-                    _transform.position += new Vector3(0f, resultY * 0.1f, 0f);
-                }
+                //ToDo - relative control
+                _transform.position += new Vector3(0f, newYPos * 0.1f, 0f);
             }
         }
     }
@@ -62,37 +69,20 @@ public class PlayerController : MonoBehaviour
 
     #region Toggles
 
-    private void ToggleSetPlayerBehaviour()
+    private void ToggleControlBehaviour()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (PlayerPosition == PlayerControlBehaviour.Absolute)
+            if (Behaviour == ControlBehaviour.Absolute)
             {
-                PlayerPosition = PlayerControlBehaviour.Relative;
+                Behaviour = ControlBehaviour.Relative;
             }
-            else if (PlayerPosition == PlayerControlBehaviour.Relative)
+            else if (Behaviour == ControlBehaviour.Relative)
             {
-                PlayerPosition = PlayerControlBehaviour.Absolute;
-            }
-
-            Debug.LogFormat("PlayerPosition: {0}", PlayerPosition);
-        }
-    }
-
-    private void ToggleSerialRequest()
-    {
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            if (SerialConnectionManager.Instance.IsRequestEnabled)
-            {
-                SerialConnectionManager.Instance.DisabeRequest();
-            }
-            else
-            {
-                SerialConnectionManager.Instance.EnableRequest();
+                Behaviour = ControlBehaviour.Absolute;
             }
 
-            Debug.LogFormat("IsRequestEnabled: {0}", SerialConnectionManager.Instance.IsRequestEnabled);
+            Debug.LogFormat("Behaviour: {0}", Behaviour);
         }
     }
 
