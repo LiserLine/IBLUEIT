@@ -3,9 +3,9 @@
     public static readonly string SaveDataPath = "savedata/";
 }
 
-public enum PlayerControlBehaviour
+public enum ControlBehaviour
 {
-    Relative,
-    Absolute
+    Absolute,
+    Relative
 }
 

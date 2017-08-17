@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 /// <summary>
 /// This script is set to the player
@@ -6,35 +7,58 @@
 public class PlayerController : MonoBehaviour
 {
     private Transform _transform;
+    private SerialMessenger _serialMessager;
 
     [Header("Settings")]
-    public float Scale;
-    public PlayerControlBehaviour PlayerPosition = PlayerControlBehaviour.Absolute;
+    public float Sensitivity;
+    public ControlBehaviour Behaviour;
 
     private void Start()
     {
         _transform = this.GetComponent<Transform>();
+        _serialMessager = GetComponent<SerialMessenger>();
     }
 
     private void Update()
     {
         #region Running Toggles
 
-        ToggleSetPlayerBehaviour();
+        ToggleControlBehaviour();
 
         #endregion
 
-        SetPlayerYPos();
+        SetPlayerPosition();
     }
 
-    private void OnDestroy()
-    {
-       
-    }
 
-    private void SetPlayerYPos()
+    private void SetPlayerPosition()
     {
+        var message = _serialMessager.MessageReceived;
+        if (message.Length < 1) return;
 
+        message = message.Replace('.', ',');
+
+        float newYPos;
+
+        try { newYPos = float.Parse(message); }
+        catch { return; }
+
+        newYPos -= 416f; //ToDo - Automatic Offset
+        newYPos *= (Sensitivity / 10f);
+
+        if (Behaviour == ControlBehaviour.Absolute)
+        {
+            _transform.position = Vector3.Lerp(_transform.position,
+                new Vector3(_transform.position.x, newYPos, _transform.position.z), Time.deltaTime * 10f);
+        }
+        else
+        {
+            if (newYPos > 3f || newYPos < -3f)
+            {
+                //ToDo - relative control
+                _transform.position += new Vector3(0f, newYPos * 0.1f, 0f);
+            }
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -45,20 +69,20 @@ public class PlayerController : MonoBehaviour
 
     #region Toggles
 
-    private void ToggleSetPlayerBehaviour()
+    private void ToggleControlBehaviour()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (PlayerPosition == PlayerControlBehaviour.Absolute)
+            if (Behaviour == ControlBehaviour.Absolute)
             {
-                PlayerPosition = PlayerControlBehaviour.Relative;
+                Behaviour = ControlBehaviour.Relative;
             }
-            else if (PlayerPosition == PlayerControlBehaviour.Relative)
+            else if (Behaviour == ControlBehaviour.Relative)
             {
-                PlayerPosition = PlayerControlBehaviour.Absolute;
+                Behaviour = ControlBehaviour.Absolute;
             }
 
-            Debug.LogFormat("PlayerPosition: {0}", PlayerPosition);
+            Debug.LogFormat("Behaviour: {0}", Behaviour);
         }
     }
 

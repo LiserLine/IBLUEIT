@@ -6,8 +6,10 @@
  * https://creativecommons.org/licenses/by/2.0/
  */
 
+using System.IO.Ports;
 using UnityEngine;
 using System.Threading;
+using System;
 
 /**
  * This class allows a Unity program to continually check for messages from a
@@ -25,8 +27,8 @@ using System.Threading;
  */
 public class SerialController : MonoBehaviour
 {
-    [Tooltip("Port name with which the SerialPort object will be created.")]
-    public string portName = "COM3";
+    //[Tooltip("Port name with which the SerialPort object will be created.")]
+    //public string portName = "COM3";
 
     [Tooltip("Baud rate that the serial device is using to transmit data.")]
     public int baudRate = 9600;
@@ -63,8 +65,42 @@ public class SerialController : MonoBehaviour
     // ------------------------------------------------------------------------
     void OnEnable()
     {
-        serialThread = new SerialThreadLines(portName, 
-                                             baudRate, 
+        #region Pitaco AutoConnection
+
+        string portName = "";
+        var ports = SerialPort.GetPortNames();
+        for (int i = 0; i < ports.Length; i++)
+        {
+            var sp = new SerialPort(ports[i], baudRate);
+            try
+            {
+                sp.ReadTimeout = 30;
+                sp.Open();
+                Thread.Sleep(1500);
+                sp.Write("e");
+                var lineRead = sp.ReadLine();
+                if (lineRead == "echo")
+                {
+                    sp.Close();
+                    portName = ports[i];
+                    break;
+                }
+                else
+                    sp.Close();
+            }
+            catch { portName = ""; }
+        }
+
+        if (portName == "")
+        {
+            Debug.LogWarning("PITACO not connected!");
+            return;
+        }
+
+        #endregion
+
+        serialThread = new SerialThreadLines(portName,
+                                             baudRate,
                                              reconnectionDelay,
                                              maxUnreadMessages);
         thread = new Thread(new ThreadStart(serialThread.RunForever));
@@ -82,8 +118,7 @@ public class SerialController : MonoBehaviour
 
         // If there is a user-defined tear-down function, execute it before
         // closing the underlying COM port.
-        if (userDefinedTearDownFunction != null)
-            userDefinedTearDownFunction();
+        userDefinedTearDownFunction?.Invoke();
 
         // The serialThread reference should never be null at this point,
         // unless an Exception happened in the OnEnable(), in which case I've
