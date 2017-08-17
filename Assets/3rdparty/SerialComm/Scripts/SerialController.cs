@@ -91,12 +91,6 @@ public class SerialController : MonoBehaviour
             catch { portName = ""; }
         }
 
-        if (portName == "")
-        {
-            Debug.LogWarning("PITACO not connected!");
-            return;
-        }
-
         #endregion
 
         serialThread = new SerialThreadLines(portName,
