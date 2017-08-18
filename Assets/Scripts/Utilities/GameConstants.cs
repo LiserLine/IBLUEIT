@@ -1,7 +1,10 @@
-﻿public class GameConstants
+﻿using System.IO;
+using UnityEngine;
+
+public class GameConstants
 {
-    public static readonly string SaveDataPath = "savedata/";
-    public static readonly string LocalizationPath = SaveDataPath + "localization.dat";
+    public static readonly string SaveDataPath = Application.persistentDataPath + Path.AltDirectorySeparatorChar + "savedata";
+    public static readonly string LocalizationPath = SaveDataPath + Path.AltDirectorySeparatorChar + "localization.dat";
 }
 
 public enum ControlBehaviour
