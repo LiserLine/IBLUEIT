@@ -5,6 +5,7 @@ using UnityEngine;
 public class LocalizationStartup : MonoBehaviour
 {
     public GameObject SelectLanguageScreen;
+    public LevelLoader LevelLoader;
 
     private IEnumerator Start()
     {
@@ -23,7 +24,7 @@ public class LocalizationStartup : MonoBehaviour
             yield return null;
         }
 
-        GameObject.Find("LevelLoader").SendMessage("LoadScene", 1);
+        LevelLoader.LoadScene(1);
 
         Destroy(this);
     }
