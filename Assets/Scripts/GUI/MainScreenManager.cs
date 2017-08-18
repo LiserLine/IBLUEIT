@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class MainScreenManager : MonoBehaviour
 {
-    public GameObject Panel1, Panel2;
+    public GameObject Panel1, Panel2, PanelNewGame, PanelLoadGame;
+    public LevelLoader LevelLoader;
 
     public void ButtonStartGame()
     {
