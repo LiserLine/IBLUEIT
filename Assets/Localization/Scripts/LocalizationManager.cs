@@ -31,13 +31,32 @@ public class LocalizationManager : MonoBehaviour
     {
         _localizedText = new Dictionary<string, string>();
 
-        var filepath = Path.Combine(Application.streamingAssetsPath, filename);
+        var filepath = Application.streamingAssetsPath + Path.AltDirectorySeparatorChar + filename;
+
+#if UNITY_ANDROID
+        var www = new WWW(filepath);
+
+        if (!www.isDone)
+        {
+            Debug.Log("Waiting www...");
+        }
+
+        if (!string.IsNullOrEmpty(www.error))
+        {
+            Debug.LogErrorFormat("WWW Failed to load localized text on {0}", filepath);
+            return;
+        }
+
+        var jsonData = www.text;
+#else
         if (!File.Exists(filepath))
         {
-            Debug.LogWarning("Could not load localized text on " + filepath);
+            Debug.LogErrorFormat("Failed to load localized text on {0}", filepath);
+            return;
         }
 
         var jsonData = GameUtilities.ReadAllText(filepath);
+#endif
 
         var loadedData = JsonUtility.FromJson<LocalizationData>(jsonData);
 
