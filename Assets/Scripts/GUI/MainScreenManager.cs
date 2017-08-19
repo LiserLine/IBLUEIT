@@ -5,6 +5,7 @@ public class MainScreenManager : MonoBehaviour
 {
     public GameObject Panel1, Panel2, PanelNewGame, PanelLoadGame;
     public LevelLoader LevelLoader;
+    public GameObject[] ObjectsToHide;
 
     public void ButtonStartGame()
     {
@@ -14,7 +15,8 @@ public class MainScreenManager : MonoBehaviour
 
     public void ButtonNewGame()
     {
-        throw new Exception("Not yet implemented.");
+        PanelNewGame.SetActive(true);
+        HideObjects();
     }
 
     public void ButtonLoadGame()
@@ -30,5 +32,21 @@ public class MainScreenManager : MonoBehaviour
     public void ButtonQuitGame()
     {
         Application.Quit();
+    }
+
+    private void HideObjects()
+    {
+        foreach (var obj in ObjectsToHide)
+        {
+            obj.SetActive(false);
+        }
+    }
+
+    private void ShowObjects()
+    {
+        foreach (var obj in ObjectsToHide)
+        {
+            obj.SetActive(true);
+        }
     }
 }
