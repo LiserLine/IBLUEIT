@@ -38,7 +38,7 @@ public class PanelMessage : MonoBehaviour
     {
         MessageIcon.color = Color.yellow;
         IconText.text = "!";
-        IconText.color = Color.white;
+        IconText.color = Color.black;
 
         ShowPanel(msg);
         Debug.LogFormat("ShowWarning: {0}", msg);
