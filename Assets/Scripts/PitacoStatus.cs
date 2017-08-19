@@ -21,18 +21,18 @@ public class PitacoStatus : MonoBehaviour
     {
         _delta += Time.deltaTime;
 
-        if (_delta > 1f)
-        {
-            var message = _serialController.ReadSerialMessage();
-            if (message == null)
-                return;
+        if (_delta <= 1f) return;
+        
+        _delta = 0f;
 
-            if (ReferenceEquals(message, SerialController.SERIAL_DEVICE_CONNECTED))
-                _image.sprite = Connected;
-            else if (ReferenceEquals(message, SerialController.SERIAL_DEVICE_DISCONNECTED))
-                _image.sprite = Disconnected;
+        var message = _serialController.ReadSerialMessage();
+        if (message == null)
+            return;
 
-            _delta = 0f;
-        }
+        if (ReferenceEquals(message, SerialController.SERIAL_DEVICE_CONNECTED))
+            _image.sprite = Connected;
+        else if (ReferenceEquals(message, SerialController.SERIAL_DEVICE_DISCONNECTED))
+            _image.sprite = Disconnected;
+
     }
 }
