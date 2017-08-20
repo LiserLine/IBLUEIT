@@ -8,9 +8,18 @@ public class PanelMessage : MonoBehaviour
     public Text IconText;
     public Text MessageText;
 
+    private Vector3 _originalScale;
+
+    private void Start()
+    {
+        gameObject.SetActive(true);
+        _originalScale = transform.localScale;
+        transform.localScale = Vector3.zero;
+    }
+
     private void ShowPanel(string msg)
     {
-        this.gameObject.SetActive(true);
+        transform.localScale = _originalScale;
         MessageText.text = msg;
     }
 
@@ -44,8 +53,8 @@ public class PanelMessage : MonoBehaviour
         Debug.LogFormat("ShowWarning: {0}", msg);
     }
 
-    public void PressOK()
+    public void PressOk()
     {
-        this.gameObject.SetActive(false);
+        transform.localScale = Vector3.zero;
     }
 }

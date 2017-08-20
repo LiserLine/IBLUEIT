@@ -9,7 +9,6 @@
 using System.IO.Ports;
 using UnityEngine;
 using System.Threading;
-using System;
 
 /**
  * This class allows a Unity program to continually check for messages from a
@@ -27,8 +26,8 @@ using System;
  */
 public class SerialController : MonoBehaviour
 {
-    //[Tooltip("Port name with which the SerialPort object will be created.")]
-    //public string portName = "COM3";
+    [Tooltip("Port name with which the SerialPort object will be created.")]
+    public string portName = "COM3";
 
     [Tooltip("Baud rate that the serial device is using to transmit data.")]
     public int baudRate = 9600;
@@ -57,7 +56,6 @@ public class SerialController : MonoBehaviour
     protected Thread thread;
     protected SerialThreadLines serialThread;
 
-
     // ------------------------------------------------------------------------
     // Invoked whenever the SerialController gameobject is activated.
     // It creates a new thread that tries to connect to the serial device
@@ -67,26 +65,23 @@ public class SerialController : MonoBehaviour
     {
         #region Pitaco AutoConnection
 
-        string portName = "";
-        var ports = SerialPort.GetPortNames();
-        for (int i = 0; i < ports.Length; i++)
+        foreach (var port in SerialPort.GetPortNames())
         {
-            var sp = new SerialPort(ports[i], baudRate);
+            var sp = new SerialPort(port, baudRate);
             try
             {
                 sp.ReadTimeout = 30;
                 sp.Open();
+
                 Thread.Sleep(1500);
                 sp.Write("e");
                 var lineRead = sp.ReadLine();
-                if (lineRead == "echo")
-                {
-                    sp.Close();
-                    portName = ports[i];
-                    break;
-                }
-                else
-                    sp.Close();
+                sp.Close();
+
+                if (lineRead != "echo") continue;
+
+                portName = port;
+                break;
             }
             catch { portName = ""; }
         }
@@ -94,9 +89,9 @@ public class SerialController : MonoBehaviour
         #endregion
 
         serialThread = new SerialThreadLines(portName,
-                                             baudRate,
-                                             reconnectionDelay,
-                                             maxUnreadMessages);
+            baudRate,
+            reconnectionDelay,
+            maxUnreadMessages);
         thread = new Thread(new ThreadStart(serialThread.RunForever));
         thread.Start();
     }
@@ -124,11 +119,9 @@ public class SerialController : MonoBehaviour
         }
 
         // This reference shouldn't be null at this point anyway.
-        if (thread != null)
-        {
-            thread.Join();
-            thread = null;
-        }
+        if (thread == null) return;
+        thread.Join();
+        thread = null;
     }
 
     // ------------------------------------------------------------------------

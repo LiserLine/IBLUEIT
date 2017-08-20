@@ -35,7 +35,6 @@ public class LocalizedTextEditor : EditorWindow
         {
             CreateNewData();
         }
-
     }
 
     private void Load()

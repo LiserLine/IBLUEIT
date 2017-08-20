@@ -185,9 +185,12 @@ public abstract class AbstractSerialThread
     // ------------------------------------------------------------------------
     private void AttemptConnection()
     {
-        serialPort = new SerialPort(portName, baudRate);
-        serialPort.ReadTimeout = readTimeout;
-        serialPort.WriteTimeout = writeTimeout;
+        serialPort = new SerialPort(portName, baudRate)
+        {
+            ReadTimeout = readTimeout,
+            WriteTimeout = writeTimeout
+        };
+        
         serialPort.Open();
 
         if (enqueueStatusMessages)
