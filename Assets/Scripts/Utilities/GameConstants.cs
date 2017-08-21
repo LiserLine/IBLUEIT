@@ -1,10 +1,9 @@
 ﻿using System.IO;
-using UnityEngine;
 
 public class GameConstants
 {
 #if UNITY_ANDROID
-    public static readonly string SaveDataPath = Application.persistentDataPath + Path.AltDirectorySeparatorChar + "savedata";
+    public static readonly string SaveDataPath = UnityEngine.Application.persistentDataPath + Path.AltDirectorySeparatorChar + "savedata";
 #else
     public static readonly string SaveDataPath = "savedata";
 #endif
