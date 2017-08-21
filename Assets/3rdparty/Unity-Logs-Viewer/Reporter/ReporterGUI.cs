@@ -11,6 +11,6 @@ public class ReporterGUI : MonoBehaviour
 
 	void OnGUI()
 	{
-		reporter.OnGUIDraw();
+		reporter.OnGuiDraw();
 	}
 }
