@@ -7,7 +7,7 @@ public class Spawner : MonoBehaviour
     private float _spawnEveryXSec;
     private float _movementSpeed;
 
-    private Pacient _playerPacient;
+    private Player _playerPacient;
 
     [Header("Settings")]
     public GameObject[] Obstacles = new GameObject[1];
@@ -21,7 +21,7 @@ public class Spawner : MonoBehaviour
         //setar maximos pro jogador
 
         //debug
-        _playerPacient = new Pacient();
+        _playerPacient = new Player();
         _playerPacient.Name = "Dummy";
         _playerPacient.Id = 1;
         _playerPacient.ExpiratoryPeakFlow = 5;
