@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 public class GameConstants
 {
@@ -12,6 +13,14 @@ public class GameConstants
     public static readonly string PacientsPath = SaveDataPath + Path.AltDirectorySeparatorChar + "pacients";
 
     public static readonly string SummaryCsvPath = PacientsPath + Path.AltDirectorySeparatorChar + "_summary.csv";
+}
+
+[Flags]
+public enum Disfunctions
+{
+    Normal,
+    Restrictive,
+    Obstructive
 }
 
 public enum ControlBehaviour

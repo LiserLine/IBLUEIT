@@ -1,4 +1,4 @@
-﻿public class Pacient
+﻿public class Player
 {
     public uint Id { get; set; }
     public string Name { get; set; }
