@@ -12,51 +12,47 @@
 //use UNITY_CHANGE3 for unity 5.3 (fix for new SceneManger system  )
 
 
-using System;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using UnityEngine;
 #if UNITY_CHANGE3
 using UnityEngine.SceneManagement;
-
 #endif
 
 
-[Serializable]
+[System.Serializable]
 public class Images
 {
-    public Texture2D BackImage;
+	public Texture2D clearImage;
+	public Texture2D collapseImage;
+	public Texture2D clearOnNewSceneImage;
+	public Texture2D showTimeImage;
+	public Texture2D showSceneImage;
+	public Texture2D userImage;
+	public Texture2D showMemoryImage;
+	public Texture2D softwareImage;
+	public Texture2D dateImage;
+	public Texture2D showFpsImage;
+	public Texture2D infoImage;
+	public Texture2D searchImage;
+	public Texture2D closeImage;
 
-    public Texture2D BarImage;
+	public Texture2D buildFromImage;
+	public Texture2D systemInfoImage;
+	public Texture2D graphicsInfoImage;
+	public Texture2D backImage;
 
-    public Texture2D BuildFromImage;
-    public Texture2D ButtonActiveImage;
-    public Texture2D ClearImage;
-    public Texture2D ClearOnNewSceneImage;
-    public Texture2D CloseImage;
-    public Texture2D CollapseImage;
-    public Texture2D DateImage;
-    public Texture2D ErrorImage;
-    public Texture2D EvenLogImage;
-    public Texture2D GraphicsInfoImage;
-    public Texture2D InfoImage;
+	public Texture2D logImage;
+	public Texture2D warningImage;
+	public Texture2D errorImage;
 
-    public Texture2D LogImage;
-    public Texture2D OddLogImage;
+	public Texture2D barImage;
+	public Texture2D button_activeImage;
+	public Texture2D even_logImage;
+	public Texture2D odd_logImage;
+	public Texture2D selectedImage;
 
-    public GUISkin ReporterScrollerSkin;
-    public Texture2D SearchImage;
-    public Texture2D SelectedImage;
-    public Texture2D ShowFpsImage;
-    public Texture2D ShowMemoryImage;
-    public Texture2D ShowSceneImage;
-    public Texture2D ShowTimeImage;
-    public Texture2D SoftwareImage;
-    public Texture2D SystemInfoImage;
-    public Texture2D UserImage;
-    public Texture2D WarningImage;
+	public GUISkin reporterScrollerSkin;
 }
 
 //To use Reporter just create reporter from menu (Reporter->Create) at first scene your game start.
@@ -68,833 +64,782 @@ public class Images
 
 public class Reporter : MonoBehaviour
 {
-    public enum _LogType
-    {
-        Assert = LogType.Assert,
-        Error = LogType.Error,
-        Exception = LogType.Exception,
-        Log = LogType.Log,
-        Warning = LogType.Warning
-    }
 
-    public class Sample
-    {
-        public float Fps;
-        public string FpsText;
-        public sbyte LoadedScene;
-        public float Memory;
-        public float Time;
+	public enum _LogType
+	{
+		Assert    = LogType.Assert,
+		Error     = LogType.Error,
+		Exception = LogType.Exception,
+		Log       = LogType.Log,
+		Warning   = LogType.Warning,
+	}
 
-        public static float MemSize()
-        {
-            return sizeof(float) + sizeof(byte) + sizeof(float) + sizeof(float);
-        }
+	public class Sample
+	{
+		public float time;
+		public byte loadedScene;
+		public float memory;
+		public float fps;
+		public string fpsText;
+		public static float MemSize()
+		{
+			float s = sizeof(float) + sizeof(byte) + sizeof(float) + sizeof(float);
+			return s;
+		}
 
-        public string GetSceneName()
-        {
-            return LoadedScene == -1 ? "AssetBundleScene" : _scenes[LoadedScene];
-        }
-    }
+		public string GetSceneName()
+		{
+			if ((int)loadedScene == -1)
+				return "AssetBundleScene";
 
-    private readonly List<Sample> _samples = new List<Sample>(60 * 60 * 60);
+			return scenes[loadedScene];
+		}
+	}
 
-    public class Log
-    {
-        public string Condition;
-        public int Count = 1;
-        public _LogType LogType;
-        public int SampleId;
+	List<Sample> samples = new List<Sample>(60 * 60 * 60);
 
-        public string Stacktrace;
-        //public string   objectName="" ;//object who send error
-        //public string   rootName =""; //root of object send error
+	public class Log
+	{
+		public int count = 1;
+		public _LogType logType;
+		public string condition;
+		public string stacktrace;
+		public int sampleId;
+		//public string   objectName="" ;//object who send error
+		//public string   rootName =""; //root of object send error
 
-        public Log CreateCopy()
-        {
-            return (Log) MemberwiseClone();
-        }
+		public Log CreateCopy()
+		{
+			return (Log)this.MemberwiseClone();
+		}
+		public float GetMemoryUsage()
+		{
+			return (float)(sizeof(int) +
+					sizeof(_LogType) +
+					condition.Length * sizeof(char) +
+					stacktrace.Length * sizeof(char) +
+					sizeof(int));
+		}
+	}
+	//contains all uncollapsed log
+	List<Log> logs = new List<Log>();
+	//contains all collapsed logs
+	List<Log> collapsedLogs = new List<Log>();
+	//contain logs which should only appear to user , for example if you switch off show logs + switch off show warnings
+	//and your mode is collapse,then this list will contains only collapsed errors
+	List<Log> currentLog = new List<Log>();
 
-        public float GetMemoryUsage()
-        {
-            return sizeof(int) +
-                   sizeof(_LogType) +
-                   Condition.Length * sizeof(char) +
-                   Stacktrace.Length * sizeof(char) +
-                   sizeof(int);
-        }
-    }
+	//used to check if the new coming logs is already exist or new one
+	MultiKeyDictionary<string, string, Log> logsDic = new MultiKeyDictionary<string, string, Log>();
+	//to save memory
+	Dictionary<string, string> cachedString = new Dictionary<string, string>();
 
-    //contains all uncollapsed log
-    private readonly List<Log> _logs = new List<Log>();
+	[HideInInspector]
+	//show hide In Game Logs
+	public bool show = false;
+	//collapse logs
+	bool collapse;
+	//to decide if you want to clean logs for new loaded scene
+	bool clearOnNewSceneLoaded;
 
-    //contains all collapsed logs
-    private readonly List<Log> _collapsedLogs = new List<Log>();
+	bool showTime;
 
-    //contain logs which should only appear to user , for example if you switch off show logs + switch off show warnings
-    //and your mode is collapse,then this list will contains only collapsed errors
-    private readonly List<Log> _currentLog = new List<Log>();
+	bool showScene;
 
-    //used to check if the new coming logs is already exist or new one
-    private readonly MultiKeyDictionary<string, string, Log> _logsDic = new MultiKeyDictionary<string, string, Log>();
+	bool showMemory;
 
-    //to save memory
-    private readonly Dictionary<string, string> _cachedString = new Dictionary<string, string>();
+	bool showFps;
 
-    [HideInInspector]
-    //show hide In Game Logs
-    public bool Show;
+	bool showGraph;
 
-    //collapse logs
-    private bool _collapse;
+	//show or hide logs
+	bool showLog = true;
+	//show or hide warnings
+	bool showWarning = true;
+	//show or hide errors
+	bool showError = true;
 
-    //to decide if you want to clean logs for new loaded scene
-    private bool _clearOnNewSceneLoaded;
+	//total number of logs
+	int numOfLogs = 0;
+	//total number of warnings
+	int numOfLogsWarning = 0;
+	//total number of errors
+	int numOfLogsError = 0;
+	//total number of collapsed logs
+	int numOfCollapsedLogs = 0;
+	//total number of collapsed warnings
+	int numOfCollapsedLogsWarning = 0;
+	//total number of collapsed errors
+	int numOfCollapsedLogsError = 0;
 
-    private bool _showTime;
+	//maximum number of allowed logs to view
+	//public int maxAllowedLog = 1000 ;
 
-    private bool _showScene;
+	bool showClearOnNewSceneLoadedButton = true;
+	bool showTimeButton = true;
+	bool showSceneButton = true;
+	bool showMemButton = true;
+	bool showFpsButton = true;
+	bool showSearchText = true;
 
-    private bool _showMemory;
+	string buildDate;
+	string logDate;
+	float logsMemUsage;
+	float graphMemUsage;
+	public float TotalMemUsage
+	{
+		get
+		{
+			return logsMemUsage + graphMemUsage;
+		}
+	}
+	float gcTotalMemory;
+	public string UserData = "";
+	//frame rate per second
+	public float fps;
+	public string fpsText;
 
-    private bool _showFps;
+	//List<Texture2D> snapshots = new List<Texture2D>() ;
 
-    private bool _showGraph;
+	enum ReportView
+	{
+		None,
+		Logs,
+		Info,
+		Snapshot,
+	}
+	ReportView currentView = ReportView.Logs;
+	enum DetailView
+	{
+		None,
+		StackTrace,
+		Graph,
+	}
 
-    //show or hide logs
-    private bool _showLog = true;
+	//used to check if you have In Game Logs multiple time in different scene
+	//only one should work and other should be deleted
+	static bool created = false;
+	//public delegate void OnLogHandler( string condition, string stack-trace, LogType type );
+	//public event OnLogHandler OnLog ;
 
-    //show or hide warnings
-    private bool _showWarning = true;
+	public Images images;
+	// gui
+	GUIContent clearContent;
+	GUIContent collapseContent;
+	GUIContent clearOnNewSceneContent;
+	GUIContent showTimeContent;
+	GUIContent showSceneContent;
+	GUIContent userContent;
+	GUIContent showMemoryContent;
+	GUIContent softwareContent;
+	GUIContent dateContent;
+	GUIContent showFpsContent;
+	//GUIContent graphContent;
+	GUIContent infoContent;
+	GUIContent searchContent;
+	GUIContent closeContent;
 
-    //show or hide errors
-    private bool _showError = true;
+	GUIContent buildFromContent;
+	GUIContent systemInfoContent;
+	GUIContent graphicsInfoContent;
+	GUIContent backContent;
 
-    //total number of logs
-    private int _numOfLogs;
+	//GUIContent cameraContent;
 
-    //total number of warnings
-    private int _numOfLogsWarning;
+	GUIContent logContent;
+	GUIContent warningContent;
+	GUIContent errorContent;
+	GUIStyle barStyle;
+	GUIStyle buttonActiveStyle;
 
-    //total number of errors
-    private int _numOfLogsError;
+	GUIStyle nonStyle;
+	GUIStyle lowerLeftFontStyle;
+	GUIStyle backStyle;
+	GUIStyle evenLogStyle;
+	GUIStyle oddLogStyle;
+	GUIStyle logButtonStyle;
+	GUIStyle selectedLogStyle;
+	GUIStyle selectedLogFontStyle;
+	GUIStyle stackLabelStyle;
+	GUIStyle scrollerStyle;
+	GUIStyle searchStyle;
+	GUIStyle sliderBackStyle;
+	GUIStyle sliderThumbStyle;
+	GUISkin toolbarScrollerSkin;
+	GUISkin logScrollerSkin;
+	GUISkin graphScrollerSkin;
 
-    //total number of collapsed logs
-    private int _numOfCollapsedLogs;
+	public Vector2 size = new Vector2(32, 32);
+	public float maxSize = 20;
+	public int numOfCircleToShow = 1;
+	static string[] scenes;
+	string currentScene;
+	string filterText = "";
 
-    //total number of collapsed warnings
-    private int _numOfCollapsedLogsWarning;
-
-    //total number of collapsed errors
-    private int _numOfCollapsedLogsError;
-
-    //maximum number of allowed logs to view
-    //public int maxAllowedLog = 1000 ;
-
-    private bool _showClearOnNewSceneLoadedButton = true;
-    private bool _showTimeButton = true;
-    private bool _showSceneButton = true;
-    private bool _showMemButton = true;
-    private bool _showFpsButton = true;
-    private bool _showSearchText = true;
-
-    private string _buildDate;
-    private string _logDate;
-    private float _logsMemUsage;
-    private float _graphMemUsage;
-    public float TotalMemUsage => _logsMemUsage + _graphMemUsage;
-
-    private float _gcTotalMemory;
-
-    public string UserData = "";
-
-    //frame rate per second
-    public float Fps;
-
-    public string FpsText;
-
-    //List<Texture2D> snapshots = new List<Texture2D>() ;
-
-    private enum ReportView
-    {
-        None,
-        Logs,
-        Info,
-        Snapshot
-    }
-
-    private ReportView _currentView = ReportView.Logs;
-
-    private enum DetailView
-    {
-        None,
-        StackTrace,
-        Graph
-    }
-
-    //used to check if you have In Game Logs multiple time in different scene
-    //only one should work and other should be deleted
-    private static bool _created;
-    //public delegate void OnLogHandler( string condition, string stack-trace, LogType type );
-    //public event OnLogHandler OnLog ;
-
-    public Images Images;
-
-    // gui
-    private GUIContent _clearContent;
-
-    private GUIContent _collapseContent;
-    private GUIContent _clearOnNewSceneContent;
-    private GUIContent _showTimeContent;
-    private GUIContent _showSceneContent;
-    private GUIContent _userContent;
-    private GUIContent _showMemoryContent;
-    private GUIContent _softwareContent;
-    private GUIContent _dateContent;
-
-    private GUIContent _showFpsContent;
-
-    //GUIContent graphContent;
-    private GUIContent _infoContent;
-
-    private GUIContent _searchContent;
-    private GUIContent _closeContent;
-
-    private GUIContent _buildFromContent;
-    private GUIContent _systemInfoContent;
-    private GUIContent _graphicsInfoContent;
-    private GUIContent _backContent;
-
-    //GUIContent cameraContent;
-
-    private GUIContent _logContent;
-    private GUIContent _warningContent;
-    private GUIContent _errorContent;
-    private GUIStyle _barStyle;
-    private GUIStyle _buttonActiveStyle;
-
-    private GUIStyle _nonStyle;
-    private GUIStyle _lowerLeftFontStyle;
-    private GUIStyle _backStyle;
-    private GUIStyle _evenLogStyle;
-    private GUIStyle _oddLogStyle;
-    private GUIStyle _logButtonStyle;
-    private GUIStyle _selectedLogStyle;
-    private GUIStyle _selectedLogFontStyle;
-    private GUIStyle _stackLabelStyle;
-    private GUIStyle _scrollerStyle;
-    private GUIStyle _searchStyle;
-    private GUIStyle _sliderBackStyle;
-    private GUIStyle _sliderThumbStyle;
-    private GUISkin _toolbarScrollerSkin;
-    private GUISkin _logScrollerSkin;
-    private GUISkin _graphScrollerSkin;
-
-    public Vector2 Size = new Vector2(32, 32);
-    public float MaxSize = 20;
-    public int NumOfCircleToShow = 1;
-    private static string[] _scenes;
-    private string _currentScene;
-    private string filterText = "";
-
-    private string _deviceModel;
-    private string _deviceType;
-    private string _deviceName;
-    private string _graphicsMemorySize;
+	string deviceModel;
+	string deviceType;
+	string deviceName;
+	string graphicsMemorySize;
 #if !UNITY_CHANGE1
-    private string _maxTextureSize;
+	string maxTextureSize;
 #endif
-    private string _systemMemorySize;
+	string systemMemorySize;
 
-    private void Awake()
-    {
-        if (!Initialized)
-            Initialize();
-    }
+	void Awake()
+	{
+		if (!Initialized)
+			Initialize();
+	}
 
-    private void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
+	void OnEnable()
+	{
+		if (logs.Count == 0)//if recompile while in play mode
+			clear();
+	}
 
-        if (_logs.Count == 0) //if recompile while in play mode
-            Clear();
-    }
+	void OnDisable()
+	{
 
-    private void OnDisable()
-    {
-    }
+	}
 
-    private void AddSample()
-    {
-        var sample = new Sample
-        {
-            Fps = Fps,
-            FpsText = FpsText,
-            LoadedScene = (sbyte) SceneManager.GetActiveScene().buildIndex,
-            Time = Time.realtimeSinceStartup,
-            Memory = _gcTotalMemory
-        };
+	void addSample()
+	{
+		Sample sample = new Sample();
+		sample.fps = fps;
+		sample.fpsText = fpsText;
 #if UNITY_CHANGE3
+		sample.loadedScene = (byte)SceneManager.GetActiveScene().buildIndex;
 #else
 		sample.loadedScene = (byte)Application.loadedLevel;
 #endif
-        _samples.Add(sample);
+		sample.time = Time.realtimeSinceStartup;
+		sample.memory = gcTotalMemory;
+		samples.Add(sample);
 
-        _graphMemUsage = _samples.Count * Sample.MemSize() / 1024 / 1024;
-    }
+		graphMemUsage = (samples.Count * Sample.MemSize()) / 1024 / 1024;
+	}
 
-    public bool Initialized;
-
-    public void Initialize()
-    {
-        if (!_created)
-        {
-            try
-            {
-                gameObject.SendMessage("OnPreStart");
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-            }
+	public bool Initialized = false;
+	public void Initialize()
+	{
+		if (!created) {
+			try {
+				gameObject.SendMessage("OnPreStart");
+			}
+			catch (System.Exception e) {
+				Debug.LogException(e);
+			}
 #if UNITY_CHANGE3
-            _scenes = new string[SceneManager.sceneCountInBuildSettings];
-            _currentScene = SceneManager.GetActiveScene().name;
+			scenes = new string[ SceneManager.sceneCountInBuildSettings ];
+			currentScene = SceneManager.GetActiveScene().name;
 #else
 			scenes = new string[Application.levelCount];
 			currentScene = Application.loadedLevelName;
 #endif
-            DontDestroyOnLoad(gameObject);
+			DontDestroyOnLoad(gameObject);
 #if UNITY_CHANGE1
 			Application.RegisterLogCallback (new Application.LogCallback (CaptureLog));
 			Application.RegisterLogCallbackThreaded (new Application.LogCallback (CaptureLogThread));
 #else
-            //Application.logMessageReceived += CaptureLog ;
-            Application.logMessageReceivedThreaded += CaptureLogThread;
+			//Application.logMessageReceived += CaptureLog ;
+			Application.logMessageReceivedThreaded += CaptureLogThread;
 #endif
-            _created = true;
-            //addSample();
-        }
-        else
-        {
-            Debug.LogWarning("tow manager is exists delete the second");
-            DestroyImmediate(gameObject, true);
-            return;
-        }
+			created = true;
+			//addSample();
+		}
+		else {
+			Debug.LogWarning("tow manager is exists delete the second");
+			DestroyImmediate(gameObject, true);
+			return;
+		}
 
 
-        //initialize gui and styles for gui purpose
+		//initialize gui and styles for gui purpose
 
-        _clearContent = new GUIContent("", Images.ClearImage, "Clear logs");
-        _collapseContent = new GUIContent("", Images.CollapseImage, "Collapse logs");
-        _clearOnNewSceneContent = new GUIContent("", Images.ClearOnNewSceneImage, "Clear logs on new scene loaded");
-        _showTimeContent = new GUIContent("", Images.ShowTimeImage, "Show Hide Time");
-        _showSceneContent = new GUIContent("", Images.ShowSceneImage, "Show Hide Scene");
-        _showMemoryContent = new GUIContent("", Images.ShowMemoryImage, "Show Hide Memory");
-        _softwareContent = new GUIContent("", Images.SoftwareImage, "Software");
-        _dateContent = new GUIContent("", Images.DateImage, "Date");
-        _showFpsContent = new GUIContent("", Images.ShowFpsImage, "Show Hide fps");
-        _infoContent = new GUIContent("", Images.InfoImage, "Information about application");
-        _searchContent = new GUIContent("", Images.SearchImage, "Search for logs");
-        _closeContent = new GUIContent("", Images.CloseImage, "Hide logs");
-        _userContent = new GUIContent("", Images.UserImage, "User");
+		clearContent = new GUIContent("", images.clearImage, "Clear logs");
+		collapseContent = new GUIContent("", images.collapseImage, "Collapse logs");
+		clearOnNewSceneContent = new GUIContent("", images.clearOnNewSceneImage, "Clear logs on new scene loaded");
+		showTimeContent = new GUIContent("", images.showTimeImage, "Show Hide Time");
+		showSceneContent = new GUIContent("", images.showSceneImage, "Show Hide Scene");
+		showMemoryContent = new GUIContent("", images.showMemoryImage, "Show Hide Memory");
+		softwareContent = new GUIContent("", images.softwareImage, "Software");
+		dateContent = new GUIContent("", images.dateImage, "Date");
+		showFpsContent = new GUIContent("", images.showFpsImage, "Show Hide fps");
+		infoContent = new GUIContent("", images.infoImage, "Information about application");
+		searchContent = new GUIContent("", images.searchImage, "Search for logs");
+		closeContent = new GUIContent("", images.closeImage, "Hide logs");
+		userContent = new GUIContent("", images.userImage, "User");
 
-        _buildFromContent = new GUIContent("", Images.BuildFromImage, "Build From");
-        _systemInfoContent = new GUIContent("", Images.SystemInfoImage, "System Info");
-        _graphicsInfoContent = new GUIContent("", Images.GraphicsInfoImage, "Graphics Info");
-        _backContent = new GUIContent("", Images.BackImage, "Back");
-
-
-        //snapshotContent = new GUIContent("",images.cameraImage,"show or hide logs");
-        _logContent = new GUIContent("", Images.LogImage, "show or hide logs");
-        _warningContent = new GUIContent("", Images.WarningImage, "show or hide warnings");
-        _errorContent = new GUIContent("", Images.ErrorImage, "show or hide errors");
+		buildFromContent = new GUIContent("", images.buildFromImage, "Build From");
+		systemInfoContent = new GUIContent("", images.systemInfoImage, "System Info");
+		graphicsInfoContent = new GUIContent("", images.graphicsInfoImage, "Graphics Info");
+		backContent = new GUIContent("", images.backImage, "Back");
 
 
-        _currentView = (ReportView) PlayerPrefs.GetInt("Reporter_currentView", 1);
-        Show = PlayerPrefs.GetInt("Reporter_show") == 1;
-        _collapse = PlayerPrefs.GetInt("Reporter_collapse") == 1;
-        _clearOnNewSceneLoaded = PlayerPrefs.GetInt("Reporter_clearOnNewSceneLoaded") == 1;
-        _showTime = PlayerPrefs.GetInt("Reporter_showTime") == 1;
-        _showScene = PlayerPrefs.GetInt("Reporter_showScene") == 1;
-        _showMemory = PlayerPrefs.GetInt("Reporter_showMemory") == 1;
-        _showFps = PlayerPrefs.GetInt("Reporter_showFps") == 1;
-        _showGraph = PlayerPrefs.GetInt("Reporter_showGraph") == 1;
-        _showLog = PlayerPrefs.GetInt("Reporter_showLog", 1) == 1;
-        _showWarning = PlayerPrefs.GetInt("Reporter_showWarning", 1) == 1;
-        _showError = PlayerPrefs.GetInt("Reporter_showError", 1) == 1;
-        filterText = PlayerPrefs.GetString("Reporter_filterText");
-        Size.x = Size.y = PlayerPrefs.GetFloat("Reporter_size", 32);
+		//snapshotContent = new GUIContent("",images.cameraImage,"show or hide logs");
+		logContent = new GUIContent("", images.logImage, "show or hide logs");
+		warningContent = new GUIContent("", images.warningImage, "show or hide warnings");
+		errorContent = new GUIContent("", images.errorImage, "show or hide errors");
 
 
-        _showClearOnNewSceneLoadedButton = PlayerPrefs.GetInt("Reporter_showClearOnNewSceneLoadedButton", 1) == 1;
-        _showTimeButton = PlayerPrefs.GetInt("Reporter_showTimeButton", 1) == 1;
-        _showSceneButton = PlayerPrefs.GetInt("Reporter_showSceneButton", 1) == 1;
-        _showMemButton = PlayerPrefs.GetInt("Reporter_showMemButton", 1) == 1;
-        _showFpsButton = PlayerPrefs.GetInt("Reporter_showFpsButton", 1) == 1;
-        _showSearchText = PlayerPrefs.GetInt("Reporter_showSearchText", 1) == 1;
+		currentView = (ReportView)PlayerPrefs.GetInt("Reporter_currentView", 1);
+		show = (PlayerPrefs.GetInt("Reporter_show") == 1) ? true : false;
+		collapse = (PlayerPrefs.GetInt("Reporter_collapse") == 1) ? true : false;
+		clearOnNewSceneLoaded = (PlayerPrefs.GetInt("Reporter_clearOnNewSceneLoaded") == 1) ? true : false;
+		showTime = (PlayerPrefs.GetInt("Reporter_showTime") == 1) ? true : false;
+		showScene = (PlayerPrefs.GetInt("Reporter_showScene") == 1) ? true : false;
+		showMemory = (PlayerPrefs.GetInt("Reporter_showMemory") == 1) ? true : false;
+		showFps = (PlayerPrefs.GetInt("Reporter_showFps") == 1) ? true : false;
+		showGraph = (PlayerPrefs.GetInt("Reporter_showGraph") == 1) ? true : false;
+		showLog = (PlayerPrefs.GetInt("Reporter_showLog", 1) == 1) ? true : false;
+		showWarning = (PlayerPrefs.GetInt("Reporter_showWarning", 1) == 1) ? true : false;
+		showError = (PlayerPrefs.GetInt("Reporter_showError", 1) == 1) ? true : false;
+		filterText = PlayerPrefs.GetString("Reporter_filterText");
+		size.x = size.y = PlayerPrefs.GetFloat("Reporter_size", 32);
 
 
-        InitializeStyle();
+		showClearOnNewSceneLoadedButton = (PlayerPrefs.GetInt("Reporter_showClearOnNewSceneLoadedButton", 1) == 1) ? true : false;
+		showTimeButton = (PlayerPrefs.GetInt("Reporter_showTimeButton", 1) == 1) ? true : false;
+		showSceneButton = (PlayerPrefs.GetInt("Reporter_showSceneButton", 1) == 1) ? true : false;
+		showMemButton = (PlayerPrefs.GetInt("Reporter_showMemButton", 1) == 1) ? true : false;
+		showFpsButton = (PlayerPrefs.GetInt("Reporter_showFpsButton", 1) == 1) ? true : false;
+		showSearchText = (PlayerPrefs.GetInt("Reporter_showSearchText", 1) == 1) ? true : false;
 
-        Initialized = true;
 
-        if (Show)
-            DoShow();
+		initializeStyle();
 
-        _deviceModel = SystemInfo.deviceModel;
-        _deviceType = SystemInfo.deviceType.ToString();
-        _deviceName = SystemInfo.deviceName;
-        _graphicsMemorySize = SystemInfo.graphicsMemorySize.ToString();
+		Initialized = true;
+
+		if (show) {
+			doShow();
+		}
+
+		deviceModel = SystemInfo.deviceModel.ToString();
+		deviceType = SystemInfo.deviceType.ToString();
+		deviceName = SystemInfo.deviceName.ToString();
+		graphicsMemorySize = SystemInfo.graphicsMemorySize.ToString();
 #if !UNITY_CHANGE1
-        _maxTextureSize = SystemInfo.maxTextureSize.ToString();
+		maxTextureSize = SystemInfo.maxTextureSize.ToString();
 #endif
-        _systemMemorySize = SystemInfo.systemMemorySize.ToString();
-    }
+		systemMemorySize = SystemInfo.systemMemorySize.ToString();
 
-    private void InitializeStyle()
-    {
-        var paddingX = (int) (Size.x * 0.2f);
-        var paddingY = (int) (Size.y * 0.2f);
-        _nonStyle = new GUIStyle
-        {
-            clipping = TextClipping.Clip,
-            border = new RectOffset(0, 0, 0, 0),
-            normal = {background = null},
-            fontSize = (int) (Size.y / 2),
-            alignment = TextAnchor.MiddleCenter
-        };
+	}
 
-        _lowerLeftFontStyle = new GUIStyle
-        {
-            clipping = TextClipping.Clip,
-            border = new RectOffset(0, 0, 0, 0),
-            normal = {background = null},
-            fontSize = (int) (Size.y / 2),
-            fontStyle = FontStyle.Bold,
-            alignment = TextAnchor.LowerLeft
-        };
+	void initializeStyle()
+	{
+		int paddingX = (int)(size.x * 0.2f);
+		int paddingY = (int)(size.y * 0.2f);
+		nonStyle = new GUIStyle();
+		nonStyle.clipping = TextClipping.Clip;
+		nonStyle.border = new RectOffset(0, 0, 0, 0);
+		nonStyle.normal.background = null;
+		nonStyle.fontSize = (int)(size.y / 2);
+		nonStyle.alignment = TextAnchor.MiddleCenter;
 
-        _barStyle = new GUIStyle
-        {
-            border = new RectOffset(1, 1, 1, 1),
-            normal = {background = Images.BarImage},
-            active = {background = Images.ButtonActiveImage},
-            alignment = TextAnchor.MiddleCenter,
-            margin = new RectOffset(1, 1, 1, 1),
-            clipping = TextClipping.Clip,
-            fontSize = (int) (Size.y / 2)
-        };
-        //barStyle.padding = new RectOffset(paddingX,paddingX,paddingY,paddingY); 
-        //barStyle.wordWrap = true ;
+		lowerLeftFontStyle = new GUIStyle();
+		lowerLeftFontStyle.clipping = TextClipping.Clip;
+		lowerLeftFontStyle.border = new RectOffset(0, 0, 0, 0);
+		lowerLeftFontStyle.normal.background = null;
+		lowerLeftFontStyle.fontSize = (int)(size.y / 2);
+		lowerLeftFontStyle.fontStyle = FontStyle.Bold;
+		lowerLeftFontStyle.alignment = TextAnchor.LowerLeft;
 
 
+		barStyle = new GUIStyle();
+		barStyle.border = new RectOffset(1, 1, 1, 1);
+		barStyle.normal.background = images.barImage;
+		barStyle.active.background = images.button_activeImage;
+		barStyle.alignment = TextAnchor.MiddleCenter;
+		barStyle.margin = new RectOffset(1, 1, 1, 1);
+
+		//barStyle.padding = new RectOffset(paddingX,paddingX,paddingY,paddingY); 
+		//barStyle.wordWrap = true ;
+		barStyle.clipping = TextClipping.Clip;
+		barStyle.fontSize = (int)(size.y / 2);
 
 
-        _buttonActiveStyle = new GUIStyle
-        {
-            border = new RectOffset(1, 1, 1, 1),
-            normal = {background = Images.ButtonActiveImage},
-            alignment = TextAnchor.MiddleCenter,
-            margin = new RectOffset(1, 1, 1, 1),
-            fontSize = (int) (Size.y / 2)
-        };
-        //buttonActiveStyle.padding = new RectOffset(4,4,4,4);
+		buttonActiveStyle = new GUIStyle();
+		buttonActiveStyle.border = new RectOffset(1, 1, 1, 1);
+		buttonActiveStyle.normal.background = images.button_activeImage;
+		buttonActiveStyle.alignment = TextAnchor.MiddleCenter;
+		buttonActiveStyle.margin = new RectOffset(1, 1, 1, 1);
+		//buttonActiveStyle.padding = new RectOffset(4,4,4,4);
+		buttonActiveStyle.fontSize = (int)(size.y / 2);
 
-        _backStyle = new GUIStyle
-        {
-            normal = {background = Images.EvenLogImage},
-            clipping = TextClipping.Clip,
-            fontSize = (int) (Size.y / 2)
-        };
+		backStyle = new GUIStyle();
+		backStyle.normal.background = images.even_logImage;
+		backStyle.clipping = TextClipping.Clip;
+		backStyle.fontSize = (int)(size.y / 2);
 
-        _evenLogStyle = new GUIStyle
-        {
-            normal = {background = Images.EvenLogImage},
-            fixedHeight = Size.y,
-            clipping = TextClipping.Clip,
-            alignment = TextAnchor.UpperLeft,
-            imagePosition = ImagePosition.ImageLeft,
-            fontSize = (int) (Size.y / 2)
-        };
-        //evenLogStyle.wordWrap = true;
+		evenLogStyle = new GUIStyle();
+		evenLogStyle.normal.background = images.even_logImage;
+		evenLogStyle.fixedHeight = size.y;
+		evenLogStyle.clipping = TextClipping.Clip;
+		evenLogStyle.alignment = TextAnchor.UpperLeft;
+		evenLogStyle.imagePosition = ImagePosition.ImageLeft;
+		evenLogStyle.fontSize = (int)(size.y / 2);
+		//evenLogStyle.wordWrap = true;
 
-        _oddLogStyle = new GUIStyle
-        {
-            normal = {background = Images.OddLogImage},
-            fixedHeight = Size.y,
-            clipping = TextClipping.Clip,
-            alignment = TextAnchor.UpperLeft,
-            imagePosition = ImagePosition.ImageLeft,
-            fontSize = (int) (Size.y / 2)
-        };
-        //oddLogStyle.wordWrap = true ;
+		oddLogStyle = new GUIStyle();
+		oddLogStyle.normal.background = images.odd_logImage;
+		oddLogStyle.fixedHeight = size.y;
+		oddLogStyle.clipping = TextClipping.Clip;
+		oddLogStyle.alignment = TextAnchor.UpperLeft;
+		oddLogStyle.imagePosition = ImagePosition.ImageLeft;
+		oddLogStyle.fontSize = (int)(size.y / 2);
+		//oddLogStyle.wordWrap = true ;
 
-        _logButtonStyle = new GUIStyle
-        {
-            fixedHeight = Size.y,
-            clipping = TextClipping.Clip,
-            alignment = TextAnchor.UpperLeft,
-            fontSize = (int) (Size.y / 2),
-            padding = new RectOffset(paddingX, paddingX, paddingY, paddingY)
-        };
-        //logButtonStyle.wordWrap = true;
-        //logButtonStyle.imagePosition = ImagePosition.ImageLeft ;
-        //logButtonStyle.wordWrap = true;
+		logButtonStyle = new GUIStyle();
+		//logButtonStyle.wordWrap = true;
+		logButtonStyle.fixedHeight = size.y;
+		logButtonStyle.clipping = TextClipping.Clip;
+		logButtonStyle.alignment = TextAnchor.UpperLeft;
+		//logButtonStyle.imagePosition = ImagePosition.ImageLeft ;
+		//logButtonStyle.wordWrap = true;
+		logButtonStyle.fontSize = (int)(size.y / 2);
+		logButtonStyle.padding = new RectOffset(paddingX, paddingX, paddingY, paddingY);
 
-        _selectedLogStyle = new GUIStyle
-        {
-            normal = {background = Images.SelectedImage},
-            fixedHeight = Size.y,
-            clipping = TextClipping.Clip,
-            alignment = TextAnchor.UpperLeft
-        };
-        _selectedLogStyle.normal.textColor = Color.white;
-        _selectedLogStyle.fontSize = (int) (Size.y / 2);
-        //selectedLogStyle.wordWrap = true;
+		selectedLogStyle = new GUIStyle();
+		selectedLogStyle.normal.background = images.selectedImage;
+		selectedLogStyle.fixedHeight = size.y;
+		selectedLogStyle.clipping = TextClipping.Clip;
+		selectedLogStyle.alignment = TextAnchor.UpperLeft;
+		selectedLogStyle.normal.textColor = Color.white;
+		//selectedLogStyle.wordWrap = true;
+		selectedLogStyle.fontSize = (int)(size.y / 2);
 
-        _selectedLogFontStyle = new GUIStyle
-        {
-            normal = {background = Images.SelectedImage},
-            fixedHeight = Size.y,
-            clipping = TextClipping.Clip,
-            alignment = TextAnchor.UpperLeft
-        };
-        _selectedLogFontStyle.normal.textColor = Color.white;
-        //selectedLogStyle.wordWrap = true;
-        _selectedLogFontStyle.fontSize = (int) (Size.y / 2);
-        _selectedLogFontStyle.padding = new RectOffset(paddingX, paddingX, paddingY, paddingY);
+		selectedLogFontStyle = new GUIStyle();
+		selectedLogFontStyle.normal.background = images.selectedImage;
+		selectedLogFontStyle.fixedHeight = size.y;
+		selectedLogFontStyle.clipping = TextClipping.Clip;
+		selectedLogFontStyle.alignment = TextAnchor.UpperLeft;
+		selectedLogFontStyle.normal.textColor = Color.white;
+		//selectedLogStyle.wordWrap = true;
+		selectedLogFontStyle.fontSize = (int)(size.y / 2);
+		selectedLogFontStyle.padding = new RectOffset(paddingX, paddingX, paddingY, paddingY);
 
-        _stackLabelStyle = new GUIStyle
-        {
-            wordWrap = true,
-            fontSize = (int) (Size.y / 2),
-            padding = new RectOffset(paddingX, paddingX, paddingY, paddingY)
-        };
+		stackLabelStyle = new GUIStyle();
+		stackLabelStyle.wordWrap = true;
+		stackLabelStyle.fontSize = (int)(size.y / 2);
+		stackLabelStyle.padding = new RectOffset(paddingX, paddingX, paddingY, paddingY);
 
-        _scrollerStyle = new GUIStyle {normal = {background = Images.BarImage}};
+		scrollerStyle = new GUIStyle();
+		scrollerStyle.normal.background = images.barImage;
 
-        _searchStyle = new GUIStyle
-        {
-            clipping = TextClipping.Clip,
-            alignment = TextAnchor.LowerCenter,
-            fontSize = (int) (Size.y / 2),
-            wordWrap = true
-        };
+		searchStyle = new GUIStyle();
+		searchStyle.clipping = TextClipping.Clip;
+		searchStyle.alignment = TextAnchor.LowerCenter;
+		searchStyle.fontSize = (int)(size.y / 2);
+		searchStyle.wordWrap = true;
 
 
-        _sliderBackStyle = new GUIStyle
-        {
-            normal = {background = Images.BarImage},
-            fixedHeight = Size.y,
-            border = new RectOffset(1, 1, 1, 1)
-        };
+		sliderBackStyle = new GUIStyle();
+		sliderBackStyle.normal.background = images.barImage;
+		sliderBackStyle.fixedHeight = size.y;
+		sliderBackStyle.border = new RectOffset(1, 1, 1, 1);
 
-        _sliderThumbStyle = new GUIStyle
-        {
-            normal = {background = Images.SelectedImage},
-            fixedWidth = Size.x
-        };
+		sliderThumbStyle = new GUIStyle();
+		sliderThumbStyle.normal.background = images.selectedImage;
+		sliderThumbStyle.fixedWidth = size.x;
 
-        var skin = Images.ReporterScrollerSkin;
+		GUISkin skin = images.reporterScrollerSkin;
 
-        _toolbarScrollerSkin = Instantiate(skin);
-        _toolbarScrollerSkin.verticalScrollbar.fixedWidth = 0f;
-        _toolbarScrollerSkin.horizontalScrollbar.fixedHeight = 0f;
-        _toolbarScrollerSkin.verticalScrollbarThumb.fixedWidth = 0f;
-        _toolbarScrollerSkin.horizontalScrollbarThumb.fixedHeight = 0f;
+		toolbarScrollerSkin = (GUISkin)GameObject.Instantiate(skin);
+		toolbarScrollerSkin.verticalScrollbar.fixedWidth = 0f;
+		toolbarScrollerSkin.horizontalScrollbar.fixedHeight = 0f;
+		toolbarScrollerSkin.verticalScrollbarThumb.fixedWidth = 0f;
+		toolbarScrollerSkin.horizontalScrollbarThumb.fixedHeight = 0f;
 
-        _logScrollerSkin = Instantiate(skin);
-        _logScrollerSkin.verticalScrollbar.fixedWidth = Size.x * 2f;
-        _logScrollerSkin.horizontalScrollbar.fixedHeight = 0f;
-        _logScrollerSkin.verticalScrollbarThumb.fixedWidth = Size.x * 2f;
-        _logScrollerSkin.horizontalScrollbarThumb.fixedHeight = 0f;
+		logScrollerSkin = (GUISkin)GameObject.Instantiate(skin);
+		logScrollerSkin.verticalScrollbar.fixedWidth = size.x * 2f;
+		logScrollerSkin.horizontalScrollbar.fixedHeight = 0f;
+		logScrollerSkin.verticalScrollbarThumb.fixedWidth = size.x * 2f;
+		logScrollerSkin.horizontalScrollbarThumb.fixedHeight = 0f;
 
-        _graphScrollerSkin = Instantiate(skin);
-        _graphScrollerSkin.verticalScrollbar.fixedWidth = 0f;
-        _graphScrollerSkin.horizontalScrollbar.fixedHeight = Size.x * 2f;
-        _graphScrollerSkin.verticalScrollbarThumb.fixedWidth = 0f;
-        _graphScrollerSkin.horizontalScrollbarThumb.fixedHeight = Size.x * 2f;
-        //inGameLogsScrollerSkin.verticalScrollbarThumb.fixedWidth = size.x * 2;
-        //inGameLogsScrollerSkin.verticalScrollbar.fixedWidth = size.x * 2;
-    }
+		graphScrollerSkin = (GUISkin)GameObject.Instantiate(skin);
+		graphScrollerSkin.verticalScrollbar.fixedWidth = 0f;
+		graphScrollerSkin.horizontalScrollbar.fixedHeight = size.x * 2f;
+		graphScrollerSkin.verticalScrollbarThumb.fixedWidth = 0f;
+		graphScrollerSkin.horizontalScrollbarThumb.fixedHeight = size.x * 2f;
+		//inGameLogsScrollerSkin.verticalScrollbarThumb.fixedWidth = size.x * 2;
+		//inGameLogsScrollerSkin.verticalScrollbar.fixedWidth = size.x * 2;
+	}
 
-    private void Start()
-    {
-        _logDate = DateTime.Now.ToString(CultureInfo.InvariantCulture);
-        StartCoroutine("ReadInfo");
-    }
+	void Start()
+	{
+		logDate = System.DateTime.Now.ToString();
+		StartCoroutine("readInfo");
+	}
 
-    //clear all logs
-    private void Clear()
-    {
-        _logs.Clear();
-        _collapsedLogs.Clear();
-        _currentLog.Clear();
-        _logsDic.Clear();
-        //_selectedIndex = -1;
-        _selectedLog = null;
-        _numOfLogs = 0;
-        _numOfLogsWarning = 0;
-        _numOfLogsError = 0;
-        _numOfCollapsedLogs = 0;
-        _numOfCollapsedLogsWarning = 0;
-        _numOfCollapsedLogsError = 0;
-        _logsMemUsage = 0;
-        _graphMemUsage = 0;
-        _samples.Clear();
-        GC.Collect();
-        _selectedLog = null;
-    }
+	//clear all logs
+	void clear()
+	{
+		logs.Clear();
+		collapsedLogs.Clear();
+		currentLog.Clear();
+		logsDic.Clear();
+		//selectedIndex = -1;
+		selectedLog = null;
+		numOfLogs = 0;
+		numOfLogsWarning = 0;
+		numOfLogsError = 0;
+		numOfCollapsedLogs = 0;
+		numOfCollapsedLogsWarning = 0;
+		numOfCollapsedLogsError = 0;
+		logsMemUsage = 0;
+		graphMemUsage = 0;
+		samples.Clear();
+		System.GC.Collect();
+		selectedLog = null;
+	}
 
-    private Rect _screenRect;
-    private Rect _toolBarRect;
-    private Rect _logsRect;
-    private Rect _stackRect;
-    private Rect _graphRect;
-    private Rect _graphMinRect;
-    private Rect _graphMaxRect;
-    private Rect _buttomRect;
-    private Vector2 _stackRectTopLeft;
-    private Rect _detailRect;
+	Rect screenRect;
+	Rect toolBarRect;
+	Rect logsRect;
+	Rect stackRect;
+	Rect graphRect;
+	Rect graphMinRect;
+	Rect graphMaxRect;
+	Rect buttomRect;
+	Vector2 stackRectTopLeft;
+	Rect detailRect;
 
-    private Vector2 _scrollPosition;
-    private Vector2 _scrollPosition2;
-    private Vector2 _toolbarScrollPosition;
+	Vector2 scrollPosition;
+	Vector2 scrollPosition2;
+	Vector2 toolbarScrollPosition;
 
-    //int 	selectedIndex = -1;
-    private Log _selectedLog;
+	//int 	selectedIndex = -1;
+	Log selectedLog;
 
-    private float _toolbarOldDrag;
-    private float _oldDrag;
-    private float _oldDrag2;
-    private float _oldDrag3;
-    private int _startIndex;
+	float toolbarOldDrag = 0;
+	float oldDrag;
+	float oldDrag2;
+	float oldDrag3;
+	int startIndex;
 
-    //calculate what is the currentLog : collapsed or not , hide or view warnings ......
-    private void CalculateCurrentLog()
-    {
-        var filter = !string.IsNullOrEmpty(filterText);
-        var _filterText = "";
-        if (filter)
-            _filterText = filterText.ToLower();
-        _currentLog.Clear();
-        if (_collapse)
-            foreach (var log in _collapsedLogs)
-            {
-                if (log.LogType == _LogType.Log && !_showLog)
-                    continue;
-                if (log.LogType == _LogType.Warning && !_showWarning)
-                    continue;
-                if (log.LogType == _LogType.Error && !_showError)
-                    continue;
-                if (log.LogType == _LogType.Assert && !_showError)
-                    continue;
-                if (log.LogType == _LogType.Exception && !_showError)
-                    continue;
+	//calculate what is the currentLog : collapsed or not , hide or view warnings ......
+	void calculateCurrentLog()
+	{
+		bool filter = !string.IsNullOrEmpty(filterText);
+		string _filterText = "";
+		if (filter)
+			_filterText = filterText.ToLower();
+		currentLog.Clear();
+		if (collapse) {
+			for (int i = 0; i < collapsedLogs.Count; i++) {
+				Log log = collapsedLogs[i];
+				if (log.logType == _LogType.Log && !showLog)
+					continue;
+				if (log.logType == _LogType.Warning && !showWarning)
+					continue;
+				if (log.logType == _LogType.Error && !showError)
+					continue;
+				if (log.logType == _LogType.Assert && !showError)
+					continue;
+				if (log.logType == _LogType.Exception && !showError)
+					continue;
 
-                if (filter)
-                {
-                    if (log.Condition.ToLower().Contains(_filterText))
-                        _currentLog.Add(log);
-                }
-                else
-                {
-                    _currentLog.Add(log);
-                }
-            }
-        else
-            foreach (var log in _logs)
-            {
-                if (log.LogType == _LogType.Log && !_showLog)
-                    continue;
-                if (log.LogType == _LogType.Warning && !_showWarning)
-                    continue;
-                if (log.LogType == _LogType.Error && !_showError)
-                    continue;
-                if (log.LogType == _LogType.Assert && !_showError)
-                    continue;
-                if (log.LogType == _LogType.Exception && !_showError)
-                    continue;
+				if (filter) {
+					if (log.condition.ToLower().Contains(_filterText))
+						currentLog.Add(log);
+				}
+				else {
+					currentLog.Add(log);
+				}
+			}
+		}
+		else {
+			for (int i = 0; i < logs.Count; i++) {
+				Log log = logs[i];
+				if (log.logType == _LogType.Log && !showLog)
+					continue;
+				if (log.logType == _LogType.Warning && !showWarning)
+					continue;
+				if (log.logType == _LogType.Error && !showError)
+					continue;
+				if (log.logType == _LogType.Assert && !showError)
+					continue;
+				if (log.logType == _LogType.Exception && !showError)
+					continue;
 
-                if (filter)
-                {
-                    if (log.Condition.ToLower().Contains(_filterText))
-                        _currentLog.Add(log);
-                }
-                else
-                {
-                    _currentLog.Add(log);
-                }
-            }
+				if (filter) {
+					if (log.condition.ToLower().Contains(_filterText))
+						currentLog.Add(log);
+				}
+				else {
+					currentLog.Add(log);
+				}
+			}
+		}
 
-        if (_selectedLog == null) return;
-        var newSelectedIndex = _currentLog.IndexOf(_selectedLog);
-        if (newSelectedIndex == -1)
-        {
-            var collapsedSelected = _logsDic[_selectedLog.Condition][_selectedLog.Stacktrace];
-            newSelectedIndex = _currentLog.IndexOf(collapsedSelected);
-            if (newSelectedIndex != -1)
-                _scrollPosition.y = newSelectedIndex * Size.y;
-        }
-        else
-        {
-            _scrollPosition.y = newSelectedIndex * Size.y;
-        }
-    }
+		if (selectedLog != null) {
+			int newSelectedIndex = currentLog.IndexOf(selectedLog);
+			if (newSelectedIndex == -1) {
+				Log collapsedSelected = logsDic[selectedLog.condition][selectedLog.stacktrace];
+				newSelectedIndex = currentLog.IndexOf(collapsedSelected);
+				if (newSelectedIndex != -1)
+					scrollPosition.y = newSelectedIndex * size.y;
+			}
+			else {
+				scrollPosition.y = newSelectedIndex * size.y;
+			}
+		}
+	}
 
-    private Rect _countRect;
-    private Rect _timeRect;
-    private Rect _timeLabelRect;
-    private Rect _sceneRect;
-    private Rect _sceneLabelRect;
-    private Rect _memoryRect;
-    private Rect _memoryLabelRect;
-    private Rect _fpsRect;
-    private Rect _fpsLabelRect;
-    private readonly GUIContent _tempContent = new GUIContent();
+	Rect countRect;
+	Rect timeRect;
+	Rect timeLabelRect;
+	Rect sceneRect;
+	Rect sceneLabelRect;
+	Rect memoryRect;
+	Rect memoryLabelRect;
+	Rect fpsRect;
+	Rect fpsLabelRect;
+	GUIContent tempContent = new GUIContent();
 
 
-    private Vector2 _infoScrollPosition;
-    private Vector2 _oldInfoDrag;
+	Vector2 infoScrollPosition;
+	Vector2 oldInfoDrag;
+	void DrawInfo()
+	{
 
-    private void DrawInfo()
-    {
-        GUILayout.BeginArea(_screenRect, _backStyle);
+		GUILayout.BeginArea(screenRect, backStyle);
 
-        var drag = GetDrag();
-        if (drag.x != 0f && _downPos != Vector2.zero)
-            _infoScrollPosition.x -= drag.x - _oldInfoDrag.x;
-        if (drag.y != 0f && _downPos != Vector2.zero)
-            _infoScrollPosition.y += drag.y - _oldInfoDrag.y;
-        _oldInfoDrag = drag;
+		Vector2 drag = getDrag();
+		if ((drag.x != 0) && (downPos != Vector2.zero)) {
+			infoScrollPosition.x -= (drag.x - oldInfoDrag.x);
+		}
+		if ((drag.y != 0) && (downPos != Vector2.zero)) {
+			infoScrollPosition.y += (drag.y - oldInfoDrag.y);
+		}
+		oldInfoDrag = drag;
 
-        GUI.skin = _toolbarScrollerSkin;
-        _infoScrollPosition = GUILayout.BeginScrollView(_infoScrollPosition);
-        GUILayout.Space(Size.x);
-        GUILayout.BeginHorizontal();
-        GUILayout.Space(Size.x);
-        GUILayout.Box(_buildFromContent, _nonStyle, GUILayout.Width(Size.x), GUILayout.Height(Size.y));
-        GUILayout.Space(Size.x);
-        GUILayout.Label(_buildDate, _nonStyle, GUILayout.Height(Size.y));
-        GUILayout.FlexibleSpace();
-        GUILayout.EndHorizontal();
+		GUI.skin = toolbarScrollerSkin;
+		infoScrollPosition = GUILayout.BeginScrollView(infoScrollPosition);
+		GUILayout.Space(size.x);
+		GUILayout.BeginHorizontal();
+		GUILayout.Space(size.x);
+		GUILayout.Box(buildFromContent, nonStyle, GUILayout.Width(size.x), GUILayout.Height(size.y));
+		GUILayout.Space(size.x);
+		GUILayout.Label(buildDate, nonStyle, GUILayout.Height(size.y));
+		GUILayout.FlexibleSpace();
+		GUILayout.EndHorizontal();
 
-        GUILayout.BeginHorizontal();
-        GUILayout.Space(Size.x);
-        GUILayout.Box(_systemInfoContent, _nonStyle, GUILayout.Width(Size.x), GUILayout.Height(Size.y));
-        GUILayout.Space(Size.x);
-        GUILayout.Label(_deviceModel, _nonStyle, GUILayout.Height(Size.y));
-        GUILayout.Space(Size.x);
-        GUILayout.Label(_deviceType, _nonStyle, GUILayout.Height(Size.y));
-        GUILayout.Space(Size.x);
-        GUILayout.Label(_deviceName, _nonStyle, GUILayout.Height(Size.y));
-        GUILayout.FlexibleSpace();
-        GUILayout.EndHorizontal();
+		GUILayout.BeginHorizontal();
+		GUILayout.Space(size.x);
+		GUILayout.Box(systemInfoContent, nonStyle, GUILayout.Width(size.x), GUILayout.Height(size.y));
+		GUILayout.Space(size.x);
+		GUILayout.Label(deviceModel, nonStyle, GUILayout.Height(size.y));
+		GUILayout.Space(size.x);
+		GUILayout.Label(deviceType, nonStyle, GUILayout.Height(size.y));
+		GUILayout.Space(size.x);
+		GUILayout.Label(deviceName, nonStyle, GUILayout.Height(size.y));
+		GUILayout.FlexibleSpace();
+		GUILayout.EndHorizontal();
 
-        GUILayout.BeginHorizontal();
-        GUILayout.Space(Size.x);
-        GUILayout.Box(_graphicsInfoContent, _nonStyle, GUILayout.Width(Size.x), GUILayout.Height(Size.y));
-        GUILayout.Space(Size.x);
-        GUILayout.Label(SystemInfo.graphicsDeviceName, _nonStyle, GUILayout.Height(Size.y));
-        GUILayout.Space(Size.x);
-        GUILayout.Label(_graphicsMemorySize, _nonStyle, GUILayout.Height(Size.y));
+		GUILayout.BeginHorizontal();
+		GUILayout.Space(size.x);
+		GUILayout.Box(graphicsInfoContent, nonStyle, GUILayout.Width(size.x), GUILayout.Height(size.y));
+		GUILayout.Space(size.x);
+		GUILayout.Label(SystemInfo.graphicsDeviceName, nonStyle, GUILayout.Height(size.y));
+		GUILayout.Space(size.x);
+		GUILayout.Label(graphicsMemorySize, nonStyle, GUILayout.Height(size.y));
 #if !UNITY_CHANGE1
-        GUILayout.Space(Size.x);
-        GUILayout.Label(_maxTextureSize, _nonStyle, GUILayout.Height(Size.y));
+		GUILayout.Space(size.x);
+		GUILayout.Label(maxTextureSize, nonStyle, GUILayout.Height(size.y));
 #endif
-        GUILayout.FlexibleSpace();
-        GUILayout.EndHorizontal();
+		GUILayout.FlexibleSpace();
+		GUILayout.EndHorizontal();
 
-        GUILayout.BeginHorizontal();
-        GUILayout.Space(Size.x);
-        GUILayout.Space(Size.x);
-        GUILayout.Space(Size.x);
-        GUILayout.Label("Screen Width " + Screen.width, _nonStyle, GUILayout.Height(Size.y));
-        GUILayout.Space(Size.x);
-        GUILayout.Label("Screen Height " + Screen.height, _nonStyle, GUILayout.Height(Size.y));
-        GUILayout.FlexibleSpace();
-        GUILayout.EndHorizontal();
+		GUILayout.BeginHorizontal();
+		GUILayout.Space(size.x);
+		GUILayout.Space(size.x);
+		GUILayout.Space(size.x);
+		GUILayout.Label("Screen Width " + Screen.width, nonStyle, GUILayout.Height(size.y));
+		GUILayout.Space(size.x);
+		GUILayout.Label("Screen Height " + Screen.height, nonStyle, GUILayout.Height(size.y));
+		GUILayout.FlexibleSpace();
+		GUILayout.EndHorizontal();
 
-        GUILayout.BeginHorizontal();
-        GUILayout.Space(Size.x);
-        GUILayout.Box(_showMemoryContent, _nonStyle, GUILayout.Width(Size.x), GUILayout.Height(Size.y));
-        GUILayout.Space(Size.x);
-        GUILayout.Label(_systemMemorySize + " mb", _nonStyle, GUILayout.Height(Size.y));
-        GUILayout.FlexibleSpace();
-        GUILayout.EndHorizontal();
+		GUILayout.BeginHorizontal();
+		GUILayout.Space(size.x);
+		GUILayout.Box(showMemoryContent, nonStyle, GUILayout.Width(size.x), GUILayout.Height(size.y));
+		GUILayout.Space(size.x);
+		GUILayout.Label(systemMemorySize + " mb", nonStyle, GUILayout.Height(size.y));
+		GUILayout.FlexibleSpace();
+		GUILayout.EndHorizontal();
 
-        GUILayout.BeginHorizontal();
-        GUILayout.Space(Size.x);
-        GUILayout.Space(Size.x);
-        GUILayout.Space(Size.x);
-        GUILayout.Label("Mem Usage Of Logs " + _logsMemUsage.ToString("0.000") + " mb", _nonStyle,
-            GUILayout.Height(Size.y));
-        GUILayout.Space(Size.x);
-        //GUILayout.Label( "Mem Usage Of Graph " + graphMemUsage.ToString("0.000")  + " mb", nonStyle , GUILayout.Height(size.y));
-        //GUILayout.Space( size.x);
-        GUILayout.Label("GC Memory " + _gcTotalMemory.ToString("0.000") + " mb", _nonStyle, GUILayout.Height(Size.y));
-        GUILayout.FlexibleSpace();
-        GUILayout.EndHorizontal();
+		GUILayout.BeginHorizontal();
+		GUILayout.Space(size.x);
+		GUILayout.Space(size.x);
+		GUILayout.Space(size.x);
+		GUILayout.Label("Mem Usage Of Logs " + logsMemUsage.ToString("0.000") + " mb", nonStyle, GUILayout.Height(size.y));
+		GUILayout.Space(size.x);
+		//GUILayout.Label( "Mem Usage Of Graph " + graphMemUsage.ToString("0.000")  + " mb", nonStyle , GUILayout.Height(size.y));
+		//GUILayout.Space( size.x);
+		GUILayout.Label("GC Memory " + gcTotalMemory.ToString("0.000") + " mb", nonStyle, GUILayout.Height(size.y));
+		GUILayout.FlexibleSpace();
+		GUILayout.EndHorizontal();
 
-        GUILayout.BeginHorizontal();
-        GUILayout.Space(Size.x);
-        GUILayout.Box(_softwareContent, _nonStyle, GUILayout.Width(Size.x), GUILayout.Height(Size.y));
-        GUILayout.Space(Size.x);
-        GUILayout.Label(SystemInfo.operatingSystem, _nonStyle, GUILayout.Height(Size.y));
-        GUILayout.FlexibleSpace();
-        GUILayout.EndHorizontal();
+		GUILayout.BeginHorizontal();
+		GUILayout.Space(size.x);
+		GUILayout.Box(softwareContent, nonStyle, GUILayout.Width(size.x), GUILayout.Height(size.y));
+		GUILayout.Space(size.x);
+		GUILayout.Label(SystemInfo.operatingSystem, nonStyle, GUILayout.Height(size.y));
+		GUILayout.FlexibleSpace();
+		GUILayout.EndHorizontal();
 
 
-        GUILayout.BeginHorizontal();
-        GUILayout.Space(Size.x);
-        GUILayout.Box(_dateContent, _nonStyle, GUILayout.Width(Size.x), GUILayout.Height(Size.y));
-        GUILayout.Space(Size.x);
-        GUILayout.Label(DateTime.Now.ToString(), _nonStyle, GUILayout.Height(Size.y));
-        GUILayout.Label(" - Application Started At " + _logDate, _nonStyle, GUILayout.Height(Size.y));
-        GUILayout.FlexibleSpace();
-        GUILayout.EndHorizontal();
+		GUILayout.BeginHorizontal();
+		GUILayout.Space(size.x);
+		GUILayout.Box(dateContent, nonStyle, GUILayout.Width(size.x), GUILayout.Height(size.y));
+		GUILayout.Space(size.x);
+		GUILayout.Label(System.DateTime.Now.ToString(), nonStyle, GUILayout.Height(size.y));
+		GUILayout.Label(" - Application Started At " + logDate, nonStyle, GUILayout.Height(size.y));
+		GUILayout.FlexibleSpace();
+		GUILayout.EndHorizontal();
 
-        GUILayout.BeginHorizontal();
-        GUILayout.Space(Size.x);
-        GUILayout.Box(_showTimeContent, _nonStyle, GUILayout.Width(Size.x), GUILayout.Height(Size.y));
-        GUILayout.Space(Size.x);
-        GUILayout.Label(Time.realtimeSinceStartup.ToString("000"), _nonStyle, GUILayout.Height(Size.y));
-        GUILayout.FlexibleSpace();
-        GUILayout.EndHorizontal();
+		GUILayout.BeginHorizontal();
+		GUILayout.Space(size.x);
+		GUILayout.Box(showTimeContent, nonStyle, GUILayout.Width(size.x), GUILayout.Height(size.y));
+		GUILayout.Space(size.x);
+		GUILayout.Label(Time.realtimeSinceStartup.ToString("000"), nonStyle, GUILayout.Height(size.y));
+		GUILayout.FlexibleSpace();
+		GUILayout.EndHorizontal();
 
-        GUILayout.BeginHorizontal();
-        GUILayout.Space(Size.x);
-        GUILayout.Box(_showFpsContent, _nonStyle, GUILayout.Width(Size.x), GUILayout.Height(Size.y));
-        GUILayout.Space(Size.x);
-        GUILayout.Label(FpsText, _nonStyle, GUILayout.Height(Size.y));
-        GUILayout.FlexibleSpace();
-        GUILayout.EndHorizontal();
+		GUILayout.BeginHorizontal();
+		GUILayout.Space(size.x);
+		GUILayout.Box(showFpsContent, nonStyle, GUILayout.Width(size.x), GUILayout.Height(size.y));
+		GUILayout.Space(size.x);
+		GUILayout.Label(fpsText, nonStyle, GUILayout.Height(size.y));
+		GUILayout.FlexibleSpace();
+		GUILayout.EndHorizontal();
 
-        GUILayout.BeginHorizontal();
-        GUILayout.Space(Size.x);
-        GUILayout.Box(_userContent, _nonStyle, GUILayout.Width(Size.x), GUILayout.Height(Size.y));
-        GUILayout.Space(Size.x);
-        GUILayout.Label(UserData, _nonStyle, GUILayout.Height(Size.y));
-        GUILayout.FlexibleSpace();
-        GUILayout.EndHorizontal();
+		GUILayout.BeginHorizontal();
+		GUILayout.Space(size.x);
+		GUILayout.Box(userContent, nonStyle, GUILayout.Width(size.x), GUILayout.Height(size.y));
+		GUILayout.Space(size.x);
+		GUILayout.Label(UserData, nonStyle, GUILayout.Height(size.y));
+		GUILayout.FlexibleSpace();
+		GUILayout.EndHorizontal();
 
-        GUILayout.BeginHorizontal();
-        GUILayout.Space(Size.x);
-        GUILayout.Box(_showSceneContent, _nonStyle, GUILayout.Width(Size.x), GUILayout.Height(Size.y));
-        GUILayout.Space(Size.x);
-        GUILayout.Label(_currentScene, _nonStyle, GUILayout.Height(Size.y));
-        GUILayout.FlexibleSpace();
-        GUILayout.EndHorizontal();
+		GUILayout.BeginHorizontal();
+		GUILayout.Space(size.x);
+		GUILayout.Box(showSceneContent, nonStyle, GUILayout.Width(size.x), GUILayout.Height(size.y));
+		GUILayout.Space(size.x);
+		GUILayout.Label(currentScene, nonStyle, GUILayout.Height(size.y));
+		GUILayout.FlexibleSpace();
+		GUILayout.EndHorizontal();
 
-        GUILayout.BeginHorizontal();
-        GUILayout.Space(Size.x);
-        GUILayout.Box(_showSceneContent, _nonStyle, GUILayout.Width(Size.x), GUILayout.Height(Size.y));
-        GUILayout.Space(Size.x);
-        GUILayout.Label("Unity Version = " + Application.unityVersion, _nonStyle, GUILayout.Height(Size.y));
-        GUILayout.FlexibleSpace();
-        GUILayout.EndHorizontal();
+		GUILayout.BeginHorizontal();
+		GUILayout.Space(size.x);
+		GUILayout.Box(showSceneContent, nonStyle, GUILayout.Width(size.x), GUILayout.Height(size.y));
+		GUILayout.Space(size.x);
+		GUILayout.Label("Unity Version = " + Application.unityVersion, nonStyle, GUILayout.Height(size.y));
+		GUILayout.FlexibleSpace();
+		GUILayout.EndHorizontal();
 
-        /*GUILayout.BeginHorizontal();
+		/*GUILayout.BeginHorizontal();
 		GUILayout.Space( size.x);
 		GUILayout.Box( graphContent ,nonStyle ,  GUILayout.Width(size.x) , GUILayout.Height(size.y));
 		GUILayout.Space( size.x);
@@ -902,993 +847,968 @@ public class Reporter : MonoBehaviour
 		GUILayout.FlexibleSpace();
 		GUILayout.EndHorizontal();*/
 
-        drawInfo_enableDisableToolBarButtons();
+		drawInfo_enableDisableToolBarButtons();
 
-        GUILayout.FlexibleSpace();
+		GUILayout.FlexibleSpace();
 
-        GUILayout.BeginHorizontal();
-        GUILayout.Space(Size.x);
-        GUILayout.Label("Size = " + Size.x.ToString("0.0"), _nonStyle, GUILayout.Height(Size.y));
-        GUILayout.Space(Size.x);
-        var _size = GUILayout.HorizontalSlider(Size.x, 16, 64, _sliderBackStyle, _sliderThumbStyle,
-            GUILayout.Width(Screen.width * 0.5f));
-        if (Size.x != _size)
-        {
-            Size.x = Size.y = _size;
-            InitializeStyle();
-        }
-        GUILayout.FlexibleSpace();
-        GUILayout.EndHorizontal();
+		GUILayout.BeginHorizontal();
+		GUILayout.Space(size.x);
+		GUILayout.Label("Size = " + size.x.ToString("0.0"), nonStyle, GUILayout.Height(size.y));
+		GUILayout.Space(size.x);
+		float _size = GUILayout.HorizontalSlider(size.x, 16, 64, sliderBackStyle, sliderThumbStyle, GUILayout.Width(Screen.width * 0.5f));
+		if (size.x != _size) {
+			size.x = size.y = _size;
+			initializeStyle();
+		}
+		GUILayout.FlexibleSpace();
+		GUILayout.EndHorizontal();
 
-        GUILayout.BeginHorizontal();
-        GUILayout.Space(Size.x);
-        if (GUILayout.Button(_backContent, _barStyle, GUILayout.Width(Size.x * 2), GUILayout.Height(Size.y * 2)))
-            _currentView = ReportView.Logs;
-        GUILayout.FlexibleSpace();
-        GUILayout.EndHorizontal();
-
-
-        GUILayout.EndScrollView();
-
-        GUILayout.EndArea();
-    }
+		GUILayout.BeginHorizontal();
+		GUILayout.Space(size.x);
+		if (GUILayout.Button(backContent, barStyle, GUILayout.Width(size.x * 2), GUILayout.Height(size.y * 2))) {
+			currentView = ReportView.Logs;
+		}
+		GUILayout.FlexibleSpace();
+		GUILayout.EndHorizontal();
 
 
-    private void drawInfo_enableDisableToolBarButtons()
-    {
-        GUILayout.BeginHorizontal();
-        GUILayout.Space(Size.x);
-        GUILayout.Label("Hide or Show tool bar buttons", _nonStyle, GUILayout.Height(Size.y));
-        GUILayout.Space(Size.x);
-        GUILayout.FlexibleSpace();
-        GUILayout.EndHorizontal();
 
-        GUILayout.BeginHorizontal();
-        GUILayout.Space(Size.x);
+		GUILayout.EndScrollView();
 
-        if (GUILayout.Button(_clearOnNewSceneContent, _showClearOnNewSceneLoadedButton ? _buttonActiveStyle : _barStyle,
-            GUILayout.Width(Size.x * 2), GUILayout.Height(Size.y * 2)))
-            _showClearOnNewSceneLoadedButton = !_showClearOnNewSceneLoadedButton;
+		GUILayout.EndArea();
+	}
 
-        if (GUILayout.Button(_showTimeContent, _showTimeButton ? _buttonActiveStyle : _barStyle,
-            GUILayout.Width(Size.x * 2), GUILayout.Height(Size.y * 2)))
-            _showTimeButton = !_showTimeButton;
-        _tempRect = GUILayoutUtility.GetLastRect();
-        GUI.Label(_tempRect, Time.realtimeSinceStartup.ToString("0.0"), _lowerLeftFontStyle);
-        if (GUILayout.Button(_showSceneContent, _showSceneButton ? _buttonActiveStyle : _barStyle,
-            GUILayout.Width(Size.x * 2), GUILayout.Height(Size.y * 2)))
-            _showSceneButton = !_showSceneButton;
-        _tempRect = GUILayoutUtility.GetLastRect();
-        GUI.Label(_tempRect, _currentScene, _lowerLeftFontStyle);
-        if (GUILayout.Button(_showMemoryContent, _showMemButton ? _buttonActiveStyle : _barStyle,
-            GUILayout.Width(Size.x * 2), GUILayout.Height(Size.y * 2)))
-            _showMemButton = !_showMemButton;
-        _tempRect = GUILayoutUtility.GetLastRect();
-        GUI.Label(_tempRect, _gcTotalMemory.ToString("0.0"), _lowerLeftFontStyle);
 
-        if (GUILayout.Button(_showFpsContent, _showFpsButton ? _buttonActiveStyle : _barStyle, GUILayout.Width(Size.x * 2),
-            GUILayout.Height(Size.y * 2)))
-            _showFpsButton = !_showFpsButton;
-        _tempRect = GUILayoutUtility.GetLastRect();
-        GUI.Label(_tempRect, FpsText, _lowerLeftFontStyle);
-        /*if( GUILayout.Button( graphContent , (showGraph)?buttonActiveStyle:barStyle , GUILayout.Width(size.x*2) ,GUILayout.Height(size.y*2)))
+	void drawInfo_enableDisableToolBarButtons()
+	{
+		GUILayout.BeginHorizontal();
+		GUILayout.Space(size.x);
+		GUILayout.Label("Hide or Show tool bar buttons", nonStyle, GUILayout.Height(size.y));
+		GUILayout.Space(size.x);
+		GUILayout.FlexibleSpace();
+		GUILayout.EndHorizontal();
+
+		GUILayout.BeginHorizontal();
+		GUILayout.Space(size.x);
+
+		if (GUILayout.Button(clearOnNewSceneContent, (showClearOnNewSceneLoadedButton) ? buttonActiveStyle : barStyle, GUILayout.Width(size.x * 2), GUILayout.Height(size.y * 2))) {
+			showClearOnNewSceneLoadedButton = !showClearOnNewSceneLoadedButton;
+		}
+
+		if (GUILayout.Button(showTimeContent, (showTimeButton) ? buttonActiveStyle : barStyle, GUILayout.Width(size.x * 2), GUILayout.Height(size.y * 2))) {
+			showTimeButton = !showTimeButton;
+		}
+		tempRect = GUILayoutUtility.GetLastRect();
+		GUI.Label(tempRect, Time.realtimeSinceStartup.ToString("0.0"), lowerLeftFontStyle);
+		if (GUILayout.Button(showSceneContent, (showSceneButton) ? buttonActiveStyle : barStyle, GUILayout.Width(size.x * 2), GUILayout.Height(size.y * 2))) {
+			showSceneButton = !showSceneButton;
+		}
+		tempRect = GUILayoutUtility.GetLastRect();
+		GUI.Label(tempRect, currentScene, lowerLeftFontStyle);
+		if (GUILayout.Button(showMemoryContent, (showMemButton) ? buttonActiveStyle : barStyle, GUILayout.Width(size.x * 2), GUILayout.Height(size.y * 2))) {
+			showMemButton = !showMemButton;
+		}
+		tempRect = GUILayoutUtility.GetLastRect();
+		GUI.Label(tempRect, gcTotalMemory.ToString("0.0"), lowerLeftFontStyle);
+
+		if (GUILayout.Button(showFpsContent, (showFpsButton) ? buttonActiveStyle : barStyle, GUILayout.Width(size.x * 2), GUILayout.Height(size.y * 2))) {
+			showFpsButton = !showFpsButton;
+		}
+		tempRect = GUILayoutUtility.GetLastRect();
+		GUI.Label(tempRect, fpsText, lowerLeftFontStyle);
+		/*if( GUILayout.Button( graphContent , (showGraph)?buttonActiveStyle:barStyle , GUILayout.Width(size.x*2) ,GUILayout.Height(size.y*2)))
 		{
 			showGraph = !showGraph ;
 		}
 		tempRect = GUILayoutUtility.GetLastRect();
 		GUI.Label( tempRect , samples.Count.ToString() , lowerLeftFontStyle );*/
-        if (GUILayout.Button(_searchContent, _showSearchText ? _buttonActiveStyle : _barStyle, GUILayout.Width(Size.x * 2),
-            GUILayout.Height(Size.y * 2)))
-            _showSearchText = !_showSearchText;
-        _tempRect = GUILayoutUtility.GetLastRect();
-        GUI.TextField(_tempRect, filterText, _searchStyle);
+		if (GUILayout.Button(searchContent, (showSearchText) ? buttonActiveStyle : barStyle, GUILayout.Width(size.x * 2), GUILayout.Height(size.y * 2))) {
+			showSearchText = !showSearchText;
+		}
+		tempRect = GUILayoutUtility.GetLastRect();
+		GUI.TextField(tempRect, filterText, searchStyle);
 
 
-        GUILayout.FlexibleSpace();
-        GUILayout.EndHorizontal();
-    }
+		GUILayout.FlexibleSpace();
+		GUILayout.EndHorizontal();
+	}
 
-    private void DrawReport()
-    {
-        _screenRect.x = 0f;
-        _screenRect.y = 0f;
-        _screenRect.width = Screen.width;
-        _screenRect.height = Screen.height;
-        GUILayout.BeginArea(_screenRect, _backStyle);
-        GUILayout.BeginVertical();
-        GUILayout.FlexibleSpace();
+	void DrawReport()
+	{
+		screenRect.x = 0f;
+		screenRect.y = 0f;
+		screenRect.width = Screen.width;
+		screenRect.height = Screen.height;
+		GUILayout.BeginArea(screenRect, backStyle);
+		GUILayout.BeginVertical();
+		GUILayout.FlexibleSpace();
 
-        GUILayout.BeginHorizontal();
-        GUILayout.FlexibleSpace();
-        /*GUILayout.Box( cameraContent ,nonStyle ,  GUILayout.Width(size.x) , GUILayout.Height(size.y));
+		GUILayout.BeginHorizontal();
+		GUILayout.FlexibleSpace();
+		/*GUILayout.Box( cameraContent ,nonStyle ,  GUILayout.Width(size.x) , GUILayout.Height(size.y));
 		GUILayout.FlexibleSpace();*/
-        GUILayout.Label("Select Photo", _nonStyle, GUILayout.Height(Size.y));
-        GUILayout.FlexibleSpace();
-        GUILayout.EndHorizontal();
+		GUILayout.Label("Select Photo", nonStyle, GUILayout.Height(size.y));
+		GUILayout.FlexibleSpace();
+		GUILayout.EndHorizontal();
 
-        GUILayout.BeginHorizontal();
-        GUILayout.Label("Coming Soon", _nonStyle, GUILayout.Height(Size.y));
-        GUILayout.EndHorizontal();
+		GUILayout.BeginHorizontal();
+		GUILayout.Label("Coming Soon", nonStyle, GUILayout.Height(size.y));
+		GUILayout.EndHorizontal();
 
-        GUILayout.BeginHorizontal();
-        GUILayout.FlexibleSpace();
-        if (GUILayout.Button(_backContent, _barStyle, GUILayout.Width(Size.x), GUILayout.Height(Size.y)))
-            _currentView = ReportView.Logs;
-        GUILayout.FlexibleSpace();
-        GUILayout.EndHorizontal();
+		GUILayout.BeginHorizontal();
+		GUILayout.FlexibleSpace();
+		if (GUILayout.Button(backContent, barStyle, GUILayout.Width(size.x), GUILayout.Height(size.y))) {
+			currentView = ReportView.Logs;
+		}
+		GUILayout.FlexibleSpace();
+		GUILayout.EndHorizontal();
 
-        GUILayout.FlexibleSpace();
-        GUILayout.EndVertical();
-        GUILayout.EndArea();
-    }
+		GUILayout.FlexibleSpace();
+		GUILayout.EndVertical();
+		GUILayout.EndArea();
+	}
 
-    private void DrawToolBar()
-    {
-        _toolBarRect.x = 0f;
-        _toolBarRect.y = 0f;
-        _toolBarRect.width = Screen.width;
-        _toolBarRect.height = Size.y * 2f;
+	void drawToolBar()
+	{
 
-        //toolbarScrollerSkin.verticalScrollbar.fixedWidth = 0f;
-        //toolbarScrollerSkin.horizontalScrollbar.fixedHeight= 0f  ;
+		toolBarRect.x = 0f;
+		toolBarRect.y = 0f;
+		toolBarRect.width = Screen.width;
+		toolBarRect.height = size.y * 2f;
 
-        GUI.skin = _toolbarScrollerSkin;
-        var drag = GetDrag();
-        if (drag.x != 0 && _downPos != Vector2.zero && _downPos.y > Screen.height - Size.y * 2f)
-            _toolbarScrollPosition.x -= drag.x - _toolbarOldDrag;
-        _toolbarOldDrag = drag.x;
-        GUILayout.BeginArea(_toolBarRect);
-        _toolbarScrollPosition = GUILayout.BeginScrollView(_toolbarScrollPosition);
-        GUILayout.BeginHorizontal(_barStyle);
+		//toolbarScrollerSkin.verticalScrollbar.fixedWidth = 0f;
+		//toolbarScrollerSkin.horizontalScrollbar.fixedHeight= 0f  ;
 
-        if (GUILayout.Button(_clearContent, _barStyle, GUILayout.Width(Size.x * 2), GUILayout.Height(Size.y * 2)))
-            Clear();
-        if (GUILayout.Button(_collapseContent, _collapse ? _buttonActiveStyle : _barStyle, GUILayout.Width(Size.x * 2),
-            GUILayout.Height(Size.y * 2)))
-        {
-            _collapse = !_collapse;
-            CalculateCurrentLog();
-        }
-        if (_showClearOnNewSceneLoadedButton && GUILayout.Button(_clearOnNewSceneContent,
-                _clearOnNewSceneLoaded ? _buttonActiveStyle : _barStyle, GUILayout.Width(Size.x * 2),
-                GUILayout.Height(Size.y * 2)))
-            _clearOnNewSceneLoaded = !_clearOnNewSceneLoaded;
+		GUI.skin = toolbarScrollerSkin;
+		Vector2 drag = getDrag();
+		if ((drag.x != 0) && (downPos != Vector2.zero) && (downPos.y > Screen.height - size.y * 2f)) {
+			toolbarScrollPosition.x -= (drag.x - toolbarOldDrag);
+		}
+		toolbarOldDrag = drag.x;
+		GUILayout.BeginArea(toolBarRect);
+		toolbarScrollPosition = GUILayout.BeginScrollView(toolbarScrollPosition);
+		GUILayout.BeginHorizontal(barStyle);
 
-        if (_showTimeButton && GUILayout.Button(_showTimeContent, _showTime ? _buttonActiveStyle : _barStyle,
-                GUILayout.Width(Size.x * 2), GUILayout.Height(Size.y * 2)))
-            _showTime = !_showTime;
-        if (_showSceneButton)
-        {
-            _tempRect = GUILayoutUtility.GetLastRect();
-            GUI.Label(_tempRect, Time.realtimeSinceStartup.ToString("0.0"), _lowerLeftFontStyle);
-            if (GUILayout.Button(_showSceneContent, _showScene ? _buttonActiveStyle : _barStyle,
-                GUILayout.Width(Size.x * 2), GUILayout.Height(Size.y * 2)))
-                _showScene = !_showScene;
-            _tempRect = GUILayoutUtility.GetLastRect();
-            GUI.Label(_tempRect, _currentScene, _lowerLeftFontStyle);
-        }
-        if (_showMemButton)
-        {
-            if (GUILayout.Button(_showMemoryContent, _showMemory ? _buttonActiveStyle : _barStyle,
-                GUILayout.Width(Size.x * 2), GUILayout.Height(Size.y * 2)))
-                _showMemory = !_showMemory;
-            _tempRect = GUILayoutUtility.GetLastRect();
-            GUI.Label(_tempRect, _gcTotalMemory.ToString("0.0"), _lowerLeftFontStyle);
-        }
-        if (_showFpsButton)
-        {
-            if (GUILayout.Button(_showFpsContent, _showFps ? _buttonActiveStyle : _barStyle, GUILayout.Width(Size.x * 2),
-                GUILayout.Height(Size.y * 2)))
-                _showFps = !_showFps;
-            _tempRect = GUILayoutUtility.GetLastRect();
-            GUI.Label(_tempRect, FpsText, _lowerLeftFontStyle);
-        }
-        /*if( GUILayout.Button( graphContent , (showGraph)?buttonActiveStyle:barStyle , GUILayout.Width(size.x*2) ,GUILayout.Height(size.y*2)))
+		if (GUILayout.Button(clearContent, barStyle, GUILayout.Width(size.x * 2), GUILayout.Height(size.y * 2))) {
+			clear();
+		}
+		if (GUILayout.Button(collapseContent, (collapse) ? buttonActiveStyle : barStyle, GUILayout.Width(size.x * 2), GUILayout.Height(size.y * 2))) {
+			collapse = !collapse;
+			calculateCurrentLog();
+		}
+		if (showClearOnNewSceneLoadedButton && GUILayout.Button(clearOnNewSceneContent, (clearOnNewSceneLoaded) ? buttonActiveStyle : barStyle, GUILayout.Width(size.x * 2), GUILayout.Height(size.y * 2))) {
+			clearOnNewSceneLoaded = !clearOnNewSceneLoaded;
+		}
+
+		if (showTimeButton && GUILayout.Button(showTimeContent, (showTime) ? buttonActiveStyle : barStyle, GUILayout.Width(size.x * 2), GUILayout.Height(size.y * 2))) {
+			showTime = !showTime;
+		}
+		if (showSceneButton) {
+			tempRect = GUILayoutUtility.GetLastRect();
+			GUI.Label(tempRect, Time.realtimeSinceStartup.ToString("0.0"), lowerLeftFontStyle);
+			if (GUILayout.Button(showSceneContent, (showScene) ? buttonActiveStyle : barStyle, GUILayout.Width(size.x * 2), GUILayout.Height(size.y * 2))) {
+				showScene = !showScene;
+			}
+			tempRect = GUILayoutUtility.GetLastRect();
+			GUI.Label(tempRect, currentScene, lowerLeftFontStyle);
+		}
+		if (showMemButton) {
+			if (GUILayout.Button(showMemoryContent, (showMemory) ? buttonActiveStyle : barStyle, GUILayout.Width(size.x * 2), GUILayout.Height(size.y * 2))) {
+				showMemory = !showMemory;
+			}
+			tempRect = GUILayoutUtility.GetLastRect();
+			GUI.Label(tempRect, gcTotalMemory.ToString("0.0"), lowerLeftFontStyle);
+		}
+		if (showFpsButton) {
+			if (GUILayout.Button(showFpsContent, (showFps) ? buttonActiveStyle : barStyle, GUILayout.Width(size.x * 2), GUILayout.Height(size.y * 2))) {
+				showFps = !showFps;
+			}
+			tempRect = GUILayoutUtility.GetLastRect();
+			GUI.Label(tempRect, fpsText, lowerLeftFontStyle);
+		}
+		/*if( GUILayout.Button( graphContent , (showGraph)?buttonActiveStyle:barStyle , GUILayout.Width(size.x*2) ,GUILayout.Height(size.y*2)))
 		{
 			showGraph = !showGraph ;
 		}
 		tempRect = GUILayoutUtility.GetLastRect();
 		GUI.Label( tempRect , samples.Count.ToString() , lowerLeftFontStyle );*/
 
-        if (_showSearchText)
-        {
-            GUILayout.Box(_searchContent, _barStyle, GUILayout.Width(Size.x * 2), GUILayout.Height(Size.y * 2));
-            _tempRect = GUILayoutUtility.GetLastRect();
-            var newFilterText = GUI.TextField(_tempRect, filterText, _searchStyle);
-            if (newFilterText != filterText)
-            {
-                filterText = newFilterText;
-                CalculateCurrentLog();
-            }
-        }
+		if (showSearchText) {
+			GUILayout.Box(searchContent, barStyle, GUILayout.Width(size.x * 2), GUILayout.Height(size.y * 2));
+			tempRect = GUILayoutUtility.GetLastRect();
+			string newFilterText = GUI.TextField(tempRect, filterText, searchStyle);
+			if (newFilterText != filterText) {
+				filterText = newFilterText;
+				calculateCurrentLog();
+			}
+		}
 
-        if (GUILayout.Button(_infoContent, _barStyle, GUILayout.Width(Size.x * 2), GUILayout.Height(Size.y * 2)))
-            _currentView = ReportView.Info;
-
-
-        GUILayout.FlexibleSpace();
+		if (GUILayout.Button(infoContent, barStyle, GUILayout.Width(size.x * 2), GUILayout.Height(size.y * 2))) {
+			currentView = ReportView.Info;
+		}
 
 
-        var logsText = " ";
-        if (_collapse)
-            logsText += _numOfCollapsedLogs;
-        else
-            logsText += _numOfLogs;
-        var logsWarningText = " ";
-        if (_collapse)
-            logsWarningText += _numOfCollapsedLogsWarning;
-        else
-            logsWarningText += _numOfLogsWarning;
-        var logsErrorText = " ";
-        if (_collapse)
-            logsErrorText += _numOfCollapsedLogsError;
-        else
-            logsErrorText += _numOfLogsError;
 
-        GUILayout.BeginHorizontal(_showLog ? _buttonActiveStyle : _barStyle);
-        if (GUILayout.Button(_logContent, _nonStyle, GUILayout.Width(Size.x * 2), GUILayout.Height(Size.y * 2)))
-        {
-            _showLog = !_showLog;
-            CalculateCurrentLog();
-        }
-        if (GUILayout.Button(logsText, _nonStyle, GUILayout.Width(Size.x * 2), GUILayout.Height(Size.y * 2)))
-        {
-            _showLog = !_showLog;
-            CalculateCurrentLog();
-        }
-        GUILayout.EndHorizontal();
-        GUILayout.BeginHorizontal(_showWarning ? _buttonActiveStyle : _barStyle);
-        if (GUILayout.Button(_warningContent, _nonStyle, GUILayout.Width(Size.x * 2), GUILayout.Height(Size.y * 2)))
-        {
-            _showWarning = !_showWarning;
-            CalculateCurrentLog();
-        }
-        if (GUILayout.Button(logsWarningText, _nonStyle, GUILayout.Width(Size.x * 2), GUILayout.Height(Size.y * 2)))
-        {
-            _showWarning = !_showWarning;
-            CalculateCurrentLog();
-        }
-        GUILayout.EndHorizontal();
-        GUILayout.BeginHorizontal(_showError ? _buttonActiveStyle : _nonStyle);
-        if (GUILayout.Button(_errorContent, _nonStyle, GUILayout.Width(Size.x * 2), GUILayout.Height(Size.y * 2)))
-        {
-            _showError = !_showError;
-            CalculateCurrentLog();
-        }
-        if (GUILayout.Button(logsErrorText, _nonStyle, GUILayout.Width(Size.x * 2), GUILayout.Height(Size.y * 2)))
-        {
-            _showError = !_showError;
-            CalculateCurrentLog();
-        }
-        GUILayout.EndHorizontal();
-
-        if (GUILayout.Button(_closeContent, _barStyle, GUILayout.Width(Size.x * 2), GUILayout.Height(Size.y * 2)))
-        {
-            Show = false;
-            var gui = gameObject.GetComponent<ReporterGUI>();
-            DestroyImmediate(gui);
-
-            try
-            {
-                gameObject.SendMessage("OnHideReporter");
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-            }
-        }
+		GUILayout.FlexibleSpace();
 
 
-        GUILayout.EndHorizontal();
+		string logsText = " ";
+		if (collapse) {
+			logsText += numOfCollapsedLogs;
+		}
+		else {
+			logsText += numOfLogs;
+		}
+		string logsWarningText = " ";
+		if (collapse) {
+			logsWarningText += numOfCollapsedLogsWarning;
+		}
+		else {
+			logsWarningText += numOfLogsWarning;
+		}
+		string logsErrorText = " ";
+		if (collapse) {
+			logsErrorText += numOfCollapsedLogsError;
+		}
+		else {
+			logsErrorText += numOfLogsError;
+		}
 
-        GUILayout.EndScrollView();
+		GUILayout.BeginHorizontal((showLog) ? buttonActiveStyle : barStyle);
+		if (GUILayout.Button(logContent, nonStyle, GUILayout.Width(size.x * 2), GUILayout.Height(size.y * 2))) {
+			showLog = !showLog;
+			calculateCurrentLog();
+		}
+		if (GUILayout.Button(logsText, nonStyle, GUILayout.Width(size.x * 2), GUILayout.Height(size.y * 2))) {
+			showLog = !showLog;
+			calculateCurrentLog();
+		}
+		GUILayout.EndHorizontal();
+		GUILayout.BeginHorizontal((showWarning) ? buttonActiveStyle : barStyle);
+		if (GUILayout.Button(warningContent, nonStyle, GUILayout.Width(size.x * 2), GUILayout.Height(size.y * 2))) {
+			showWarning = !showWarning;
+			calculateCurrentLog();
+		}
+		if (GUILayout.Button(logsWarningText, nonStyle, GUILayout.Width(size.x * 2), GUILayout.Height(size.y * 2))) {
+			showWarning = !showWarning;
+			calculateCurrentLog();
+		}
+		GUILayout.EndHorizontal();
+		GUILayout.BeginHorizontal((showError) ? buttonActiveStyle : nonStyle);
+		if (GUILayout.Button(errorContent, nonStyle, GUILayout.Width(size.x * 2), GUILayout.Height(size.y * 2))) {
+			showError = !showError;
+			calculateCurrentLog();
+		}
+		if (GUILayout.Button(logsErrorText, nonStyle, GUILayout.Width(size.x * 2), GUILayout.Height(size.y * 2))) {
+			showError = !showError;
+			calculateCurrentLog();
+		}
+		GUILayout.EndHorizontal();
 
-        GUILayout.EndArea();
-    }
+		if (GUILayout.Button(closeContent, barStyle, GUILayout.Width(size.x * 2), GUILayout.Height(size.y * 2))) {
+			show = false;
+			ReporterGUI gui = gameObject.GetComponent<ReporterGUI>();
+			DestroyImmediate(gui);
+
+			try {
+				gameObject.SendMessage("OnHideReporter");
+			}
+			catch (System.Exception e) {
+				Debug.LogException(e);
+			}
+		}
 
 
-    private Rect _tempRect;
+		GUILayout.EndHorizontal();
 
-    private void DrawLogs()
-    {
-        GUILayout.BeginArea(_logsRect, _backStyle);
+		GUILayout.EndScrollView();
 
-        GUI.skin = _logScrollerSkin;
-        //setStartPos();
-        var drag = GetDrag();
-
-        if (drag.y != 0 && _logsRect.Contains(new Vector2(_downPos.x, Screen.height - _downPos.y)))
-            _scrollPosition.y += drag.y - _oldDrag;
-        _scrollPosition = GUILayout.BeginScrollView(_scrollPosition);
-
-        _oldDrag = drag.y;
+		GUILayout.EndArea();
+	}
 
 
-        var totalVisibleCount = (int) (Screen.height * 0.75f / Size.y);
-        var totalCount = _currentLog.Count;
-        /*if( totalCount < 100 )
+	Rect tempRect;
+	void DrawLogs()
+	{
+
+		GUILayout.BeginArea(logsRect, backStyle);
+
+		GUI.skin = logScrollerSkin;
+		//setStartPos();
+		Vector2 drag = getDrag();
+
+		if (drag.y != 0 && logsRect.Contains(new Vector2(downPos.x, Screen.height - downPos.y))) {
+			scrollPosition.y += (drag.y - oldDrag);
+		}
+		scrollPosition = GUILayout.BeginScrollView(scrollPosition);
+
+		oldDrag = drag.y;
+
+
+		int totalVisibleCount = (int)(Screen.height * 0.75f / size.y);
+		int totalCount = currentLog.Count;
+		/*if( totalCount < 100 )
 			inGameLogsScrollerSkin.verticalScrollbarThumb.fixedHeight = 0;
 		else 
 			inGameLogsScrollerSkin.verticalScrollbarThumb.fixedHeight = 64;*/
 
-        totalVisibleCount = Mathf.Min(totalVisibleCount, totalCount - _startIndex);
-        var index = 0;
-        var beforeHeight = (int) (_startIndex * Size.y);
-        //selectedIndex = Mathf.Clamp( selectedIndex , -1 , totalCount -1);
-        if (beforeHeight > 0)
-        {
-            //fill invisible gap before scroller to make proper scroller pos
-            GUILayout.BeginHorizontal(GUILayout.Height(beforeHeight));
-            GUILayout.Label("---");
-            GUILayout.EndHorizontal();
-        }
+		totalVisibleCount = Mathf.Min(totalVisibleCount, totalCount - startIndex);
+		int index = 0;
+		int beforeHeight = (int)(startIndex * size.y);
+		//selectedIndex = Mathf.Clamp( selectedIndex , -1 , totalCount -1);
+		if (beforeHeight > 0) {
+			//fill invisible gap before scroller to make proper scroller pos
+			GUILayout.BeginHorizontal(GUILayout.Height(beforeHeight));
+			GUILayout.Label("---");
+			GUILayout.EndHorizontal();
+		}
 
-        var endIndex = _startIndex + totalVisibleCount;
-        endIndex = Mathf.Clamp(endIndex, 0, totalCount);
-        var scrollerVisible = totalVisibleCount < totalCount;
-        for (var i = _startIndex; _startIndex + index < endIndex; i++)
-        {
-            if (i >= _currentLog.Count)
-                break;
-            var log = _currentLog[i];
+		int endIndex = startIndex + totalVisibleCount;
+		endIndex = Mathf.Clamp(endIndex, 0, totalCount);
+		bool scrollerVisible = (totalVisibleCount < totalCount);
+		for (int i = startIndex; (startIndex + index) < endIndex; i++) {
 
-            if (log.LogType == _LogType.Log && !_showLog)
-                continue;
-            if (log.LogType == _LogType.Warning && !_showWarning)
-                continue;
-            if (log.LogType == _LogType.Error && !_showError)
-                continue;
-            if (log.LogType == _LogType.Assert && !_showError)
-                continue;
-            if (log.LogType == _LogType.Exception && !_showError)
-                continue;
+			if (i >= currentLog.Count)
+				break;
+			Log log = currentLog[i];
 
-            if (index >= totalVisibleCount)
-                break;
+			if (log.logType == _LogType.Log && !showLog)
+				continue;
+			if (log.logType == _LogType.Warning && !showWarning)
+				continue;
+			if (log.logType == _LogType.Error && !showError)
+				continue;
+			if (log.logType == _LogType.Assert && !showError)
+				continue;
+			if (log.logType == _LogType.Exception && !showError)
+				continue;
 
-            GUIContent content = null;
-            if (log.LogType == _LogType.Log)
-                content = _logContent;
-            else if (log.LogType == _LogType.Warning)
-                content = _warningContent;
-            else
-                content = _errorContent;
-            //content.text = log.condition ;
+			if (index >= totalVisibleCount) {
+				break;
+			}
 
-            var currentLogStyle = (_startIndex + index) % 2 == 0 ? _evenLogStyle : _oddLogStyle;
-            if (log == _selectedLog)
-                currentLogStyle = _selectedLogStyle;
+			GUIContent content = null;
+			if (log.logType == _LogType.Log)
+				content = logContent;
+			else if (log.logType == _LogType.Warning)
+				content = warningContent;
+			else
+				content = errorContent;
+			//content.text = log.condition ;
 
-            _tempContent.text = log.Count.ToString();
-            var w = 0f;
-            if (_collapse)
-                w = _barStyle.CalcSize(_tempContent).x + 3;
-            _countRect.x = Screen.width - w;
-            _countRect.y = Size.y * i;
-            if (beforeHeight > 0)
-                _countRect.y += 8; //i will check later why
-            _countRect.width = w;
-            _countRect.height = Size.y;
+			GUIStyle currentLogStyle = ((startIndex + index) % 2 == 0) ? evenLogStyle : oddLogStyle;
+			if (log == selectedLog) {
+				//selectedLog = log ;
+				currentLogStyle = selectedLogStyle;
+			}
+			else {
+			}
 
-            if (scrollerVisible)
-                _countRect.x -= Size.x * 2;
+			tempContent.text = log.count.ToString();
+			float w = 0f;
+			if (collapse)
+				w = barStyle.CalcSize(tempContent).x + 3;
+			countRect.x = Screen.width - w;
+			countRect.y = size.y * i;
+			if (beforeHeight > 0)
+				countRect.y += 8;//i will check later why
+			countRect.width = w;
+			countRect.height = size.y;
 
-            var sample = _samples[log.SampleId];
-            _fpsRect = _countRect;
-            if (_showFps)
-            {
-                _tempContent.text = sample.FpsText;
-                w = currentLogStyle.CalcSize(_tempContent).x + Size.x;
-                _fpsRect.x -= w;
-                _fpsRect.width = Size.x;
-                _fpsLabelRect = _fpsRect;
-                _fpsLabelRect.x += Size.x;
-                _fpsLabelRect.width = w - Size.x;
-            }
+			if (scrollerVisible)
+				countRect.x -= size.x * 2;
 
-
-            _memoryRect = _fpsRect;
-            if (_showMemory)
-            {
-                _tempContent.text = sample.Memory.ToString("0.000");
-                w = currentLogStyle.CalcSize(_tempContent).x + Size.x;
-                _memoryRect.x -= w;
-                _memoryRect.width = Size.x;
-                _memoryLabelRect = _memoryRect;
-                _memoryLabelRect.x += Size.x;
-                _memoryLabelRect.width = w - Size.x;
-            }
-            _sceneRect = _memoryRect;
-            if (_showScene)
-            {
-                _tempContent.text = sample.GetSceneName();
-                w = currentLogStyle.CalcSize(_tempContent).x + Size.x;
-                _sceneRect.x -= w;
-                _sceneRect.width = Size.x;
-                _sceneLabelRect = _sceneRect;
-                _sceneLabelRect.x += Size.x;
-                _sceneLabelRect.width = w - Size.x;
-            }
-            _timeRect = _sceneRect;
-            if (_showTime)
-            {
-                _tempContent.text = sample.Time.ToString("0.000");
-                w = currentLogStyle.CalcSize(_tempContent).x + Size.x;
-                _timeRect.x -= w;
-                _timeRect.width = Size.x;
-                _timeLabelRect = _timeRect;
-                _timeLabelRect.x += Size.x;
-                _timeLabelRect.width = w - Size.x;
-            }
+			Sample sample = samples[log.sampleId];
+			fpsRect = countRect;
+			if (showFps) {
+				tempContent.text = sample.fpsText;
+				w = currentLogStyle.CalcSize(tempContent).x + size.x;
+				fpsRect.x -= w;
+				fpsRect.width = size.x;
+				fpsLabelRect = fpsRect;
+				fpsLabelRect.x += size.x;
+				fpsLabelRect.width = w - size.x;
+			}
 
 
-            GUILayout.BeginHorizontal(currentLogStyle);
-            if (log == _selectedLog)
-            {
-                GUILayout.Box(content, _nonStyle, GUILayout.Width(Size.x), GUILayout.Height(Size.y));
-                GUILayout.Label(log.Condition, _selectedLogFontStyle);
-                //GUILayout.FlexibleSpace();
-                if (_showTime)
-                {
-                    GUI.Box(_timeRect, _showTimeContent, currentLogStyle);
-                    GUI.Label(_timeLabelRect, sample.Time.ToString("0.000"), currentLogStyle);
-                }
-                if (_showScene)
-                {
-                    GUI.Box(_sceneRect, _showSceneContent, currentLogStyle);
-                    GUI.Label(_sceneLabelRect, sample.GetSceneName(), currentLogStyle);
-                }
-                if (_showMemory)
-                {
-                    GUI.Box(_memoryRect, _showMemoryContent, currentLogStyle);
-                    GUI.Label(_memoryLabelRect, sample.Memory.ToString("0.000") + " mb", currentLogStyle);
-                }
-                if (_showFps)
-                {
-                    GUI.Box(_fpsRect, _showFpsContent, currentLogStyle);
-                    GUI.Label(_fpsLabelRect, sample.FpsText, currentLogStyle);
-                }
-            }
-            else
-            {
-                if (GUILayout.Button(content, _nonStyle, GUILayout.Width(Size.x), GUILayout.Height(Size.y)))
-                    _selectedLog = log;
-                if (GUILayout.Button(log.Condition, _logButtonStyle))
-                    _selectedLog = log;
-                //GUILayout.FlexibleSpace();
-                if (_showTime)
-                {
-                    GUI.Box(_timeRect, _showTimeContent, currentLogStyle);
-                    GUI.Label(_timeLabelRect, sample.Time.ToString("0.000"), currentLogStyle);
-                }
-                if (_showScene)
-                {
-                    GUI.Box(_sceneRect, _showSceneContent, currentLogStyle);
-                    GUI.Label(_sceneLabelRect, sample.GetSceneName(), currentLogStyle);
-                }
-                if (_showMemory)
-                {
-                    GUI.Box(_memoryRect, _showMemoryContent, currentLogStyle);
-                    GUI.Label(_memoryLabelRect, sample.Memory.ToString("0.000") + " mb", currentLogStyle);
-                }
-                if (_showFps)
-                {
-                    GUI.Box(_fpsRect, _showFpsContent, currentLogStyle);
-                    GUI.Label(_fpsLabelRect, sample.FpsText, currentLogStyle);
-                }
-            }
-            if (_collapse)
-                GUI.Label(_countRect, log.Count.ToString(), _barStyle);
-            GUILayout.EndHorizontal();
-            index++;
-        }
+			memoryRect = fpsRect;
+			if (showMemory) {
+				tempContent.text = sample.memory.ToString("0.000");
+				w = currentLogStyle.CalcSize(tempContent).x + size.x;
+				memoryRect.x -= w;
+				memoryRect.width = size.x;
+				memoryLabelRect = memoryRect;
+				memoryLabelRect.x += size.x;
+				memoryLabelRect.width = w - size.x;
+			}
+			sceneRect = memoryRect;
+			if (showScene) {
 
-        var afterHeight = (int) ((totalCount - (_startIndex + totalVisibleCount)) * Size.y);
-        if (afterHeight > 0)
-        {
-            //fill invisible gap after scroller to make proper scroller pos
-            GUILayout.BeginHorizontal(GUILayout.Height(afterHeight));
-            GUILayout.Label(" ");
-            GUILayout.EndHorizontal();
-        }
-
-        GUILayout.EndScrollView();
-        GUILayout.EndArea();
-
-        _buttomRect.x = 0f;
-        _buttomRect.y = Screen.height - Size.y;
-        _buttomRect.width = Screen.width;
-        _buttomRect.height = Size.y;
-
-        if (_showGraph)
-            DrawGraph();
-        else
-            DrawStack();
-    }
+				tempContent.text = sample.GetSceneName();
+				w = currentLogStyle.CalcSize(tempContent).x + size.x;
+				sceneRect.x -= w;
+				sceneRect.width = size.x;
+				sceneLabelRect = sceneRect;
+				sceneLabelRect.x += size.x;
+				sceneLabelRect.width = w - size.x;
+			}
+			timeRect = sceneRect;
+			if (showTime) {
+				tempContent.text = sample.time.ToString("0.000");
+				w = currentLogStyle.CalcSize(tempContent).x + size.x;
+				timeRect.x -= w;
+				timeRect.width = size.x;
+				timeLabelRect = timeRect;
+				timeLabelRect.x += size.x;
+				timeLabelRect.width = w - size.x;
+			}
 
 
-    private readonly float _graphSize = 4f;
-    private int _startFrame;
-    private int _currentFrame;
-    private Vector3 _tempVector1;
-    private Vector3 _tempVector2;
-    private Vector2 _graphScrollerPos;
-    private float _maxFpsValue;
-    private float _minFpsValue;
-    private float _maxMemoryValue;
-    private float _minMemoryValue;
 
-    private void DrawGraph()
-    {
-        _graphRect = _stackRect;
-        _graphRect.height = Screen.height * 0.25f; //- size.y ;
-
-
-        //startFrame = samples.Count - (int)(Screen.width / graphSize) ;
-        //if( startFrame < 0 ) startFrame = 0 ;
-        GUI.skin = _graphScrollerSkin;
-
-        var drag = GetDrag();
-        if (_graphRect.Contains(new Vector2(_downPos.x, Screen.height - _downPos.y)))
-        {
-            if (drag.x != 0)
-            {
-                _graphScrollerPos.x -= drag.x - _oldDrag3;
-                _graphScrollerPos.x = Mathf.Max(0, _graphScrollerPos.x);
-            }
-
-            var p = _downPos;
-            if (p != Vector2.zero)
-                _currentFrame = _startFrame + (int) (p.x / _graphSize);
-        }
-
-        _oldDrag3 = drag.x;
-        GUILayout.BeginArea(_graphRect, _backStyle);
-
-        _graphScrollerPos = GUILayout.BeginScrollView(_graphScrollerPos);
-        _startFrame = (int) (_graphScrollerPos.x / _graphSize);
-        if (_graphScrollerPos.x >= _samples.Count * _graphSize - Screen.width)
-            _graphScrollerPos.x += _graphSize;
-
-        GUILayout.Label(" ", GUILayout.Width(_samples.Count * _graphSize));
-        GUILayout.EndScrollView();
-        GUILayout.EndArea();
-        _maxFpsValue = 0;
-        _minFpsValue = 100000;
-        _maxMemoryValue = 0;
-        _minMemoryValue = 100000;
-        for (var i = 0; i < Screen.width / _graphSize; i++)
-        {
-            var index = _startFrame + i;
-            if (index >= _samples.Count)
-                break;
-            var s = _samples[index];
-            if (_maxFpsValue < s.Fps) _maxFpsValue = s.Fps;
-            if (_minFpsValue > s.Fps) _minFpsValue = s.Fps;
-            if (_maxMemoryValue < s.Memory) _maxMemoryValue = s.Memory;
-            if (_minMemoryValue > s.Memory) _minMemoryValue = s.Memory;
-        }
-
-        //GUI.BeginGroup(graphRect);
+			GUILayout.BeginHorizontal(currentLogStyle);
+			if (log == selectedLog) {
+				GUILayout.Box(content, nonStyle, GUILayout.Width(size.x), GUILayout.Height(size.y));
+				GUILayout.Label(log.condition, selectedLogFontStyle);
+				//GUILayout.FlexibleSpace();
+				if (showTime) {
+					GUI.Box(timeRect, showTimeContent, currentLogStyle);
+					GUI.Label(timeLabelRect, sample.time.ToString("0.000"), currentLogStyle);
+				}
+				if (showScene) {
+					GUI.Box(sceneRect, showSceneContent, currentLogStyle);
+					GUI.Label(sceneLabelRect, sample.GetSceneName(), currentLogStyle);
+				}
+				if (showMemory) {
+					GUI.Box(memoryRect, showMemoryContent, currentLogStyle);
+					GUI.Label(memoryLabelRect, sample.memory.ToString("0.000") + " mb", currentLogStyle);
+				}
+				if (showFps) {
+					GUI.Box(fpsRect, showFpsContent, currentLogStyle);
+					GUI.Label(fpsLabelRect, sample.fpsText, currentLogStyle);
+				}
 
 
-        if (_currentFrame != -1 && _currentFrame < _samples.Count)
-        {
-            var selectedSample = _samples[_currentFrame];
-            GUILayout.BeginArea(_buttomRect, _backStyle);
-            GUILayout.BeginHorizontal();
+			}
+			else {
+				if (GUILayout.Button(content, nonStyle, GUILayout.Width(size.x), GUILayout.Height(size.y))) {
+					//selectedIndex = startIndex + index ;
+					selectedLog = log;
+				}
+				if (GUILayout.Button(log.condition, logButtonStyle)) {
+					//selectedIndex = startIndex + index ;
+					selectedLog = log;
+				}
+				//GUILayout.FlexibleSpace();
+				if (showTime) {
+					GUI.Box(timeRect, showTimeContent, currentLogStyle);
+					GUI.Label(timeLabelRect, sample.time.ToString("0.000"), currentLogStyle);
+				}
+				if (showScene) {
+					GUI.Box(sceneRect, showSceneContent, currentLogStyle);
+					GUI.Label(sceneLabelRect, sample.GetSceneName(), currentLogStyle);
+				}
+				if (showMemory) {
+					GUI.Box(memoryRect, showMemoryContent, currentLogStyle);
+					GUI.Label(memoryLabelRect, sample.memory.ToString("0.000") + " mb", currentLogStyle);
+				}
+				if (showFps) {
+					GUI.Box(fpsRect, showFpsContent, currentLogStyle);
+					GUI.Label(fpsLabelRect, sample.fpsText, currentLogStyle);
+				}
+			}
+			if (collapse)
+				GUI.Label(countRect, log.count.ToString(), barStyle);
+			GUILayout.EndHorizontal();
+			index++;
+		}
 
-            GUILayout.Box(_showTimeContent, _nonStyle, GUILayout.Width(Size.x), GUILayout.Height(Size.y));
-            GUILayout.Label(selectedSample.Time.ToString("0.0"), _nonStyle);
-            GUILayout.Space(Size.x);
+		int afterHeight = (int)((totalCount - (startIndex + totalVisibleCount)) * size.y);
+		if (afterHeight > 0) {
+			//fill invisible gap after scroller to make proper scroller pos
+			GUILayout.BeginHorizontal(GUILayout.Height(afterHeight));
+			GUILayout.Label(" ");
+			GUILayout.EndHorizontal();
+		}
 
-            GUILayout.Box(_showSceneContent, _nonStyle, GUILayout.Width(Size.x), GUILayout.Height(Size.y));
-            GUILayout.Label(selectedSample.GetSceneName(), _nonStyle);
-            GUILayout.Space(Size.x);
+		GUILayout.EndScrollView();
+		GUILayout.EndArea();
 
-            GUILayout.Box(_showMemoryContent, _nonStyle, GUILayout.Width(Size.x), GUILayout.Height(Size.y));
-            GUILayout.Label(selectedSample.Memory.ToString("0.000"), _nonStyle);
-            GUILayout.Space(Size.x);
+		buttomRect.x = 0f;
+		buttomRect.y = Screen.height - size.y;
+		buttomRect.width = Screen.width;
+		buttomRect.height = size.y;
 
-            GUILayout.Box(_showFpsContent, _nonStyle, GUILayout.Width(Size.x), GUILayout.Height(Size.y));
-            GUILayout.Label(selectedSample.FpsText, _nonStyle);
-            GUILayout.Space(Size.x);
+		if (showGraph)
+			drawGraph();
+		else
+			drawStack();
+	}
 
-            /*GUILayout.Box( graphContent ,nonStyle, GUILayout.Width(size.x) ,GUILayout.Height(size.y));
+
+	float graphSize = 4f;
+	int startFrame = 0;
+	int currentFrame = 0;
+	Vector3 tempVector1;
+	Vector3 tempVector2;
+	Vector2 graphScrollerPos;
+	float maxFpsValue;
+	float minFpsValue;
+	float maxMemoryValue;
+	float minMemoryValue;
+
+	void drawGraph()
+	{
+
+		graphRect = stackRect;
+		graphRect.height = Screen.height * 0.25f;//- size.y ;
+
+
+
+		//startFrame = samples.Count - (int)(Screen.width / graphSize) ;
+		//if( startFrame < 0 ) startFrame = 0 ;
+		GUI.skin = graphScrollerSkin;
+
+		Vector2 drag = getDrag();
+		if (graphRect.Contains(new Vector2(downPos.x, Screen.height - downPos.y))) {
+			if (drag.x != 0) {
+				graphScrollerPos.x -= drag.x - oldDrag3;
+				graphScrollerPos.x = Mathf.Max(0, graphScrollerPos.x);
+			}
+
+			Vector2 p = downPos;
+			if (p != Vector2.zero) {
+				currentFrame = startFrame + (int)(p.x / graphSize);
+			}
+		}
+
+		oldDrag3 = drag.x;
+		GUILayout.BeginArea(graphRect, backStyle);
+
+		graphScrollerPos = GUILayout.BeginScrollView(graphScrollerPos);
+		startFrame = (int)(graphScrollerPos.x / graphSize);
+		if (graphScrollerPos.x >= (samples.Count * graphSize - Screen.width))
+			graphScrollerPos.x += graphSize;
+
+		GUILayout.Label(" ", GUILayout.Width(samples.Count * graphSize));
+		GUILayout.EndScrollView();
+		GUILayout.EndArea();
+		maxFpsValue = 0;
+		minFpsValue = 100000;
+		maxMemoryValue = 0;
+		minMemoryValue = 100000;
+		for (int i = 0; i < Screen.width / graphSize; i++) {
+			int index = startFrame + i;
+			if (index >= samples.Count)
+				break;
+			Sample s = samples[index];
+			if (maxFpsValue < s.fps) maxFpsValue = s.fps;
+			if (minFpsValue > s.fps) minFpsValue = s.fps;
+			if (maxMemoryValue < s.memory) maxMemoryValue = s.memory;
+			if (minMemoryValue > s.memory) minMemoryValue = s.memory;
+		}
+
+		//GUI.BeginGroup(graphRect);
+
+
+		if (currentFrame != -1 && currentFrame < samples.Count) {
+			Sample selectedSample = samples[currentFrame];
+			GUILayout.BeginArea(buttomRect, backStyle);
+			GUILayout.BeginHorizontal();
+
+			GUILayout.Box(showTimeContent, nonStyle, GUILayout.Width(size.x), GUILayout.Height(size.y));
+			GUILayout.Label(selectedSample.time.ToString("0.0"), nonStyle);
+			GUILayout.Space(size.x);
+
+			GUILayout.Box(showSceneContent, nonStyle, GUILayout.Width(size.x), GUILayout.Height(size.y));
+			GUILayout.Label(selectedSample.GetSceneName(), nonStyle);
+			GUILayout.Space(size.x);
+
+			GUILayout.Box(showMemoryContent, nonStyle, GUILayout.Width(size.x), GUILayout.Height(size.y));
+			GUILayout.Label(selectedSample.memory.ToString("0.000"), nonStyle);
+			GUILayout.Space(size.x);
+
+			GUILayout.Box(showFpsContent, nonStyle, GUILayout.Width(size.x), GUILayout.Height(size.y));
+			GUILayout.Label(selectedSample.fpsText, nonStyle);
+			GUILayout.Space(size.x);
+
+			/*GUILayout.Box( graphContent ,nonStyle, GUILayout.Width(size.x) ,GUILayout.Height(size.y));
 			GUILayout.Label( currentFrame.ToString() ,nonStyle  );*/
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();
-            GUILayout.EndArea();
-        }
+			GUILayout.FlexibleSpace();
+			GUILayout.EndHorizontal();
+			GUILayout.EndArea();
+		}
 
-        _graphMaxRect = _stackRect;
-        _graphMaxRect.height = Size.y;
-        GUILayout.BeginArea(_graphMaxRect);
-        GUILayout.BeginHorizontal();
+		graphMaxRect = stackRect;
+		graphMaxRect.height = size.y;
+		GUILayout.BeginArea(graphMaxRect);
+		GUILayout.BeginHorizontal();
 
-        GUILayout.Box(_showMemoryContent, _nonStyle, GUILayout.Width(Size.x), GUILayout.Height(Size.y));
-        GUILayout.Label(_maxMemoryValue.ToString("0.000"), _nonStyle);
+		GUILayout.Box(showMemoryContent, nonStyle, GUILayout.Width(size.x), GUILayout.Height(size.y));
+		GUILayout.Label(maxMemoryValue.ToString("0.000"), nonStyle);
 
-        GUILayout.Box(_showFpsContent, _nonStyle, GUILayout.Width(Size.x), GUILayout.Height(Size.y));
-        GUILayout.Label(_maxFpsValue.ToString("0.000"), _nonStyle);
-        GUILayout.FlexibleSpace();
-        GUILayout.EndHorizontal();
-        GUILayout.EndArea();
+		GUILayout.Box(showFpsContent, nonStyle, GUILayout.Width(size.x), GUILayout.Height(size.y));
+		GUILayout.Label(maxFpsValue.ToString("0.000"), nonStyle);
+		GUILayout.FlexibleSpace();
+		GUILayout.EndHorizontal();
+		GUILayout.EndArea();
 
-        _graphMinRect = _stackRect;
-        _graphMinRect.y = _stackRect.y + _stackRect.height - Size.y;
-        _graphMinRect.height = Size.y;
-        GUILayout.BeginArea(_graphMinRect);
-        GUILayout.BeginHorizontal();
+		graphMinRect = stackRect;
+		graphMinRect.y = stackRect.y + stackRect.height - size.y;
+		graphMinRect.height = size.y;
+		GUILayout.BeginArea(graphMinRect);
+		GUILayout.BeginHorizontal();
 
-        GUILayout.Box(_showMemoryContent, _nonStyle, GUILayout.Width(Size.x), GUILayout.Height(Size.y));
+		GUILayout.Box(showMemoryContent, nonStyle, GUILayout.Width(size.x), GUILayout.Height(size.y));
 
-        GUILayout.Label(_minMemoryValue.ToString("0.000"), _nonStyle);
-
-
-        GUILayout.Box(_showFpsContent, _nonStyle, GUILayout.Width(Size.x), GUILayout.Height(Size.y));
-
-        GUILayout.Label(_minFpsValue.ToString("0.000"), _nonStyle);
-        GUILayout.FlexibleSpace();
-        GUILayout.EndHorizontal();
-        GUILayout.EndArea();
-
-        //GUI.EndGroup();
-    }
-
-    private void DrawStack()
-    {
-        if (_selectedLog != null)
-        {
-            var drag = GetDrag();
-            if (drag.y != 0 && _stackRect.Contains(new Vector2(_downPos.x, Screen.height - _downPos.y)))
-                _scrollPosition2.y += drag.y - _oldDrag2;
-            _oldDrag2 = drag.y;
+		GUILayout.Label(minMemoryValue.ToString("0.000"), nonStyle);
 
 
-            GUILayout.BeginArea(_stackRect, _backStyle);
-            _scrollPosition2 = GUILayout.BeginScrollView(_scrollPosition2);
-            Sample selectedSample = null;
-            try
-            {
-                selectedSample = _samples[_selectedLog.SampleId];
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-            }
+		GUILayout.Box(showFpsContent, nonStyle, GUILayout.Width(size.x), GUILayout.Height(size.y));
 
-            GUILayout.BeginHorizontal();
-            GUILayout.Label(_selectedLog.Condition, _stackLabelStyle);
-            GUILayout.EndHorizontal();
-            GUILayout.Space(Size.y * 0.25f);
-            GUILayout.BeginHorizontal();
-            GUILayout.Label(_selectedLog.Stacktrace, _stackLabelStyle);
-            GUILayout.EndHorizontal();
-            GUILayout.Space(Size.y);
-            GUILayout.EndScrollView();
-            GUILayout.EndArea();
+		GUILayout.Label(minFpsValue.ToString("0.000"), nonStyle);
+		GUILayout.FlexibleSpace();
+		GUILayout.EndHorizontal();
+		GUILayout.EndArea();
+
+		//GUI.EndGroup();
+	}
+
+	void drawStack()
+	{
+
+		if (selectedLog != null) {
+			Vector2 drag = getDrag();
+			if (drag.y != 0 && stackRect.Contains(new Vector2(downPos.x, Screen.height - downPos.y))) {
+				scrollPosition2.y += drag.y - oldDrag2;
+			}
+			oldDrag2 = drag.y;
 
 
-            GUILayout.BeginArea(_buttomRect, _backStyle);
-            GUILayout.BeginHorizontal();
 
-            GUILayout.Box(_showTimeContent, _nonStyle, GUILayout.Width(Size.x), GUILayout.Height(Size.y));
-            GUILayout.Label(selectedSample.Time.ToString("0.000"), _nonStyle);
-            GUILayout.Space(Size.x);
+			GUILayout.BeginArea(stackRect, backStyle);
+			scrollPosition2 = GUILayout.BeginScrollView(scrollPosition2);
+			Sample selectedSample = null;
+			try {
+				selectedSample = samples[selectedLog.sampleId];
+			}
+			catch (System.Exception e) {
+				Debug.LogException(e);
+			}
 
-            GUILayout.Box(_showSceneContent, _nonStyle, GUILayout.Width(Size.x), GUILayout.Height(Size.y));
-            GUILayout.Label(selectedSample.GetSceneName(), _nonStyle);
-            GUILayout.Space(Size.x);
+			GUILayout.BeginHorizontal();
+			GUILayout.Label(selectedLog.condition, stackLabelStyle);
+			GUILayout.EndHorizontal();
+			GUILayout.Space(size.y * 0.25f);
+			GUILayout.BeginHorizontal();
+			GUILayout.Label(selectedLog.stacktrace, stackLabelStyle);
+			GUILayout.EndHorizontal();
+			GUILayout.Space(size.y);
+			GUILayout.EndScrollView();
+			GUILayout.EndArea();
 
-            GUILayout.Box(_showMemoryContent, _nonStyle, GUILayout.Width(Size.x), GUILayout.Height(Size.y));
-            GUILayout.Label(selectedSample.Memory.ToString("0.000"), _nonStyle);
-            GUILayout.Space(Size.x);
 
-            GUILayout.Box(_showFpsContent, _nonStyle, GUILayout.Width(Size.x), GUILayout.Height(Size.y));
-            GUILayout.Label(selectedSample.FpsText, _nonStyle);
-            /*GUILayout.Space( size.x );
+			GUILayout.BeginArea(buttomRect, backStyle);
+			GUILayout.BeginHorizontal();
+
+			GUILayout.Box(showTimeContent, nonStyle, GUILayout.Width(size.x), GUILayout.Height(size.y));
+			GUILayout.Label(selectedSample.time.ToString("0.000"), nonStyle);
+			GUILayout.Space(size.x);
+
+			GUILayout.Box(showSceneContent, nonStyle, GUILayout.Width(size.x), GUILayout.Height(size.y));
+			GUILayout.Label(selectedSample.GetSceneName(), nonStyle);
+			GUILayout.Space(size.x);
+
+			GUILayout.Box(showMemoryContent, nonStyle, GUILayout.Width(size.x), GUILayout.Height(size.y));
+			GUILayout.Label(selectedSample.memory.ToString("0.000"), nonStyle);
+			GUILayout.Space(size.x);
+
+			GUILayout.Box(showFpsContent, nonStyle, GUILayout.Width(size.x), GUILayout.Height(size.y));
+			GUILayout.Label(selectedSample.fpsText, nonStyle);
+			/*GUILayout.Space( size.x );
 			GUILayout.Box( graphContent ,nonStyle, GUILayout.Width(size.x) ,GUILayout.Height(size.y));
 			GUILayout.Label( selectedLog.sampleId.ToString() ,nonStyle  );*/
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();
-            GUILayout.EndArea();
-        }
-        else
-        {
-            GUILayout.BeginArea(_stackRect, _backStyle);
-            GUILayout.EndArea();
-            GUILayout.BeginArea(_buttomRect, _backStyle);
-            GUILayout.EndArea();
-        }
-    }
+			GUILayout.FlexibleSpace();
+			GUILayout.EndHorizontal();
+			GUILayout.EndArea();
 
 
-    public void OnGuiDraw()
-    {
-        if (!Show)
-            return;
 
-        _screenRect.x = 0;
-        _screenRect.y = 0;
-        _screenRect.width = Screen.width;
-        _screenRect.height = Screen.height;
+		}
+		else {
+			GUILayout.BeginArea(stackRect, backStyle);
+			GUILayout.EndArea();
+			GUILayout.BeginArea(buttomRect, backStyle);
+			GUILayout.EndArea();
+		}
 
-        GetDownPos();
-
-
-        _logsRect.x = 0f;
-        _logsRect.y = Size.y * 2f;
-        _logsRect.width = Screen.width;
-        _logsRect.height = Screen.height * 0.75f - Size.y * 2f;
-
-        _stackRectTopLeft.x = 0f;
-        _stackRect.x = 0f;
-        _stackRectTopLeft.y = Screen.height * 0.75f;
-        _stackRect.y = Screen.height * 0.75f;
-        _stackRect.width = Screen.width;
-        _stackRect.height = Screen.height * 0.25f - Size.y;
+	}
 
 
-        _detailRect.x = 0f;
-        _detailRect.y = Screen.height - Size.y * 3;
-        _detailRect.width = Screen.width;
-        _detailRect.height = Size.y * 3;
+	public void OnGUIDraw()
+	{
 
-        if (_currentView == ReportView.Info)
-        {
-            DrawInfo();
-        }
-        else if (_currentView == ReportView.Logs)
-        {
-            DrawToolBar();
-            DrawLogs();
-        }
-    }
+		if (!show) {
+			return;
+		}
 
-    private readonly List<Vector2> _gestureDetector = new List<Vector2>();
-    private Vector2 _gestureSum = Vector2.zero;
-    private float _gestureLength;
-    private int _gestureCount;
+		screenRect.x = 0;
+		screenRect.y = 0;
+		screenRect.width = Screen.width;
+		screenRect.height = Screen.height;
 
-    private bool IsGestureDone()
-    {
-        if (Application.platform == RuntimePlatform.Android ||
-            Application.platform == RuntimePlatform.IPhonePlayer)
-        {
-            if (Input.touches.Length != 1)
-            {
-                _gestureDetector.Clear();
-                _gestureCount = 0;
-            }
-            else
-            {
-                if (Input.touches[0].phase == TouchPhase.Canceled || Input.touches[0].phase == TouchPhase.Ended)
-                {
-                    _gestureDetector.Clear();
-                }
-                else if (Input.touches[0].phase == TouchPhase.Moved)
-                {
-                    var p = Input.touches[0].position;
-                    if (_gestureDetector.Count == 0 || (p - _gestureDetector[_gestureDetector.Count - 1]).magnitude > 10)
-                        _gestureDetector.Add(p);
-                }
-            }
-        }
-        else
-        {
-            if (Input.GetMouseButtonUp(0))
-            {
-                _gestureDetector.Clear();
-                _gestureCount = 0;
-            }
-            else
-            {
-                if (Input.GetMouseButton(0))
-                {
-                    var p = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-                    if (_gestureDetector.Count == 0 || (p - _gestureDetector[_gestureDetector.Count - 1]).magnitude > 10)
-                        _gestureDetector.Add(p);
-                }
-            }
-        }
+		getDownPos();
 
-        if (_gestureDetector.Count < 10)
-            return false;
 
-        _gestureSum = Vector2.zero;
-        _gestureLength = 0;
-        var prevDelta = Vector2.zero;
-        for (var i = 0; i < _gestureDetector.Count - 2; i++)
-        {
-            var delta = _gestureDetector[i + 1] - _gestureDetector[i];
-            var deltaLength = delta.magnitude;
-            _gestureSum += delta;
-            _gestureLength += deltaLength;
+		logsRect.x = 0f;
+		logsRect.y = size.y * 2f;
+		logsRect.width = Screen.width;
+		logsRect.height = Screen.height * 0.75f - size.y * 2f;
 
-            var dot = Vector2.Dot(delta, prevDelta);
-            if (dot < 0f)
-            {
-                _gestureDetector.Clear();
-                _gestureCount = 0;
-                return false;
-            }
+		stackRectTopLeft.x = 0f;
+		stackRect.x = 0f;
+		stackRectTopLeft.y = Screen.height * 0.75f;
+		stackRect.y = Screen.height * 0.75f;
+		stackRect.width = Screen.width;
+		stackRect.height = Screen.height * 0.25f - size.y;
 
-            prevDelta = delta;
-        }
 
-        var gestureBase = (Screen.width + Screen.height) / 4;
 
-        if (!(_gestureLength > gestureBase) || !(_gestureSum.magnitude < gestureBase / 2)) return false;
-        _gestureDetector.Clear();
-        _gestureCount++;
-        return _gestureCount >= NumOfCircleToShow;
-    }
+		detailRect.x = 0f;
+		detailRect.y = Screen.height - size.y * 3;
+		detailRect.width = Screen.width;
+		detailRect.height = size.y * 3;
 
-    private float _lastClickTime = -1;
+		if (currentView == ReportView.Info)
+			DrawInfo();
+		else if (currentView == ReportView.Logs) {
+			drawToolBar();
+			DrawLogs();
+		}
 
-    private bool IsDoubleClickDone()
-    {
-        if (Application.platform == RuntimePlatform.Android ||
-            Application.platform == RuntimePlatform.IPhonePlayer)
-        {
-            if (Input.touches.Length != 1)
-            {
-                _lastClickTime = -1;
-            }
-            else
-            {
-                if (Input.touches[0].phase != TouchPhase.Began) return false;
-                if (_lastClickTime == -1)
-                {
-                    _lastClickTime = Time.realtimeSinceStartup;
-                }
-                else if (Time.realtimeSinceStartup - _lastClickTime < 0.2f)
-                {
-                    _lastClickTime = -1;
-                    return true;
-                }
-                else
-                {
-                    _lastClickTime = Time.realtimeSinceStartup;
-                }
-            }
-        }
-        else
-        {
-            if (Input.GetMouseButtonDown(0))
-                if (_lastClickTime == -1)
-                {
-                    _lastClickTime = Time.realtimeSinceStartup;
-                }
-                else if (Time.realtimeSinceStartup - _lastClickTime < 0.2f)
-                {
-                    _lastClickTime = -1;
-                    return true;
-                }
-                else
-                {
-                    _lastClickTime = Time.realtimeSinceStartup;
-                }
-        }
-        return false;
-    }
 
-    //calculate  pos of first click on screen
-    private Vector2 _startPos;
+	}
 
-    private Vector2 _downPos;
+	List<Vector2> gestureDetector = new List<Vector2>();
+	Vector2 gestureSum = Vector2.zero;
+	float gestureLength = 0;
+	int gestureCount = 0;
+	bool isGestureDone()
+	{
+		if (Application.platform == RuntimePlatform.Android ||
+			Application.platform == RuntimePlatform.IPhonePlayer) {
+			if (Input.touches.Length != 1) {
+				gestureDetector.Clear();
+				gestureCount = 0;
+			}
+			else {
+				if (Input.touches[0].phase == TouchPhase.Canceled || Input.touches[0].phase == TouchPhase.Ended)
+					gestureDetector.Clear();
+				else if (Input.touches[0].phase == TouchPhase.Moved) {
+					Vector2 p = Input.touches[0].position;
+					if (gestureDetector.Count == 0 || (p - gestureDetector[gestureDetector.Count - 1]).magnitude > 10)
+						gestureDetector.Add(p);
+				}
+			}
+		}
+		else {
+			if (Input.GetMouseButtonUp(0)) {
+				gestureDetector.Clear();
+				gestureCount = 0;
+			}
+			else {
+				if (Input.GetMouseButton(0)) {
+					Vector2 p = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+					if (gestureDetector.Count == 0 || (p - gestureDetector[gestureDetector.Count - 1]).magnitude > 10)
+						gestureDetector.Add(p);
+				}
+			}
+		}
 
-    private Vector2 GetDownPos()
-    {
-        if (Application.platform == RuntimePlatform.Android ||
-            Application.platform == RuntimePlatform.IPhonePlayer)
-        {
-            if (Input.touches.Length == 1 && Input.touches[0].phase == TouchPhase.Began)
-            {
-                _downPos = Input.touches[0].position;
-                return _downPos;
-            }
-        }
-        else
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                _downPos.x = Input.mousePosition.x;
-                _downPos.y = Input.mousePosition.y;
-                return _downPos;
-            }
-        }
+		if (gestureDetector.Count < 10)
+			return false;
 
-        return Vector2.zero;
-    }
-    //calculate drag amount , this is used for scrolling
+		gestureSum = Vector2.zero;
+		gestureLength = 0;
+		Vector2 prevDelta = Vector2.zero;
+		for (int i = 0; i < gestureDetector.Count - 2; i++) {
 
-    private Vector2 _mousePosition;
+			Vector2 delta = gestureDetector[i + 1] - gestureDetector[i];
+			float deltaLength = delta.magnitude;
+			gestureSum += delta;
+			gestureLength += deltaLength;
 
-    private Vector2 GetDrag()
-    {
-        if (Application.platform == RuntimePlatform.Android ||
-            Application.platform == RuntimePlatform.IPhonePlayer)
-        {
-            if (Input.touches.Length != 1)
-                return Vector2.zero;
-            return Input.touches[0].position - _downPos;
-        }
-        if (Input.GetMouseButton(0))
-        {
-            _mousePosition = Input.mousePosition;
-            return _mousePosition - _downPos;
-        }
-        return Vector2.zero;
-    }
+			float dot = Vector2.Dot(delta, prevDelta);
+			if (dot < 0f) {
+				gestureDetector.Clear();
+				gestureCount = 0;
+				return false;
+			}
 
-    //calculate the start index of visible log
-    private void CalculateStartIndex()
-    {
-        _startIndex = (int) (_scrollPosition.y / Size.y);
-        _startIndex = Mathf.Clamp(_startIndex, 0, _currentLog.Count);
-    }
+			prevDelta = delta;
+		}
 
-    // For FPS Counter
-    private int _frames;
+		int gestureBase = (Screen.width + Screen.height) / 4;
 
-    private bool _firstTime = true;
-    private float _lastUpdate;
-    private const int RequiredFrames = 10;
-    private const float UpdateInterval = 0.25f;
+		if (gestureLength > gestureBase && gestureSum.magnitude < gestureBase / 2) {
+			gestureDetector.Clear();
+			gestureCount++;
+			if (gestureCount >= numOfCircleToShow)
+				return true;
+		}
+
+		return false;
+	}
+
+	float lastClickTime = -1;
+	bool isDoubleClickDone()
+	{
+		if (Application.platform == RuntimePlatform.Android ||
+		   Application.platform == RuntimePlatform.IPhonePlayer) {
+			if (Input.touches.Length != 1) {
+				lastClickTime = -1;
+			}
+			else {
+				if (Input.touches[0].phase == TouchPhase.Began) {
+					if (lastClickTime == -1)
+						lastClickTime = Time.realtimeSinceStartup;
+					else if (Time.realtimeSinceStartup - lastClickTime < 0.2f) {
+						lastClickTime = -1;
+						return true;
+					}
+					else {
+						lastClickTime = Time.realtimeSinceStartup;
+					}
+				}
+			}
+		}
+		else {
+			if (Input.GetMouseButtonDown(0)) {
+				if (lastClickTime == -1)
+					lastClickTime = Time.realtimeSinceStartup;
+				else if (Time.realtimeSinceStartup - lastClickTime < 0.2f) {
+					lastClickTime = -1;
+					return true;
+				}
+				else {
+					lastClickTime = Time.realtimeSinceStartup;
+				}
+			}
+		}
+		return false;
+	}
+
+	//calculate  pos of first click on screen
+	Vector2 startPos;
+
+	Vector2 downPos;
+	Vector2 getDownPos()
+	{
+		if (Application.platform == RuntimePlatform.Android ||
+		   Application.platform == RuntimePlatform.IPhonePlayer) {
+
+			if (Input.touches.Length == 1 && Input.touches[0].phase == TouchPhase.Began) {
+				downPos = Input.touches[0].position;
+				return downPos;
+			}
+		}
+		else {
+			if (Input.GetMouseButtonDown(0)) {
+				downPos.x = Input.mousePosition.x;
+				downPos.y = Input.mousePosition.y;
+				return downPos;
+			}
+		}
+
+		return Vector2.zero;
+	}
+	//calculate drag amount , this is used for scrolling
+
+	Vector2 mousePosition;
+	Vector2 getDrag()
+	{
+
+		if (Application.platform == RuntimePlatform.Android ||
+			Application.platform == RuntimePlatform.IPhonePlayer) {
+			if (Input.touches.Length != 1) {
+				return Vector2.zero;
+			}
+			return Input.touches[0].position - downPos;
+		}
+		else {
+			if (Input.GetMouseButton(0)) {
+				mousePosition = Input.mousePosition;
+				return mousePosition - downPos;
+			}
+			else {
+				return Vector2.zero;
+			}
+		}
+	}
+
+	//calculate the start index of visible log
+	void calculateStartIndex()
+	{
+		startIndex = (int)(scrollPosition.y / size.y);
+		startIndex = Mathf.Clamp(startIndex, 0, currentLog.Count);
+	}
+
+	// For FPS Counter
+	private int frames = 0;
+	private bool firstTime = true;
+	private float lastUpdate = 0f;
+	private const int requiredFrames = 10;
+	private const float updateInterval = 0.25f;
 
 #if UNITY_CHANGE1
 	float lastUpdate2 = 0;
 #endif
 
-    private void DoShow()
-    {
-        Show = true;
-        _currentView = ReportView.Logs;
-        gameObject.AddComponent<ReporterGUI>();
+	void doShow()
+	{
+		show = true;
+		currentView = ReportView.Logs;
+		gameObject.AddComponent<ReporterGUI>();
 
 
-        try
-        {
-            gameObject.SendMessage("OnShowReporter");
-        }
-        catch (Exception e)
-        {
-            Debug.LogException(e);
-        }
-    }
+		try {
+			gameObject.SendMessage("OnShowReporter");
+		}
+		catch (System.Exception e) {
+			Debug.LogException(e);
+		}
+	}
 
-    private void Update()
-    {
-        FpsText = Fps.ToString("0.000");
-        _gcTotalMemory = (float) GC.GetTotalMemory(false) / 1024 / 1024;
-        //addSample();
+	void Update()
+	{
+		fpsText = fps.ToString("0.000");
+		gcTotalMemory = (((float)System.GC.GetTotalMemory(false)) / 1024 / 1024);
+		//addSample();
 
 #if UNITY_CHANGE3
-        var sceneIndex = SceneManager.GetActiveScene().buildIndex;
-        if (sceneIndex != -1 && string.IsNullOrEmpty(_scenes[sceneIndex]))
-            _scenes[SceneManager.GetActiveScene().buildIndex] = SceneManager.GetActiveScene().name;
+		int sceneIndex = SceneManager.GetActiveScene().buildIndex ;
+		if( sceneIndex != -1 && string.IsNullOrEmpty( scenes[sceneIndex] ))
+			scenes[ SceneManager.GetActiveScene().buildIndex ] = SceneManager.GetActiveScene().name ;
 #else
 		int sceneIndex = Application.loadedLevel;
 		if (sceneIndex != -1 && string.IsNullOrEmpty(scenes[Application.loadedLevel]))
 			scenes[Application.loadedLevel] = Application.loadedLevelName;
 #endif
 
-        CalculateStartIndex();
-        if (!Show && IsGestureDone())
-            DoShow();
+		calculateStartIndex();
+		if (!show && isGestureDone()) {
+			doShow();
+		}
 
 
-        if (_threadedLogs.Count > 0)
-            lock (_threadedLogs)
-            {
-                foreach (var l in _threadedLogs)
-                {
-                    AddLog(l.Condition, l.Stacktrace, (LogType) l.LogType);
-                }
-                _threadedLogs.Clear();
-            }
+		if (threadedLogs.Count > 0) {
+			lock (threadedLogs) {
+				for (int i = 0; i < threadedLogs.Count; i++) {
+					Log l = threadedLogs[i];
+					AddLog(l.condition, l.stacktrace, (LogType)l.logType);
+				}
+				threadedLogs.Clear();
+			}
+		}
 
 #if UNITY_CHANGE1
 		float elapsed2 = Time.realtimeSinceStartup - lastUpdate2;
@@ -1900,232 +1820,214 @@ public class Reporter : MonoBehaviour
 		}
 #endif
 
-        // FPS Counter
-        if (_firstTime)
-        {
-            _firstTime = false;
-            _lastUpdate = Time.realtimeSinceStartup;
-            _frames = 0;
-            return;
-        }
-        _frames++;
-        var dt = Time.realtimeSinceStartup - _lastUpdate;
-        if (dt > UpdateInterval && _frames > RequiredFrames)
-        {
-            Fps = _frames / dt;
-            _lastUpdate = Time.realtimeSinceStartup;
-            _frames = 0;
-        }
-    }
+		// FPS Counter
+		if (firstTime) {
+			firstTime = false;
+			lastUpdate = Time.realtimeSinceStartup;
+			frames = 0;
+			return;
+		}
+		frames++;
+		float dt = Time.realtimeSinceStartup - lastUpdate;
+		if (dt > updateInterval && frames > requiredFrames) {
+			fps = (float)frames / dt;
+			lastUpdate = Time.realtimeSinceStartup;
+			frames = 0;
+		}
+	}
 
 
-    private void CaptureLog(string condition, string stacktrace, LogType type)
-    {
-        AddLog(condition, stacktrace, type);
-    }
+	void CaptureLog(string condition, string stacktrace, LogType type)
+	{
+		AddLog(condition, stacktrace, type);
+	}
 
-    private void AddLog(string condition, string stacktrace, LogType type)
-    {
-        var memUsage = 0f;
-        var _condition = "";
-        if (_cachedString.ContainsKey(condition))
-        {
-            _condition = _cachedString[condition];
-        }
-        else
-        {
-            _condition = condition;
-            _cachedString.Add(_condition, _condition);
-            memUsage += string.IsNullOrEmpty(_condition) ? 0 : _condition.Length * sizeof(char);
-            memUsage += IntPtr.Size;
-        }
-        string _stacktrace;
-        if (_cachedString.ContainsKey(stacktrace))
-        {
-            _stacktrace = _cachedString[stacktrace];
-        }
-        else
-        {
-            _stacktrace = stacktrace;
-            _cachedString.Add(_stacktrace, _stacktrace);
-            memUsage += string.IsNullOrEmpty(_stacktrace) ? 0 : _stacktrace.Length * sizeof(char);
-            memUsage += IntPtr.Size;
-        }
+	void AddLog(string condition, string stacktrace, LogType type)
+	{
+		float memUsage = 0f;
+		string _condition = "";
+		if (cachedString.ContainsKey(condition)) {
+			_condition = cachedString[condition];
+		}
+		else {
+			_condition = condition;
+			cachedString.Add(_condition, _condition);
+			memUsage += (string.IsNullOrEmpty(_condition) ? 0 : _condition.Length * sizeof(char));
+			memUsage += System.IntPtr.Size;
+		}
+		string _stacktrace = "";
+		if (cachedString.ContainsKey(stacktrace)) {
+			_stacktrace = cachedString[stacktrace];
+		}
+		else {
+			_stacktrace = stacktrace;
+			cachedString.Add(_stacktrace, _stacktrace);
+			memUsage += (string.IsNullOrEmpty(_stacktrace) ? 0 : _stacktrace.Length * sizeof(char));
+			memUsage += System.IntPtr.Size;
+		}
+		bool newLogAdded = false;
 
-        var newLogAdded = false;
+		addSample();
+		Log log = new Log() { logType = (_LogType)type, condition = _condition, stacktrace = _stacktrace, sampleId = samples.Count - 1 };
+		memUsage += log.GetMemoryUsage();
+		//memUsage += samples.Count * 13 ;
 
-        AddSample();
-        var log = new Log
-        {
-            LogType = (_LogType) type,
-            Condition = _condition,
-            Stacktrace = _stacktrace,
-            SampleId = _samples.Count - 1
-        };
-        memUsage += log.GetMemoryUsage();
-        //memUsage += samples.Count * 13 ;
+		logsMemUsage += memUsage / 1024 / 1024;
 
-        _logsMemUsage += memUsage / 1024 / 1024;
+		if (TotalMemUsage > maxSize) {
+			clear();
+			Debug.Log("Memory Usage Reach" + maxSize + " mb So It is Cleared");
+			return;
+		}
 
-        if (TotalMemUsage > MaxSize)
-        {
-            Clear();
-            Debug.Log("Memory Usage Reach" + MaxSize + " mb So It is Cleared");
-            return;
-        }
+		bool isNew = false;
+		//string key = _condition;// + "_!_" + _stacktrace ;
+		if (logsDic.ContainsKey(_condition, stacktrace)) {
+			isNew = false;
+			logsDic[_condition][stacktrace].count++;
+		}
+		else {
+			isNew = true;
+			collapsedLogs.Add(log);
+			logsDic[_condition][stacktrace] = log;
 
-        var isNew = false;
-        //string key = _condition;// + "_!_" + _stacktrace ;
-        if (_logsDic.ContainsKey(_condition, stacktrace))
-        {
-            _logsDic[_condition][stacktrace].Count++;
-        }
-        else
-        {
-            isNew = true;
-            _collapsedLogs.Add(log);
-            _logsDic[_condition][stacktrace] = log;
+			if (type == LogType.Log)
+				numOfCollapsedLogs++;
+			else if (type == LogType.Warning)
+				numOfCollapsedLogsWarning++;
+			else
+				numOfCollapsedLogsError++;
+		}
 
-            switch (type)
-            {
-                case LogType.Log:
-                    _numOfCollapsedLogs++;
-                    break;
-                case LogType.Warning:
-                    _numOfCollapsedLogsWarning++;
-                    break;
-                default:
-                    _numOfCollapsedLogsError++;
-                    break;
-            }
-        }
-
-        switch (type)
-        {
-            case LogType.Log:
-                _numOfLogs++;
-                break;
-            case LogType.Warning:
-                _numOfLogsWarning++;
-                break;
-            default:
-                _numOfLogsError++;
-                break;
-        }
+		if (type == LogType.Log)
+			numOfLogs++;
+		else if (type == LogType.Warning)
+			numOfLogsWarning++;
+		else
+			numOfLogsError++;
 
 
-        _logs.Add(log);
-        if (!_collapse || isNew)
-        {
-            var skip = log.LogType == _LogType.Log && !_showLog || log.LogType == _LogType.Warning && !_showWarning || log.LogType == _LogType.Error && !_showError || log.LogType == _LogType.Assert && !_showError || log.LogType == _LogType.Exception && !_showError;
+		logs.Add(log);
+		if (!collapse || isNew) {
+			bool skip = false;
+			if (log.logType == _LogType.Log && !showLog)
+				skip = true;
+			if (log.logType == _LogType.Warning && !showWarning)
+				skip = true;
+			if (log.logType == _LogType.Error && !showError)
+				skip = true;
+			if (log.logType == _LogType.Assert && !showError)
+				skip = true;
+			if (log.logType == _LogType.Exception && !showError)
+				skip = true;
 
-            if (!skip)
-                if (string.IsNullOrEmpty(filterText) || log.Condition.ToLower().Contains(filterText.ToLower()))
-                {
-                    _currentLog.Add(log);
-                    newLogAdded = true;
-                }
-        }
+			if (!skip) {
+				if (string.IsNullOrEmpty(filterText) || log.condition.ToLower().Contains(filterText.ToLower())) {
+					currentLog.Add(log);
+					newLogAdded = true;
+				}
+			}
+		}
 
-        if (newLogAdded)
-        {
-            CalculateStartIndex();
-            var totalCount = _currentLog.Count;
-            var totalVisibleCount = (int) (Screen.height * 0.75f / Size.y);
-            if (_startIndex >= totalCount - totalVisibleCount)
-                _scrollPosition.y += Size.y;
-        }
+		if (newLogAdded) {
+			calculateStartIndex();
+			int totalCount = currentLog.Count;
+			int totalVisibleCount = (int)(Screen.height * 0.75f / size.y);
+			if (startIndex >= (totalCount - totalVisibleCount))
+				scrollPosition.y += size.y;
+		}
 
-        try
-        {
-            gameObject.SendMessage("OnLog", log);
-        }
-        catch (Exception e)
-        {
-            Debug.LogException(e);
-        }
-    }
+		try {
+			gameObject.SendMessage("OnLog", log);
+		}
+		catch (System.Exception e) {
+			Debug.LogException(e);
+		}
+	}
 
-    private readonly List<Log> _threadedLogs = new List<Log>();
+	List<Log> threadedLogs = new List<Log>();
+	void CaptureLogThread(string condition, string stacktrace, LogType type)
+	{
+		Log log = new Log() { condition = condition, stacktrace = stacktrace, logType = (_LogType)type };
+		lock (threadedLogs) {
+			threadedLogs.Add(log);
+		}
+	}
 
-    private void CaptureLogThread(string condition, string stacktrace, LogType type)
-    {
-        var log = new Log {Condition = condition, Stacktrace = stacktrace, LogType = (_LogType) type};
-        lock (_threadedLogs)
-        {
-            _threadedLogs.Add(log);
-        }
-    }
-
-    //new scene is loaded
-    private void OnSceneLoaded(Scene arg0, LoadSceneMode loadSceneMode)
-    {
-        if (_clearOnNewSceneLoaded)
-            Clear();
+	//new scene is loaded
+	void OnLevelWasLoaded()
+	{
+		if (clearOnNewSceneLoaded)
+			clear();
 
 #if UNITY_CHANGE3
-        _currentScene = SceneManager.GetActiveScene().name;
-        Debug.Log("Scene " + SceneManager.GetActiveScene().name + " is loaded");
+		currentScene = SceneManager.GetActiveScene().name ;
+		Debug.Log( "Scene " + SceneManager.GetActiveScene().name + " is loaded");
 #else
 		currentScene = Application.loadedLevelName;
 		Debug.Log("Scene " + Application.loadedLevelName + " is loaded");
 #endif
-    }
+	}
 
-    //save user config
-    private void OnApplicationQuit()
-    {
-        PlayerPrefs.SetInt("Reporter_currentView", (int) _currentView);
-        PlayerPrefs.SetInt("Reporter_show", Show ? 1 : 0);
-        PlayerPrefs.SetInt("Reporter_collapse", _collapse ? 1 : 0);
-        PlayerPrefs.SetInt("Reporter_clearOnNewSceneLoaded", _clearOnNewSceneLoaded ? 1 : 0);
-        PlayerPrefs.SetInt("Reporter_showTime", _showTime ? 1 : 0);
-        PlayerPrefs.SetInt("Reporter_showScene", _showScene ? 1 : 0);
-        PlayerPrefs.SetInt("Reporter_showMemory", _showMemory ? 1 : 0);
-        PlayerPrefs.SetInt("Reporter_showFps", _showFps ? 1 : 0);
-        PlayerPrefs.SetInt("Reporter_showGraph", _showGraph ? 1 : 0);
-        PlayerPrefs.SetInt("Reporter_showLog", _showLog ? 1 : 0);
-        PlayerPrefs.SetInt("Reporter_showWarning", _showWarning ? 1 : 0);
-        PlayerPrefs.SetInt("Reporter_showError", _showError ? 1 : 0);
-        PlayerPrefs.SetString("Reporter_filterText", filterText);
-        PlayerPrefs.SetFloat("Reporter_size", Size.x);
+	//save user config
+	void OnApplicationQuit()
+	{
+		PlayerPrefs.SetInt("Reporter_currentView", (int)currentView);
+		PlayerPrefs.SetInt("Reporter_show", (show == true) ? 1 : 0);
+		PlayerPrefs.SetInt("Reporter_collapse", (collapse == true) ? 1 : 0);
+		PlayerPrefs.SetInt("Reporter_clearOnNewSceneLoaded", (clearOnNewSceneLoaded == true) ? 1 : 0);
+		PlayerPrefs.SetInt("Reporter_showTime", (showTime == true) ? 1 : 0);
+		PlayerPrefs.SetInt("Reporter_showScene", (showScene == true) ? 1 : 0);
+		PlayerPrefs.SetInt("Reporter_showMemory", (showMemory == true) ? 1 : 0);
+		PlayerPrefs.SetInt("Reporter_showFps", (showFps == true) ? 1 : 0);
+		PlayerPrefs.SetInt("Reporter_showGraph", (showGraph == true) ? 1 : 0);
+		PlayerPrefs.SetInt("Reporter_showLog", (showLog == true) ? 1 : 0);
+		PlayerPrefs.SetInt("Reporter_showWarning", (showWarning == true) ? 1 : 0);
+		PlayerPrefs.SetInt("Reporter_showError", (showError == true) ? 1 : 0);
+		PlayerPrefs.SetString("Reporter_filterText", filterText);
+		PlayerPrefs.SetFloat("Reporter_size", size.x);
 
-        PlayerPrefs.SetInt("Reporter_showClearOnNewSceneLoadedButton", _showClearOnNewSceneLoadedButton ? 1 : 0);
-        PlayerPrefs.SetInt("Reporter_showTimeButton", _showTimeButton ? 1 : 0);
-        PlayerPrefs.SetInt("Reporter_showSceneButton", _showSceneButton ? 1 : 0);
-        PlayerPrefs.SetInt("Reporter_showMemButton", _showMemButton ? 1 : 0);
-        PlayerPrefs.SetInt("Reporter_showFpsButton", _showFpsButton ? 1 : 0);
-        PlayerPrefs.SetInt("Reporter_showSearchText", _showSearchText ? 1 : 0);
+		PlayerPrefs.SetInt("Reporter_showClearOnNewSceneLoadedButton", (showClearOnNewSceneLoadedButton == true) ? 1 : 0);
+		PlayerPrefs.SetInt("Reporter_showTimeButton", (showTimeButton == true) ? 1 : 0);
+		PlayerPrefs.SetInt("Reporter_showSceneButton", (showSceneButton == true) ? 1 : 0);
+		PlayerPrefs.SetInt("Reporter_showMemButton", (showMemButton == true) ? 1 : 0);
+		PlayerPrefs.SetInt("Reporter_showFpsButton", (showFpsButton == true) ? 1 : 0);
+		PlayerPrefs.SetInt("Reporter_showSearchText", (showSearchText == true) ? 1 : 0);
 
-        PlayerPrefs.Save();
-    }
+		PlayerPrefs.Save();
+	}
 
-    //read build information 
-    private IEnumerator ReadInfo()
-    {
-        const string prefFile = "build_info.txt";
-        var url = prefFile;
+	//read build information 
+	IEnumerator readInfo()
+	{
+		string prefFile = "build_info.txt";
+		string url = prefFile;
 
-        if (prefFile.IndexOf("://", StringComparison.Ordinal) == -1)
-        {
-            var streamingAssetsPath = Application.streamingAssetsPath;
-            if (streamingAssetsPath == "")
-                streamingAssetsPath = Application.dataPath + "/StreamingAssets/";
-            url = Path.Combine(streamingAssetsPath, prefFile);
-        }
+		if (prefFile.IndexOf("://") == -1) {
+			string streamingAssetsPath = Application.streamingAssetsPath;
+			if (streamingAssetsPath == "")
+				streamingAssetsPath = Application.dataPath + "/StreamingAssets/";
+			url = System.IO.Path.Combine(streamingAssetsPath, prefFile);
+		}
 
-        if (Application.platform != RuntimePlatform.WebGLPlayer)
-            if (!url.Contains("://"))
-                url = "file://" + url;
+		if (Application.platform != RuntimePlatform.OSXWebPlayer && Application.platform != RuntimePlatform.WindowsWebPlayer)
+			if (!url.Contains("://"))
+				url = "file://" + url;
 
 
-        // float startTime = Time.realtimeSinceStartup;
-        var www = new WWW(url);
-        yield return www;
+		// float startTime = Time.realtimeSinceStartup;
+		WWW www = new WWW(url);
+		yield return www;
 
-        if (!string.IsNullOrEmpty(www.error))
-            Debug.LogError(www.error);
-        else
-            _buildDate = www.text;
-    }
+		if (!string.IsNullOrEmpty(www.error)) {
+			Debug.LogError(www.error);
+		}
+		else {
+			buildDate = www.text;
+		}
+
+		yield break;
+	}
 }
+
+
