@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Text;
 using UnityEngine;
 
 public static class GameUtilities
@@ -12,13 +13,13 @@ public static class GameUtilities
             Directory.CreateDirectory(directory);
         }
 
-        File.WriteAllText(filepath, contents);
+        File.WriteAllText(filepath, contents, Encoding.UTF8);
 
         Debug.LogFormat("File saved: {0}", filepath);
     }
 
     public static string ReadAllText(string filepath)
     {
-        return File.ReadAllText(filepath);
+        return File.ReadAllText(filepath, Encoding.UTF8);
     }
 }
