@@ -114,7 +114,7 @@ public class MainScreenManager : MonoBehaviour
             Observations = observations
         };
 
-        var tmpAcc = DatabaseManager.Instance.Accounts.Find_Name(playerName);
+        var tmpAcc = DatabaseManager.Instance.Accounts.GetAccount(playerName);
 
         if (account.Name.Equals(tmpAcc?.Name) 
             && account.Birthday.Equals(tmpAcc?.Birthday)
