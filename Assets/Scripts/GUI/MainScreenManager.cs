@@ -93,16 +93,15 @@ public class MainScreenManager : MonoBehaviour
         var obstructive = GameObject.Find("ToggleObstructive").GetComponent<Toggle>().isOn;
         var restrictive = GameObject.Find("ToggleRestrictive").GetComponent<Toggle>().isOn;
 
-        if(normal == obstructive == restrictive == false)
+        if (normal == obstructive == restrictive == false)
         {
             var errMsg = LocalizationManager.Instance?.GetLocalizedValue("error_undefinedDisfunction");
             PanelMessage.SendMessage("ShowError", errMsg);
             return;
         }
 
-        var disfunction = normal
-            ? Disfunctions.Normal
-            : (obstructive ? Disfunctions.Obstructive : Disfunctions.Restrictive);
+        var disfunction = restrictive ? Disfunctions.Restrictive
+            : (obstructive ? Disfunctions.Obstructive : Disfunctions.Normal);
 
         var observations = GameObject.Find("Observations").GetComponent<InputField>().text;
 
@@ -117,7 +116,9 @@ public class MainScreenManager : MonoBehaviour
 
         var tmpAcc = DatabaseManager.Instance.Accounts.Find_Name(playerName);
 
-        if (account.Name.Equals(tmpAcc?.Name) && account.Birthday.Equals(tmpAcc?.Birthday))
+        if (account.Name.Equals(tmpAcc?.Name) 
+            && account.Birthday.Equals(tmpAcc?.Birthday)
+            && account.Disfunction.Equals(tmpAcc?.Disfunction))
         {
             var errMsg = LocalizationManager.Instance?.GetLocalizedValue("error_alreadyExists");
             PanelMessage.SendMessage("ShowError", errMsg);
