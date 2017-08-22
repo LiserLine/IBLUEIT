@@ -5,7 +5,6 @@ public class DatabaseManager : MonoBehaviour
     public static DatabaseManager Instance { get; private set; }
 
     public AccountDb Accounts { get; private set; }
-    public PlayerDb Players { get; private set; }
 
     public void Awake()
     {
@@ -24,9 +23,6 @@ public class DatabaseManager : MonoBehaviour
         Debug.Log("Loading Databases...");
 
         Accounts = new AccountDb();
-        Debug.Log($"{Accounts.AccountList?.Count} accounts loaded.");
-
-        Players = new PlayerDb();
-        Debug.Log($"{0} players loaded.");
+        Debug.Log($"{Accounts.AccountList?.Count} accounts found.");
     }
 }

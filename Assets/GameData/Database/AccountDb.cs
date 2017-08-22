@@ -4,7 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 
-public class AccountDb : IDatabase
+public class AccountDb
 {
     public readonly List<Account> AccountList;
     public bool IsLoaded { get; private set; }
