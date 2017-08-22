@@ -93,7 +93,7 @@ public class MainScreenManager : MonoBehaviour
         var obstructive = GameObject.Find("ToggleObstructive").GetComponent<Toggle>().isOn;
         var restrictive = GameObject.Find("ToggleRestrictive").GetComponent<Toggle>().isOn;
 
-        if(normal == obstructive == restrictive)
+        if(normal == obstructive == restrictive == false)
         {
             var errMsg = LocalizationManager.Instance?.GetLocalizedValue("error_undefinedDisfunction");
             PanelMessage.SendMessage("ShowError", errMsg);
