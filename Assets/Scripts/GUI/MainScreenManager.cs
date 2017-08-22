@@ -82,6 +82,13 @@ public class MainScreenManager : MonoBehaviour
 
         var playerName = GameObject.Find("InputFieldName").GetComponent<InputField>().text;
 
+        if (playerName.Length == 0)
+        {
+            var errMsg = LocalizationManager.Instance?.GetLocalizedValue("error_undefinedPlayerName");
+            PanelMessage.SendMessage("ShowError", errMsg);
+            return;
+        }
+
         var normal = GameObject.Find("ToggleNormal").GetComponent<Toggle>().isOn;
         var obstructive = GameObject.Find("ToggleObstructive").GetComponent<Toggle>().isOn;
         var restrictive = GameObject.Find("ToggleRestrictive").GetComponent<Toggle>().isOn;
