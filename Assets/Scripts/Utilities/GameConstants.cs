@@ -7,9 +7,11 @@ public class GameConstants
 #else
     public static readonly string SaveDataPath = "savedata" + Path.AltDirectorySeparatorChar;
 #endif
+    
+    public static readonly string PacientsPath = SaveDataPath + "pacients" + Path.AltDirectorySeparatorChar;
+
     public static readonly string LocalizationPath = SaveDataPath + "localization.dat";
-    public static readonly string PacientsPath = SaveDataPath + "pacients";
-    public static readonly string SummaryCsvPath = PacientsPath + "_summary.csv";
+    public static readonly string PacientListPath = PacientsPath + "_pacientsList.csv";
 }
 
 public enum Disfunctions

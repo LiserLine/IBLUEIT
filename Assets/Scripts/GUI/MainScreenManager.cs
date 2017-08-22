@@ -105,28 +105,29 @@ public class MainScreenManager : MonoBehaviour
 
         var observations = GameObject.Find("Observations").GetComponent<InputField>().text;
 
-        var account = new Account
+        var plr = new Player
         {
             Name = playerName,
             Birthday = birthday,
             Disfunction = disfunction,
-            Id = (uint)DatabaseManager.Instance.Accounts.AccountList.Count + 1,
+            Id = (uint)DatabaseManager.Instance.Players.PlayerList.Count + 1,
             Observations = observations
         };
 
-        var tmpAcc = DatabaseManager.Instance.Accounts.GetAccount(playerName);
+        var tmpPlr = DatabaseManager.Instance.Players.GetPlayer(playerName);
 
-        if (account.Name.Equals(tmpAcc?.Name) 
-            && account.Birthday.Equals(tmpAcc?.Birthday)
-            && account.Disfunction.Equals(tmpAcc?.Disfunction))
+        if (plr.Name.Equals(tmpPlr?.Name) 
+            && plr.Birthday.Equals(tmpPlr?.Birthday)
+            && plr.Disfunction.Equals(tmpPlr?.Disfunction))
         {
             var errMsg = LocalizationManager.Instance?.GetLocalizedValue("error_alreadyExists");
             PanelMessage.SendMessage("ShowError", errMsg);
             return;
         }
 
-        DatabaseManager.Instance.Accounts.CreateAccount(account);
+        DatabaseManager.Instance.Players.CreatePlayer(plr);
 
-        Debug.Log($"Jogador {playerName} criado!");
+        Debug.Log($"Save for {plr.Name} created!");
+        
     }
 }
