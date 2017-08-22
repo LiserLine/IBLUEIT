@@ -24,9 +24,9 @@ public class AccountDb : IDatabase
 
     public void Load()
     {
-        var csvText = GameConstants.SummaryCsvPath;
+        var csvPath = GameConstants.SummaryCsvPath;
         AccountList.Clear();
-        var grid = CsvParser2.Parse(csvText);
+        var grid = CsvParser2.Parse(csvPath);
         for (var i = 1; i < grid.Length; i++)
         {
             var account = new Account
@@ -63,7 +63,8 @@ public class AccountDb : IDatabase
 
     public void CreateAccount(Account account)
     {
-        throw new NotImplementedException();
+        AccountList.Add(account);
+        Save();
     }
 
     public Account GetAt(int i)

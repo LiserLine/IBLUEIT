@@ -66,22 +66,23 @@ public class MainScreenManager : MonoBehaviour
 
     public void StarNewGame()
     {
-        var playerName = GameObject.Find("InputFieldName").GetComponent<InputField>().text;
-
         var bDay = GameObject.Find("LabelBDay").GetComponent<Text>().text;
         var bMonth = GameObject.Find("LabelBMonth").GetComponent<Text>().text;
         var bYear = GameObject.Find("LabelBYear").GetComponent<Text>().text;
 
+        DateTime birthday;
         try
         {
-            var birthday = new DateTime(int.Parse(bYear), int.Parse(bMonth), int.Parse(bDay));
+            birthday = new DateTime(int.Parse(bYear), int.Parse(bMonth), int.Parse(bDay));
         }
-        catch (ArgumentOutOfRangeException e)
+        catch (ArgumentOutOfRangeException)
         {
             var errMsg = LocalizationManager.Instance.GetLocalizedValue("error_invalidDate");
             PanelMessage.SendMessage("ShowError", errMsg);
             return;
         }
+
+        var playerName = GameObject.Find("InputFieldName").GetComponent<InputField>().text;
 
         var normal = GameObject.Find("ToggleNormal").GetComponent<Toggle>().isOn;
         var obstructive = GameObject.Find("ToggleObstructive").GetComponent<Toggle>().isOn;
@@ -102,11 +103,17 @@ public class MainScreenManager : MonoBehaviour
             Observations = observations
         };
 
-        //ToDo - wrong date?
-        //ToDo - repeated user?
+        var tmpAcc = DatabaseManager.Instance.Accounts.Find_Name(playerName);
+
+        if(account.Equals(tmpAcc))
+        {
+            var errMsg = LocalizationManager.Instance.GetLocalizedValue("error_alreadyExists");
+            PanelMessage.SendMessage("ShowError", errMsg);
+            return;
+        }
 
         DatabaseManager.Instance.Accounts.CreateAccount(account);
 
-        Debug.Log("Jogador criado!");
+        Debug.Log($"Jogador {playerName} criado!");
     }
 }
