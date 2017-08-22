@@ -31,7 +31,17 @@ public class PlayerDb
                 Name = grid[i][1],
                 Birthday = DateTime.ParseExact(grid[i][2], "yyyy-MM-dd", CultureInfo.InvariantCulture),
                 Observations = grid[i][3],
-                Disfunction = (Disfunctions)Enum.Parse(typeof(Disfunctions), grid[i][4])
+                Disfunction = (Disfunctions)Enum.Parse(typeof(Disfunctions), grid[i][4]),
+                InspiratoryPeakFlow = float.Parse(grid[i][5].Replace('.',',')),
+                ExpiratoryPeakFlow = float.Parse(grid[i][6].Replace('.', ',')),
+                InspiratoryFlowTime = float.Parse(grid[i][7].Replace('.', ',')),
+                ExpiratoryFlowTime = float.Parse(grid[i][8].Replace('.', ',')),
+                RespirationFrequency = float.Parse(grid[i][9].Replace('.', ',')),
+                LastPhase = byte.Parse(grid[i][10]),
+                OpenPhases = byte.Parse(grid[i][11]),
+                TotalScore = uint.Parse(grid[i][12]),
+                SessionsDone = uint.Parse(grid[i][13]),
+                TutorialDone = bool.Parse(grid[i][14])
             };
 
             PlayerList.Add(plr);
