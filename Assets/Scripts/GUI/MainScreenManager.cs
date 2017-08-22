@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq.Expressions;
-using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -77,7 +75,7 @@ public class MainScreenManager : MonoBehaviour
         }
         catch (ArgumentOutOfRangeException)
         {
-            var errMsg = LocalizationManager.Instance.GetLocalizedValue("error_invalidDate");
+            var errMsg = LocalizationManager.Instance?.GetLocalizedValue("error_invalidDate");
             PanelMessage.SendMessage("ShowError", errMsg);
             return;
         }
@@ -87,6 +85,13 @@ public class MainScreenManager : MonoBehaviour
         var normal = GameObject.Find("ToggleNormal").GetComponent<Toggle>().isOn;
         var obstructive = GameObject.Find("ToggleObstructive").GetComponent<Toggle>().isOn;
         var restrictive = GameObject.Find("ToggleRestrictive").GetComponent<Toggle>().isOn;
+
+        if(normal == obstructive == restrictive)
+        {
+            var errMsg = LocalizationManager.Instance?.GetLocalizedValue("error_undefinedDisfunction");
+            PanelMessage.SendMessage("ShowError", errMsg);
+            return;
+        }
 
         var disfunction = normal
             ? Disfunctions.Normal
@@ -105,9 +110,9 @@ public class MainScreenManager : MonoBehaviour
 
         var tmpAcc = DatabaseManager.Instance.Accounts.Find_Name(playerName);
 
-        if(account.Equals(tmpAcc))
+        if (account.Name.Equals(tmpAcc?.Name) && account.Birthday.Equals(tmpAcc?.Birthday))
         {
-            var errMsg = LocalizationManager.Instance.GetLocalizedValue("error_alreadyExists");
+            var errMsg = LocalizationManager.Instance?.GetLocalizedValue("error_alreadyExists");
             PanelMessage.SendMessage("ShowError", errMsg);
             return;
         }

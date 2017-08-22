@@ -16,17 +16,13 @@ public class AccountDb : IDatabase
         if (File.Exists(GameConstants.SummaryCsvPath))
             Load();
         else
-        {
             Save();
-            Load();
-        }
     }
 
     public void Load()
     {
-        var csvPath = GameConstants.SummaryCsvPath;
-        AccountList.Clear();
-        var grid = CsvParser2.Parse(csvPath);
+        var csvData = GameUtilities.ReadAllText(GameConstants.SummaryCsvPath);
+        var grid = CsvParser2.Parse(csvData);
         for (var i = 1; i < grid.Length; i++)
         {
             var account = new Account
@@ -35,7 +31,7 @@ public class AccountDb : IDatabase
                 Name = grid[i][1],
                 Birthday = DateTime.ParseExact(grid[i][2], "yyyy-MM-dd", CultureInfo.InvariantCulture),
                 Observations = grid[i][3],
-                Disfunction = (Disfunctions)Enum.Parse(typeof(Disfunctions), grid[i][4].ToLower())
+                Disfunction = (Disfunctions)Enum.Parse(typeof(Disfunctions), grid[i][4])
             };
 
             AccountList.Add(account);
@@ -55,7 +51,7 @@ public class AccountDb : IDatabase
         {
             var account = GetAt(i);
             sb.AppendLine(
-                $"{account.Id};{account.Name};{account.Birthday};{account.Observations};{account.Disfunction}");
+                $"{account.Id};{account.Name};{account.Birthday.ToString("yyyy-MM-dd")};{account.Observations};{account.Disfunction}");
         }
 
         GameUtilities.WriteAllText(GameConstants.SummaryCsvPath, sb.ToString());

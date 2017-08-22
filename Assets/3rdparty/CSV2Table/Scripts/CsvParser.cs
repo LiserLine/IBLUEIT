@@ -4,7 +4,7 @@ using System.Text;
 
 public class CsvParser
 {
-    private const char CommaCharacter = ',';
+    private const char CommaCharacter = ';';
     private const char QuoteCharacter = '"';
 
     #region Nested types
@@ -211,13 +211,13 @@ public class CsvParser
         return allLines.ToArray();
     }
 
-	public static string[][] Parse(string input)
-	{
-		CsvParser parser = new CsvParser();
-		
-		using (StringReader reader = new StringReader(input))
-		{
-			return parser.Parse(reader);
-		}
-	}
+    public static string[][] Parse(string input)
+    {
+        CsvParser parser = new CsvParser();
+
+        using (StringReader reader = new StringReader(input))
+        {
+            return parser.Parse(reader);
+        }
+    }
 }

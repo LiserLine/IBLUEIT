@@ -21,10 +21,12 @@ public class DatabaseManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
-        Debug.Log("Loading AccountDb...");
-        Accounts = new AccountDb();
+        Debug.Log("Loading Databases...");
 
-        Debug.Log("Loading PlayerDb...");
+        Accounts = new AccountDb();
+        Debug.Log($"{Accounts.AccountList?.Count} accounts loaded.");
+
         Players = new PlayerDb();
+        Debug.Log($"{0} players loaded.");
     }
 }

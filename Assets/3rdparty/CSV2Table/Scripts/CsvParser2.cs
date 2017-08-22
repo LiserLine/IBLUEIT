@@ -5,7 +5,7 @@ using System.Text;
 
 public class CsvParser2
 {
-    private const char CommaCharacter = ',';
+    private const char CommaCharacter = ';';
     private const char QuoteCharacter = '"';
 
     #region Nested types
@@ -156,7 +156,7 @@ public class CsvParser2
         }
 
         public int MaxColumnsToRead { get; set; }
-        
+
         public void AddChar(char ch)
         {
             _currentValue.Append(ch);
@@ -227,9 +227,9 @@ public class CsvParser2
             bool isEmpty = true;
             for (int i = allLines.Count - 1; i >= 0; i--)
             {
-// ReSharper disable RedundantAssignment
+                // ReSharper disable RedundantAssignment
                 isEmpty = true;
-// ReSharper restore RedundantAssignment
+                // ReSharper restore RedundantAssignment
                 for (int j = 0; j < allLines[i].Length; j++)
                 {
                     if (!String.IsNullOrEmpty(allLines[i][j]))
@@ -251,13 +251,13 @@ public class CsvParser2
         return allLines.ToArray();
     }
 
-	public static string[][] Parse(string input)
-	{
-		CsvParser parser = new CsvParser();
-		
-		using (StringReader reader = new StringReader(input))
-		{
-			return parser.Parse(reader);
-		}
-	}
+    public static string[][] Parse(string input)
+    {
+        CsvParser parser = new CsvParser();
+
+        using (StringReader reader = new StringReader(input))
+        {
+            return parser.Parse(reader);
+        }
+    }
 }

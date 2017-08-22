@@ -15,7 +15,7 @@ public class GameConstants
     public static readonly string SummaryCsvPath = PacientsPath + Path.AltDirectorySeparatorChar + "_summary.csv";
 }
 
-[Flags]
+
 public enum Disfunctions
 {
     Normal,
