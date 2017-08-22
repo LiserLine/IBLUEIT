@@ -12,8 +12,8 @@ public class Player
     public float InspiratoryFlowTime { get; set; }
     public float ExpiratoryFlowTime { get; set; }
     public float RespirationFrequency { get; set; }
-    public byte LastPhase { get; set; }
-    public byte OpenPhases { get; set; }
+    public byte LastLevel { get; set; }
+    public byte OpenLevel { get; set; }
     public uint TotalScore { get; set; }
     public uint SessionsDone { get; set; }
     public bool TutorialDone { get; set; }

@@ -37,8 +37,8 @@ public class PlayerDb
                 InspiratoryFlowTime = float.Parse(grid[i][7].Replace('.', ',')),
                 ExpiratoryFlowTime = float.Parse(grid[i][8].Replace('.', ',')),
                 RespirationFrequency = float.Parse(grid[i][9].Replace('.', ',')),
-                LastPhase = byte.Parse(grid[i][10]),
-                OpenPhases = byte.Parse(grid[i][11]),
+                LastLevel = byte.Parse(grid[i][10]),
+                OpenLevel = byte.Parse(grid[i][11]),
                 TotalScore = uint.Parse(grid[i][12]),
                 SessionsDone = uint.Parse(grid[i][13]),
                 TutorialDone = bool.Parse(grid[i][14])
@@ -54,7 +54,7 @@ public class PlayerDb
     {
         var firstLine = "Id;Name;Birthday;Observations;Disfunction;" +
                         "InspiratoryPeakFlow;ExpiratoryPeakFlow;InspiratoryFlowTime;ExpiratoryFlowTime;" +
-                        "RespirationFrequency;LastPhase;OpenPhases;TotalScore;SessionsDone;TutorialDone;";
+                        "RespirationFrequency;LastLevel;OpenLevel;TotalScore;SessionsDone;TutorialDone;";
 
         var sb = new StringBuilder();
         sb.AppendLine(firstLine);
@@ -65,7 +65,7 @@ public class PlayerDb
             sb.AppendLine(
                 $"{plr.Id};{plr.Name};{plr.Birthday:yyyy-MM-dd};{plr.Observations};{plr.Disfunction};" + 
                 $"{plr.InspiratoryPeakFlow};{plr.ExpiratoryPeakFlow};{plr.InspiratoryFlowTime};{plr.ExpiratoryFlowTime};" +
-                $"{plr.RespirationFrequency};{plr.LastPhase};{plr.OpenPhases};{plr.TotalScore};{plr.SessionsDone};{plr.TutorialDone};");
+                $"{plr.RespirationFrequency};{plr.LastLevel};{plr.OpenLevel};{plr.TotalScore};{plr.SessionsDone};{plr.TutorialDone};");
         }
 
         GameUtilities.WriteAllText(GameConstants.PacientListPath, sb.ToString());
