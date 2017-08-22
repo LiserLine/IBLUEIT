@@ -61,6 +61,11 @@ public class AccountDb : IDatabase
         GameUtilities.WriteAllText(GameConstants.SummaryCsvPath, sb.ToString());
     }
 
+    public void CreateAccount(Account account)
+    {
+        throw new NotImplementedException();
+    }
+
     public Account GetAt(int i)
     {
         return AccountList.Count <= i ? null : AccountList[i];
