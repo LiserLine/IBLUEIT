@@ -51,7 +51,7 @@ public class AccountDb : IDatabase
         {
             var account = GetAt(i);
             sb.AppendLine(
-                $"{account.Id};{account.Name};{account.Birthday.ToString("yyyy-MM-dd")};{account.Observations};{account.Disfunction}");
+                $"{account.Id};{account.Name};{account.Birthday:yyyy-MM-dd};{account.Observations};{account.Disfunction}");
         }
 
         GameUtilities.WriteAllText(GameConstants.SummaryCsvPath, sb.ToString());
@@ -68,44 +68,18 @@ public class AccountDb : IDatabase
         return AccountList.Count <= i ? null : AccountList[i];
     }
 
-    public Account Find_Id(uint find)
+    public Account GetAccount(uint id)
     {
-        return AccountList.Find(x => x.Id == find);
+        return AccountList.Find(x => x.Id == id);
     }
-    public List<Account> FindAll_Id(uint find)
+
+    public Account GetAccount(string name)
     {
-        return AccountList.FindAll(x => x.Id == find);
+        return AccountList.Find(x => x.Name == name);
     }
-    public Account Find_Name(string find)
+
+    public List<Account> ContainsName(string find)
     {
-        return AccountList.Find(x => x.Name == find);
-    }
-    public List<Account> FindAll_Name(string find)
-    {
-        return AccountList.FindAll(x => x.Name == find);
-    }
-    public Account Find_Birthday(DateTime find)
-    {
-        return AccountList.Find(x => x.Birthday == find);
-    }
-    public List<Account> FindAll_Birthday(DateTime find)
-    {
-        return AccountList.FindAll(x => x.Birthday == find);
-    }
-    public Account Find_Observations(string find)
-    {
-        return AccountList.Find(x => x.Observations == find);
-    }
-    public List<Account> FindAll_Observations(string find)
-    {
-        return AccountList.FindAll(x => x.Observations == find);
-    }
-    public Account Find_Disfunction(Disfunctions find)
-    {
-        return AccountList.Find(x => x.Disfunction == find);
-    }
-    public List<Account> FindAll_Disfunction(Disfunctions find)
-    {
-        return AccountList.FindAll(x => x.Disfunction == find);
+        return AccountList.FindAll(x => x.Name.Contains(find));
     }
 }
