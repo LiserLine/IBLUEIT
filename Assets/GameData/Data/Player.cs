@@ -17,4 +17,9 @@ public class Player
     public uint TotalScore { get; set; }
     public uint SessionsDone { get; set; }
     public bool TutorialDone { get; set; }
+
+    public Player()
+    {
+        
+    }
 }

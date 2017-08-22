@@ -128,6 +128,9 @@ public class MainScreenManager : MonoBehaviour
         DatabaseManager.Instance.Players.CreatePlayer(plr);
 
         Debug.Log($"Save for {plr.Name} created!");
-        
+
+        PanelNewGame.SetActive(false);
+
+        //TODO - Panel3 Load
     }
 }

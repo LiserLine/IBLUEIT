@@ -25,14 +25,16 @@ public class PlayerDb
         var grid = CsvParser2.Parse(csvData);
         for (var i = 1; i < grid.Length; i++)
         {
+            if (string.IsNullOrEmpty(grid[i][0])) continue;
+
             var plr = new Player
             {
                 Id = uint.Parse(grid[i][0]),
                 Name = grid[i][1],
-                Birthday = DateTime.ParseExact(grid[i][2], "yyyy-MM-dd", CultureInfo.InvariantCulture),
+                Birthday = DateTime.ParseExact(grid[i][2], @"dd/MM/yyyy", CultureInfo.InvariantCulture),
                 Observations = grid[i][3],
                 Disfunction = (Disfunctions)Enum.Parse(typeof(Disfunctions), grid[i][4]),
-                InspiratoryPeakFlow = float.Parse(grid[i][5].Replace('.',',')),
+                InspiratoryPeakFlow = float.Parse(grid[i][5].Replace('.', ',')),
                 ExpiratoryPeakFlow = float.Parse(grid[i][6].Replace('.', ',')),
                 InspiratoryFlowTime = float.Parse(grid[i][7].Replace('.', ',')),
                 ExpiratoryFlowTime = float.Parse(grid[i][8].Replace('.', ',')),
@@ -63,7 +65,7 @@ public class PlayerDb
         {
             var plr = GetAt(i);
             sb.AppendLine(
-                $"{plr.Id};{plr.Name};{plr.Birthday:yyyy-MM-dd};{plr.Observations};{plr.Disfunction};" + 
+                $"{plr.Id};{plr.Name};{plr.Birthday:dd/MM/yyyy};{plr.Observations};{plr.Disfunction};" +
                 $"{plr.InspiratoryPeakFlow};{plr.ExpiratoryPeakFlow};{plr.InspiratoryFlowTime};{plr.ExpiratoryFlowTime};" +
                 $"{plr.RespirationFrequency};{plr.LastLevel};{plr.OpenLevel};{plr.TotalScore};{plr.SessionsDone};{plr.TutorialDone};");
         }

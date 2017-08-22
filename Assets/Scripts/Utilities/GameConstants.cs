@@ -12,6 +12,7 @@ public class GameConstants
 
     public static readonly string LocalizationPath = SaveDataPath + "localization.dat";
     public static readonly string PacientListPath = PacientsPath + "_pacientsList.csv";
+    
 }
 
 public enum Disfunctions
