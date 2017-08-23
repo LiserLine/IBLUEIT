@@ -12,7 +12,6 @@ public class PanelMessage : MonoBehaviour
 
     private void Start()
     {
-        gameObject.SetActive(true);
         _originalScale = transform.localScale;
         transform.localScale = Vector3.zero;
     }
@@ -33,14 +32,14 @@ public class PanelMessage : MonoBehaviour
         Debug.LogFormat("ShowError: {0}", msg);
     }
 
-    public void ShowMessage(string msg)
+    public void ShowInfo(string msg)
     {
         MessageIcon.color = Color.white;
         IconText.text = "?";
         IconText.color = Color.black;
 
         ShowPanel(msg);
-        Debug.LogFormat("ShowMessage: {0}", msg);
+        Debug.LogFormat("ShowInfo: {0}", msg);
     }
 
     public void ShowWarning(string msg)

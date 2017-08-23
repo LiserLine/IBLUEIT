@@ -4,15 +4,22 @@ using UnityEngine.UI;
 
 public class MainScreenManager : MonoBehaviour
 {
-    private GameObject _panelMessage;
+    private GameObject _panelMessage, _activePanel;
 
-    public GameObject Panel1, Panel2, PanelNewGame, PanelLoadGame;
+    public GameObject Panel1, Panel2, Panel3, PanelNewGame, PanelLoadGame, PanelPlataform, PanelMinigame;
     public LevelLoader LevelLoader;
     public GameObject[] ObjectsToHide;
 
     private void Start()
     {
         _panelMessage = GameObject.Find("PanelMessage");
+    }
+
+    private void SwitchPanels(ref GameObject newPanel)
+    {
+        _activePanel?.SetActive(false);
+        _activePanel = newPanel;
+        newPanel.SetActive(true);
     }
 
     private void HideObjects()
@@ -31,29 +38,22 @@ public class MainScreenManager : MonoBehaviour
         }
     }
 
-    public void ButtonStartGame()
+    public void GoToPanel2()
     {
         Panel1.SetActive(false);
-        Panel2.SetActive(true);
+        SwitchPanels(ref Panel2);
     }
 
-    public void ButtonNewGame()
+    public void GoToNewGamePanel()
     {
-        Panel2.SetActive(false);
-        PanelNewGame.SetActive(true);
+        SwitchPanels(ref PanelNewGame);
         HideObjects();
     }
 
-    public void ButtonLoadGame()
+    public void GoToLoadGamePanel()
     {
-        Panel2.SetActive(false);
-        PanelLoadGame.SetActive(true);
+        SwitchPanels(ref PanelLoadGame);
         HideObjects();
-    }
-
-    public void ButtonInfoGame()
-    {
-        throw new Exception("Not yet implemented.");
     }
 
     public void ButtonQuitGame()
@@ -61,12 +61,15 @@ public class MainScreenManager : MonoBehaviour
         Application.Quit();
     }
 
-    public void ReturnToNewLoadPanel()
+    public void ReturnToPanel2()
     {
-        PanelNewGame.SetActive(false);
-        PanelLoadGame.SetActive(false);
-        Panel2.SetActive(true);
+        GoToPanel2();
         ShowObjects();
+    }
+
+    public void GoToPanel3()
+    {
+        SwitchPanels(ref Panel3);
     }
 
     public void StarNewGame()
@@ -136,8 +139,32 @@ public class MainScreenManager : MonoBehaviour
 
         Debug.Log($"Save for {plr.Name} created!");
 
-        PanelNewGame.SetActive(false);
+        GameManager.Instance.Player = plr;
+        
+        GoToPanel3();
+    }
 
-        _panelMessage.SendMessage("ShowMessage", "Aqui tem que ir pra tela de escolher jogo/minigame");
+    public void GoToPlataformPanel()
+    {
+        SwitchPanels(ref PanelPlataform);
+    }
+
+    public void GoToMinigamesPanel()
+    {
+        SwitchPanels(ref PanelMinigame);
+    }
+
+    public void ShowPlayerInfo()
+    {
+        var player = GameManager.Instance.Player;
+
+        var plrInfo = $"{player?.Name}" +
+                      $"\nID: {player?.Id}" +
+                      $"\nAniversário: {player?.Birthday:dd/MM/yyyy}" +
+                      $"\nDisfunção: {player?.Disfunction}" +
+                      $"\nTotal Score: {player?.TotalScore}" +
+                      $"\nSessões: {player?.SessionsDone}";
+
+        _panelMessage.SendMessage("ShowInfo", plrInfo);
     }
 }

@@ -8,11 +8,8 @@ public class ButtonSaveSelect : MonoBehaviour
         GameManager.Instance.Player = player;
         Debug.Log($"{player.Name} save loaded.");
 
-        var panelLoadGame = GameObject.Find("PanelLoadGame");
-        panelLoadGame.SetActive(false);
-
-        var panelMessage = GameObject.Find("PanelMessage");
-        panelMessage.SendMessage("ShowMessage", "Daqui pra frente tem que aparecer a tela de escolher plataforma ou minigame");
+        var canvas = GameObject.Find("Canvas");
+        canvas.SendMessage("GoToPanel3");
     }
 }
 
