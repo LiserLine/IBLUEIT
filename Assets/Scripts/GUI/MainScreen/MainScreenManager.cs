@@ -4,9 +4,16 @@ using UnityEngine.UI;
 
 public class MainScreenManager : MonoBehaviour
 {
-    public GameObject PanelMessage, Panel1, Panel2, PanelNewGame, PanelLoadGame;
+    private GameObject _panelMessage;
+
+    public GameObject Panel1, Panel2, PanelNewGame, PanelLoadGame;
     public LevelLoader LevelLoader;
     public GameObject[] ObjectsToHide;
+
+    private void Start()
+    {
+        _panelMessage = GameObject.Find("PanelMessage");
+    }
 
     private void HideObjects()
     {
@@ -76,7 +83,7 @@ public class MainScreenManager : MonoBehaviour
         catch (ArgumentOutOfRangeException)
         {
             var errMsg = LocalizationManager.Instance?.GetLocalizedValue("error_invalidDate");
-            PanelMessage.SendMessage("ShowError", errMsg);
+            _panelMessage.SendMessage("ShowError", errMsg);
             return;
         }
 
@@ -85,7 +92,7 @@ public class MainScreenManager : MonoBehaviour
         if (playerName.Length == 0)
         {
             var errMsg = LocalizationManager.Instance?.GetLocalizedValue("error_undefinedPlayerName");
-            PanelMessage.SendMessage("ShowError", errMsg);
+            _panelMessage.SendMessage("ShowError", errMsg);
             return;
         }
 
@@ -96,7 +103,7 @@ public class MainScreenManager : MonoBehaviour
         if (normal == obstructive == restrictive == false)
         {
             var errMsg = LocalizationManager.Instance?.GetLocalizedValue("error_undefinedDisfunction");
-            PanelMessage.SendMessage("ShowError", errMsg);
+            _panelMessage.SendMessage("ShowError", errMsg);
             return;
         }
 
@@ -121,7 +128,7 @@ public class MainScreenManager : MonoBehaviour
             && plr.Disfunction.Equals(tmpPlr?.Disfunction))
         {
             var errMsg = LocalizationManager.Instance?.GetLocalizedValue("error_alreadyExists");
-            PanelMessage.SendMessage("ShowError", errMsg);
+            _panelMessage.SendMessage("ShowError", errMsg);
             return;
         }
 
@@ -131,6 +138,6 @@ public class MainScreenManager : MonoBehaviour
 
         PanelNewGame.SetActive(false);
 
-        PanelMessage.SendMessage("ShowMessage", "Aqui tem que ir pra tela de escolher jogo/minigame");
+        _panelMessage.SendMessage("ShowMessage", "Aqui tem que ir pra tela de escolher jogo/minigame");
     }
 }

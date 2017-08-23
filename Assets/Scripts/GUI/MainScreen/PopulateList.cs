@@ -14,8 +14,10 @@ public class PopulateList : MonoBehaviour
         foreach (var plr in DatabaseManager.Instance.Players.PlayerList)
         {
             var go = Instantiate(ButtonPrefab);
-            go.transform.parent = this.transform;
+            go.transform.SetParent(this.transform);
             go.transform.localScale = Vector3.one;
+            var plrComponent = go.AddComponent<PlayerHolder>();
+            plrComponent.Player = plr;
 
             var buttonText = go.GetComponentInChildren<Text>();
 
