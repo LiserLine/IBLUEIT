@@ -58,9 +58,6 @@ public class SerialController : MonoBehaviour
     // ------------------------------------------------------------------------
     private void OnDisable()
     {
-        //I Blue It Arduino EndRequest
-        SerialThread.SendMessage("f");
-
         // If there is a user-defined tear-down function, execute it before
         // closing the underlying COM port.
         _userDefinedTearDownFunction?.Invoke();
@@ -69,7 +66,8 @@ public class SerialController : MonoBehaviour
         // unless an Exception happened in the OnEnable(), in which case I've
         // no idea what face Unity will make.
         if (SerialThread != null)
-        {
+        {        
+            SerialThread.SendMessage("f"); // Pitaco Arduino EndRequest
             SerialThread.RequestStop();
             SerialThread = null;
         }
@@ -94,7 +92,7 @@ public class SerialController : MonoBehaviour
             return;
 
         // Read the next message from the queue
-        var message = (string)SerialThread.ReadMessage();
+        var message = (string)SerialThread?.ReadMessage();
         if (message == null)
             return;
 
