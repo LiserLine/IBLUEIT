@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.IO;
 using System.IO.Ports;
 using UnityEngine;
 
@@ -25,59 +27,136 @@ public class SerialConnector : MonoBehaviour
 
         Debug.Log($"{ports.Length} serial ports found.");
 
-        foreach (var port in ports)
+        if (Application.platform == RuntimePlatform.OSXPlayer ||
+            Application.platform == RuntimePlatform.OSXEditor ||
+            Application.platform == RuntimePlatform.OSXDashboardPlayer ||
+            Application.platform == RuntimePlatform.LinuxPlayer)
         {
-            var sp = new SerialPort(port, BaudRate)
+            if (ports.Length == 0)
             {
-                ReadTimeout = 1000,
-                WriteTimeout = 1000,
-                DtrEnable = true,
-                RtsEnable = true,
-                Handshake = Handshake.None
-            };
-
-            try
-            {
-                Debug.Log($"Trying to connect to {sp.PortName}:{sp.BaudRate}...");
-                sp.Open();
-            }
-            catch
-            {
-                sp.Close();
-                Debug.Log($"Failed to connect to {sp.PortName}.");
-                continue;
+                ports = Directory.GetFiles("/dev/");
             }
 
-            while (!_isConnected && _delta < 3f)
+            foreach (var port in ports)
             {
-                _delta += Time.deltaTime;
+                if (!port.StartsWith("/dev/tty.usb") && !port.StartsWith("/dev/ttyUSB")) continue;
 
-                sp.Write("e");
-
-
-                if (sp.ReadExisting().Contains("echo"))
+                var sp = new SerialPort(port, BaudRate)
                 {
-                    _isConnected = true;
+                    ReadTimeout = 1000,
+                    WriteTimeout = 1000,
+                    DtrEnable = true,
+                    RtsEnable = true,
+                    Handshake = Handshake.None
+                };
+
+                try
+                {
+                    Debug.Log($"Trying to connect to {sp.PortName}:{sp.BaudRate}...");
+                    sp.Open();
+                }
+                catch (Exception e)
+                {
+                    sp.Close();
+                    Debug.LogWarning($"Failed to connect to {sp.PortName}." +
+                                     $"\n{e.Message}" +
+                                     $"\n{e.Source}" +
+                                     $"\n{e.StackTrace}");
+                    continue;
                 }
 
-                yield return null;
+                while (!_isConnected && _delta < 3f)
+                {
+                    _delta += Time.deltaTime;
+
+                    sp.Write("e");
+
+
+                    if (sp.ReadExisting().Contains("echo"))
+                    {
+                        _isConnected = true;
+                    }
+
+                    yield return null;
+                }
+
+                _delta = 0f;
+
+                if (!_isConnected)
+                {
+                    Debug.LogWarning("Pitaco not found!");
+                    continue;
+                }
+
+                Debug.Log($"Pitaco found on {sp.PortName}:{sp.BaudRate}");
+                sp.Close();
+
+                _serialController = GetComponent<SerialController>();
+                _serialController.Connect(sp.PortName, sp.BaudRate, 1000, 1);
+
+                break;
             }
-
-            _delta = 0f;
-
-            if (!_isConnected)
+        }
+        else
+        {
+            foreach (var port in ports)
             {
-                Debug.LogWarning("Pitaco not found!");
-                continue;
+                var sp = new SerialPort(port, BaudRate)
+                {
+                    ReadTimeout = 1000,
+                    WriteTimeout = 1000,
+                    DtrEnable = true,
+                    RtsEnable = true,
+                    Handshake = Handshake.None
+                };
+
+                try
+                {
+                    Debug.Log($"Trying to connect to {sp.PortName}:{sp.BaudRate}...");
+                    sp.Open();
+                }
+                catch(Exception e)
+                {
+                    sp.Close();
+                    Debug.LogWarning($"Failed to connect to {sp.PortName}." +
+                                     $"\n{e.Message}" +
+                                     $"\n{e.Source}" +
+                                     $"\n{e.StackTrace}");
+                    continue;
+                }
+
+                while (!_isConnected && _delta < 3f)
+                {
+                    _delta += Time.deltaTime;
+
+                    sp.Write("e");
+
+
+                    if (sp.ReadExisting().Contains("echo"))
+                    {
+                        _isConnected = true;
+                    }
+
+                    yield return null;
+                }
+
+                _delta = 0f;
+
+                if (!_isConnected)
+                {
+                    Debug.LogWarning("Pitaco not found!");
+                    continue;
+                }
+
+                Debug.Log($"Pitaco found on {sp.PortName}:{sp.BaudRate}");
+                sp.Close();
+
+                _serialController = GetComponent<SerialController>();
+                _serialController.Connect(sp.PortName, sp.BaudRate, 1000, 1);
+
+                break;
             }
 
-            Debug.Log($"Pitaco found on {sp.PortName}:{sp.BaudRate}");
-            sp.Close();
-
-            _serialController = GetComponent<SerialController>();
-            _serialController.Connect(sp.PortName, sp.BaudRate, 1000, 1);
-
-            break;
         }
 
         Destroy(this);
