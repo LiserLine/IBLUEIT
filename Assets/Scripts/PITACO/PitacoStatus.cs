@@ -6,13 +6,13 @@ public class PitacoStatus : MonoBehaviour
     public Sprite Disconnected;
     public Sprite Connected;
 
-    private SerialMessengerListener _serialMessengerListener;
+    private SerialListener _serialMessengerListener;
     private Image _image;
 
     private void Start()
     {
         _image = GetComponent<Image>();
-        _serialMessengerListener = GetComponent<SerialMessengerListener>();
+        _serialMessengerListener = GetComponent<SerialListener>();
     }
 
     private void Update()

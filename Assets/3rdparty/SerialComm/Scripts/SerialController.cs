@@ -28,7 +28,7 @@ public class SerialController : MonoBehaviour
 {
     [Tooltip("Reference to an scene object that will receive the events of connection, " +
              "disconnection and the messages from the serial device.")]
-    public SerialMessengerListener MessageListener;
+    public SerialListener MessageListener;
 
     // Constants used to mark the start and end of a connection. There is no
     // way you can generate clashing messages from your serial device, as I
@@ -114,7 +114,7 @@ public class SerialController : MonoBehaviour
     public string ReadSerialMessage()
     {
         // Read the next message from the queue
-        return (string)SerialThread.ReadMessage();
+        return (string)SerialThread?.ReadMessage();
     }
 
     // ------------------------------------------------------------------------
