@@ -71,6 +71,18 @@
         {
             "Key": "error_undefinedDisfunction",
             "Value": "Disfunção indefinida!"
+        },
+        {
+            "Key": "txtObstructive",
+            "Value": "Obstrutivo"
+        },
+        {
+            "Key": "txtRestrictive",
+            "Value": "Restritivo"
+        },
+        {
+            "Key": "txtNormal",
+            "Value": "Normal"
         }
     ]
 }
