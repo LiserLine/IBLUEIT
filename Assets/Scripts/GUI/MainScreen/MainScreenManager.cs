@@ -56,7 +56,19 @@ public class MainScreenManager : MonoBehaviour
         HideObjects();
     }
 
-    public void ButtonQuitGame()
+    public void ShowGameInfo()
+    {
+        var credits = $"I Blue It - v0.0.0 (DEV)" +
+                      $"\n[Renato H. Grimes]" +
+                      $"\nEletrical Engineering Department" +
+                      $"\n[Marcelo da Silva Hounsell]" +
+                      $"\nComputer Science Department" +
+                      $"\n[Santa Catarina State University]" +
+                      $"\nCenter of Technological Sciences";
+        _panelMessage.SendMessage("ShowInfo", credits);
+    }
+
+    public void QuitGame()
     {
         Application.Quit();
     }
@@ -126,7 +138,7 @@ public class MainScreenManager : MonoBehaviour
 
         var tmpPlr = DatabaseManager.Instance.Players.GetPlayer(playerName);
 
-        if (plr.Name.Equals(tmpPlr?.Name) 
+        if (plr.Name.Equals(tmpPlr?.Name)
             && plr.Birthday.Equals(tmpPlr?.Birthday)
             && plr.Disfunction.Equals(tmpPlr?.Disfunction))
         {
@@ -140,7 +152,7 @@ public class MainScreenManager : MonoBehaviour
         Debug.Log($"Save for {plr.Name} created!");
 
         GameManager.Instance.Player = plr;
-        
+
         GoToPanel3();
     }
 
