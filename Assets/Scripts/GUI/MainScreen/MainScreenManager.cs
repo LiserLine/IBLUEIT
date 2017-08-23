@@ -131,6 +131,6 @@ public class MainScreenManager : MonoBehaviour
 
         PanelNewGame.SetActive(false);
 
-        //TODO - Panel3 Load
+        PanelMessage.SendMessage("ShowMessage", "Aqui tem que ir pra tela de escolher jogo/minigame");
     }
 }
