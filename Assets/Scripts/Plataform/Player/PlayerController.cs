@@ -6,7 +6,7 @@
 public class PlayerController : MonoBehaviour
 {
     private Transform _transform;
-    private SerialMessenger _serialMessager;
+    private SerialMessengerListener _serialMessager;
 
     [Header("Settings")]
     public float Sensitivity;
@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         _transform = this.GetComponent<Transform>();
-        _serialMessager = GetComponent<SerialMessenger>();
+        _serialMessager = GetComponent<SerialMessengerListener>();
     }
 
     private void Update()

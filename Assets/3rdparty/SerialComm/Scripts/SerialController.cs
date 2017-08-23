@@ -26,102 +26,58 @@ using System.Threading;
  */
 public class SerialController : MonoBehaviour
 {
-    [Tooltip("Port name with which the SerialPort object will be created.")]
-    public string portName = "COM3";
-
-    [Tooltip("Baud rate that the serial device is using to transmit data.")]
-    public int baudRate = 9600;
-
     [Tooltip("Reference to an scene object that will receive the events of connection, " +
              "disconnection and the messages from the serial device.")]
-    public GameObject messageListener;
-
-    [Tooltip("After an error in the serial communication, or an unsuccessful " +
-             "connect, how many milliseconds we should wait.")]
-    public int reconnectionDelay = 1000;
-
-    [Tooltip("Maximum number of unread data messages in the queue. " +
-             "New messages will be discarded.")]
-    public int maxUnreadMessages = 1;
+    public SerialMessengerListener MessageListener;
 
     // Constants used to mark the start and end of a connection. There is no
     // way you can generate clashing messages from your serial device, as I
     // compare the references of these strings, no their contents. So if you
     // send these same strings from the serial device, upon reconstruction they
     // will have different reference ids.
-    public const string SERIAL_DEVICE_CONNECTED = "__Connected__";
-    public const string SERIAL_DEVICE_DISCONNECTED = "__Disconnected__";
+    public const string SerialDeviceConnected = "__Connected__";
+    public const string SerialDeviceDisconnected = "__Disconnected__";
 
     // Internal reference to the Thread and the object that runs in it.
-    protected Thread thread;
-    protected SerialThreadLines serialThread;
+    protected Thread Thread;
+    protected SerialThreadLines SerialThread;
 
-    // ------------------------------------------------------------------------
-    // Invoked whenever the SerialController gameobject is activated.
-    // It creates a new thread that tries to connect to the serial device
-    // and start reading from it.
-    // ------------------------------------------------------------------------
-    void OnEnable()
+    public void Connect(string portName, int BaudRate, int ReconnectionDelay, int MaxUnreadMessages)
     {
-        #region Pitaco AutoConnection
-
-        foreach (var port in SerialPort.GetPortNames())
-        {
-            var sp = new SerialPort(port, baudRate);
-            try
-            {
-                sp.ReadTimeout = 30;
-                sp.Open();
-
-                Thread.Sleep(1500);
-                sp.Write("e");
-                var lineRead = sp.ReadLine();
-                sp.Close();
-
-                if (lineRead != "echo") continue;
-
-                portName = port;
-                break;
-            }
-            catch { portName = ""; }
-        }
-
-        #endregion
-
-        serialThread = new SerialThreadLines(portName,
-            baudRate,
-            reconnectionDelay,
-            maxUnreadMessages);
-        thread = new Thread(new ThreadStart(serialThread.RunForever));
-        thread.Start();
+        SerialThread = new SerialThreadLines(portName,
+            BaudRate,
+            ReconnectionDelay,
+            MaxUnreadMessages);
+        Thread = new Thread(new ThreadStart(SerialThread.RunForever));
+        Thread.Start();
     }
 
     // ------------------------------------------------------------------------
     // Invoked whenever the SerialController gameobject is deactivated.
     // It stops and destroys the thread that was reading from the serial device.
     // ------------------------------------------------------------------------
-    void OnDisable()
+    private void OnDisable()
     {
         //I Blue It Arduino EndRequest
-        serialThread.SendMessage("f");
+        SerialThread.SendMessage("f");
 
         // If there is a user-defined tear-down function, execute it before
         // closing the underlying COM port.
-        userDefinedTearDownFunction?.Invoke();
+        _userDefinedTearDownFunction?.Invoke();
 
         // The serialThread reference should never be null at this point,
         // unless an Exception happened in the OnEnable(), in which case I've
         // no idea what face Unity will make.
-        if (serialThread != null)
+        if (SerialThread != null)
         {
-            serialThread.RequestStop();
-            serialThread = null;
+            SerialThread.RequestStop();
+            SerialThread = null;
         }
 
         // This reference shouldn't be null at this point anyway.
-        if (thread == null) return;
-        thread.Join();
-        thread = null;
+        if (Thread == null) return;
+        Thread.Join();
+        Thread = null;
     }
 
     // ------------------------------------------------------------------------
@@ -130,25 +86,25 @@ public class SerialController : MonoBehaviour
     // special messages that mark the start/end of the communication with the
     // device.
     // ------------------------------------------------------------------------
-    void Update()
+    private void Update()
     {
         // If the user prefers to poll the messages instead of receiving them
         // via SendMessage, then the message listener should be null.
-        if (messageListener == null)
+        if (MessageListener == null)
             return;
 
         // Read the next message from the queue
-        string message = (string)serialThread.ReadMessage();
+        var message = (string)SerialThread.ReadMessage();
         if (message == null)
             return;
 
         // Check if the message is plain data or a connect/disconnect event.
-        if (ReferenceEquals(message, SERIAL_DEVICE_CONNECTED))
-            messageListener.SendMessage("OnConnectionEvent", true);
-        else if (ReferenceEquals(message, SERIAL_DEVICE_DISCONNECTED))
-            messageListener.SendMessage("OnConnectionEvent", false);
+        if (ReferenceEquals(message, SerialDeviceConnected))
+            MessageListener.SendMessage("OnConnectionEvent", true);
+        else if (ReferenceEquals(message, SerialDeviceDisconnected))
+            MessageListener.SendMessage("OnConnectionEvent", false);
         else
-            messageListener.SendMessage("OnMessageArrived", message);
+            MessageListener.SendMessage("OnMessageArrived", message);
     }
 
     // ------------------------------------------------------------------------
@@ -158,7 +114,7 @@ public class SerialController : MonoBehaviour
     public string ReadSerialMessage()
     {
         // Read the next message from the queue
-        return (string)serialThread.ReadMessage();
+        return (string)SerialThread.ReadMessage();
     }
 
     // ------------------------------------------------------------------------
@@ -167,7 +123,7 @@ public class SerialController : MonoBehaviour
     // ------------------------------------------------------------------------
     public void SendSerialMessage(string message)
     {
-        serialThread.SendMessage(message);
+        SerialThread.SendMessage(message);
     }
 
     // ------------------------------------------------------------------------
@@ -175,10 +131,10 @@ public class SerialController : MonoBehaviour
     // the user can send some tear-down message to the hardware reliably.
     // ------------------------------------------------------------------------
     public delegate void TearDownFunction();
-    private TearDownFunction userDefinedTearDownFunction;
+    private TearDownFunction _userDefinedTearDownFunction;
     public void SetTearDownFunction(TearDownFunction userFunction)
     {
-        this.userDefinedTearDownFunction = userFunction;
+        this._userDefinedTearDownFunction = userFunction;
     }
 
 }

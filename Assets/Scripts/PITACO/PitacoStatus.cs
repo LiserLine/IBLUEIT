@@ -6,24 +6,17 @@ public class PitacoStatus : MonoBehaviour
     public Sprite Disconnected;
     public Sprite Connected;
 
-    private SerialController _serialController;
+    private SerialMessengerListener _serialMessengerListener;
     private Image _image;
 
     private void Start()
     {
-        _serialController = GameObject.Find("SerialController").GetComponent<SerialController>();
         _image = GetComponent<Image>();
+        _serialMessengerListener = GetComponent<SerialMessengerListener>();
     }
 
     private void Update()
     {
-        var message = _serialController.ReadSerialMessage();
-        if (message == null)
-            return;
-
-        if (ReferenceEquals(message, SerialController.SERIAL_DEVICE_CONNECTED))
-            _image.sprite = Connected;
-        else if (ReferenceEquals(message, SerialController.SERIAL_DEVICE_DISCONNECTED))
-            _image.sprite = Disconnected;
+        _image.sprite = _serialMessengerListener.IsConnected ? Connected : Disconnected;
     }
 }
