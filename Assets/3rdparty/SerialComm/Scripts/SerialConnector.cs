@@ -49,7 +49,6 @@ public class SerialConnector : MonoBehaviour
                 sp.Close();
                 Debug.LogWarning($"Failed to connect to {sp.PortName}." +
                                  $"\n{e.Message}" +
-                                 $"\n{e.Source}" +
                                  $"\n{e.StackTrace}");
                 continue;
             }
