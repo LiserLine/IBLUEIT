@@ -83,6 +83,22 @@
         {
             "Key": "txtNormal",
             "Value": "Normal"
+        },
+        {
+            "Key": "txtBDay",
+            "Value": "Aniversário"
+        },
+        {
+            "Key": "txtDisfunction",
+            "Value": "Disfunção"
+        },
+        {
+            "Key": "txtScoreMax",
+            "Value": "Pontuação Total"
+        },
+        {
+            "Key": "txtSessions",
+            "Value": "Sessões"
         }
     ]
 }

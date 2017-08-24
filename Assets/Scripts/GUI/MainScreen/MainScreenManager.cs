@@ -165,12 +165,17 @@ public class MainScreenManager : MonoBehaviour
     {
         var player = GameManager.Instance.Player;
 
+        var txtBDay = LocalizationManager.Instance?.GetLocalizedValue("txtBDay");
+        var txtDisfunction = LocalizationManager.Instance?.GetLocalizedValue("txtDisfunction");
+        var txtScoreMax = LocalizationManager.Instance?.GetLocalizedValue("txtScoreMax");
+        var txtSessions = LocalizationManager.Instance?.GetLocalizedValue("txtSessions");
+
         var plrInfo = $"{player?.Name}" +
                       $"\nID: {player?.Id}" +
-                      $"\nAniversário: {player?.Birthday:dd/MM/yyyy}" +
-                      $"\nDisfunção: {player?.Disfunction}" +
-                      $"\nTotal Score: {player?.TotalScore}" +
-                      $"\nSessões: {player?.SessionsDone}";
+                      $"\n{txtBDay}: {player?.Birthday:dd/MM/yyyy}" +
+                      $"\n{txtDisfunction}: {player?.Disfunction}" +
+                      $"\n{txtScoreMax}: {player?.TotalScore}" +
+                      $"\n{txtSessions}: {player?.SessionsDone}";
 
         PanelMessage.ShowInfo(plrInfo);
     }
