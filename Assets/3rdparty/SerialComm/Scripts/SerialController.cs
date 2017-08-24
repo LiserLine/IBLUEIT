@@ -6,7 +6,6 @@
  * https://creativecommons.org/licenses/by/2.0/
  */
 
-using System.IO.Ports;
 using UnityEngine;
 using System.Threading;
 
@@ -66,7 +65,7 @@ public class SerialController : MonoBehaviour
         // unless an Exception happened in the OnEnable(), in which case I've
         // no idea what face Unity will make.
         if (SerialThread != null)
-        {        
+        {
             SerialThread.SendMessage("f"); // Pitaco Arduino EndRequest
             SerialThread.RequestStop();
             SerialThread = null;
@@ -98,11 +97,11 @@ public class SerialController : MonoBehaviour
 
         // Check if the message is plain data or a connect/disconnect event.
         if (ReferenceEquals(message, SerialDeviceConnected))
-            MessageListener.SendMessage("OnConnectionEvent", true);
+            MessageListener.OnConnectionEvent(true);
         else if (ReferenceEquals(message, SerialDeviceDisconnected))
-            MessageListener.SendMessage("OnConnectionEvent", false);
+            MessageListener.OnConnectionEvent(false);
         else
-            MessageListener.SendMessage("OnMessageArrived", message);
+            MessageListener.OnMessageArrived(message);
     }
 
     // ------------------------------------------------------------------------

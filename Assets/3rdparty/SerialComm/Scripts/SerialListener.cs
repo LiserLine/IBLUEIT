@@ -53,7 +53,7 @@ public class SerialListener : MonoBehaviour
         }
     }
 
-    private void OnConnectionEvent(bool status)
+    public void OnConnectionEvent(bool status)
     {
         if (status)
         {
@@ -65,7 +65,7 @@ public class SerialListener : MonoBehaviour
         }
     }
 
-    private void OnMessageArrived(string message)
+    public void OnMessageArrived(string message)
     {
         MessageReceived = message;
     }
