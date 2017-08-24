@@ -1,1 +1,104 @@
-﻿{"Items":[{"Key":"ButtonStartGame","Value":"Iniciar Jogo"},{"Key":"ButtonNewGame","Value":"Novo Jogo"},{"Key":"ButtonLoadGame","Value":"Carregar Jogo"},{"Key":"ToggleRestrictive","Value":"Restritivo"},{"Key":"LabelName","Value":"Nome:"},{"Key":"LabelDate","Value":"Dia:"},{"Key":"LabelMonth","Value":"Mês:"},{"Key":"LabelYear","Value":"Ano:"},{"Key":"InputFieldNamePlaceholder","Value":"(nome)"},{"Key":"LabelDisfunctions","Value":"Disfunções:"},{"Key":"ToggleNormalLabel","Value":"Normal"},{"Key":"ToggleObstructiveLabel","Value":"Obstrutivo"},{"Key":"ObservationsPlaceholder","Value":"Observações (se houverem)"},{"Key":"LabelObservations","Value":"Observações:"},{"Key":"error_invalidDate","Value":"Data inválida!"}]}
+﻿{
+    "Items": [
+        {
+            "Key": "ButtonStartGame",
+            "Value": "Start Game"
+        },
+        {
+            "Key": "ButtonNewGame",
+            "Value": "New Game"
+        },
+        {
+            "Key": "ButtonLoadGame",
+            "Value": "Load Game"
+        },
+        {
+            "Key": "ToggleRestrictive",
+            "Value": "Restrictive"
+        },
+        {
+            "Key": "LabelName",
+            "Value": "Name:"
+        },
+        {
+            "Key": "LabelDate",
+            "Value": "Day:"
+        },
+        {
+            "Key": "LabelMonth",
+            "Value": "Month:"
+        },
+        {
+            "Key": "LabelYear",
+            "Value": "Year:"
+        },
+        {
+            "Key": "InputFieldNamePlaceholder",
+            "Value": "(name)"
+        },
+        {
+            "Key": "LabelDisfunctions",
+            "Value": "Disfunction:"
+        },
+        {
+            "Key": "ToggleNormalLabel",
+            "Value": "Normal"
+        },
+        {
+            "Key": "ToggleObstructiveLabel",
+            "Value": "Obstructive"
+        },
+        {
+            "Key": "ObservationsPlaceholder",
+            "Value": "Observations (if any)"
+        },
+        {
+            "Key": "LabelObservations",
+            "Value": "Observations:"
+        },
+        {
+            "Key": "error_invalidDate",
+            "Value": "Invalid date!"
+        },
+        {
+            "Key": "error_alreadyExists",
+            "Value": "There is another user with that user info!"
+        },
+        {
+            "Key": "error_undefinedPlayerName",
+            "Value": "Undefined user name!"
+        },
+        {
+            "Key": "error_undefinedDisfunction",
+            "Value": "Undefined disfunction!"
+        },
+        {
+            "Key": "txtObstructive",
+            "Value": "Obstructive"
+        },
+        {
+            "Key": "txtRestrictive",
+            "Value": "Restrictive"
+        },
+        {
+            "Key": "txtNormal",
+            "Value": "Normal"
+        },
+        {
+            "Key": "txtBDay",
+            "Value": "Birthday"
+        },
+        {
+            "Key": "txtDisfunction",
+            "Value": "Disfunction"
+        },
+        {
+            "Key": "txtScoreMax",
+            "Value": "Total Score"
+        },
+        {
+            "Key": "txtSessions",
+            "Value": "Sessions"
+        }
+    ]
+}
