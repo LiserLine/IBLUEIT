@@ -7,9 +7,7 @@ public class ButtonSaveSelect : MonoBehaviour
         var player = GetComponent<PlayerHolder>().Player;
         GameManager.Instance.Player = player;
         Debug.Log($"{player.Name} save loaded.");
-
-        var canvas = GameObject.Find("Canvas");
-        canvas.SendMessage("GoToPanel3");
+        GameObject.Find("Canvas").SendMessage("GoToPanel3");
     }
 }
 

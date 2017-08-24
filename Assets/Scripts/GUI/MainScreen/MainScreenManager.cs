@@ -4,16 +4,12 @@ using UnityEngine.UI;
 
 public class MainScreenManager : MonoBehaviour
 {
-    private GameObject _panelMessage, _activePanel;
+    private GameObject _activePanel;
 
-    public GameObject Panel1, Panel2, Panel3, PanelNewGame, PanelLoadGame, PanelPlataform, PanelMinigame;
+    public GameObject Panel1, Panel2, Panel3, PanelNewGame, PanelLoadGame;
+    public PanelMessage PanelMessage;
     public LevelLoader LevelLoader;
     public GameObject[] ObjectsToHide;
-
-    private void Start()
-    {
-        _panelMessage = GameObject.Find("PanelMessage");
-    }
 
     private void SwitchPanels(ref GameObject newPanel)
     {
@@ -59,13 +55,13 @@ public class MainScreenManager : MonoBehaviour
     public void ShowGameInfo()
     {
         var credits = $"I Blue It - v0.0.0 (DEV)" +
-                      $"\n[Renato H. Grimes]" +
+                      $"\n[Renato Hartmann Grimes]" +
                       $"\nEletrical Engineering Department" +
                       $"\n[Marcelo da Silva Hounsell]" +
                       $"\nComputer Science Department" +
                       $"\n[Santa Catarina State University]" +
                       $"\nCenter of Technological Sciences";
-        _panelMessage.SendMessage("ShowInfo", credits);
+        PanelMessage.ShowInfo(credits);
     }
 
     public void QuitGame()
@@ -98,7 +94,7 @@ public class MainScreenManager : MonoBehaviour
         catch (ArgumentOutOfRangeException)
         {
             var errMsg = LocalizationManager.Instance?.GetLocalizedValue("error_invalidDate");
-            _panelMessage.SendMessage("ShowError", errMsg);
+            PanelMessage.ShowError(errMsg);
             return;
         }
 
@@ -107,7 +103,7 @@ public class MainScreenManager : MonoBehaviour
         if (playerName.Length == 0)
         {
             var errMsg = LocalizationManager.Instance?.GetLocalizedValue("error_undefinedPlayerName");
-            _panelMessage.SendMessage("ShowError", errMsg);
+            PanelMessage.ShowError(errMsg);
             return;
         }
 
@@ -118,7 +114,7 @@ public class MainScreenManager : MonoBehaviour
         if (normal == obstructive == restrictive == false)
         {
             var errMsg = LocalizationManager.Instance?.GetLocalizedValue("error_undefinedDisfunction");
-            _panelMessage.SendMessage("ShowError", errMsg);
+            PanelMessage.ShowError(errMsg);
             return;
         }
 
@@ -143,27 +139,26 @@ public class MainScreenManager : MonoBehaviour
             && plr.Disfunction.Equals(tmpPlr?.Disfunction))
         {
             var errMsg = LocalizationManager.Instance?.GetLocalizedValue("error_alreadyExists");
-            _panelMessage.SendMessage("ShowError", errMsg);
+            PanelMessage.ShowError(errMsg);
             return;
         }
 
         DatabaseManager.Instance.Players.CreatePlayer(plr);
-
         Debug.Log($"Save for {plr.Name} created!");
-
         GameManager.Instance.Player = plr;
-
         GoToPanel3();
     }
 
-    public void GoToPlataformPanel()
+    public void LoadPlataform()
     {
-        SwitchPanels(ref PanelPlataform);
-    }
-
-    public void GoToMinigamesPanel()
-    {
-        SwitchPanels(ref PanelMinigame);
+        if (GameManager.Instance.Player.TutorialDone)
+        {
+            LevelLoader.LoadScene(2);
+        }
+        else
+        {
+            LevelLoader.LoadScene(3);
+        }
     }
 
     public void ShowPlayerInfo()
@@ -177,6 +172,6 @@ public class MainScreenManager : MonoBehaviour
                       $"\nTotal Score: {player?.TotalScore}" +
                       $"\nSessões: {player?.SessionsDone}";
 
-        _panelMessage.SendMessage("ShowInfo", plrInfo);
+        PanelMessage.ShowInfo(plrInfo);
     }
 }
