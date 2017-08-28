@@ -13,7 +13,7 @@ public class PlayerDb
     {
         PlayerList = new List<Player>();
 
-        if (File.Exists(GameConstants.PacientListPath))
+        if (File.Exists(GameConstants.PacientListFile))
             Load();
         else
             Save();
@@ -21,7 +21,7 @@ public class PlayerDb
 
     public void Load()
     {
-        var csvData = GameUtilities.ReadAllText(GameConstants.PacientListPath);
+        var csvData = GameUtilities.ReadAllText(GameConstants.PacientListFile);
         var grid = CsvParser2.Parse(csvData);
         for (var i = 1; i < grid.Length; i++)
         {
@@ -70,7 +70,7 @@ public class PlayerDb
                 $"{plr.RespirationFrequency};{plr.LastLevel};{plr.OpenLevel};{plr.TotalScore};{plr.SessionsDone};{plr.TutorialDone};");
         }
 
-        GameUtilities.WriteAllText(GameConstants.PacientListPath, sb.ToString());
+        GameUtilities.WriteAllText(GameConstants.PacientListFile, sb.ToString());
     }
 
     public void CreatePlayer(Player plr)

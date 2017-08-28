@@ -11,7 +11,7 @@ public class GameConstants
     public static readonly string PacientsPath = SaveDataPath + "pacients" + Path.AltDirectorySeparatorChar;
 
     public static readonly string LocalizationPath = SaveDataPath + "localization.dat";
-    public static readonly string PacientListPath = PacientsPath + "_pacientsList.csv";
+    public static readonly string PacientListFile = PacientsPath + "_pacientsList.csv";
     
     public static string GetSessionsPath(Player plr)
     {
