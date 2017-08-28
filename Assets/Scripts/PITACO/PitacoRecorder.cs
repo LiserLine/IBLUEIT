@@ -7,9 +7,9 @@ public class PitacoRecorder
 {
     public static readonly PitacoRecorder Instance = new PitacoRecorder();
 
-    private StringBuilder _sb;
-    private Stopwatch _stopwatch;
-    private Dictionary<long, float> _incomingDataDictionary;
+    private readonly StringBuilder _sb;
+    private readonly Stopwatch _stopwatch;
+    private readonly Dictionary<long, float> _incomingDataDictionary;
     private DateTime _recordStart, _recordFinish;
 
     public PitacoRecorder()
@@ -50,7 +50,7 @@ public class PitacoRecorder
 
         if (string.IsNullOrEmpty(path))
         {
-            filepath = GameConstants.SaveDataPath + $"test_{_recordStart.ToString("yyyyMMdd_hhmmss")}.csv";
+            filepath = GameConstants.SaveDataPath + $"test_{_recordStart:yyyyMMdd_hhmmss}.csv";
         }
         else
         {
@@ -65,10 +65,10 @@ public class PitacoRecorder
         }
     }
 
-    public void WriteData(Player plr, string path, bool clear = false)
+    public void WriteData(Player plr, Stage stg, string path, bool clear = false)
     {
-        _sb.AppendLine($"PlayerId;PlayerName;PlayerDisfunction;SessionStart;SessionFinish;");
-        _sb.AppendLine($"{plr.Id};{plr.Name};{plr.Disfunction};{_recordStart};{_recordFinish};");
+        _sb.AppendLine("PlayerId;PlayerName;PlayerDisfunction;SessionStart;SessionFinish;StageId;StageSensitivityUsed");
+        _sb.AppendLine($"{plr.Id};{plr.Name};{plr.Disfunction};{_recordStart};{_recordFinish};{stg.Id};{stg.SensitivityUsed}");
         _sb.AppendLine();
 
         WriteData(path, clear);
