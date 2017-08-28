@@ -59,10 +59,10 @@ public class SerialConnector : MonoBehaviour
 
                 sp.Write("e");
 
-
                 if (sp.ReadExisting().Contains("echo"))
                 {
                     _isConnected = true;
+                    break;
                 }
 
                 yield return null;
