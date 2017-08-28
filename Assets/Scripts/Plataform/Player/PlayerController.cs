@@ -42,7 +42,10 @@ public class PlayerController : MonoBehaviour
         try { newYPos = float.Parse(message); }
         catch { return; }
 
-        newYPos -= 416f; //ToDo - Automatic Offset
+        newYPos -= 440f; //ToDo - Automatic Offset
+
+        PitacoRecorder.Instance.Add(newYPos);
+
         newYPos *= (Sensitivity / 10f);
 
         if (Behaviour == ControlBehaviour.Absolute)
@@ -64,6 +67,26 @@ public class PlayerController : MonoBehaviour
     {
         Debug.LogWarningFormat("{0} has been hit!", collision.gameObject.name);
         Destroy(collision.gameObject);
+    }
+
+    private void OnEnable()
+    {
+        PitacoRecorder.Instance.Start();
+    }
+
+    private void OnDisable()
+    {
+        PitacoRecorder.Instance.Stop();
+
+        if (GameManager.Instance?.Player != null)
+        {
+            PitacoRecorder.Instance.WriteData(GameManager.Instance.Player,
+            GameConstants.GetSessionsPath(GameManager.Instance.Player), true);
+        }
+        else
+        {
+            PitacoRecorder.Instance.WriteData();
+        }
     }
 
     #region Toggles
