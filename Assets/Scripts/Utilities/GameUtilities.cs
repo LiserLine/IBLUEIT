@@ -9,9 +9,7 @@ public static class GameUtilities
         var directory = Path.GetDirectoryName(filepath);
 
         if (!Directory.Exists(directory))
-        {
             Directory.CreateDirectory(directory);
-        }
 
         File.WriteAllText(filepath, contents, Encoding.UTF8);
 

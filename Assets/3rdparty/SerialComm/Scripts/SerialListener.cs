@@ -14,7 +14,7 @@ public class SerialListener : MonoBehaviour
 
     private IEnumerator DelayedRequestValues()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
         _serialController.SendSerialMessage("r");
     }
 
@@ -40,29 +40,19 @@ public class SerialListener : MonoBehaviour
             return;
 
         if (ReferenceEquals(message, SerialController.SerialDeviceConnected))
-        {
             OnConnectionEvent(true);
-        }
         else if (ReferenceEquals(message, SerialController.SerialDeviceDisconnected))
-        {
             OnConnectionEvent(false);
-        }
         else
-        {
             OnMessageArrived(message);
-        }
     }
 
     public void OnConnectionEvent(bool status)
     {
         if (status)
-        {
             OnConnection();
-        }
         else
-        {
             OnDisconnection();
-        }
     }
 
     public void OnMessageArrived(string message)
