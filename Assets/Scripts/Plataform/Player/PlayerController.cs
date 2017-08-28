@@ -61,14 +61,17 @@ public class PlayerController : MonoBehaviour
 
         var newYPos = ParseSerialMessage(message);
         newYPos -= _offset;
-        newYPos /= 100f / Sensitivity;
+
+        //PitacoRecorder.Instance.Add(newYPos);
+
+        newYPos *= Sensitivity / 50f;
 
         Vector3 a = _transform.position;
         Vector3 b = Vector3.zero;
         switch (Behaviour)
         {
             case ControlBehaviour.Absolute:
-                b = new Vector3(_transform.position.x, newYPos * 5f, _transform.position.z);
+                b = new Vector3(_transform.position.x, newYPos, _transform.position.z);
                 break;
 
             case ControlBehaviour.Relative:
@@ -79,7 +82,7 @@ public class PlayerController : MonoBehaviour
                 break;
         }
 
-        _transform.position = Vector3.Lerp(a, b, Time.deltaTime * 10f);
+        _transform.position = Vector3.Lerp(a, b, Time.deltaTime * (Sensitivity / 50f * 20f));
 
         PitacoRecorder.Instance.Add(_transform.position.y);
     }
