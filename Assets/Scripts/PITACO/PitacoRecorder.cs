@@ -39,6 +39,8 @@ public class PitacoRecorder
 
     public void WriteData(string path = null, bool clear = false)
     {
+        if (_incomingDataDictionary.Count == 0) return;
+
         UnityEngine.Debug.Log($"Writing {_incomingDataDictionary.Count} values from incoming data dictionary...");
 
         foreach (var pair in _incomingDataDictionary)
