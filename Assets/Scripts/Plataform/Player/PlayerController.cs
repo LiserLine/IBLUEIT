@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -11,13 +12,16 @@ public class PlayerController : MonoBehaviour
     private bool _isUsingOffset;
     private float _offset;
 
+    private const float RelativeLimit = 0.3f;
+
     [Header("Settings")]
+    [Range(1f, 100f)]
     public float Sensitivity;
     public ControlBehaviour Behaviour;
 
     private void Start()
     {
-        _transform = this.GetComponent<Transform>();
+        _transform = GetComponent<Transform>();
         _serialMessager = GetComponent<SerialListener>();
         _isUsingOffset = false;
 
@@ -57,24 +61,27 @@ public class PlayerController : MonoBehaviour
 
         var newYPos = ParseSerialMessage(message);
         newYPos -= _offset;
+        newYPos /= 100f / Sensitivity;
 
-        PitacoRecorder.Instance.Add(newYPos);
-
-        newYPos *= (Sensitivity / 10f);
-
-        if (Behaviour == ControlBehaviour.Absolute)
+        Vector3 a = _transform.position;
+        Vector3 b = Vector3.zero;
+        switch (Behaviour)
         {
-            _transform.position = Vector3.Lerp(_transform.position,
-                new Vector3(_transform.position.x, newYPos, _transform.position.z), Time.deltaTime * 10f);
+            case ControlBehaviour.Absolute:
+                b = new Vector3(_transform.position.x, newYPos * 5f, _transform.position.z);
+                break;
+
+            case ControlBehaviour.Relative:
+                if (newYPos > RelativeLimit || newYPos < -RelativeLimit)
+                {
+                    b = _transform.position + new Vector3(0f, newYPos, 0f);
+                }
+                break;
         }
-        else
-        {
-            if (newYPos > 3f || newYPos < -3f)
-            {
-                //ToDo - relative control
-                _transform.position += new Vector3(0f, newYPos * 0.1f, 0f);
-            }
-        }
+
+        _transform.position = Vector3.Lerp(a, b, Time.deltaTime * 10f);
+
+        PitacoRecorder.Instance.Add(_transform.position.y);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -94,7 +101,7 @@ public class PlayerController : MonoBehaviour
         var plr = GameManager.Instance?.Player;
         if (plr != null)
         {
-            PitacoRecorder.Instance.WriteData(plr, new Stage() { Id = 123456789, SensitivityUsed = Sensitivity }, GameConstants.GetSessionsPath(plr), true);
+            PitacoRecorder.Instance.WriteData(plr, new Stage { Id = 123456789, SensitivityUsed = Sensitivity }, GameConstants.GetSessionsPath(plr), true);
         }
         else
         {
