@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 /// <summary>
 /// This script is set to the player
@@ -7,6 +8,8 @@ public class PlayerController : MonoBehaviour
 {
     private Transform _transform;
     private SerialListener _serialMessager;
+    private bool _isUsingOffset;
+    private float _offset;
 
     [Header("Settings")]
     public float Sensitivity;
@@ -16,6 +19,9 @@ public class PlayerController : MonoBehaviour
     {
         _transform = this.GetComponent<Transform>();
         _serialMessager = GetComponent<SerialListener>();
+        _isUsingOffset = false;
+
+        StartCoroutine(GetOffset());
     }
 
     private void Update()
@@ -29,20 +35,28 @@ public class PlayerController : MonoBehaviour
         SetPlayerPosition();
     }
 
+    private IEnumerator GetOffset()
+    {
+        yield return new WaitForSeconds(3f);
+        var temp = 0f;
+        for (var i = 0; i < 5000; i++)
+        {
+            var message = _serialMessager.MessageReceived;
+            temp += ParseSerialMessage(message);
+        }
+        _offset = temp / 5000f;
+        _isUsingOffset = true;
+    }
 
     private void SetPlayerPosition()
     {
         var message = _serialMessager.MessageReceived;
         if (message.Length < 1) return;
 
-        message = message.Replace('.', ',');
+        if (!_isUsingOffset) return;
 
-        float newYPos;
-
-        try { newYPos = float.Parse(message); }
-        catch { return; }
-
-        newYPos -= 440f; //ToDo - Automatic Offset
+        var newYPos = ParseSerialMessage(message);
+        newYPos -= _offset;
 
         PitacoRecorder.Instance.Add(newYPos);
 
@@ -65,7 +79,6 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.LogWarningFormat("{0} has been hit!", collision.gameObject.name);
         Destroy(collision.gameObject);
     }
 
@@ -78,15 +91,21 @@ public class PlayerController : MonoBehaviour
     {
         PitacoRecorder.Instance.Stop();
 
-        if (GameManager.Instance?.Player != null)
+        var plr = GameManager.Instance?.Player;
+        if (plr != null)
         {
-            PitacoRecorder.Instance.WriteData(GameManager.Instance.Player,
-            GameConstants.GetSessionsPath(GameManager.Instance.Player), true);
+            PitacoRecorder.Instance.WriteData(plr, new Stage() { Id = 123456789, SensitivityUsed = Sensitivity }, GameConstants.GetSessionsPath(plr), true);
         }
         else
         {
             PitacoRecorder.Instance.WriteData();
         }
+    }
+
+    private float ParseSerialMessage(string msg)
+    {
+        msg = msg.Replace('.', ',');
+        return float.Parse(msg);
     }
 
     #region Toggles
@@ -95,13 +114,14 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (Behaviour == ControlBehaviour.Absolute)
+            switch (Behaviour)
             {
-                Behaviour = ControlBehaviour.Relative;
-            }
-            else if (Behaviour == ControlBehaviour.Relative)
-            {
-                Behaviour = ControlBehaviour.Absolute;
+                case ControlBehaviour.Absolute:
+                    Behaviour = ControlBehaviour.Relative;
+                    break;
+                case ControlBehaviour.Relative:
+                    Behaviour = ControlBehaviour.Absolute;
+                    break;
             }
 
             Debug.LogFormat("Behaviour: {0}", Behaviour);
