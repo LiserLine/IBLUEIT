@@ -13,6 +13,10 @@ public class GameConstants
     public static readonly string LocalizationPath = SaveDataPath + "localization.dat";
     public static readonly string PacientListPath = PacientsPath + "_pacientsList.csv";
     
+    public static string GetSessionsPath(Player plr)
+    {
+        return PacientsPath + Path.AltDirectorySeparatorChar + plr.Id;
+    }
 }
 
 public enum Disfunctions
