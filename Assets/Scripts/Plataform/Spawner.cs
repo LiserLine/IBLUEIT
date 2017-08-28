@@ -21,12 +21,14 @@ public class Spawner : MonoBehaviour
         //setar maximos pro jogador
 
         //debug
-        _playerPacient = new Player();
-        _playerPacient.Name = "Dummy";
-        _playerPacient.Id = 1;
-        _playerPacient.ExpiratoryPeakFlow = 5;
-        _playerPacient.InspiratoryPeakFlow = -5;
-        _playerPacient.RespirationFrequency = 10;
+        _playerPacient = new Player
+        {
+            Name = "Dummy",
+            Id = 1,
+            ExpiratoryPeakFlow = 5,
+            InspiratoryPeakFlow = -5,
+            RespirationFrequency = 10
+        };
         _movementSpeed = _playerPacient.RespirationFrequency * 0.3f; //?? should we be using this?                
         _spawnEveryXSec = 5f;
     }
