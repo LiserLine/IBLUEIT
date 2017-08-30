@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 
 public class PitacoRecorder
@@ -69,7 +70,13 @@ public class PitacoRecorder
 
     public void WriteData(Player plr, Stage stg, string path, bool clear = false)
     {
-        _sb.AppendLine("PlayerId;PlayerName;PlayerDisfunction;SessionStart;SessionFinish;StageId;StageSensitivityUsed");
+        var configString = new string[]
+        {
+            "PlayerID", "PlayerName", "PlayerDisfunction", "SessionStart", "SessionFinish", "StageId",
+            "StageSensitivityUsed"
+        };
+        _sb.AppendLine(configString.Aggregate((a, b) => (a + ";" + b)));
+
         _sb.AppendLine($"{plr.Id};{plr.Name};{plr.Disfunction};{_recordStart};{_recordFinish};{stg.Id};{stg.SensitivityUsed}");
         _sb.AppendLine();
 
