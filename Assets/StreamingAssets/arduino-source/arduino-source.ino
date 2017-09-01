@@ -11,7 +11,7 @@ float flowValue = 0;
 
 bool requestEnabled = false;
 
-const int MEAN_CALCULATOR = 140;
+const int MEAN_CALCULATOR = 512;
 
 void setup() 
 {
@@ -27,40 +27,34 @@ void loop()
 		
 		//ECHO
 		if (cmd == 'e' || cmd == 'E') 
-		{
 			Serial.println("echo");
-		}
 		
 		//ENABLE REQUEST
 		else if (cmd == 'r' || cmd == 'R')
-		{
 			requestEnabled = true;
-		}
 
-    //DISABLE REQUEST
-    else if (cmd == 'f' || cmd == 'F')
-    {
-      requestEnabled = false;
-    }
-   
+		//DISABLE REQUEST
+		else if (cmd == 'f' || cmd == 'F')
+			requestEnabled = false;
+
 	}	
 	
 	//ANSWER
 	if(requestEnabled)
 	{
 		diffPressure = 0.0;
+		
 		for(i = 0; i < MEAN_CALCULATOR; i++)
 		{
 			readValue = analogRead(MPX5010DP_PIN);
-			outputVolt = readValue * intToVolt;
-			outputVolt -= MPX5010DP_VOLT_OFFSET;
+			outputVolt = (readValue * intToVolt) - MPX5010DP_VOLT_OFFSET;
 			diffPressure += TransferFunction(outputVolt) * 1000;
 		}
+		
 		diffPressure /= MEAN_CALCULATOR;
-		Serial.println(diffPressure, 4);
-	}
 
-	delay(1); 
+		Serial.println(diffPressure, 3);
+	}
 }
 
 // Ref: Datasheet MXP5010DP
