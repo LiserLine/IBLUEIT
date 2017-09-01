@@ -15,6 +15,7 @@ public class SerialListener : MonoBehaviour
     private IEnumerator DelayedRequestValues()
     {
         yield return new WaitForSeconds(2f);
+        Debug.Log("Requesting values...");
         _serialController.SendSerialMessage("r");
     }
 
