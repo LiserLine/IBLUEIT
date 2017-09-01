@@ -11,12 +11,11 @@ public class PlayerController : MonoBehaviour
     private SerialListener _serialMessager;
     private bool _isUsingOffset;
     private float _offset;
+    private float _cameraOffset;
 
     private const float RelativeLimit = 0.3f;
 
     [Header("Settings")]
-    [Range(1f, 100f)]
-    public float Sensitivity;
     public ControlBehaviour Behaviour;
 
     private void Start()
@@ -24,6 +23,8 @@ public class PlayerController : MonoBehaviour
         _transform = GetComponent<Transform>();
         _serialMessager = GetComponent<SerialListener>();
         _isUsingOffset = false;
+
+        _cameraOffset = Camera.main.orthographicSize - Camera.main.transform.position.y - 1;
 
         StartCoroutine(GetOffset());
     }
@@ -58,34 +59,35 @@ public class PlayerController : MonoBehaviour
         if (message.Length < 1) return;
 
         if (!_isUsingOffset) return;
+        
+        var sensorValue = ParseSerialMessage(message);
+        sensorValue -= _offset;
 
-        var newYPos = ParseSerialMessage(message);
-        newYPos -= _offset;
-
-        //PitacoRecorder.Instance.Add(newYPos);
-
-        newYPos *= Sensitivity / 50f;
+        var ExpiratoryPeakFlow = 265f * 1.75f; //debug
+        var nextPosition = _cameraOffset * sensorValue / ExpiratoryPeakFlow;
 
         Vector3 a = _transform.position;
         Vector3 b = Vector3.zero;
         switch (Behaviour)
         {
             case ControlBehaviour.Absolute:
-                b = new Vector3(_transform.position.x, newYPos, _transform.position.z);
+                b = new Vector3(_transform.position.x, nextPosition, _transform.position.z);
                 break;
 
             case ControlBehaviour.Relative:
-                if (newYPos > RelativeLimit || newYPos < -RelativeLimit)
+                if (!(nextPosition >= -RelativeLimit && nextPosition <= RelativeLimit))
                 {
-                    b = _transform.position + new Vector3(0f, newYPos, 0f);
+                    b = _transform.position + new Vector3(0f, nextPosition);
                 }
                 break;
         }
 
-        _transform.position = Vector3.Lerp(a, b, Time.deltaTime * (Sensitivity / 50f * 20f));
+        _transform.position = Vector3.Lerp(a, b, Time.deltaTime * 5f);
 
-        PitacoRecorder.Instance.Add(_transform.position.y);
+        //PitacoRecorder.Instance.Add(_transform.position.y);
     }
+
+    private static float ParseSerialMessage(string msg) => float.Parse(msg.Replace('.', ','));
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -104,18 +106,12 @@ public class PlayerController : MonoBehaviour
         var plr = GameManager.Instance?.Player;
         if (plr != null)
         {
-            PitacoRecorder.Instance.WriteData(plr, new Stage { Id = 123456789, SensitivityUsed = Sensitivity }, GameConstants.GetSessionsPath(plr), true);
+            PitacoRecorder.Instance.WriteData(plr, new Stage { Id = 123456789, SensitivityUsed = 999f }, GameConstants.GetSessionsPath(plr), true);
         }
         else
         {
             PitacoRecorder.Instance.WriteData();
         }
-    }
-
-    private float ParseSerialMessage(string msg)
-    {
-        msg = msg.Replace('.', ',');
-        return float.Parse(msg);
     }
 
     #region Toggles
