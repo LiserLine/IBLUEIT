@@ -9,7 +9,7 @@ public class SerialListener : MonoBehaviour
 
     public bool IsConnected { get; private set; }
 
-    public string MessageReceived;
+    public string MessageReceived { get; private set; }
     public bool RequestValues = false;
 
     private IEnumerator DelayedRequestValues()
