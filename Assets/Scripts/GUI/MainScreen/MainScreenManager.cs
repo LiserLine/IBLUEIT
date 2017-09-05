@@ -151,14 +151,7 @@ public class MainScreenManager : MonoBehaviour
 
     public void LoadPlataform()
     {
-        if (GameManager.Instance.Player.TutorialDone)
-        {
-            LevelLoader.LoadScene(2);
-        }
-        else
-        {
-            LevelLoader.LoadScene(3);
-        }
+        LevelLoader.LoadScene(GameManager.Instance.Player.TutorialDone ? 2 : 3);
     }
 
     public void ShowPlayerInfo()
