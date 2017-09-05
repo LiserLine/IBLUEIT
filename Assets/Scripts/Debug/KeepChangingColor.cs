@@ -2,21 +2,19 @@
 
 public class KeepChangingColor : MonoBehaviour
 {
-    public float Frequency = 0.5f; //time in seconds
-
     private Material _material;
-    private float _delta = 0.0f;
+    private float _delta;
 
     private void Start()
     {
-        _material = this.GetComponent<Material>();
+        _material = GetComponent<Material>();
     }
 
     private void Update()
     {
         _delta += Time.deltaTime;
 
-        if (!(_delta >= Frequency)) return;
+        if (_delta <= 0.5f) return;
 
         _material.color = new Color(Random.value, Random.value, Random.value, 1.0f); ;
         _delta = 0;
