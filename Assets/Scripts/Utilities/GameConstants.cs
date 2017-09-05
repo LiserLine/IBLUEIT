@@ -17,6 +17,8 @@ public class GameConstants
     {
         return PacientsPath + Path.AltDirectorySeparatorChar + plr.Id;
     }
+
+    public const float UserPowerMercy = 75f/100f;
 }
 
 public enum Disfunctions
