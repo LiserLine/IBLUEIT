@@ -5,8 +5,9 @@ using UnityEngine;
 /// <summary>
 /// This script is set to the player
 /// </summary>
-public class PlayerController : MonoBehaviour
+public class PositionOnSerial : MonoBehaviour
 {
+    private Player _player;
     private Transform _transform;
     private SerialListener _serialMessager;
     private bool _isUsingOffset;
@@ -15,7 +16,6 @@ public class PlayerController : MonoBehaviour
 
     private const float RelativeLimit = 0.3f;
 
-    [Header("Settings")]
     public ControlBehaviour Behaviour;
 
     private void Start()
@@ -23,21 +23,10 @@ public class PlayerController : MonoBehaviour
         _transform = GetComponent<Transform>();
         _serialMessager = GetComponent<SerialListener>();
         _isUsingOffset = false;
-
         _cameraOffset = Camera.main.orthographicSize - Camera.main.transform.position.y - 1;
+        _player = GameManager.Instance?.Player;
 
         StartCoroutine(GetOffset());
-    }
-
-    private void Update()
-    {
-        #region Running Toggles
-
-        ToggleControlBehaviour();
-
-        #endregion
-
-        SetPlayerPosition();
     }
 
     private IEnumerator GetOffset()
@@ -53,18 +42,28 @@ public class PlayerController : MonoBehaviour
         _isUsingOffset = true;
     }
 
-    private void SetPlayerPosition()
+    private void Update()
     {
+        ChangeBehaviourHotkey();
+        PositionOnSerialMessage();
+    }
+
+    private void PositionOnSerialMessage()
+    {
+        if (!_isUsingOffset) return;
+
         var message = _serialMessager.MessageReceived;
         if (message.Length < 1) return;
 
-        if (!_isUsingOffset) return;
-        
-        var sensorValue = ParseSerialMessage(message);
-        sensorValue -= _offset;
+        var sensorValue = ParseSerialMessage(message) - _offset;
 
-        var ExpiratoryPeakFlow = 265f * 1.75f; //debug
+#if UNITY_EDITOR
+        var ExpiratoryPeakFlow = 300f * 0.75f * GameConstants.UserPowerMercy; //debug
         var nextPosition = _cameraOffset * sensorValue / ExpiratoryPeakFlow;
+#else
+        Debug.Log($"UserPowerMercy: {GameConstants.UserPowerMercy}")
+        var nextPosition = (_cameraOffset * sensorValue / _player.ExpiratoryPeakFlow) * GameConstants.UserPowerMercy;
+#endif
 
         Vector3 a = _transform.position;
         Vector3 b = Vector3.zero;
@@ -84,7 +83,7 @@ public class PlayerController : MonoBehaviour
 
         _transform.position = Vector3.Lerp(a, b, Time.deltaTime * 5f);
 
-        //PitacoRecorder.Instance.Add(_transform.position.y);
+        PitacoRecorder.Instance.Add(_transform.position.y);
     }
 
     private static float ParseSerialMessage(string msg) => float.Parse(msg.Replace('.', ','));
@@ -103,20 +102,16 @@ public class PlayerController : MonoBehaviour
     {
         PitacoRecorder.Instance.Stop();
 
-        var plr = GameManager.Instance?.Player;
-        if (plr != null)
-        {
-            PitacoRecorder.Instance.WriteData(plr, new Stage { Id = 123456789, SensitivityUsed = 999f }, GameConstants.GetSessionsPath(plr), true);
-        }
-        else
-        {
-            PitacoRecorder.Instance.WriteData();
-        }
+#if UNITY_EDITOR
+        PitacoRecorder.Instance.WriteData();
+#else
+        var stage = GameManager.Instance.Stage;
+        PitacoRecorder.Instance.WriteData(_player, stage, GameConstants.GetSessionsPath(_player), true);
+#endif
+
     }
 
-    #region Toggles
-
-    private void ToggleControlBehaviour()
+    private void ChangeBehaviourHotkey()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -133,7 +128,4 @@ public class PlayerController : MonoBehaviour
             Debug.LogFormat("Behaviour: {0}", Behaviour);
         }
     }
-
-    #endregion
-
 }
