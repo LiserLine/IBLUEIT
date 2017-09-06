@@ -50,7 +50,7 @@ public class Spawner : MonoBehaviour
     {
         _delta += Time.deltaTime;
 
-        if (!(_delta > _spawnEveryXSec)) return;
+        if (_delta < _spawnEveryXSec) return;
 
         var rnd = Random.Range(0, 2);
         if (rnd == 0) //Obstacles
