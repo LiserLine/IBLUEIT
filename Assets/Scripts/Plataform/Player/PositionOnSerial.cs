@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
-/// <summary>
-/// This script is set to the player
-/// </summary>
 public class PositionOnSerial : MonoBehaviour
 {
 	private Player _player;
@@ -33,7 +29,7 @@ public class PositionOnSerial : MonoBehaviour
 	{
 		while (!_serialMessager.IsConnected)
 			yield return new WaitForSeconds(3f);
-		
+
 		var temp = 0f;
 		for (var i = 0; i < 5000; i++)
 		{
