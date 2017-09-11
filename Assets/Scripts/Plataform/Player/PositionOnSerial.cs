@@ -59,10 +59,10 @@ public class PositionOnSerial : MonoBehaviour
 		var sensorValue = ParseSerialMessage(message) - _offset;
 
 #if UNITY_EDITOR
-		var ExpiratoryPeakFlow = 300f * 0.75f * GameConstants.UserPowerMercy; //debug
+		var ExpiratoryPeakFlow = 300f * GameConstants.UserPowerMercy; //debug
 		var nextPosition = _cameraOffset * sensorValue / ExpiratoryPeakFlow;
 #else
-        Debug.Log($"UserPowerMercy: {GameConstants.UserPowerMercy}")
+        Debug.Log($"UserPowerMercy: {GameConstants.UserPowerMercy}");
         var nextPosition = (_cameraOffset * sensorValue / _player.ExpiratoryPeakFlow) * GameConstants.UserPowerMercy;
 #endif
 
