@@ -70,7 +70,7 @@ public class PitacoRecorder
 
     public void WriteData(Player plr, Stage stg, string path, bool clear = false)
     {
-        var configString = new string[]
+        var configString = new[]
         {
             "PlayerID", "PlayerName", "PlayerDisfunction", "SessionStart", "SessionFinish", "StageId",
             "StageSensitivityUsed"

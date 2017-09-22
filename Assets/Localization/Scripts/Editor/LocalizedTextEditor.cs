@@ -10,13 +10,13 @@ public class LocalizedTextEditor : EditorWindow
     {
         EditorWindow.GetWindow(typeof(LocalizedTextEditor)).Show();
     }
-    
-    private void OnGUI()
+
+    void OnGUI()
     {
         if (LocalizationData != null)
         {
-            SerializedObject serializedObject = new SerializedObject(this);
-            SerializedProperty serializedProperty = serializedObject.FindProperty("LocalizationData");
+            var serializedObject = new SerializedObject(this);
+            var serializedProperty = serializedObject.FindProperty("LocalizationData");
             EditorGUILayout.PropertyField(serializedProperty, true);
             serializedObject.ApplyModifiedProperties();
         }
@@ -39,26 +39,22 @@ public class LocalizedTextEditor : EditorWindow
 
     private void Load()
     {
-        string filePath = EditorUtility.OpenFilePanel("LOAD localization data file...", Application.streamingAssetsPath,
-            "json");
+        var filePath = EditorUtility.OpenFilePanel("LOAD localization data file...", Application.streamingAssetsPath, "json");
 
-        if (!string.IsNullOrEmpty(filePath))
-        {
-            string dataAsJson = GameUtilities.ReadAllText(filePath);
-            LocalizationData = JsonUtility.FromJson<LocalizationData>(dataAsJson);
-        }
+        if (string.IsNullOrEmpty(filePath)) return;
+
+        var dataAsJson = GameUtilities.ReadAllText(filePath);
+        LocalizationData = JsonUtility.FromJson<LocalizationData>(dataAsJson);
     }
 
     private void Save()
     {
-        string filePath = EditorUtility.SaveFilePanel("SAVE localization data file...", Application.streamingAssetsPath,
-            "", "json");
+        var filePath = EditorUtility.SaveFilePanel("SAVE localization data file...", Application.streamingAssetsPath, "", "json");
 
-        if (!string.IsNullOrEmpty(filePath))
-        {
-            string dataAsJson = JsonUtility.ToJson(LocalizationData, true);
-            GameUtilities.WriteAllText(filePath, dataAsJson);
-        }
+        if (string.IsNullOrEmpty(filePath)) return;
+
+        var dataAsJson = JsonUtility.ToJson(LocalizationData, true);
+        GameUtilities.WriteAllText(filePath, dataAsJson);
     }
 
     private void CreateNewData()

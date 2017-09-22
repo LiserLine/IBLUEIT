@@ -70,6 +70,7 @@ public class PlayerDb
                 $"{plr.RespirationFrequency};{plr.LastLevel};{plr.OpenLevel};{plr.TotalScore};{plr.SessionsDone};{plr.TutorialDone};");
         }
 
+        //ToDo - mudar para File append quando arquivo já existir
         GameUtilities.WriteAllText(GameConstants.PacientListFile, sb.ToString());
     }
 
