@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class PopulateList : MonoBehaviour
+public class PopulateSavesList : MonoBehaviour
 {
     public GameObject ButtonPrefab;
 
