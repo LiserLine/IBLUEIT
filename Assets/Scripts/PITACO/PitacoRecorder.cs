@@ -74,7 +74,7 @@ public class PitacoRecorder
             "PlayerID", "PlayerName", "PlayerDisfunction", "SessionStart", "SessionFinish", "StageId"
         };
 
-        _sb.AppendLine(configString.Aggregate((a, b) => (a + ";" + b)));
+        _sb.AppendLine(configString.Aggregate((a, b) => a + ";" + b));
 
         _sb.AppendLine($"{plr.Id};{plr.Name};{plr.Disfunction};{_recordStart};{_recordFinish};{stg.Id};");
         _sb.AppendLine();

@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class FPSDisplay : MonoBehaviour
 {
-    private float _deltaTime = 0.0f;
+    private float _deltaTime;
     private readonly GUIStyle _style = new GUIStyle();
     private Rect _rect;
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 public class PlayerDb
@@ -54,12 +55,12 @@ public class PlayerDb
 
     public void Save()
     {
-        var firstLine = "Id;Name;Birthday;Observations;Disfunction;" +
-                        "InspiratoryPeakFlow;ExpiratoryPeakFlow;InspiratoryFlowTime;ExpiratoryFlowTime;" +
-                        "RespirationFrequency;LastLevel;OpenLevel;TotalScore;SessionsDone;TutorialDone;";
+        var items = new[] { "Id", "Name", "Birthday", "Observations", "Disfunction",
+            "InspiratoryPeakFlow", "ExpiratoryPeakFlow", "InspiratoryFlowTime", "ExpiratoryFlowTime", "RespirationFrequency",
+            "LastLevel", "OpenLevel", "TotalScore", "SessionsDone", "TutorialDone" };
 
         var sb = new StringBuilder();
-        sb.AppendLine(firstLine);
+        sb.AppendLine(items.Aggregate((a, b) => a + ";" + b));
 
         for (var i = 0; i < PlayerList.Count; i++)
         {
