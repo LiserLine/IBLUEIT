@@ -22,7 +22,6 @@ public class PitacoRecorder
 
     public void Start()
     {
-        UnityEngine.Debug.Log($"Pitaco is now recording...");
         _recordStart = DateTime.Now;
         _stopwatch.Start();
     }
@@ -72,12 +71,12 @@ public class PitacoRecorder
     {
         var configString = new[]
         {
-            "PlayerID", "PlayerName", "PlayerDisfunction", "SessionStart", "SessionFinish", "StageId",
-            "StageSensitivityUsed"
+            "PlayerID", "PlayerName", "PlayerDisfunction", "SessionStart", "SessionFinish", "StageId"
         };
+
         _sb.AppendLine(configString.Aggregate((a, b) => (a + ";" + b)));
 
-        _sb.AppendLine($"{plr.Id};{plr.Name};{plr.Disfunction};{_recordStart};{_recordFinish};{stg.Id};{stg.SensitivityUsed}");
+        _sb.AppendLine($"{plr.Id};{plr.Name};{plr.Disfunction};{_recordStart};{_recordFinish};{stg.Id};");
         _sb.AppendLine();
 
         WriteData(path, clear);
