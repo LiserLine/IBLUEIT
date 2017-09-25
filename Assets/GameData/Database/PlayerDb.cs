@@ -7,12 +7,22 @@ using System.Text;
 
 public class PlayerDb
 {
-    public readonly List<Player> PlayerList;
+    private readonly List<Player> _playerList;
+
+    public List<Player> PlayerList
+    {
+        get
+        {
+            if (!IsLoaded) Load();
+            return _playerList;
+        }
+    }
+
     public bool IsLoaded { get; private set; }
 
     public PlayerDb()
     {
-        PlayerList = new List<Player>();
+        _playerList = new List<Player>();
 
         if (File.Exists(GameConstants.PacientListFile))
             Load();
@@ -47,7 +57,7 @@ public class PlayerDb
                 TutorialDone = bool.Parse(grid[i][14])
             };
 
-            PlayerList.Add(plr);
+            _playerList.Add(plr);
         }
 
         IsLoaded = true;
@@ -62,7 +72,7 @@ public class PlayerDb
         var sb = new StringBuilder();
         sb.AppendLine(items.Aggregate((a, b) => a + ";" + b));
 
-        for (var i = 0; i < PlayerList.Count; i++)
+        for (var i = 0; i < _playerList.Count; i++)
         {
             var plr = GetAt(i);
             sb.AppendLine(
@@ -77,27 +87,28 @@ public class PlayerDb
 
     public void CreatePlayer(Player plr)
     {
-        PlayerList.Add(plr);
+        _playerList.Add(plr);
         Save();
+        IsLoaded = false;
     }
 
     public Player GetAt(int i)
     {
-        return PlayerList.Count <= i ? null : PlayerList[i];
+        return _playerList.Count <= i ? null : _playerList[i];
     }
 
     public Player GetPlayer(uint id)
     {
-        return PlayerList.Find(x => x.Id == id);
+        return _playerList.Find(x => x.Id == id);
     }
 
     public Player GetPlayer(string name)
     {
-        return PlayerList.Find(x => x.Name == name);
+        return _playerList.Find(x => x.Name == name);
     }
 
     public List<Player> ContainsName(string find)
     {
-        return PlayerList.FindAll(x => x.Name.Contains(find));
+        return _playerList.FindAll(x => x.Name.Contains(find));
     }
 }
