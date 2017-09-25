@@ -16,6 +16,7 @@ public class PopulateList : MonoBehaviour
             var go = Instantiate(ButtonPrefab);
             go.transform.SetParent(this.transform);
             go.transform.localScale = Vector3.one;
+
             var plrComponent = go.AddComponent<PlayerHolder>();
             plrComponent.Player = plr;
 
