@@ -11,6 +11,7 @@ public class LocalizationManager : MonoBehaviour
     private Dictionary<string, string> _localizedText;
 
     public bool IsReady { get; private set; }
+    public bool IsLoaded { get; private set; }
 
     private void Awake()
     {
@@ -24,11 +25,17 @@ public class LocalizationManager : MonoBehaviour
             return;
         }
 
+#if UNITY_EDITOR
+        LoadLocalizationData("localizationData_brazilian.json");
+#endif
+
         DontDestroyOnLoad(gameObject);
     }
 
     public void LoadLocalizationData(string filename)
     {
+        if (IsLoaded) return;
+
         _localizedText = new Dictionary<string, string>();
 
         var filepath = Application.streamingAssetsPath + Path.AltDirectorySeparatorChar + filename;
@@ -67,6 +74,7 @@ public class LocalizationManager : MonoBehaviour
 
         Debug.LogFormat("LocalizationManager loaded {0} items.", _localizedText.Count);
 
+        IsLoaded = true;
         IsReady = true;
     }
 
