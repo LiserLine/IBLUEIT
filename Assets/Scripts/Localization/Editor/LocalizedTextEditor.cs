@@ -5,20 +5,26 @@ public class LocalizedTextEditor : EditorWindow
 {
     public LocalizationData LocalizationData;
 
+    private Vector2 scrollPos;
+
     [MenuItem("Window/Localized Text Editor")]
     private static void Init()
     {
-        EditorWindow.GetWindow(typeof(LocalizedTextEditor)).Show();
+        GetWindow(typeof(LocalizedTextEditor)).Show();
     }
 
     void OnGUI()
     {
         if (LocalizationData != null)
         {
+            scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
+
             var serializedObject = new SerializedObject(this);
             var serializedProperty = serializedObject.FindProperty("LocalizationData");
             EditorGUILayout.PropertyField(serializedProperty, true);
             serializedObject.ApplyModifiedProperties();
+
+            EditorGUILayout.EndScrollView();
         }
 
         if (GUILayout.Button("Save data"))
