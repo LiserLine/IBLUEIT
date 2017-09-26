@@ -38,10 +38,14 @@ PlayerSettings:
     width: 1
     height: 1
   m_SplashScreenLogos:
+  - logo: {fileID: 21300000, guid: 1984763fb86067146a6ef43f50349dfe, type: 3}
+    duration: 2
   - logo: {fileID: 21300000, guid: df354532769cbb44f847daedb9a8017b, type: 3}
-    duration: 2.5
+    duration: 2
+  - logo: {fileID: 21300000, guid: cff78e519fd3f774fa13c68e100374ea, type: 3}
+    duration: 2
   - logo: {fileID: 21300000, guid: e009aeb65949c854797bad84db71abc6, type: 3}
-    duration: 2.5
+    duration: 2
   m_SplashScreenBackgroundLandscape: {fileID: 0}
   m_SplashScreenBackgroundPortrait: {fileID: 0}
   m_VirtualRealitySplashScreen: {fileID: 0}
