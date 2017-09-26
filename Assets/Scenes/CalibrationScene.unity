@@ -108,6 +108,46 @@ NavMeshSettings:
     tileSize: 256
     accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &72752663
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 72752665}
+  - component: {fileID: 72752664}
+  m_Layer: 0
+  m_Name: Debug_LocalizationManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &72752664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 72752663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec16a20112688e245a36b46c5476ec33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &72752665
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 72752663}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &216915301
 GameObject:
   m_ObjectHideFlags: 0
@@ -497,6 +537,7 @@ GameObject:
   - component: {fileID: 1235727116}
   - component: {fileID: 1235727115}
   - component: {fileID: 1235727114}
+  - component: {fileID: 1235727117}
   m_Layer: 0
   m_Name: EnterButton
   m_TagString: Untagged
@@ -576,6 +617,19 @@ Transform:
   m_Father: {fileID: 747879507}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1235727117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1235727113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efd885ad85782e44e8aba3e47e33f70e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blackScreenText: {fileID: 0}
+  balloonText: {fileID: 0}
 --- !u!1 &1418542344
 GameObject:
   m_ObjectHideFlags: 0
@@ -996,21 +1050,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2024984412}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfcbb24745884414ebfa8ba609054e63, type: 3}
+  m_Script: {fileID: 11500000, guid: efd885ad85782e44e8aba3e47e33f70e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Panel1: {fileID: 0}
-  Panel2: {fileID: 0}
-  Panel3: {fileID: 0}
-  PanelNewGame: {fileID: 0}
-  PanelLoadGame: {fileID: 0}
-  PanelMessage: {fileID: 0}
-  LevelLoader: {fileID: 0}
-  ObjectsToHide:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  blackScreenText: {fileID: 0}
+  balloonText: {fileID: 0}
 --- !u!1 &2131313418
 GameObject:
   m_ObjectHideFlags: 0
