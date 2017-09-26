@@ -356,13 +356,14 @@ GameObject:
   - component: {fileID: 747879507}
   - component: {fileID: 747879509}
   - component: {fileID: 747879508}
+  - component: {fileID: 747879510}
   m_Layer: 5
   m_Name: FirstTimePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &747879507
 RectTransform:
   m_ObjectHideFlags: 0
@@ -416,6 +417,38 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 747879506}
+--- !u!23 &747879510
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 747879506}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 10100, guid: 0000000000000000e000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
 --- !u!1 &788013733
 GameObject:
   m_ObjectHideFlags: 0
@@ -537,14 +570,13 @@ GameObject:
   - component: {fileID: 1235727116}
   - component: {fileID: 1235727115}
   - component: {fileID: 1235727114}
-  - component: {fileID: 1235727117}
   m_Layer: 0
   m_Name: EnterButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!95 &1235727114
 Animator:
   serializedVersion: 3
@@ -617,19 +649,6 @@ Transform:
   m_Father: {fileID: 747879507}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1235727117
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1235727113}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: efd885ad85782e44e8aba3e47e33f70e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  blackScreenText: {fileID: 0}
-  balloonText: {fileID: 0}
 --- !u!1 &1418542344
 GameObject:
   m_ObjectHideFlags: 0
@@ -786,7 +805,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Ol\xE1, bem-vindo ao I Blue It!\n"
+  m_Text: 
 --- !u!222 &1658397159
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1053,8 +1072,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efd885ad85782e44e8aba3e47e33f70e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blackScreenText: {fileID: 0}
+  blackScreenText: {fileID: 1658397158}
   balloonText: {fileID: 0}
+  enterButton: {fileID: 1235727113}
+  firstTimePanel: {fileID: 747879506}
 --- !u!1 &2131313418
 GameObject:
   m_ObjectHideFlags: 0
