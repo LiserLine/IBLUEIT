@@ -5,14 +5,14 @@ public class SceneUtilities : MonoBehaviour
 {
     private void Update()
     {
-        OnEscape();
+        EscapeHotkey();
     }
 
-    private void OnEscape()
+    private void EscapeHotkey()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(1);
         }
     }
 }
