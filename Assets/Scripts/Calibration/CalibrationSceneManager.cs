@@ -6,7 +6,7 @@ public class CalibrationSceneManager : MonoBehaviour
 {
     public Text firstTimeText, balloonText;
     public GameObject enterButton, firstTimePanel, tutoDude, tutoClock, textBalloon;
-
+    public LevelLoader levelLoader;
     private bool waitingMessage;
     private int msgCount = 1;
 
@@ -39,11 +39,9 @@ public class CalibrationSceneManager : MonoBehaviour
         {
             case 1:
                 firstTimeText.text = LocalizationManager.Instance.GetLocalizedValue("tutorialClock01");
-                enterButton.SetActive(true);
                 break;
             case 2:
                 firstTimeText.text = LocalizationManager.Instance.GetLocalizedValue("tutorialClock02");
-                enterButton.SetActive(true);
                 break;
             case 3:
                 firstTimePanel.GetComponent<Image>().CrossFadeAlpha(0, 1, false);
@@ -81,7 +79,7 @@ public class CalibrationSceneManager : MonoBehaviour
                 balloonText.text = LocalizationManager.Instance.GetLocalizedValue("tutorialClock12");
                 break;
             case 13:
-                firstTimePanel.GetComponent<Image>().CrossFadeAlpha(255, 1, false);
+                levelLoader.LoadScene(2);
                 break;
             default:
                 firstTimeText.text = "";
@@ -90,6 +88,7 @@ public class CalibrationSceneManager : MonoBehaviour
         }
 
         tutoDude.GetComponent<Animator>().SetBool("Talking", true);
+        enterButton.SetActive(true);
 
         msgCount++;
         waitingMessage = false;
