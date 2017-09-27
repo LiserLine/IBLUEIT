@@ -11,7 +11,7 @@ float flowValue = 0;
 
 bool requestEnabled = false;
 
-const int MEAN_CALCULATOR = 255;
+const int MEAN_CALCULATOR = 256;
 
 void setup() 
 {

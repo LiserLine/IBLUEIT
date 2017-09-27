@@ -30,6 +30,6 @@ public class ClockArrowSpin : MonoBehaviour
 
         var snsrVal = GameConstants.ParseSerialMessage(msg) - SerialGetOffset.Offset;
 
-        this.transform.Rotate(Vector3.forward, snsrVal * threshold);
+        this.transform.Rotate(Vector3.back, snsrVal * threshold);
     }
 }
