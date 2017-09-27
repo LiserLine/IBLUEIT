@@ -2,17 +2,17 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CalibrationCanvasManager : MonoBehaviour
+public class CalibrationSceneManager : MonoBehaviour
 {
-    public Text blackScreenText, balloonText;
-    public GameObject enterButton, firstTimePanel;
+    public Text firstTimeText, balloonText;
+    public GameObject enterButton, firstTimePanel, tutoDude, tutoClock, textBalloon;
 
     private bool waitingMessage;
     private int msgCount = 1;
 
     void Start()
     {
-        blackScreenText.text = LocalizationManager.Instance.GetLocalizedValue("tutorialClock00");
+        firstTimeText.text = LocalizationManager.Instance.GetLocalizedValue("tutorialClock00");
         enterButton.SetActive(true);
     }
 
@@ -28,23 +28,29 @@ public class CalibrationCanvasManager : MonoBehaviour
     IEnumerator ScreenFlow()
     {
         waitingMessage = true;
-        blackScreenText.text = "";
+        firstTimeText.text = "";
+        balloonText.text = "";
         enterButton.SetActive(false);
+        tutoDude.GetComponent<Animator>().SetBool("Talking", false);
 
         yield return new WaitForSeconds(1);
 
         switch (msgCount)
         {
             case 1:
-                blackScreenText.text = LocalizationManager.Instance.GetLocalizedValue("tutorialClock01");
+                firstTimeText.text = LocalizationManager.Instance.GetLocalizedValue("tutorialClock01");
+                enterButton.SetActive(true);
                 break;
             case 2:
-                blackScreenText.text = LocalizationManager.Instance.GetLocalizedValue("tutorialClock02");
+                firstTimeText.text = LocalizationManager.Instance.GetLocalizedValue("tutorialClock02");
+                enterButton.SetActive(true);
                 break;
             case 3:
                 firstTimePanel.GetComponent<Image>().CrossFadeAlpha(0, 1, false);
-                yield return new WaitForSeconds(1);
-
+                yield return new WaitForSeconds(1.5f);
+                tutoClock.SetActive(true);
+                tutoDude.SetActive(true);
+                textBalloon.SetActive(true);
                 balloonText.text = LocalizationManager.Instance.GetLocalizedValue("tutorialClock03");
                 break;
             case 4:
@@ -74,12 +80,17 @@ public class CalibrationCanvasManager : MonoBehaviour
             case 12:
                 balloonText.text = LocalizationManager.Instance.GetLocalizedValue("tutorialClock12");
                 break;
+            case 13:
+                firstTimePanel.GetComponent<Image>().CrossFadeAlpha(255, 1, false);
+                break;
             default:
+                firstTimeText.text = "";
                 balloonText.text = "";
                 break;
         }
 
-        enterButton.SetActive(true);
+        tutoDude.GetComponent<Animator>().SetBool("Talking", true);
+
         msgCount++;
         waitingMessage = false;
     }
