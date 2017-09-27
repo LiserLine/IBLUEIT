@@ -441,7 +441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e14b84ee0fb72b48bd2fa18e987e731, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  threshold: 0.5
+  threshold: 1
 --- !u!1001 &670009819
 Prefab:
   m_ObjectHideFlags: 0
