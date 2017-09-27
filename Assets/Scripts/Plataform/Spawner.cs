@@ -13,7 +13,7 @@ public class Spawner : MonoBehaviour
     public GameObject[] Obstacles = new GameObject[1];
     public GameObject[] Items = new GameObject[1];
 
-    private void Start()
+    private void Awake()
     {
         _transform = this.GetComponent<Transform>();
 

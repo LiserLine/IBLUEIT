@@ -10,7 +10,7 @@ public class CameraFollow : MonoBehaviour
     public Transform ObjectToFollow;
 
     // Use this for initialization
-    private void Start()
+    private void Awake()
     {
         _transform = this.GetComponent<Transform>();
     }

@@ -10,7 +10,7 @@ public class FPSDisplay : MonoBehaviour
     private readonly GUIStyle _style = new GUIStyle();
     private Rect _rect;
 
-    private void Start()
+    private void Awake()
     {
         int w = Screen.width, h = Screen.height;
         _style.alignment = TextAnchor.UpperLeft;

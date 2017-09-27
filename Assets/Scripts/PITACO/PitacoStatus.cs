@@ -9,7 +9,7 @@ public class PitacoStatus : MonoBehaviour
     private SerialListener _serialMessengerListener;
     private Image _image;
 
-    private void Start()
+    private void Awake()
     {
         _image = GetComponent<Image>();
         _serialMessengerListener = GetComponent<SerialListener>();
