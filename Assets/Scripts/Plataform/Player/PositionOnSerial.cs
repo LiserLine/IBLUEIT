@@ -10,6 +10,7 @@ public class PositionOnSerial : MonoBehaviour
     private const float RelativeLimit = 0.3f;
 
     public ControlBehaviour Behaviour;
+    public int Threshold = 1;
 
     private void Awake()
     {
@@ -65,12 +66,12 @@ public class PositionOnSerial : MonoBehaviour
     private void OnSerialMessageReceived(string msg)
     {
         if (!SerialGetOffset.IsUsingOffset) return;
-        
+
         if (msg.Length < 1) return;
 
         var sensorValue = GameConstants.ParseSerialMessage(msg) - SerialGetOffset.Offset;
 
-        sensorValue = (sensorValue < -1f || sensorValue > 1f) ? sensorValue : 0f; //ToDO threshold
+        sensorValue = (sensorValue < -Threshold || sensorValue > Threshold) ? sensorValue : 0f;
 
 #if UNITY_EDITOR
         var expiratoryPeakFlow = 300f; //debug
