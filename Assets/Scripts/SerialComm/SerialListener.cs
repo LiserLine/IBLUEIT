@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(SerialGetOffset))]
 public class SerialListener : MonoBehaviour
 {
     private SerialController _serialController;
@@ -9,7 +10,10 @@ public class SerialListener : MonoBehaviour
 
     public bool IsConnected { get; private set; }
 
-    public string MessageReceived { get; private set; }
+    public delegate void SerialMessageHandler(string messageArrived);
+    public event SerialMessageHandler OnSerialMessageReceived;
+
+    //public string MessageReceived { get; private set; }
     public bool RequestValues = false;
 
     private IEnumerator DelayedRequestValues()
@@ -19,7 +23,7 @@ public class SerialListener : MonoBehaviour
         _serialController.SendSerialMessage("r");
     }
 
-    private void Start()
+    private void Awake()
     {
         _serialController = GameObject.Find("SerialController").GetComponent<SerialController>();
     }
@@ -58,7 +62,7 @@ public class SerialListener : MonoBehaviour
 
     public void OnMessageArrived(string message)
     {
-        MessageReceived = message;
+        OnSerialMessageReceived?.Invoke(message);
     }
 
     private void OnConnection()
