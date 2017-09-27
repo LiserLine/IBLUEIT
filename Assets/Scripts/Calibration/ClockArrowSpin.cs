@@ -4,7 +4,7 @@ public class ClockArrowSpin : MonoBehaviour
 {
     private SerialListener serialListener;
 
-    [Range(0f,1f)]
+    [Range(0f, 1f)]
     public float threshold;
 
     void Awake()
@@ -30,6 +30,8 @@ public class ClockArrowSpin : MonoBehaviour
 
         var snsrVal = GameConstants.ParseSerialMessage(msg) - SerialGetOffset.Offset;
 
-        this.transform.Rotate(Vector3.back, snsrVal * threshold);
+        snsrVal = snsrVal < -threshold || snsrVal > threshold ? snsrVal : 0f;
+
+        this.transform.Rotate(Vector3.back, snsrVal);
     }
 }
