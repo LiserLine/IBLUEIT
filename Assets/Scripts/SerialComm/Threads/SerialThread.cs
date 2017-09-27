@@ -6,10 +6,6 @@
  * https://creativecommons.org/licenses/by/2.0/
  */
 
-using UnityEngine;
-
-using System.IO.Ports;
-
 /**
  * This class contains methods that must be run from inside a thread and others
  * that must be invoked from Unity. Both types of methods are clearly marked in
