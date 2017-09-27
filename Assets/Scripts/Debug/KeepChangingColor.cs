@@ -5,7 +5,7 @@ public class KeepChangingColor : MonoBehaviour
     private Material _material;
     private float _delta;
 
-    private void Start()
+    private void Awake()
     {
         _material = GetComponent<Material>();
     }
