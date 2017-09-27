@@ -1,12 +1,13 @@
 fileFormatVersion: 2
-guid: c9be891d44724a348ad66fdd5167a448
-timeCreated: 1506485014
+guid: c29ed3363c59dda46a49974f85133b66
+timeCreated: 1506487946
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: EnterDisabled-Sprite
-    21300002: EnterPressed-Sprite
-    21300004: EnterEnabled-Sprite
+    21300000: TutorialClockArrow-Sprite
+    21300002: Tutodude00-Sprite
+    21300004: Tutodude01-Sprite
+    21300006: TutorialClock-Sprite
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -74,17 +75,39 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+  - buildTarget: Android
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: EnterDisabled-Sprite
+      name: TutorialClockArrow-Sprite
       rect:
         serializedVersion: 2
-        x: 437
+        x: 508
+        y: 269
+        width: 97
+        height: 31
+      alignment: 9
+      pivot: {x: 0.0009869448, y: 0.49675924}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Tutodude00-Sprite
+      rect:
+        serializedVersion: 2
+        x: 0
         y: 1
-        width: 129
-        height: 130
+        width: 121
+        height: 299
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -92,13 +115,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: EnterPressed-Sprite
+      name: Tutodude01-Sprite
       rect:
         serializedVersion: 2
-        x: 437
-        y: 133
-        width: 129
-        height: 130
+        x: 124
+        y: 1
+        width: 121
+        height: 299
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -106,13 +129,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: EnterEnabled-Sprite
+      name: TutorialClock-Sprite
       rect:
         serializedVersion: 2
-        x: 437
-        y: 265
-        width: 128
-        height: 130
+        x: 247
+        y: 7
+        width: 248
+        height: 277
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
