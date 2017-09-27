@@ -19,6 +19,8 @@ public class GameConstants
     }
 
     public const float UserPowerMercy = 60f/100f;
+
+    public static float ParseSerialMessage(string msg) => float.Parse(msg.Replace('.', ','));
 }
 
 public enum Disfunctions
