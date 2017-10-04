@@ -9,18 +9,18 @@ public class GameConstants
 #endif
     
     public static readonly string PacientsPath = SaveDataPath + "pacients" + Path.AltDirectorySeparatorChar;
-
     public static readonly string LocalizationPath = SaveDataPath + "localization.dat";
     public static readonly string PacientListFile = PacientsPath + "_pacientsList.csv";
     
+    public const float UserPowerMercy = 60f / 100f;
+    public const float PitacoThreshold = 1.5f;
+
+    public static float ParseSerialMessage(string msg) => float.Parse(msg.Replace('.', ','));
+
     public static string GetSessionsPath(Player plr)
     {
         return PacientsPath + Path.AltDirectorySeparatorChar + plr.Id;
     }
-
-    public const float UserPowerMercy = 60f/100f;
-
-    public static float ParseSerialMessage(string msg) => float.Parse(msg.Replace('.', ','));
 }
 
 public enum Disfunctions
