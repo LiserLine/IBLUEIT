@@ -77,4 +77,18 @@ public class SerialListener : MonoBehaviour
         _requestingValues = false;
         Debug.Log("Connection attempt failed or disconnection detected!");
     }
+
+    /// <summary>
+    /// This will check editor's EnableRequestValues and will start the DelayedRequestValues
+    /// </summary>
+    public void InitValueRequest()
+    {
+        if (_requestingValues)
+        {
+            Debug.LogWarning("Already requesting values!");
+            return;
+        }
+
+        EnableRequestValues = true;
+    }
 }
