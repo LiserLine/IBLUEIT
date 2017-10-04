@@ -234,6 +234,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1969178330}
+  - {fileID: 1568062390}
   m_Father: {fileID: 2024984416}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -940,10 +941,13 @@ MonoBehaviour:
   firstTimeText: {fileID: 1658397158}
   balloonText: {fileID: 1969178331}
   enterButton: {fileID: 1235727113}
+  miniEnterButton: {fileID: 1568062389}
   firstTimePanel: {fileID: 747879506}
   tutoDude: {fileID: 378657763}
   tutoClock: {fileID: 1072149173}
   textBalloon: {fileID: 200938537}
+  serialListener: {fileID: 470810774}
+  levelLoader: {fileID: 788013734}
 --- !u!1 &1418542344
 GameObject:
   m_ObjectHideFlags: 0
