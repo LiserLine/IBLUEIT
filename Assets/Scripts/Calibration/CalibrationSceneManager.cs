@@ -39,7 +39,7 @@ public class CalibrationSceneManager : MonoBehaviour
 
         while (!tmp_tutorialDone)
         {
-            yield return null;
+
 
             if (triggerNextStep)
             {
@@ -84,11 +84,27 @@ public class CalibrationSceneManager : MonoBehaviour
                         serialListener.InitValueRequest();
                         //balloonText.text = LocalizationManager.Instance.GetLocalizedValue("tutorialClock05");
                         //tutoDude.GetComponent<Animator>().SetBool("Talking", true);
+                        while (!SerialGetOffset.IsUsingOffset)
+                        {
+                            yield return null;
+                        }
 
+                        yield return new WaitForSeconds(5f);
+
+                        if (expFlow > 100)
+                        {
+                            msgCount++;
+                            triggerNextStep = true;
+                            continue;
+                        }
+                        else
+                        {
+
+                        }
                         break;
-                        //case 6:
-                        //    balloonText.text = LocalizationManager.Instance.GetLocalizedValue("tutorialClock06");
-                        //    break;
+                    case 6:
+                        balloonText.text = LocalizationManager.Instance.GetLocalizedValue("tutorialClock06");
+                        break;
                         //case 7:
                         //    balloonText.text = LocalizationManager.Instance.GetLocalizedValue("tutorialClock07");
                         //    break;
@@ -115,6 +131,8 @@ public class CalibrationSceneManager : MonoBehaviour
 
                 triggerNextStep = false;
             }
+
+            yield return null;
         }
     }
 
