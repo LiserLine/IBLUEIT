@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(SerialGetOffset))]
 public class SerialListener : MonoBehaviour
 {
     private SerialController _serialController;
