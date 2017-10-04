@@ -13,8 +13,8 @@ public class SerialListener : MonoBehaviour
     public delegate void SerialMessageHandler(string messageArrived);
     public event SerialMessageHandler OnSerialMessageReceived;
 
-    //public string MessageReceived { get; private set; }
-    public bool RequestValues = false;
+    [Header("Controls")]
+    public bool EnableRequestValues;
 
     private IEnumerator DelayedRequestValues()
     {
@@ -30,7 +30,7 @@ public class SerialListener : MonoBehaviour
 
     private void Update()
     {
-        if (RequestValues && IsConnected && !_requestingValues)
+        if (EnableRequestValues && IsConnected && !_requestingValues)
         {
             _requestingValues = true;
             if (_requestCoroutine != null)
