@@ -4,7 +4,7 @@ public class ClockArrowSpin : MonoBehaviour
 {
     private SerialListener serialListener;
 
-    [Range(0f, 1f)]
+    [Range(0f, GameConstants.PitacoThreshold)]
     public float threshold;
 
     void Awake()
