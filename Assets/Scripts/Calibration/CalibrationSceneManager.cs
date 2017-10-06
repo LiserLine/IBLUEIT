@@ -6,17 +6,19 @@ public class CalibrationSceneManager : MonoBehaviour
 {
     public Text firstTimeText, balloonText;
     public GameObject enterButton, miniEnterButton, firstTimePanel, tutoDude, tutoClock, textBalloon;
-    public SerialListener serialListener;
+    public SerialController serialController;
     public LevelLoader levelLoader;
+    public ClockArrowSpin clockArrowSpin;
 
     private bool triggerNextStep;
-    private int msgCount = 3; //ToDo - change back to 1 when code is done
+    private int stepCount; //ToDo - change back to 1 when code is done
 
     void Start()
     {
-        firstTimeText.text = LocalizationManager.Instance.GetLocalizedValue("tutorialClock00");
+        firstTimeText.text = "Olá! Bem-vindo ao I Blue It!";
+        stepCount++;
         enterButton.SetActive(true);
-        serialListener.OnSerialMessageReceived += WaitForFlow;
+        serialController.OnSerialMessageReceived += OnSerialMessageReceived;
         StartCoroutine(ScreenSteps());
     }
 
@@ -30,7 +32,7 @@ public class CalibrationSceneManager : MonoBehaviour
 
     void OnDisable()
     {
-        serialListener.OnSerialMessageReceived -= WaitForFlow;
+        serialController.OnSerialMessageReceived -= OnSerialMessageReceived;
     }
 
     IEnumerator ScreenSteps()
@@ -39,8 +41,6 @@ public class CalibrationSceneManager : MonoBehaviour
 
         while (!tmp_tutorialDone)
         {
-
-
             if (triggerNextStep)
             {
                 firstTimeText.text = "";
@@ -51,80 +51,105 @@ public class CalibrationSceneManager : MonoBehaviour
 
                 yield return new WaitForSeconds(1);
 
-                switch (msgCount)
+                switch (stepCount)
                 {
+                    #region Inviting steps
+
                     case 1:
-                        firstTimeText.text = LocalizationManager.Instance.GetLocalizedValue("tutorialClock01");
+                        firstTimeText.text = "Primeiro, vamos calibrar a sua respiração.";
                         enterButton.SetActive(true);
-                        msgCount++;
+                        stepCount++;
                         break;
+
                     case 2:
-                        firstTimeText.text = LocalizationManager.Instance.GetLocalizedValue("tutorialClock02");
+                        firstTimeText.text = "Então, vamos começar?";
                         enterButton.SetActive(true);
-                        msgCount++;
+                        stepCount++;
                         break;
+
+                    #endregion
+
+                    #region Expiration Peak
+
                     case 3:
                         firstTimePanel.GetComponent<Image>().CrossFadeAlpha(0, 1, false);
                         yield return new WaitForSeconds(1.5f);
                         tutoClock.SetActive(true);
                         tutoDude.SetActive(true);
                         textBalloon.SetActive(true);
-                        balloonText.text = LocalizationManager.Instance.GetLocalizedValue("tutorialClock03");
+                        balloonText.text = "Este é o relógio que vai medir a força e o tempo da sua respiração.";
                         miniEnterButton.SetActive(true);
                         tutoDude.GetComponent<Animator>().SetBool("Talking", true);
-                        msgCount++;
+                        stepCount++;
                         break;
+
                     case 4:
-                        balloonText.text = LocalizationManager.Instance.GetLocalizedValue("tutorialClock04");
+                        balloonText.text = "Quando o relógio ficar verde, inspire e assopre bem forte no PITACO!";
                         miniEnterButton.SetActive(true);
                         tutoDude.GetComponent<Animator>().SetBool("Talking", true);
-                        msgCount++;
+                        stepCount++;
                         break;
+
                     case 5:
-                        serialListener.InitValueRequest();
-                        //balloonText.text = LocalizationManager.Instance.GetLocalizedValue("tutorialClock05");
-                        //tutoDude.GetComponent<Animator>().SetBool("Talking", true);
-                        while (!SerialGetOffset.IsUsingOffset)
+                        if (serialController.IsConnected)
                         {
-                            yield return null;
-                        }
+                            clockArrowSpin.SpinClock = true;
+                            serialController.InitializePitacoRequest();
+                            while (!SerialGetOffset.IsUsingOffset) yield return null;
 
-                        yield return new WaitForSeconds(5f);
+                            tutoClock.GetComponent<SpriteRenderer>().color = Color.green;
+                            balloonText.text = "Inspire, assopre e aguarde.";
+                            yield return new WaitForSeconds(8f);
+                            tutoClock.GetComponent<SpriteRenderer>().color = Color.white;
 
-                        if (expFlow > 100)
-                        {
-                            msgCount++;
-                            triggerNextStep = true;
-                            continue;
+                            if (flowMeter > 10f)
+                            {
+                                exercises++;
+                                if (exercises == 2) stepCount = 7;
+                                triggerNextStep = true;
+                                continue;
+                            }
+
+                            tutoDude.GetComponent<Animator>().SetBool("Talking", true);
+                            balloonText.text = "Não consegui sentir sua respiração. Vamos tentar novamente?";
+                            stepCount = 4;
                         }
                         else
                         {
-
+                            balloonText.text = "O PITACO não está conectado. Verifique sua conexão.";
+                            stepCount = 4;
                         }
                         break;
+
                     case 6:
-                        balloonText.text = LocalizationManager.Instance.GetLocalizedValue("tutorialClock06");
+                        tutoDude.GetComponent<Animator>().SetBool("Talking", true);
+                        balloonText.text = "Muito bem!";
+                        //todo - aplausos
+                        stepCount = exercises == 3 ? 8 : 7;
                         break;
-                        //case 7:
-                        //    balloonText.text = LocalizationManager.Instance.GetLocalizedValue("tutorialClock07");
-                        //    break;
-                        //case 8:
-                        //    balloonText.text = LocalizationManager.Instance.GetLocalizedValue("tutorialClock08");
-                        //    break;
-                        //case 9:
-                        //    balloonText.text = LocalizationManager.Instance.GetLocalizedValue("tutorialClock09");
-                        //    break;
-                        //case 10:
-                        //    balloonText.text = LocalizationManager.Instance.GetLocalizedValue("tutorialClock10");
-                        //    break;
-                        //case 11:
-                        //    balloonText.text = LocalizationManager.Instance.GetLocalizedValue("tutorialClock11");
-                        //    break;
-                        //case 12:
-                        //    balloonText.text = LocalizationManager.Instance.GetLocalizedValue("tutorialClock12");
-                        //    break;
+
+                    case 7:
+                        tutoDude.GetComponent<Animator>().SetBool("Talking", true);
+                        balloonText.text = "Mais uma vez!";
+                        stepCount = 5;
+                        break;
+
+                    #endregion
+
+
+                    #region Inspiration Peak
+
+                    case 8:
+                        tutoDude.GetComponent<Animator>().SetBool("Talking", true);
+                        balloonText.text = "Agora, inspire com força!";
+                        break;
+
+
+                        #endregion
+
+
                         //case 13:
-                        //    levelLoader.LoadScene(2); tutodone
+                        //    levelLoader.LoadScene(2); tutodone = true;
                         //    break;
                 }
 
@@ -136,22 +161,23 @@ public class CalibrationSceneManager : MonoBehaviour
         }
     }
 
-    private float expFlow;
-    void WaitForFlow(string arrivedMsg)
+    //ToDo code tag compiled unity editor
+    private float flowMeter;
+    private int exercises;
+    void OnSerialMessageReceived(string arrived)
     {
-        //ToDo code tag compiled
-
-        if (arrivedMsg.Length > 1 && SerialGetOffset.IsUsingOffset)
+        if (arrived.Length > 1 && SerialGetOffset.IsUsingOffset)
         {
-            var tmp = GameConstants.ParseSerialMessage(arrivedMsg);
+            var tmp = GameConstants.ParseSerialMessage(arrived);
             tmp -= SerialGetOffset.Offset;
-            switch (msgCount)
+
+            switch (stepCount)
             {
                 case 5: //expiratory peak
-                    if (tmp > expFlow)
+                    if (tmp > flowMeter)
                     {
-                        expFlow = tmp;
-                        Debug.Log($"ExpiratoryPeakFlow: {expFlow}");
+                        flowMeter = tmp;
+                        Debug.Log($"ExpiratoryPeakFlow: {flowMeter}");
                     }
                     break;
             }

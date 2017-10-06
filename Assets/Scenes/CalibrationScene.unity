@@ -145,7 +145,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4718367558641822, guid: f4d0ed40c01bb5c48ac0e247131a2a86, type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4718367558641822, guid: f4d0ed40c01bb5c48ac0e247131a2a86, type: 2}
       propertyPath: m_LocalScale.x
@@ -166,46 +166,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f4d0ed40c01bb5c48ac0e247131a2a86, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &72752663
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 72752665}
-  - component: {fileID: 72752664}
-  m_Layer: 0
-  m_Name: Debug_LocalizationManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &72752664
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 72752663}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec16a20112688e245a36b46c5476ec33, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &72752665
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 72752663}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &200938537
 GameObject:
   m_ObjectHideFlags: 0
@@ -404,7 +364,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &378657763 stripped
 GameObject:
@@ -427,31 +387,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e14b84ee0fb72b48bd2fa18e987e731, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serialController: {fileID: 1518067636}
   threshold: 1.5
---- !u!114 &470810774
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 470810772}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eea9e546d62b33e408520003ab7b298d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  NumberOfSamples: 32
---- !u!114 &470810775
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 470810772}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10e8ac1935d70504ba34b4c3267616ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  EnableRequestValues: 0
 --- !u!1 &685351252
 GameObject:
   m_ObjectHideFlags: 0
@@ -663,7 +600,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1021631202
 GameObject:
@@ -865,7 +802,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4205553558548220, guid: 6ebea8bbe806d164abf4d633a62865e8, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4205553558548220, guid: 6ebea8bbe806d164abf4d633a62865e8, type: 2}
       propertyPath: m_LocalScale.x
@@ -878,6 +815,10 @@ Prefab:
     - target: {fileID: 4205553558548220, guid: 6ebea8bbe806d164abf4d633a62865e8, type: 2}
       propertyPath: m_LocalScale.z
       value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1026679719397420, guid: 6ebea8bbe806d164abf4d633a62865e8, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6ebea8bbe806d164abf4d633a62865e8, type: 2}
@@ -909,7 +850,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1397636221
 MonoBehaviour:
@@ -930,8 +871,9 @@ MonoBehaviour:
   tutoDude: {fileID: 378657763}
   tutoClock: {fileID: 1072149173}
   textBalloon: {fileID: 200938537}
-  serialListener: {fileID: 470810775}
+  serialController: {fileID: 1518067636}
   levelLoader: {fileID: 788013734}
+  clockArrowSpin: {fileID: 470810773}
 --- !u!1 &1418542344
 GameObject:
   m_ObjectHideFlags: 0
@@ -1074,15 +1016,30 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 405068, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 2}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 11442534, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 2}
       propertyPath: MessageListener
       value: 
-      objectReference: {fileID: 470810775}
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123434979265792, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 2}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114714990227864830, guid: a65acf0cbf56b80419f74ebf0bc845f4,
+        type: 2}
+      propertyPath: PitacoRequest
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &1518067636 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114714990227864830, guid: a65acf0cbf56b80419f74ebf0bc845f4,
+    type: 2}
+  m_PrefabInternal: {fileID: 1518067635}
+  m_Script: {fileID: 11500000, guid: 8bc5f48af2cffd747a079fe8c632e2c8, type: 3}
 --- !u!1 &1568062389
 GameObject:
   m_ObjectHideFlags: 0
@@ -1544,7 +1501,7 @@ RectTransform:
   - {fileID: 747879507}
   - {fileID: 200938538}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
