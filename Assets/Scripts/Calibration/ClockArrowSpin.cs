@@ -2,11 +2,12 @@
 
 public class ClockArrowSpin : MonoBehaviour
 {
+    public bool SpinClock { get; set; }
+
     public SerialController serialController;
     [Range(0f, GameConstants.PitacoThreshold)]
     public float threshold;
 
-    public bool SpinClock { get; set; }
 
     void OnEnable()
     {
