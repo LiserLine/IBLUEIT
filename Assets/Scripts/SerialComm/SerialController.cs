@@ -23,6 +23,8 @@ using System.Threading;
  * on the integrity of the message. It's up to the one that makes sense of the
  * data.
  */
+
+[RequireComponent(typeof(SerialConnector))]
 public class SerialController : MonoBehaviour
 {
     [Tooltip("Reference to an scene object that will receive the events of connection, " +
