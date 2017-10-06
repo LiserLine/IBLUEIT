@@ -10,7 +10,9 @@ public class PositionOnSerial : MonoBehaviour
     private const float RelativeLimit = 0.3f;
 
     public ControlBehaviour Behaviour;
-    public int Threshold = 1;
+
+    [Range(0f, GameConstants.PitacoThreshold)]
+    public int Threshold;
 
     private void Awake()
     {

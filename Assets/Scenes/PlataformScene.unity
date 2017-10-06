@@ -140,7 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10e8ac1935d70504ba34b4c3267616ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RequestValues: 1
+  EnableRequestValues: 1
 --- !u!114 &13971140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Behaviour: 0
+  Threshold: 1
 --- !u!23 &13971141
 MeshRenderer:
   m_ObjectHideFlags: 0
