@@ -99,58 +99,6 @@
         {
             "Key": "txtSessions",
             "Value": "Sessões"
-        },
-        {
-            "Key": "tutorialClock00",
-            "Value": "Olá! Bem-vindo ao I Blue It!"
-        },
-        {
-            "Key": "tutorialClock01",
-            "Value": "Como é sua primeira vez jogando, precisamos calibrar o PITACO com você."
-        },
-        {
-            "Key": "tutorialClock02",
-            "Value": "Então, vamos começar?"
-        },
-        {
-            "Key": "tutorialClock03",
-            "Value": "Este é o relógio que vai contar a força e o tempo da sua respiração."
-        },
-        {
-            "Key": "tutorialClock04",
-            "Value": "Quando o relógio ficar verde, faça um sopro bem forte!"
-        },
-        {
-            "Key": "tutorialClock05",
-            "Value": "Mais uma vez!"
-        },
-        {
-            "Key": "tutorialClock06",
-            "Value": "Muito bem!"
-        },
-        {
-            "Key": "tutorialClock07",
-            "Value": "Agora, puxe o ar para dentro de você com força!"
-        },
-        {
-            "Key": "tutorialClock08",
-            "Value": "Agora, faça o ponteiro girar com seu sopro o máximo de tempo que você conseguir!"
-        },
-        {
-            "Key": "tutorialClock09",
-            "Value": "Respire um pouco, aperte para continuar assim que estiver pronto."
-        },
-        {
-            "Key": "tutorialClock10",
-            "Value": "Agora gire-o puxando o ar pra dentro de você o tempo que você conseguir!"
-        },
-        {
-            "Key": "tutorialClock11",
-            "Value": "Agora respire tranquilamente por 60 segundos."
-        },
-        {
-            "Key": "tutorialClock12",
-            "Value": "Pronto! Já calibramos o PITACO. Vamos jogar!"
         }
     ]
 }
