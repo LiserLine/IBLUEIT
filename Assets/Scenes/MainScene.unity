@@ -834,8 +834,18 @@ Prefab:
     - target: {fileID: 11442534, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 2}
       propertyPath: MessageListener
       value: 
-      objectReference: {fileID: 1145710961}
-    m_RemovedComponents: []
+      objectReference: {fileID: 0}
+    - target: {fileID: 4123434979265792, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 2}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 114714990227864830, guid: a65acf0cbf56b80419f74ebf0bc845f4,
+        type: 2}
+      propertyPath: PitacoRequest
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 114792205271020740, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &378670102
@@ -940,6 +950,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 378670102}
+--- !u!114 &391112788 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114714990227864830, guid: a65acf0cbf56b80419f74ebf0bc845f4,
+    type: 2}
+  m_PrefabInternal: {fileID: 335743823}
+  m_Script: {fileID: 11500000, guid: 8bc5f48af2cffd747a079fe8c632e2c8, type: 3}
 --- !u!1 &427784753
 GameObject:
   m_ObjectHideFlags: 0
@@ -4863,7 +4879,6 @@ GameObject:
   - component: {fileID: 1145710959}
   - component: {fileID: 1145710958}
   - component: {fileID: 1145710960}
-  - component: {fileID: 1145710961}
   m_Layer: 5
   m_Name: PitacoStatus
   m_TagString: Untagged
@@ -4935,18 +4950,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Disconnected: {fileID: 21300000, guid: c8c230536ac59874fb417b141a4af02b, type: 3}
   Connected: {fileID: 21300000, guid: aff3e286dfca54642958b164bb25d9b2, type: 3}
---- !u!114 &1145710961
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1145710956}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10e8ac1935d70504ba34b4c3267616ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RequestValues: 0
+  SerialController: {fileID: 391112788}
 --- !u!1 &1148148722
 GameObject:
   m_ObjectHideFlags: 0
@@ -7320,7 +7324,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.6464375, y: 0.5541668}
   m_AnchorMax: {x: 0.76721877, y: 0.6195556}
-  m_AnchoredPosition: {x: 244.05727, y: 53.853935}
+  m_AnchoredPosition: {x: 244.05728, y: 53.853935}
   m_SizeDelta: {x: 142.52185, y: 40.541046}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1530378217
@@ -8624,7 +8628,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1796370452
 MonoBehaviour:
@@ -8675,7 +8679,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1816911138
 GameObject:

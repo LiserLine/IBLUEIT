@@ -4,20 +4,18 @@ public class PositionOnSerial : MonoBehaviour
 {
     private Player _player;
     private Transform _transform;
-    private SerialListener _serialListener;
     private float _cameraOffset;
 
     private const float RelativeLimit = 0.3f;
 
     public ControlBehaviour Behaviour;
-
+    public SerialController SerialController;
     [Range(0f, GameConstants.PitacoThreshold)]
     public int Threshold;
-
+    
     private void Awake()
     {
         _transform = GetComponent<Transform>();
-        _serialListener = GetComponent<SerialListener>();
         _cameraOffset = Camera.main.orthographicSize - Camera.main.transform.position.y - 1;
         _player = GameManager.Instance?.Player;
     }
@@ -47,13 +45,13 @@ public class PositionOnSerial : MonoBehaviour
 
     private void OnEnable()
     {
-        _serialListener.OnSerialMessageReceived += OnSerialMessageReceived;
+        SerialController.OnSerialMessageReceived += OnSerialMessageReceived;
         PitacoRecorder.Instance.Start();
     }
 
     private void OnDisable()
     {
-        _serialListener.OnSerialMessageReceived -= OnSerialMessageReceived;
+        SerialController.OnSerialMessageReceived -= OnSerialMessageReceived;
         PitacoRecorder.Instance.Stop();
 
 #if UNITY_EDITOR

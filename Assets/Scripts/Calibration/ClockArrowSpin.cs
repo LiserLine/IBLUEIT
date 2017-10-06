@@ -2,28 +2,26 @@
 
 public class ClockArrowSpin : MonoBehaviour
 {
-    private SerialListener serialListener;
-
+    public SerialController serialController;
     [Range(0f, GameConstants.PitacoThreshold)]
     public float threshold;
 
-    void Awake()
-    {
-        serialListener = GetComponent<SerialListener>();
-    }
+    public bool SpinClock { get; set; }
 
     void OnEnable()
     {
-        serialListener.OnSerialMessageReceived += OnSerialMessageReceived;
+        serialController.OnSerialMessageReceived += OnSerialMessageReceived;
     }
 
     void OnDisable()
     {
-        serialListener.OnSerialMessageReceived -= OnSerialMessageReceived;
+        serialController.OnSerialMessageReceived -= OnSerialMessageReceived;
     }
 
     void OnSerialMessageReceived(string msg)
     {
+        if (!SpinClock) return;
+
         if (!SerialGetOffset.IsUsingOffset) return;
 
         if (msg.Length < 1) return;

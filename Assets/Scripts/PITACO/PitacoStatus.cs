@@ -5,18 +5,17 @@ public class PitacoStatus : MonoBehaviour
 {
     public Sprite Disconnected;
     public Sprite Connected;
+    public SerialController SerialController;
 
-    private SerialListener _serialMessengerListener;
     private Image _image;
 
     private void Awake()
     {
         _image = GetComponent<Image>();
-        _serialMessengerListener = GetComponent<SerialListener>();
     }
 
     private void Update()
     {
-        _image.sprite = _serialMessengerListener.IsConnected ? Connected : Disconnected;
+        _image.sprite = SerialController.IsConnected ? Connected : Disconnected;
     }
 }

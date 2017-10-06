@@ -1,30 +1,30 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(SerialListener))]
+[RequireComponent(typeof(SerialController))]
 public class SerialGetOffset : MonoBehaviour
 {
     public static bool IsUsingOffset { get; private set; }
     public static float Offset { get; private set; }
 
-    private SerialListener _serialListener;
+    private SerialController _serialConnector;
     private int _count;
 
     public int NumberOfSamples;
 
     private IEnumerator Start()
     {
-        _serialListener = GetComponent<SerialListener>();
+        _serialConnector = GetComponent<SerialController>();
 
-        while (!_serialListener.IsConnected)
+        while (!_serialConnector.IsConnected)
             yield return new WaitForSeconds(3f);
 
-        _serialListener.OnSerialMessageReceived += OnSerialMessageReceived;
+        _serialConnector.OnSerialMessageReceived += OnSerialMessageReceived;
 
         while (!IsUsingOffset)
             yield return new WaitForSeconds(1f);
 
-        _serialListener.OnSerialMessageReceived -= OnSerialMessageReceived;
+        _serialConnector.OnSerialMessageReceived -= OnSerialMessageReceived;
     }
 
     private void OnSerialMessageReceived(string msg)
