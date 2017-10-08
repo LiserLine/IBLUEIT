@@ -5,13 +5,13 @@ using UnityEngine.UI;
 public class CalibrationSceneManager : MonoBehaviour
 {
     public Text firstTimeText, balloonText;
-    public GameObject enterButton, firstTimePanel, tutoDude, tutoClock, textBalloon;
+    public GameObject enterButton, enterButtonSmall, firstTimePanel, tutoDude, tutoClock, textBalloon;
     public SerialController serialController;
     public LevelLoader levelLoader;
     public ClockArrowSpin clockArrowSpin;
 
     private bool triggerNextStep;
-    private int stepNum = 1; //ToDo - change back to 1 when code is done
+    private int stepNum = 3; //ToDo - change back to 1 when code is done
 
     void Start()
     {
@@ -83,7 +83,9 @@ public class CalibrationSceneManager : MonoBehaviour
                         dudeMsg = "Este é o relógio que vai medir a força e o tempo da sua respiração.";
                         DudeStartTalking(dudeMsg);
 
-                        //ToDo - enter button new position and size
+                        // ToDo - should it be handled this way? I tried many other ways but no success
+                        enterButton = enterButtonSmall;
+
                         SetNextStep();
                         break;
 
@@ -103,7 +105,7 @@ public class CalibrationSceneManager : MonoBehaviour
 
                             // Change clock color to green so player can use pitaco
                             tutoClock.GetComponent<SpriteRenderer>().color = Color.green;
-                            balloonText.text = "Inspire, assopre e aguarde.";
+                            balloonText.text = "Inspire, assopre bem forte e aguarde.";
 
                             // Wait 8 seconds for player input
                             yield return new WaitForSeconds(8);
@@ -118,20 +120,20 @@ public class CalibrationSceneManager : MonoBehaviour
                             {
                                 dudeMsg = "Não consegui sentir sua respiração. Vamos tentar novamente?";
                                 DudeStartTalking(dudeMsg);
-                                GoToStep(4);
+                                SetStep(4);
                                 continue;
                             }
 
                             // If player passed threshold, go to next step
                             exercises++;
-                            if (exercises == 2) GoToStep(7);
+                            if (exercises == 2) SetStep(7);
                             TriggerNextStep();
                         }
                         else // If PITACO is not connected
                         {
-                            dudeMsg = "O PITACO não está conectado. Verifique sua conexão.";
+                            dudeMsg = "O PITACO não está conectado. Conecte-o ao computador e reinicie o jogo!";
                             DudeStartTalking(dudeMsg);
-                            GoToStep(4);
+                            SetStep(4);
                         }
                         break;
 
@@ -139,13 +141,13 @@ public class CalibrationSceneManager : MonoBehaviour
                         dudeMsg = "Muito bem!";
                         DudeStartTalking(dudeMsg);
                         //todo - quicky claps sounds
-                        GoToStep(exercises == 3 ? 8 : 7);
+                        SetStep(exercises == 3 ? 8 : 7);
                         break;
 
                     case 7:
                         dudeMsg = "Mais uma vez!";
                         DudeStartTalking(dudeMsg);
-                        GoToStep(5);
+                        SetStep(5);
                         break;
 
                     #endregion
@@ -163,7 +165,7 @@ public class CalibrationSceneManager : MonoBehaviour
 
 
                         break;
-                        
+
                         #endregion
 
                         #region Expiration Time
@@ -194,14 +196,14 @@ public class CalibrationSceneManager : MonoBehaviour
         triggerNextStep = true;
     }
 
-    void GoToStep(int stepNum)
+    void SetStep(int stepNum)
     {
         this.stepNum = stepNum;
     }
 
     void SetNextStep()
     {
-        this.stepNum++;
+        stepNum++;
     }
 
     void DudeStartTalking(string msg)
@@ -217,6 +219,7 @@ public class CalibrationSceneManager : MonoBehaviour
     }
 
     //ToDo code tag compiled unity editor
+    //ToDo better coding
     private float flowMeter;
     private int exercises;
     void OnSerialMessageReceived(string arrived)
