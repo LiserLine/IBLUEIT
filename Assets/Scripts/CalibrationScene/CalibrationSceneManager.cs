@@ -5,18 +5,17 @@ using UnityEngine.UI;
 public class CalibrationSceneManager : MonoBehaviour
 {
     public Text firstTimeText, balloonText;
-    public GameObject enterButton, miniEnterButton, firstTimePanel, tutoDude, tutoClock, textBalloon;
+    public GameObject enterButton, firstTimePanel, tutoDude, tutoClock, textBalloon;
     public SerialController serialController;
     public LevelLoader levelLoader;
     public ClockArrowSpin clockArrowSpin;
 
     private bool triggerNextStep;
-    private int stepCount; //ToDo - change back to 1 when code is done
+    private int stepNum = 1; //ToDo - change back to 1 when code is done
 
     void Start()
     {
         firstTimeText.text = "Olá! Bem-vindo ao I Blue It!";
-        stepCount++;
         enterButton.SetActive(true);
         serialController.OnSerialMessageReceived += OnSerialMessageReceived;
         StartCoroutine(ScreenSteps());
@@ -26,7 +25,7 @@ public class CalibrationSceneManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
         {
-            triggerNextStep = true;
+            TriggerNextStep();
         }
     }
 
@@ -43,28 +42,28 @@ public class CalibrationSceneManager : MonoBehaviour
         {
             if (triggerNextStep)
             {
+                // Clear screen
                 firstTimeText.text = "";
-                balloonText.text = "";
                 enterButton.SetActive(false);
-                miniEnterButton.SetActive(false);
-                tutoDude.GetComponent<Animator>().SetBool("Talking", false);
+                DudeStopTalking();
 
+                // Wait 1 sec to show next step
                 yield return new WaitForSeconds(1);
 
-                switch (stepCount)
+                string dudeMsg;
+                switch (stepNum)
                 {
                     #region Inviting steps
 
                     case 1:
+                        // Must use the firstTimeText up to case 2
                         firstTimeText.text = "Primeiro, vamos calibrar a sua respiração.";
-                        enterButton.SetActive(true);
-                        stepCount++;
+                        SetNextStep();
                         break;
 
                     case 2:
                         firstTimeText.text = "Então, vamos começar?";
-                        enterButton.SetActive(true);
-                        stepCount++;
+                        SetNextStep();
                         break;
 
                     #endregion
@@ -72,79 +71,108 @@ public class CalibrationSceneManager : MonoBehaviour
                     #region Expiration Peak
 
                     case 3:
+                        // Fade black screen and wait 1s 
                         firstTimePanel.GetComponent<Image>().CrossFadeAlpha(0, 1, false);
-                        yield return new WaitForSeconds(1.5f);
+                        yield return new WaitForSeconds(1);
+
+                        // Enable dude and clock
                         tutoClock.SetActive(true);
                         tutoDude.SetActive(true);
                         textBalloon.SetActive(true);
-                        balloonText.text = "Este é o relógio que vai medir a força e o tempo da sua respiração.";
-                        miniEnterButton.SetActive(true);
-                        tutoDude.GetComponent<Animator>().SetBool("Talking", true);
-                        stepCount++;
+
+                        dudeMsg = "Este é o relógio que vai medir a força e o tempo da sua respiração.";
+                        DudeStartTalking(dudeMsg);
+
+                        //ToDo - enter button new position and size
+                        SetNextStep();
                         break;
 
-                    case 4:
-                        balloonText.text = "Quando o relógio ficar verde, inspire e assopre bem forte no PITACO!";
-                        miniEnterButton.SetActive(true);
-                        tutoDude.GetComponent<Animator>().SetBool("Talking", true);
-                        stepCount++;
+                    case 4: // Tell player to do a Expiratory Peak Exercise
+                        dudeMsg = "Quando o relógio ficar verde, inspire e assopre bem forte no PITACO!";
+                        DudeStartTalking(dudeMsg);
+                        SetNextStep();
                         break;
 
                     case 5:
                         if (serialController.IsConnected)
                         {
+                            // Enable clock arrow spin and initialize pitaco value request
                             clockArrowSpin.SpinClock = true;
                             serialController.InitializePitacoRequest();
                             while (!SerialGetOffset.IsUsingOffset) yield return null;
 
+                            // Change clock color to green so player can use pitaco
                             tutoClock.GetComponent<SpriteRenderer>().color = Color.green;
                             balloonText.text = "Inspire, assopre e aguarde.";
-                            yield return new WaitForSeconds(8f);
-                            tutoClock.GetComponent<SpriteRenderer>().color = Color.white;
 
-                            if (flowMeter > 10f)
+                            // Wait 8 seconds for player input
+                            yield return new WaitForSeconds(8);
+
+                            // Disable clock arrow spin and reset clock color
+                            tutoClock.GetComponent<SpriteRenderer>().color = Color.white;
+                            clockArrowSpin.SpinClock = false;
+
+                            // Check for player input
+                            // ToDo - Check if 10 must be threshold to go to next step
+                            if (flowMeter < 10f)
                             {
-                                exercises++;
-                                if (exercises == 2) stepCount = 7;
-                                triggerNextStep = true;
+                                dudeMsg = "Não consegui sentir sua respiração. Vamos tentar novamente?";
+                                DudeStartTalking(dudeMsg);
+                                GoToStep(4);
                                 continue;
                             }
 
-                            tutoDude.GetComponent<Animator>().SetBool("Talking", true);
-                            balloonText.text = "Não consegui sentir sua respiração. Vamos tentar novamente?";
-                            stepCount = 4;
+                            // If player passed threshold, go to next step
+                            exercises++;
+                            if (exercises == 2) GoToStep(7);
+                            TriggerNextStep();
                         }
-                        else
+                        else // If PITACO is not connected
                         {
-                            balloonText.text = "O PITACO não está conectado. Verifique sua conexão.";
-                            stepCount = 4;
+                            dudeMsg = "O PITACO não está conectado. Verifique sua conexão.";
+                            DudeStartTalking(dudeMsg);
+                            GoToStep(4);
                         }
                         break;
 
                     case 6:
-                        tutoDude.GetComponent<Animator>().SetBool("Talking", true);
-                        balloonText.text = "Muito bem!";
-                        //todo - aplausos
-                        stepCount = exercises == 3 ? 8 : 7;
+                        dudeMsg = "Muito bem!";
+                        DudeStartTalking(dudeMsg);
+                        //todo - quicky claps sounds
+                        GoToStep(exercises == 3 ? 8 : 7);
                         break;
 
                     case 7:
-                        tutoDude.GetComponent<Animator>().SetBool("Talking", true);
-                        balloonText.text = "Mais uma vez!";
-                        stepCount = 5;
+                        dudeMsg = "Mais uma vez!";
+                        DudeStartTalking(dudeMsg);
+                        GoToStep(5);
                         break;
 
                     #endregion
 
-
                     #region Inspiration Peak
 
                     case 8:
-                        tutoDude.GetComponent<Animator>().SetBool("Talking", true);
-                        balloonText.text = "Agora, inspire com força!";
+                        dudeMsg = "Agora, inspire com força!";
+                        DudeStartTalking(dudeMsg);
+                        SetNextStep();
                         break;
 
+                    case 9:
 
+
+
+                        break;
+                        
+                        #endregion
+
+                        #region Expiration Time
+                        #endregion
+
+                        #region Inspiration Time
+                        #endregion
+
+                        #region Flow Measurement
                         #endregion
 
 
@@ -153,12 +181,39 @@ public class CalibrationSceneManager : MonoBehaviour
                         //    break;
                 }
 
-
+                enterButton.SetActive(true); // Enable enter button sprite everytime
                 triggerNextStep = false;
             }
 
             yield return null;
         }
+    }
+
+    public void TriggerNextStep()
+    {
+        triggerNextStep = true;
+    }
+
+    void GoToStep(int stepNum)
+    {
+        this.stepNum = stepNum;
+    }
+
+    void SetNextStep()
+    {
+        this.stepNum++;
+    }
+
+    void DudeStartTalking(string msg)
+    {
+        balloonText.text = msg;
+        tutoDude.GetComponent<Animator>().SetBool("Talking", true);
+    }
+
+    void DudeStopTalking()
+    {
+        balloonText.text = "";
+        tutoDude.GetComponent<Animator>().SetBool("Talking", false);
     }
 
     //ToDo code tag compiled unity editor
@@ -171,7 +226,7 @@ public class CalibrationSceneManager : MonoBehaviour
             var tmp = GameConstants.ParseSerialMessage(arrived);
             tmp -= SerialGetOffset.Offset;
 
-            switch (stepCount)
+            switch (stepNum)
             {
                 case 5: //expiratory peak
                     if (tmp > flowMeter)
