@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,15 +8,17 @@ using Debug = UnityEngine.Debug;
 public class CalibrationSceneManager : MonoBehaviour
 {
     private bool _executeStep, _sceneOpen, _firstTimePlaying;
-    private int _stepNum = 12; //ToDo - change back to 1 when code is done
+    private int _stepNum = 1; //ToDo - change back to 1 when code is done
 
     private RespiratoryInfo _respiratoryInfoTemp;
 
     #region Flow Exercice Variables
 
     private float _flowMeter;
+    private readonly int _timeThreshold = 1000; // In Miliseconds
     private int _exerciseCounter;
     private Stopwatch _stopwatch;
+    private Dictionary<long, float> _respiratoryFrequencyDictionary;
 
     #endregion
 
@@ -45,6 +48,7 @@ public class CalibrationSceneManager : MonoBehaviour
         _firstTimePlaying = !GameManager.Instance.Player.CalibrationDone;
         GameManager.Instance.Player.CalibrationDone = false;
         _stopwatch = new Stopwatch();
+        _respiratoryFrequencyDictionary = new Dictionary<long, float>();
 
         // ToDo - Translate const strings
         var firstTimeMsg = "Olá! Bem-vindo ao I Blue It!";
@@ -99,8 +103,7 @@ public class CalibrationSceneManager : MonoBehaviour
                     tutoDude.SetActive(true);
                     textBalloon.SetActive(true);
 
-                    // ToDo - should it be handled this way? I tried many other ways but no success
-                    enterButton = enterButtonSmall;
+                    enterButton = enterButtonSmall; // Should it be handled this way? I tried to scale in many other ways but no success
 
                     _sceneOpen = true;
                 }
@@ -117,7 +120,7 @@ public class CalibrationSceneManager : MonoBehaviour
                         break;
 
                     case 2:
-                        firstTimeText.text = "Então, vamos começar?";
+                        firstTimeText.text = "Então, vamos lá?";
                         SetNextStep();
                         break;
 
@@ -126,12 +129,12 @@ public class CalibrationSceneManager : MonoBehaviour
                     #region Expiration Peak
 
                     case 3:
-                        dudeMsg = "Este é o relógio que vai medir a força e o tempo da sua respiração. Começando com a força.";
+                        dudeMsg = "Este é o relógio que vai medir a força e o tempo da sua respiração. Primeiro, vamos medir sua força.";
                         DudeShowMessage(dudeMsg);
                         SetNextStep();
                         break;
 
-                    case 4: // Tell player to do a Expiratory Peak Exercise
+                    case 4: 
                         dudeMsg = "Quando o relógio ficar verde, inspire e assopre bem forte no PITACO. Faremos 3 exercícios!";
                         DudeShowMessage(dudeMsg);
                         SetNextStep();
@@ -303,9 +306,10 @@ public class CalibrationSceneManager : MonoBehaviour
 
                         // Wait for player input to be greather than threshold
                         _stopwatch.Reset();
+
                         while (_flowMeter <= GameConstants.PitacoThreshold)
                             yield return null;
-                        
+
                         _stopwatch.Start();
 
                         while (_flowMeter > GameConstants.PitacoThreshold)
@@ -313,18 +317,19 @@ public class CalibrationSceneManager : MonoBehaviour
 
                         _stopwatch.Stop();
 
-                        Debug.Log($"Expiration Time: {_stopwatch.ElapsedMilliseconds/1000} secs\n flowMeter: {_flowMeter}");
+                        Debug.Log($"Expiration Time: {_stopwatch.ElapsedMilliseconds} ms ({_stopwatch.ElapsedMilliseconds / 1000} secs)");
 
                         // Disable clock arrow spin and reset clock color
                         tutoClock.GetComponent<SpriteRenderer>().color = Color.white;
                         clockArrowSpin.SpinClock = false;
 
                         // Check for player input
-                        var expTCheck = _flowMeter;
                         ResetFlowMeter();
-
-                        if (expTCheck < -GameConstants.PitacoThreshold)
+                        if (_stopwatch.ElapsedMilliseconds > _timeThreshold)
                         {
+                            if (_stopwatch.ElapsedMilliseconds > _respiratoryInfoTemp.ExpiratoryFlowTime)
+                                _respiratoryInfoTemp.ExpiratoryFlowTime = _stopwatch.ElapsedMilliseconds;
+
                             _exerciseCounter++;
 
                             if (_exerciseCounter == 2)
@@ -352,30 +357,171 @@ public class CalibrationSceneManager : MonoBehaviour
                     case 15:
                         dudeMsg = "Mais uma vez!";
                         DudeShowMessage(dudeMsg);
-                        SetStep(9);
+                        SetStep(13);
                         break;
-
 
                     #endregion
 
                     #region Inspiration Time
 
                     case 16:
+                        ResetExerciseCounter();
+                        ResetFlowMeter();
+                        dudeMsg = "Agora vamos medir o tempo de inspiração. Relaxe e expire o máximo de tempo possível no PITACO.";
+                        DudeShowMessage(dudeMsg);
+                        SetNextStep();
+                        break;
+
+                    case 17:
+                        if (!serialController.IsConnected)
+                        {
+                            WarnPitacoDisconnected();
+                            continue;
+                        }
+
+                        // Enable clock arrow spin
+                        clockArrowSpin.SpinClock = true;
+
+#if UNITY_EDITOR
+                        serialController.InitializePitacoRequest();
+                        while (!SerialGetOffset.IsUsingOffset) yield return null;
+#endif
+
+                        // Change clock color to green so player can use pitaco
+                        tutoClock.GetComponent<SpriteRenderer>().color = Color.green;
+                        balloonText.text = "Relaxe, expire o máximo de tempo possível e aguarde.";
+
+                        // Wait for player input to be greather than threshold
+                        _stopwatch.Reset();
+
+                        while (_flowMeter <= GameConstants.PitacoThreshold)
+                            yield return null;
+
+                        _stopwatch.Start();
+
+                        while (_flowMeter > GameConstants.PitacoThreshold)
+                            yield return null;
+
+                        _stopwatch.Stop();
+
+                        Debug.Log($"Inspiration Time: {_stopwatch.ElapsedMilliseconds} ms ({_stopwatch.ElapsedMilliseconds / 1000} secs)");
+
+                        // Disable clock arrow spin and reset clock color
+                        tutoClock.GetComponent<SpriteRenderer>().color = Color.white;
+                        clockArrowSpin.SpinClock = false;
+
+                        // Check for player input
+                        ResetFlowMeter();
+                        if (_stopwatch.ElapsedMilliseconds > _timeThreshold)
+                        {
+                            if (_stopwatch.ElapsedMilliseconds > _respiratoryInfoTemp.ExpiratoryFlowTime)
+                                _respiratoryInfoTemp.ExpiratoryFlowTime = _stopwatch.ElapsedMilliseconds;
+
+                            _exerciseCounter++;
+
+                            if (_exerciseCounter == 2)
+                                SetStep(19, true);
+                            else
+                                SetNextStep(true);
+
+                            continue;
+                        }
+                        else
+                        {
+                            dudeMsg = "Não consegui medir sua inspiração. Vamos tentar novamente?";
+                            DudeShowMessage(dudeMsg);
+                            SetStep(17);
+                            break;
+                        }
+
+                    case 18:
+                        dudeMsg = "Muito bem!";
+                        DudeShowMessage(dudeMsg);
+                        //todo - quicky claps sounds
+                        SetStep(_exerciseCounter == 3 ? 20 : 19);
+                        break;
+
+                    case 19:
+                        dudeMsg = "Mais uma vez!";
+                        DudeShowMessage(dudeMsg);
+                        SetStep(17);
                         break;
 
                     #endregion
 
                     #region Flow Measurement
-                    #endregion
 
-                    case 998:
-                        dudeMsg = "Ótimo, você está pronto para começar a jogar! Bom jogo!";
-                        var dudeMsgAgain = "Ótimo, agora você está pronto para voltar a jogar! Até mais!";
-                        DudeShowMessage(_firstTimePlaying ? dudeMsg : dudeMsgAgain);
-                        SetStep(9);
+                    case 20:
+                        ResetExerciseCounter();
+                        ResetFlowMeter();
+                        dudeMsg = "E para finalizar, basta respirar tranquilamenta no PITACO.";
+                        DudeShowMessage(dudeMsg);
+                        SetNextStep();
                         break;
 
-                    case 999: //ToDo - change this later
+                    case 21:
+                        if (!serialController.IsConnected)
+                        {
+                            WarnPitacoDisconnected();
+                            continue;
+                        }
+
+#if UNITY_EDITOR
+                        serialController.InitializePitacoRequest();
+                        while (!SerialGetOffset.IsUsingOffset) yield return null;
+#endif
+
+                        // Change clock color to green so player can use pitaco
+                        tutoClock.GetComponent<SpriteRenderer>().color = Color.green;
+                        balloonText.text = "Relaxe, e respire usando o PITACO por 1 minuto.";
+
+                        // Wait for player input to be greather than threshold
+                        _stopwatch.Restart();
+
+                        while (_stopwatch.ElapsedMilliseconds < 60000)
+                            yield return null;
+
+                        _stopwatch.Stop();
+
+                        // Calculate Mean flow
+
+                        // Disable clock arrow spin and reset clock color
+                        tutoClock.GetComponent<SpriteRenderer>().color = Color.white;
+                        clockArrowSpin.SpinClock = false;
+
+                        if (_flowMeter > 0) // ToDo
+                        {
+                            if (_stopwatch.ElapsedMilliseconds > _respiratoryInfoTemp.ExpiratoryFlowTime)
+                                _respiratoryInfoTemp.ExpiratoryFlowTime = _stopwatch.ElapsedMilliseconds;
+
+                            SetNextStep(true);
+
+                            continue;
+                        }
+                        else
+                        {
+                            dudeMsg = "Não consegui medir sua respiração corretamente. Vamos tentar de novo?";
+                            DudeShowMessage(dudeMsg);
+                            SetStep(21);
+                            break;
+                        }
+
+                    case 22:
+                        dudeMsg = "Muito bem!";
+                        DudeShowMessage(dudeMsg);
+                        //todo - quicky claps sounds
+                        SetNextStep();
+                        break;
+
+                    #endregion
+
+                    case 23:
+                        dudeMsg = "Ótimo, você está pronto para começar a jogar! Bom jogo!";
+                        DudeShowMessage(dudeMsg);
+                        SetNextStep();
+                        break;
+
+                    case 24:
                         GameManager.Instance.Player.CalibrationDone = true;
                         GameManager.Instance.Player.RespiratoryInfo = _respiratoryInfoTemp;
                         DatabaseManager.Instance.Players.Save();
@@ -397,6 +543,7 @@ public class CalibrationSceneManager : MonoBehaviour
             yield return null;
         }
     }
+
     public void ExecuteNextStep()
     {
         _executeStep = true;
@@ -443,7 +590,7 @@ public class CalibrationSceneManager : MonoBehaviour
 
             switch (_stepNum)
             {
-                case 5: //expiratory peak
+                case 5: // expiratory peak
                     if (tmp > _flowMeter)
                     {
                         _flowMeter = tmp;
@@ -456,7 +603,7 @@ public class CalibrationSceneManager : MonoBehaviour
                     }
                     break;
 
-                case 9: //inspiratory peak
+                case 9: // inspiratory peak
                     if (tmp < _flowMeter)
                     {
                         _flowMeter = tmp;
@@ -467,6 +614,16 @@ public class CalibrationSceneManager : MonoBehaviour
                             Debug.Log($"InspiratoryPeakFlow: {_respiratoryInfoTemp.InspiratoryPeakFlow}");
                         }
                     }
+                    break;
+
+                case 13: // expiratory flow time
+                case 17: // inspiratory flow time
+                    _flowMeter = tmp;
+                    break;
+
+                case 21: // respiratory frequency
+                    if (_stopwatch.IsRunning)
+                        _respiratoryFrequencyDictionary.Add(_stopwatch.ElapsedMilliseconds, tmp);
                     break;
             }
         }
