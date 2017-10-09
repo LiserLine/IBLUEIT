@@ -35,7 +35,7 @@ public class CalibrationSceneManager : MonoBehaviour
             };
         }
 #endif
-
+        //ToDo - Translate const strings
         var firstTimeMsg = "Olá! Bem-vindo ao I Blue It!";
         var hereAgainMsg = "Olá! Vamos calibrar o PITACO novamente?";
         firstTimeText.text = GameManager.Instance.Player.CalibrationDone ? hereAgainMsg : firstTimeMsg;

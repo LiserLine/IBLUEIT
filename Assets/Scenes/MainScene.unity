@@ -7324,7 +7324,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.6464375, y: 0.5541668}
   m_AnchorMax: {x: 0.76721877, y: 0.6195556}
-  m_AnchoredPosition: {x: 244.05728, y: 53.853935}
+  m_AnchoredPosition: {x: 244.0573, y: 53.853935}
   m_SizeDelta: {x: 142.52185, y: 40.541046}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1530378217
@@ -7405,7 +7405,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.3615625, y: 0.5541668}
   m_AnchorMax: {x: 0.4796563, y: 0.6195556}
-  m_AnchoredPosition: {x: -93.680855, y: 53.853935}
+  m_AnchoredPosition: {x: -93.68085, y: 53.853935}
   m_SizeDelta: {x: 139.35071, y: 40.541046}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1531934212
@@ -8612,7 +8612,7 @@ GameObject:
   - component: {fileID: 1796370452}
   m_Layer: 0
   m_Name: GameManager
-  m_TagString: Untagged
+  m_TagString: GameController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8651,7 +8651,7 @@ GameObject:
   - component: {fileID: 1797184415}
   - component: {fileID: 1797184414}
   m_Layer: 0
-  m_Name: Debug_LocalizationManager
+  m_Name: LocalizationManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
