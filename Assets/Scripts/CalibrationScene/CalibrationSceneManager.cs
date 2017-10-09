@@ -39,6 +39,7 @@ public class CalibrationSceneManager : MonoBehaviour
         var firstTimeMsg = "Olá! Bem-vindo ao I Blue It!";
         var hereAgainMsg = "Olá! Vamos calibrar o PITACO novamente?";
         firstTimeText.text = GameManager.Instance.Player.CalibrationDone ? hereAgainMsg : firstTimeMsg;
+        stepNum = GameManager.Instance.Player.CalibrationDone ? 4 : stepNum;
         enterButton.SetActive(true);
         serialController.OnSerialMessageReceived += OnSerialMessageReceived;
         StartCoroutine(ScreenSteps());
