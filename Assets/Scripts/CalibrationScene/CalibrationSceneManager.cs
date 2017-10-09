@@ -46,7 +46,7 @@ public class CalibrationSceneManager : MonoBehaviour
                 // Clear screen
                 firstTimeText.text = "";
                 enterButton.SetActive(false);
-                DudeStopTalking();
+                DudeClearMessage();
 
                 // Wait 1 sec to show next step
                 yield return new WaitForSeconds(1);
@@ -94,13 +94,13 @@ public class CalibrationSceneManager : MonoBehaviour
 
                     case 3:
                         dudeMsg = "Este é o relógio que vai medir a força e o tempo da sua respiração.";
-                        DudeStartTalking(dudeMsg);
+                        DudeShowMessage(dudeMsg);
                         SetNextStep();
                         break;
 
                     case 4: // Tell player to do a Expiratory Peak Exercise
                         dudeMsg = "Quando o relógio ficar verde, inspire e assopre bem forte no PITACO. Serão três exercícios!";
-                        DudeStartTalking(dudeMsg);
+                        DudeShowMessage(dudeMsg);
                         SetNextStep();
                         break;
 
@@ -145,21 +145,21 @@ public class CalibrationSceneManager : MonoBehaviour
                         else
                         {
                             dudeMsg = "Não consegui medir sua expiração. Vamos tentar novamente?";
-                            DudeStartTalking(dudeMsg);
+                            DudeShowMessage(dudeMsg);
                             SetStep(5);
                             break;
                         }
 
                     case 6:
                         dudeMsg = "Muito bem!";
-                        DudeStartTalking(dudeMsg);
+                        DudeShowMessage(dudeMsg);
                         //todo - quicky claps sounds
                         SetStep(exercises == 3 ? 8 : 7);
                         break;
 
                     case 7:
                         dudeMsg = "Mais uma vez!";
-                        DudeStartTalking(dudeMsg);
+                        DudeShowMessage(dudeMsg);
                         SetStep(5);
                         break;
 
@@ -169,7 +169,7 @@ public class CalibrationSceneManager : MonoBehaviour
 
                     case 8:
                         dudeMsg = "Agora, inspire com força!";
-                        DudeStartTalking(dudeMsg);
+                        DudeShowMessage(dudeMsg);
                         SetNextStep();
                         break;
 
@@ -206,7 +206,7 @@ public class CalibrationSceneManager : MonoBehaviour
     private void WarnPitacoDisconnected()
     {
         var dudeMsg = "O PITACO não está conectado. Conecte-o ao computador e reinicie o jogo!";
-        DudeStartTalking(dudeMsg);
+        DudeShowMessage(dudeMsg);
         SetStep(0);
     }
 
@@ -227,13 +227,13 @@ public class CalibrationSceneManager : MonoBehaviour
         executeStep = jumpToNextStep;
     }
 
-    void DudeStartTalking(string msg)
+    void DudeShowMessage(string msg)
     {
         balloonText.text = msg;
         tutoDude.GetComponent<Animator>().SetBool("Talking", true);
     }
 
-    void DudeStopTalking()
+    void DudeClearMessage()
     {
         balloonText.text = "";
         tutoDude.GetComponent<Animator>().SetBool("Talking", false);
