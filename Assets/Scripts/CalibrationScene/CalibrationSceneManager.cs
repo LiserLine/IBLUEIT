@@ -42,7 +42,7 @@ public class CalibrationSceneManager : MonoBehaviour
 
         // Initialization
         _respiratoryInfoTemp = new RespiratoryInfo();
-        _firstTimePlaying = GameManager.Instance.Player.CalibrationDone;
+        _firstTimePlaying = !GameManager.Instance.Player.CalibrationDone;
         GameManager.Instance.Player.CalibrationDone = false;
         _stopwatch = new Stopwatch();
 
