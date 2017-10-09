@@ -428,7 +428,8 @@ public class CalibrationSceneManager : MonoBehaviour
 
     private void WarnPitacoDisconnected()
     {
-        var dudeMsg = "O PITACO não está conectado. Conecte-o ao computador e reinicie o jogo!";
+        var dudeMsg = "O PITACO não está conectado. Conecte-o ao computador!";
+        enterButton.SetActive(true);
         DudeShowMessage(dudeMsg);
         SetStep(0);
     }
