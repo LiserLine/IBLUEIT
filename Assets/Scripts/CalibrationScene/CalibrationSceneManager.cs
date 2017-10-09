@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class CalibrationSceneManager : MonoBehaviour
@@ -10,8 +11,8 @@ public class CalibrationSceneManager : MonoBehaviour
     public LevelLoader levelLoader;
     public ClockArrowSpin clockArrowSpin;
 
-    private bool triggerNextStep;
-    private int stepNum = 3; //ToDo - change back to 1 when code is done
+    private bool executeStep, sceneOpen;
+    private int stepNum = 5; //ToDo - change back to 1 when code is done
 
     void Start()
     {
@@ -25,7 +26,7 @@ public class CalibrationSceneManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
         {
-            TriggerNextStep();
+            ExecuteNextStep();
         }
     }
 
@@ -40,7 +41,7 @@ public class CalibrationSceneManager : MonoBehaviour
 
         while (!tmp_tutorialDone)
         {
-            if (triggerNextStep)
+            if (executeStep)
             {
                 // Clear screen
                 firstTimeText.text = "";
@@ -49,6 +50,27 @@ public class CalibrationSceneManager : MonoBehaviour
 
                 // Wait 1 sec to show next step
                 yield return new WaitForSeconds(1);
+
+                // Open Scene Animation
+                // Opens on step 3 or greater
+                if (stepNum >= 3 && !sceneOpen)
+                {
+                    // Fade black screen and wait 1s 
+                    firstTimePanel.GetComponent<Image>().CrossFadeAlpha(0, 1, false);
+                    yield return new WaitForSeconds(1);
+                    Destroy(firstTimePanel);
+                    Destroy(enterButton);
+
+                    // Enable dude and clock
+                    tutoClock.SetActive(true);
+                    tutoDude.SetActive(true);
+                    textBalloon.SetActive(true);
+
+                    // ToDo - should it be handled this way? I tried many other ways but no success
+                    enterButton = enterButtonSmall;
+
+                    sceneOpen = true;
+                }
 
                 string dudeMsg;
                 switch (stepNum)
@@ -71,71 +93,64 @@ public class CalibrationSceneManager : MonoBehaviour
                     #region Expiration Peak
 
                     case 3:
-                        // Fade black screen and wait 1s 
-                        firstTimePanel.GetComponent<Image>().CrossFadeAlpha(0, 1, false);
-                        yield return new WaitForSeconds(1);
-
-                        // Enable dude and clock
-                        tutoClock.SetActive(true);
-                        tutoDude.SetActive(true);
-                        textBalloon.SetActive(true);
-
                         dudeMsg = "Este é o relógio que vai medir a força e o tempo da sua respiração.";
                         DudeStartTalking(dudeMsg);
-
-                        // ToDo - should it be handled this way? I tried many other ways but no success
-                        enterButton = enterButtonSmall;
-
                         SetNextStep();
                         break;
 
                     case 4: // Tell player to do a Expiratory Peak Exercise
-                        dudeMsg = "Quando o relógio ficar verde, inspire e assopre bem forte no PITACO!";
+                        dudeMsg = "Quando o relógio ficar verde, inspire e assopre bem forte no PITACO. Serão três exercícios!";
                         DudeStartTalking(dudeMsg);
                         SetNextStep();
                         break;
 
                     case 5:
-                        if (serialController.IsConnected)
-                        {
-                            // Enable clock arrow spin and initialize pitaco value request
-                            clockArrowSpin.SpinClock = true;
-                            serialController.InitializePitacoRequest();
-                            while (!SerialGetOffset.IsUsingOffset) yield return null;
-
-                            // Change clock color to green so player can use pitaco
-                            tutoClock.GetComponent<SpriteRenderer>().color = Color.green;
-                            balloonText.text = "Inspire, assopre bem forte e aguarde.";
-
-                            // Wait 8 seconds for player input
-                            yield return new WaitForSeconds(8);
-
-                            // Disable clock arrow spin and reset clock color
-                            tutoClock.GetComponent<SpriteRenderer>().color = Color.white;
-                            clockArrowSpin.SpinClock = false;
-
-                            // Check for player input
-                            // ToDo - Check if 10 must be threshold to go to next step
-                            if (flowMeter < 10f)
-                            {
-                                dudeMsg = "Não consegui sentir sua respiração. Vamos tentar novamente?";
-                                DudeStartTalking(dudeMsg);
-                                SetStep(4);
-                                continue;
-                            }
-
-                            // If player passed threshold, go to next step
-                            exercises++;
-                            if (exercises == 2) SetStep(7);
-                            TriggerNextStep();
-                        }
-                        else // If PITACO is not connected
+                        if (!serialController.IsConnected)
                         {
                             dudeMsg = "O PITACO não está conectado. Conecte-o ao computador e reinicie o jogo!";
                             DudeStartTalking(dudeMsg);
-                            SetStep(4);
+                            SetStep(0);
+                            continue; // Avoid break and execute the setted step
                         }
-                        break;
+
+                        // Enable clock arrow spin and initialize pitaco value request
+                        clockArrowSpin.SpinClock = true;
+                        serialController.InitializePitacoRequest();
+                        while (!SerialGetOffset.IsUsingOffset) yield return null;
+
+                        // Change clock color to green so player can use pitaco
+                        tutoClock.GetComponent<SpriteRenderer>().color = Color.green;
+                        balloonText.text = "Inspire, assopre bem forte e aguarde.";
+
+                        // Wait 8 seconds for player input
+                        yield return new WaitForSeconds(8);
+
+                        // Disable clock arrow spin and reset clock color
+                        tutoClock.GetComponent<SpriteRenderer>().color = Color.white;
+                        clockArrowSpin.SpinClock = false;
+
+                        // Check for player input
+                        var flowCheck = flowMeter;
+                        ResetFlowVariables();
+
+                        if (flowCheck > 10f) // ToDo - Check if 10 must be threshold to go to next step
+                        {
+                            exercises++;
+
+                            if (exercises == 2)
+                                SetStep(7, true);
+                            else
+                                SetNextStep(true);
+                            
+                            continue;
+                        }
+                        else
+                        {
+                            dudeMsg = "Não consegui medir sua expiração. Vamos tentar novamente?";
+                            DudeStartTalking(dudeMsg);
+                            SetStep(5);
+                            break;
+                        }
 
                     case 6:
                         dudeMsg = "Muito bem!";
@@ -160,50 +175,52 @@ public class CalibrationSceneManager : MonoBehaviour
                         SetNextStep();
                         break;
 
-                    case 9:
+                    #endregion
+
+                    #region Expiration Time
+                    #endregion
+
+                    #region Inspiration Time
+                    #endregion
+
+                    #region Flow Measurement
+                    #endregion
 
 
+                    //case ??:
+                    //    levelLoader.LoadScene(2); tutodone = true;
+                    //    break;
 
+                    default:
+                        var activeScene = SceneManager.GetActiveScene().buildIndex;
+                        levelLoader.LoadScene(activeScene);
                         break;
-
-                        #endregion
-
-                        #region Expiration Time
-                        #endregion
-
-                        #region Inspiration Time
-                        #endregion
-
-                        #region Flow Measurement
-                        #endregion
-
-
-                        //case 13:
-                        //    levelLoader.LoadScene(2); tutodone = true;
-                        //    break;
                 }
 
                 enterButton.SetActive(true); // Enable enter button sprite everytime
-                triggerNextStep = false;
+                executeStep = false; // Wait for player next command
             }
 
             yield return null;
         }
     }
 
-    public void TriggerNextStep()
+
+    public void ExecuteNextStep()
     {
-        triggerNextStep = true;
+        executeStep = true;
     }
 
-    void SetStep(int stepNum)
+    void SetStep(int stepNum, bool jumpToNextStep = false)
     {
         this.stepNum = stepNum;
+        executeStep = jumpToNextStep;
     }
 
-    void SetNextStep()
+    void SetNextStep(bool jumpToNextStep = false)
     {
         stepNum++;
+        executeStep = jumpToNextStep;
     }
 
     void DudeStartTalking(string msg)
@@ -220,6 +237,7 @@ public class CalibrationSceneManager : MonoBehaviour
 
     //ToDo code tag compiled unity editor
     //ToDo better coding
+    private float flowRecord;
     private float flowMeter;
     private int exercises;
     void OnSerialMessageReceived(string arrived)
@@ -235,10 +253,22 @@ public class CalibrationSceneManager : MonoBehaviour
                     if (tmp > flowMeter)
                     {
                         flowMeter = tmp;
+
                         Debug.Log($"ExpiratoryPeakFlow: {flowMeter}");
+
+                        if (flowMeter > flowRecord)
+                        {
+                            flowRecord = flowMeter;
+                            Debug.Log($"New Expiratory Record: {flowRecord}");
+                        }
                     }
                     break;
             }
         }
+    }
+
+    void ResetFlowVariables()
+    {
+        flowMeter = 0f;
     }
 }
