@@ -1,18 +1,6 @@
-﻿using System;
-
-public class Player
+﻿public class RespiratoryInfo
 {
     private float _ipf, _epf, _ift, _eft, _rf;
-
-    public uint Id { get; set; }
-
-    public string Name { get; set; }
-
-    public DateTime Birthday { get; set; }
-
-    public string Observations { get; set; }
-
-    public Disfunctions Disfunction { get; set; }
 
     public float InspiratoryPeakFlow
     {
@@ -44,18 +32,13 @@ public class Player
         set { _rf = value; }
     }
 
-    public byte LastLevel { get; set; }
-
-    public byte OpenLevel { get; set; }
-
-    public uint TotalScore { get; set; }
-
-    public uint SessionsDone { get; set; }
-
-    public bool CalibrationDone { get; set; }
-
-    public Player()
+    public void ResetRespiratoryInfo()
     {
-        //ToDo
+        _ipf = 0f;
+        _epf = 0f;
+        _ift = 0f;
+        _eft = 0f;
+        _rf = 0f;
     }
 }
+

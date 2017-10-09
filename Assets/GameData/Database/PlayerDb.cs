@@ -45,11 +45,14 @@ public class PlayerDb
                 Birthday = DateTime.ParseExact(grid[i][2], @"dd/MM/yyyy", CultureInfo.InvariantCulture),
                 Observations = grid[i][3],
                 Disfunction = (Disfunctions)Enum.Parse(typeof(Disfunctions), grid[i][4]),
-                InspiratoryPeakFlow = float.Parse(grid[i][5].Replace('.', ',')),
-                ExpiratoryPeakFlow = float.Parse(grid[i][6].Replace('.', ',')),
-                InspiratoryFlowTime = float.Parse(grid[i][7].Replace('.', ',')),
-                ExpiratoryFlowTime = float.Parse(grid[i][8].Replace('.', ',')),
-                RespirationFrequency = float.Parse(grid[i][9].Replace('.', ',')),
+                RespiratoryInfo = new RespiratoryInfo
+                {
+                    InspiratoryPeakFlow = float.Parse(grid[i][5].Replace('.', ',')),
+                    ExpiratoryPeakFlow = float.Parse(grid[i][6].Replace('.', ',')),
+                    InspiratoryFlowTime = float.Parse(grid[i][7].Replace('.', ',')),
+                    ExpiratoryFlowTime = float.Parse(grid[i][8].Replace('.', ',')),
+                    RespirationFrequency = float.Parse(grid[i][9].Replace('.', ',')),
+                },
                 LastLevel = byte.Parse(grid[i][10]),
                 OpenLevel = byte.Parse(grid[i][11]),
                 TotalScore = uint.Parse(grid[i][12]),
@@ -77,8 +80,8 @@ public class PlayerDb
             var plr = GetAt(i);
             sb.AppendLine(
                 $"{plr.Id};{plr.Name};{plr.Birthday:dd/MM/yyyy};{plr.Observations};{plr.Disfunction};" +
-                $"{plr.InspiratoryPeakFlow};{plr.ExpiratoryPeakFlow};{plr.InspiratoryFlowTime};{plr.ExpiratoryFlowTime};" +
-                $"{plr.RespirationFrequency};{plr.LastLevel};{plr.OpenLevel};{plr.TotalScore};{plr.SessionsDone};{plr.CalibrationDone};");
+                $"{plr.RespiratoryInfo.InspiratoryPeakFlow};{plr.RespiratoryInfo.ExpiratoryPeakFlow};{plr.RespiratoryInfo.InspiratoryFlowTime};{plr.RespiratoryInfo.ExpiratoryFlowTime};" +
+                $"{plr.RespiratoryInfo.RespirationFrequency};{plr.LastLevel};{plr.OpenLevel};{plr.TotalScore};{plr.SessionsDone};{plr.CalibrationDone};");
         }
 
         //ToDo - mudar para File append quando arquivo já existir

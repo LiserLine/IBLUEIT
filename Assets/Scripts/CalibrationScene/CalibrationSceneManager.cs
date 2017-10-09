@@ -342,10 +342,10 @@ public class CalibrationSceneManager : MonoBehaviour
                     {
                         _flowMeter = tmp;
 
-                        if (_flowMeter > GameManager.Instance.Player.ExpiratoryPeakFlow)
+                        if (_flowMeter > GameManager.Instance.Player.RespiratoryInfo.ExpiratoryPeakFlow)
                         {
-                            GameManager.Instance.Player.ExpiratoryPeakFlow = _flowMeter;
-                            Debug.Log($"ExpiratoryPeakFlow: {GameManager.Instance.Player.ExpiratoryPeakFlow}");
+                            GameManager.Instance.Player.RespiratoryInfo.ExpiratoryPeakFlow = _flowMeter;
+                            Debug.Log($"ExpiratoryPeakFlow: {GameManager.Instance.Player.RespiratoryInfo.ExpiratoryPeakFlow}");
                         }
                     }
                     break;
@@ -355,10 +355,10 @@ public class CalibrationSceneManager : MonoBehaviour
                     {
                         _flowMeter = tmp;
 
-                        if (_flowMeter < GameManager.Instance.Player.InspiratoryPeakFlow)
+                        if (_flowMeter < GameManager.Instance.Player.RespiratoryInfo.InspiratoryPeakFlow)
                         {
-                            GameManager.Instance.Player.InspiratoryPeakFlow = _flowMeter;
-                            Debug.Log($"InspiratoryPeakFlow: {GameManager.Instance.Player.InspiratoryPeakFlow}");
+                            GameManager.Instance.Player.RespiratoryInfo.InspiratoryPeakFlow = _flowMeter;
+                            Debug.Log($"InspiratoryPeakFlow: {GameManager.Instance.Player.RespiratoryInfo.InspiratoryPeakFlow}");
                         }
                     }
                     break;

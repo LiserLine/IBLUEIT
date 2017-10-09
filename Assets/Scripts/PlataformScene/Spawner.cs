@@ -7,29 +7,30 @@ public class Spawner : MonoBehaviour
     private float _spawnEveryXSec;
     private float _movementSpeed;
 
-    private Player _playerPacient;
-
     [Header("Settings")]
     public GameObject[] Obstacles = new GameObject[1];
     public GameObject[] Items = new GameObject[1];
 
     private void Awake()
     {
+
+#if UNITY_EDITOR
+        if (GameManager.Instance.Player == null)
+        {
+            GameManager.Instance.Player = new Player
+            {
+                Name = "NetRunner",
+                Id = 0
+            };
+        }
+#endif
+
         _transform = this.GetComponent<Transform>();
 
-        //carrega dados do jogador (limites)
-        //setar maximos pro jogador
+        //ToDo - carrega dados do jogador (limites)
+        //ToDo - setar maximos pro jogador
 
-        //debug
-        _playerPacient = new Player
-        {
-            Name = "Dummy",
-            Id = 1,
-            ExpiratoryPeakFlow = 5,
-            InspiratoryPeakFlow = -5,
-            RespirationFrequency = 10
-        };
-        _movementSpeed = _playerPacient.RespirationFrequency * 0.3f; //?? should we be using this?                
+        _movementSpeed = GameManager.Instance.Player.RespiratoryInfo.RespirationFrequency * 0.3f; //ToDo - should we be using this?                
         _spawnEveryXSec = 5f;
     }
 
@@ -42,7 +43,7 @@ public class Spawner : MonoBehaviour
     private void UpdateYPosition()
     {
         _transform.position = new Vector3(_transform.position.x,
-            Mathf.Sin(Time.time * _movementSpeed) * _playerPacient.ExpiratoryPeakFlow,
+            Mathf.Sin(Time.time * _movementSpeed) * GameManager.Instance.Player.RespiratoryInfo.ExpiratoryPeakFlow,
             _transform.position.z);
     }
 
