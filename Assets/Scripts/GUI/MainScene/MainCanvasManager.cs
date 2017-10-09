@@ -151,7 +151,7 @@ public class MainCanvasManager : MonoBehaviour
 
     public void LoadPlataform()
     {
-        LevelLoader.LoadScene(GameManager.Instance.Player.TutorialDone ? 2 : 3);
+        LevelLoader.LoadScene(GameManager.Instance.Player.CalibrationDone ? 2 : 3);
     }
 
     public void ShowPlayerInfo()

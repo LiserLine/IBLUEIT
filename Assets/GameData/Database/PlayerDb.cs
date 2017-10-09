@@ -54,7 +54,7 @@ public class PlayerDb
                 OpenLevel = byte.Parse(grid[i][11]),
                 TotalScore = uint.Parse(grid[i][12]),
                 SessionsDone = uint.Parse(grid[i][13]),
-                TutorialDone = bool.Parse(grid[i][14])
+                CalibrationDone = bool.Parse(grid[i][14])
             };
 
             _playerList.Add(plr);
@@ -67,7 +67,7 @@ public class PlayerDb
     {
         var items = new[] { "Id", "Name", "Birthday", "Observations", "Disfunction",
             "InspiratoryPeakFlow", "ExpiratoryPeakFlow", "InspiratoryFlowTime", "ExpiratoryFlowTime", "RespirationFrequency",
-            "LastLevel", "OpenLevel", "TotalScore", "SessionsDone", "TutorialDone" };
+            "LastLevel", "OpenLevel", "TotalScore", "SessionsDone", "CalibrationDone" };
 
         var sb = new StringBuilder();
         sb.AppendLine(items.Aggregate((a, b) => a + ";" + b));
@@ -78,7 +78,7 @@ public class PlayerDb
             sb.AppendLine(
                 $"{plr.Id};{plr.Name};{plr.Birthday:dd/MM/yyyy};{plr.Observations};{plr.Disfunction};" +
                 $"{plr.InspiratoryPeakFlow};{plr.ExpiratoryPeakFlow};{plr.InspiratoryFlowTime};{plr.ExpiratoryFlowTime};" +
-                $"{plr.RespirationFrequency};{plr.LastLevel};{plr.OpenLevel};{plr.TotalScore};{plr.SessionsDone};{plr.TutorialDone};");
+                $"{plr.RespirationFrequency};{plr.LastLevel};{plr.OpenLevel};{plr.TotalScore};{plr.SessionsDone};{plr.CalibrationDone};");
         }
 
         //ToDo - mudar para File append quando arquivo já existir

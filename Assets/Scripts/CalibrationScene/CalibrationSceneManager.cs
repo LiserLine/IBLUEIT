@@ -185,9 +185,10 @@ public class CalibrationSceneManager : MonoBehaviour
                     #endregion
 
 
-                    //case ??:
-                    //    levelLoader.LoadScene(2); tutodone = true;
-                    //    break;
+                    case 100:
+                        levelLoader.LoadScene(2);
+                        GameManager.Instance.Player.CalibrationDone = true;
+                        break;
 
                     default:
                         var activeScene = SceneManager.GetActiveScene().buildIndex;

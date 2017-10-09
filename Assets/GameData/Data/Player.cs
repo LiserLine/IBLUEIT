@@ -52,7 +52,7 @@ public class Player
 
     public uint SessionsDone { get; set; }
 
-    public bool TutorialDone { get; set; }
+    public bool CalibrationDone { get; set; }
 
     public Player()
     {
