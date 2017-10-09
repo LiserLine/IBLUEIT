@@ -14,6 +14,7 @@ public class GameConstants
     
     public const float UserPowerMercy = 60f / 100f;
     public const float PitacoThreshold = 1.5f;
+    public const float CalibrationThreshold = 10f; // ToDo - check if this threshold is good enough
 
     public static float ParseSerialMessage(string msg) => float.Parse(msg.Replace('.', ','));
 

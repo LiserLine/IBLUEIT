@@ -128,10 +128,10 @@ public class CalibrationSceneManager : MonoBehaviour
                         clockArrowSpin.SpinClock = false;
 
                         // Check for player input
-                        var flowCheck = flowMeter;
+                        var expCheck = flowMeter;
                         ResetFlowVariables();
 
-                        if (flowCheck > 10f) // ToDo - Check if 10 must be threshold to go to next step
+                        if (expCheck > GameConstants.CalibrationThreshold) // ToDo - Check if 10 must be threshold to go to next step
                         {
                             exercises++;
 
