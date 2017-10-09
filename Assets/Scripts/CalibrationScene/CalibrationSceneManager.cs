@@ -107,10 +107,8 @@ public class CalibrationSceneManager : MonoBehaviour
                     case 5:
                         if (!serialController.IsConnected)
                         {
-                            dudeMsg = "O PITACO não está conectado. Conecte-o ao computador e reinicie o jogo!";
-                            DudeStartTalking(dudeMsg);
-                            SetStep(0);
-                            continue; // Avoid break and execute the setted step
+                            WarnPitacoDisconnected();
+                            continue; // Avoid break and jump to setted step
                         }
 
                         // Enable clock arrow spin and initialize pitaco value request
@@ -141,7 +139,7 @@ public class CalibrationSceneManager : MonoBehaviour
                                 SetStep(7, true);
                             else
                                 SetNextStep(true);
-                            
+
                             continue;
                         }
                         else
@@ -205,6 +203,12 @@ public class CalibrationSceneManager : MonoBehaviour
         }
     }
 
+    private void WarnPitacoDisconnected()
+    {
+        var dudeMsg = "O PITACO não está conectado. Conecte-o ao computador e reinicie o jogo!";
+        DudeStartTalking(dudeMsg);
+        SetStep(0);
+    }
 
     public void ExecuteNextStep()
     {
