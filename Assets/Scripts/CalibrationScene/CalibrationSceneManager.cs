@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class CalibrationSceneManager : MonoBehaviour
 {
-    private bool executeStep, sceneOpen;
-    private int stepNum = 1; //ToDo - change back to 1 when code is done
+    private bool _executeStep, _sceneOpen;
+    private int _stepNum = 12; //ToDo - change back to 1 when code is done
 
     #region Flow Exercice Variables
 
-    private float flowMeter;
-    private int exerciseCounter;
+    private float _flowMeter;
+    private int _exerciseCounter;
 
     #endregion
 
@@ -22,7 +21,7 @@ public class CalibrationSceneManager : MonoBehaviour
     public LevelLoader levelLoader;
     public ClockArrowSpin clockArrowSpin;
 
-    void Start()
+    private void Start()
     {
 
 #if UNITY_EDITOR
@@ -39,13 +38,13 @@ public class CalibrationSceneManager : MonoBehaviour
         var firstTimeMsg = "Olá! Bem-vindo ao I Blue It!";
         var hereAgainMsg = "Olá! Vamos calibrar o PITACO novamente?";
         firstTimeText.text = GameManager.Instance.Player.CalibrationDone ? hereAgainMsg : firstTimeMsg;
-        stepNum = GameManager.Instance.Player.CalibrationDone ? 4 : stepNum;
+        _stepNum = GameManager.Instance.Player.CalibrationDone ? 4 : _stepNum;
         enterButton.SetActive(true);
         serialController.OnSerialMessageReceived += OnSerialMessageReceived;
         StartCoroutine(ScreenSteps());
     }
 
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
         {
@@ -53,17 +52,17 @@ public class CalibrationSceneManager : MonoBehaviour
         }
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         serialController.OnSerialMessageReceived -= OnSerialMessageReceived;
     }
 
-    IEnumerator ScreenSteps()
+    private IEnumerator ScreenSteps()
     {
         GameManager.Instance.Player.CalibrationDone = false;
         while (!GameManager.Instance.Player.CalibrationDone)
         {
-            if (executeStep)
+            if (_executeStep)
             {
                 // Clear screen
                 firstTimeText.text = "";
@@ -75,7 +74,7 @@ public class CalibrationSceneManager : MonoBehaviour
 
                 // Open Scene Animation
                 // Opens on step 3 or greater
-                if (stepNum >= 3 && !sceneOpen)
+                if (_stepNum >= 3 && !_sceneOpen)
                 {
                     // Fade black screen and wait 1s 
                     firstTimePanel.GetComponent<Image>().CrossFadeAlpha(0, 1, false);
@@ -91,11 +90,11 @@ public class CalibrationSceneManager : MonoBehaviour
                     // ToDo - should it be handled this way? I tried many other ways but no success
                     enterButton = enterButtonSmall;
 
-                    sceneOpen = true;
+                    _sceneOpen = true;
                 }
 
                 string dudeMsg;
-                switch (stepNum)
+                switch (_stepNum)
                 {
                     #region Inviting steps
 
@@ -150,14 +149,14 @@ public class CalibrationSceneManager : MonoBehaviour
                         clockArrowSpin.SpinClock = false;
 
                         // Check for player input
-                        var expCheck = flowMeter;
+                        var expCheck = _flowMeter;
                         ResetFlowMeter();
 
                         if (expCheck > GameConstants.CalibrationThreshold) // ToDo - Check if 10 must be threshold to go to next step
                         {
-                            exerciseCounter++;
+                            _exerciseCounter++;
 
-                            if (exerciseCounter == 2)
+                            if (_exerciseCounter == 2)
                                 SetStep(7, true);
                             else
                                 SetNextStep(true);
@@ -176,7 +175,7 @@ public class CalibrationSceneManager : MonoBehaviour
                         dudeMsg = "Muito bem!";
                         DudeShowMessage(dudeMsg);
                         //todo - quicky claps sounds
-                        SetStep(exerciseCounter == 3 ? 8 : 7);
+                        SetStep(_exerciseCounter == 3 ? 8 : 7);
                         break;
 
                     case 7:
@@ -224,14 +223,14 @@ public class CalibrationSceneManager : MonoBehaviour
                         clockArrowSpin.SpinClock = false;
 
                         // Check for player input
-                        var insCheck = flowMeter;
+                        var insCheck = _flowMeter;
                         ResetFlowMeter();
 
                         if (insCheck < -GameConstants.CalibrationThreshold)
                         {
-                            exerciseCounter++;
+                            _exerciseCounter++;
 
-                            if (exerciseCounter == 2)
+                            if (_exerciseCounter == 2)
                                 SetStep(11, true);
                             else
                                 SetNextStep(true);
@@ -250,7 +249,7 @@ public class CalibrationSceneManager : MonoBehaviour
                         dudeMsg = "Muito bem!";
                         DudeShowMessage(dudeMsg);
                         //todo - quicky claps sounds
-                        SetStep(exerciseCounter == 3 ? 12 : 11);
+                        SetStep(_exerciseCounter == 3 ? 12 : 11);
                         break;
 
                     case 11:
@@ -287,11 +286,39 @@ public class CalibrationSceneManager : MonoBehaviour
                 }
 
                 enterButton.SetActive(true); // Enable enter button sprite on break
-                executeStep = false; // Wait for player next command
+                _executeStep = false; // Wait for player next command
             }
 
             yield return null;
         }
+    }
+    public void ExecuteNextStep()
+    {
+        _executeStep = true;
+    }
+
+    private void SetStep(int step, bool jumpToStep = false)
+    {
+        _stepNum = step;
+        _executeStep = jumpToStep;
+    }
+
+    private void SetNextStep(bool jumpToStep = false)
+    {
+        _stepNum++;
+        _executeStep = jumpToStep;
+    }
+
+    private void DudeShowMessage(string msg)
+    {
+        balloonText.text = msg;
+        tutoDude.GetComponent<Animator>().SetBool("Talking", true);
+    }
+
+    private void DudeClearMessage()
+    {
+        balloonText.text = "";
+        tutoDude.GetComponent<Animator>().SetBool("Talking", false);
     }
 
     private void WarnPitacoDisconnected()
@@ -301,66 +328,37 @@ public class CalibrationSceneManager : MonoBehaviour
         SetStep(0);
     }
 
-    public void ExecuteNextStep()
-    {
-        executeStep = true;
-    }
-
-    void SetStep(int stepNum, bool jumpToNextStep = false)
-    {
-        this.stepNum = stepNum;
-        executeStep = jumpToNextStep;
-    }
-
-    void SetNextStep(bool jumpToNextStep = false)
-    {
-        stepNum++;
-        executeStep = jumpToNextStep;
-    }
-
-    void DudeShowMessage(string msg)
-    {
-        balloonText.text = msg;
-        tutoDude.GetComponent<Animator>().SetBool("Talking", true);
-    }
-
-    void DudeClearMessage()
-    {
-        balloonText.text = "";
-        tutoDude.GetComponent<Animator>().SetBool("Talking", false);
-    }
-
-    void OnSerialMessageReceived(string arrived)
+    private void OnSerialMessageReceived(string arrived)
     {
         if (arrived.Length > 1 && SerialGetOffset.IsUsingOffset)
         {
             var tmp = GameConstants.ParseSerialMessage(arrived);
             tmp -= SerialGetOffset.Offset;
 
-            switch (stepNum)
+            switch (_stepNum)
             {
                 case 5: //expiratory peak
-                    if (tmp > flowMeter)
+                    if (tmp > _flowMeter)
                     {
-                        flowMeter = tmp;
+                        _flowMeter = tmp;
 
-                        if (flowMeter > GameManager.Instance.Player.ExpiratoryPeakFlow)
+                        if (_flowMeter > GameManager.Instance.Player.ExpiratoryPeakFlow)
                         {
-                            GameManager.Instance.Player.ExpiratoryPeakFlow = flowMeter;
-                            Debug.Log($"New Expiratory Peak Record: {GameManager.Instance.Player.ExpiratoryPeakFlow}");
+                            GameManager.Instance.Player.ExpiratoryPeakFlow = _flowMeter;
+                            Debug.Log($"ExpiratoryPeakFlow: {GameManager.Instance.Player.ExpiratoryPeakFlow}");
                         }
                     }
                     break;
 
                 case 9: //inspiratory peak
-                    if (tmp < flowMeter)
+                    if (tmp < _flowMeter)
                     {
-                        flowMeter = tmp;
+                        _flowMeter = tmp;
 
-                        if (flowMeter < GameManager.Instance.Player.InspiratoryPeakFlow)
+                        if (_flowMeter < GameManager.Instance.Player.InspiratoryPeakFlow)
                         {
-                            GameManager.Instance.Player.InspiratoryPeakFlow = flowMeter;
-                            Debug.Log($"New Inspiratory Peak Record: {GameManager.Instance.Player.InspiratoryPeakFlow}");
+                            GameManager.Instance.Player.InspiratoryPeakFlow = _flowMeter;
+                            Debug.Log($"InspiratoryPeakFlow: {GameManager.Instance.Player.InspiratoryPeakFlow}");
                         }
                     }
                     break;
@@ -368,13 +366,13 @@ public class CalibrationSceneManager : MonoBehaviour
         }
     }
 
-    void ResetExerciseCounter()
+    private void ResetExerciseCounter()
     {
-        exerciseCounter = 0;
+        _exerciseCounter = 0;
     }
 
-    void ResetFlowMeter()
+    private void ResetFlowMeter()
     {
-        flowMeter = 0f;
+        _flowMeter = 0f;
     }
 }
