@@ -164,7 +164,7 @@ public class CalibrationSceneManager : MonoBehaviour
                         var expCheck = _flowMeter;
                         ResetFlowMeter();
 
-                        if (expCheck > GameConstants.CalibrationThreshold) // ToDo - Check if 10 must be threshold to go to next step
+                        if (expCheck > GameConstants.PitacoThreshold) // ToDo - Check if 10 must be threshold to go to next step
                         {
                             _exerciseCounter++;
 
@@ -238,7 +238,7 @@ public class CalibrationSceneManager : MonoBehaviour
                         var insCheck = _flowMeter;
                         ResetFlowMeter();
 
-                        if (insCheck < -GameConstants.CalibrationThreshold)
+                        if (insCheck < -GameConstants.PitacoThreshold)
                         {
                             _exerciseCounter++;
 
@@ -303,12 +303,12 @@ public class CalibrationSceneManager : MonoBehaviour
 
                         // Wait for player input to be greather than threshold
                         _stopwatch.Reset();
-                        while (_flowMeter <= GameConstants.CalibrationThreshold)
+                        while (_flowMeter <= GameConstants.PitacoThreshold)
                             yield return null;
                         
                         _stopwatch.Start();
 
-                        while (_flowMeter > GameConstants.CalibrationThreshold)
+                        while (_flowMeter > GameConstants.PitacoThreshold)
                             yield return null;
 
                         _stopwatch.Stop();
@@ -323,7 +323,7 @@ public class CalibrationSceneManager : MonoBehaviour
                         var expTCheck = _flowMeter;
                         ResetFlowMeter();
 
-                        if (expTCheck < -GameConstants.CalibrationThreshold)
+                        if (expTCheck < -GameConstants.PitacoThreshold)
                         {
                             _exerciseCounter++;
 

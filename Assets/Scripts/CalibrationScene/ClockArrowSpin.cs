@@ -5,10 +5,7 @@ public class ClockArrowSpin : MonoBehaviour
     public bool SpinClock { get; set; }
 
     public SerialController serialController;
-    [Range(0f, GameConstants.PitacoThreshold)]
-    public float threshold;
-
-
+    
     void OnEnable()
     {
         serialController.OnSerialMessageReceived += OnSerialMessageReceived;
@@ -29,7 +26,7 @@ public class ClockArrowSpin : MonoBehaviour
 
         var snsrVal = GameConstants.ParseSerialMessage(msg) - SerialGetOffset.Offset;
 
-        snsrVal = snsrVal < -threshold || snsrVal > threshold ? snsrVal : 0f;
+        snsrVal = snsrVal < -GameConstants.PitacoThreshold || snsrVal > GameConstants.PitacoThreshold ? snsrVal : 0f;
 
         this.transform.Rotate(Vector3.back, snsrVal);
     }

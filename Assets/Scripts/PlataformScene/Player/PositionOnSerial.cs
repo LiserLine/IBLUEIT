@@ -5,14 +5,11 @@ public class PositionOnSerial : MonoBehaviour
     private Player _player;
     private Transform _transform;
     private float _cameraOffset;
-
     private const float RelativeLimit = 0.3f;
 
     public ControlBehaviour Behaviour;
     public SerialController SerialController;
-    [Range(0f, GameConstants.PitacoThreshold)]
-    public int Threshold;
-    
+
     private void Awake()
     {
         _transform = GetComponent<Transform>();
@@ -71,7 +68,7 @@ public class PositionOnSerial : MonoBehaviour
 
         var sensorValue = GameConstants.ParseSerialMessage(msg) - SerialGetOffset.Offset;
 
-        sensorValue = (sensorValue < -Threshold || sensorValue > Threshold) ? sensorValue : 0f;
+        sensorValue = (sensorValue < -GameConstants.PitacoThreshold || sensorValue > GameConstants.PitacoThreshold) ? sensorValue : 0f;
 
 #if UNITY_EDITOR
         var expiratoryPeakFlow = 300f; //debug

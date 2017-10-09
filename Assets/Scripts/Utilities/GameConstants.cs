@@ -13,8 +13,7 @@ public class GameConstants
     public static readonly string PacientListFile = PacientsPath + "_pacientsList.csv";
     
     public const float UserPowerMercy = 60f / 100f;
-    public const float PitacoThreshold = 1.5f;
-    public const float CalibrationThreshold = 10f; // ToDo - check if this threshold is good enough
+    public const float PitacoThreshold = 20f;
 
     public static float ParseSerialMessage(string msg) => float.Parse(msg.Replace('.', ','));
 
