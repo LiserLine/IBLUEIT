@@ -305,8 +305,7 @@ public class CalibrationSceneManager : MonoBehaviour
                         _stopwatch.Reset();
                         while (_flowMeter <= GameConstants.CalibrationThreshold)
                             yield return null;
-
-
+                        
                         _stopwatch.Start();
 
                         while (_flowMeter > GameConstants.CalibrationThreshold)
@@ -314,7 +313,7 @@ public class CalibrationSceneManager : MonoBehaviour
 
                         _stopwatch.Stop();
 
-                        Debug.Log("X Seconds ");
+                        Debug.Log($"Expiration Time: {_stopwatch.ElapsedMilliseconds/1000} secs\n flowMeter: {_flowMeter}");
 
                         // Disable clock arrow spin and reset clock color
                         tutoClock.GetComponent<SpriteRenderer>().color = Color.white;
