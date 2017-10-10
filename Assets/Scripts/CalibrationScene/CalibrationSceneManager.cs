@@ -424,7 +424,7 @@ public class CalibrationSceneManager : MonoBehaviour
 
                         _stopwatch.Stop();
 
-                        // ToDo - Calculate Mean flow
+                        CalculateMeanFlow();
 
                         DisableClockFlow();
 
@@ -479,6 +479,64 @@ public class CalibrationSceneManager : MonoBehaviour
             }
 
             yield return null;
+        }
+    }
+
+    private void CalculateMeanFlow()
+    {
+        // ToDo - try lambda expressions
+        bool semiCicleCompleted = false;
+        bool cicleCompleted = false;
+        long firstValueInstant = 0;
+        long lastValueInstant = 0;
+        long timeSum = 0;
+        int timeCount = 0;
+        float v1 = 0f;
+
+        var pairs = _respiratoryFrequencyDictionary.ToList();
+        for (var i = 0; i < pairs.Count; i++)
+        {
+            var key = pairs[i].Key;
+            var value = pairs[i].Value;
+
+            if (value < -GameConstants.PitacoThreshold && value > GameConstants.PitacoThreshold)
+            {
+                if (firstValueInstant == 0)
+                {
+                    firstValueInstant = pairs[i - 1].Key;
+                    v1 = value;
+                }
+
+                if (semiCicleCompleted && v1 >= value)
+                {
+                    semiCicleCompleted = false;
+                    cicleCompleted = false;
+                    firstValueInstant = 0;
+                    lastValueInstant = 0;
+                    timeSum = 0;
+                    timeCount = 0;
+                    v1 = 0f;
+                }
+
+                if (firstValueInstant > 0)
+                {
+                    timeSum += key;
+                    timeCount++;
+                }
+            }
+            else
+            {
+                if (semiCicleCompleted)
+                {
+                    cicleCompleted = true;
+
+                }
+
+                if (firstValueInstant > 0)
+                {
+                    semiCicleCompleted = true;
+                }
+            }
         }
     }
 
@@ -587,7 +645,7 @@ public class CalibrationSceneManager : MonoBehaviour
 
     private void OnSerialMessageReceived(string arrived)
     {
-        if (arrived.Length <= 1 || !SerialGetOffset.IsUsingOffset)
+        if (arrived.Length < 1 || !SerialGetOffset.IsUsingOffset)
             return;
 
         var tmp = GameConstants.ParseSerialMessage(arrived);
@@ -632,4 +690,5 @@ public class CalibrationSceneManager : MonoBehaviour
                 break;
         }
     }
+
 }
