@@ -3,6 +3,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
@@ -586,49 +587,49 @@ public class CalibrationSceneManager : MonoBehaviour
 
     private void OnSerialMessageReceived(string arrived)
     {
-        if (arrived.Length > 1 && SerialGetOffset.IsUsingOffset)
+        if (arrived.Length <= 1 || !SerialGetOffset.IsUsingOffset)
+            return;
+
+        var tmp = GameConstants.ParseSerialMessage(arrived);
+        tmp -= SerialGetOffset.Offset;
+
+        switch (_stepNum)
         {
-            var tmp = GameConstants.ParseSerialMessage(arrived);
-            tmp -= SerialGetOffset.Offset;
-
-            switch (_stepNum)
-            {
-                case 5: // expiratory peak
-                    if (tmp > _flowMeter)
-                    {
-                        _flowMeter = tmp;
-
-                        if (_flowMeter > _respiratoryInfoTemp.ExpiratoryPeakFlow)
-                        {
-                            _respiratoryInfoTemp.ExpiratoryPeakFlow = _flowMeter;
-                            Debug.Log($"ExpiratoryPeakFlow: {_respiratoryInfoTemp.ExpiratoryPeakFlow}");
-                        }
-                    }
-                    break;
-
-                case 9: // inspiratory peak
-                    if (tmp < _flowMeter)
-                    {
-                        _flowMeter = tmp;
-
-                        if (_flowMeter < _respiratoryInfoTemp.InspiratoryPeakFlow)
-                        {
-                            _respiratoryInfoTemp.InspiratoryPeakFlow = _flowMeter;
-                            Debug.Log($"InspiratoryPeakFlow: {_respiratoryInfoTemp.InspiratoryPeakFlow}");
-                        }
-                    }
-                    break;
-
-                case 13: // expiratory flow time
-                case 17: // inspiratory flow time
+            case 5: // expiratory peak
+                if (tmp > _flowMeter)
+                {
                     _flowMeter = tmp;
-                    break;
 
-                case 21: // respiratory frequency
-                    if (_stopwatch.IsRunning)
-                        _respiratoryFrequencyDictionary.Add(_stopwatch.ElapsedMilliseconds, tmp);
-                    break;
-            }
+                    if (_flowMeter > _respiratoryInfoTemp.ExpiratoryPeakFlow)
+                    {
+                        _respiratoryInfoTemp.ExpiratoryPeakFlow = _flowMeter;
+                        Debug.Log($"ExpiratoryPeakFlow: {_respiratoryInfoTemp.ExpiratoryPeakFlow}");
+                    }
+                }
+                break;
+
+            case 9: // inspiratory peak
+                if (tmp < _flowMeter)
+                {
+                    _flowMeter = tmp;
+
+                    if (_flowMeter < _respiratoryInfoTemp.InspiratoryPeakFlow)
+                    {
+                        _respiratoryInfoTemp.InspiratoryPeakFlow = _flowMeter;
+                        Debug.Log($"InspiratoryPeakFlow: {_respiratoryInfoTemp.InspiratoryPeakFlow}");
+                    }
+                }
+                break;
+
+            case 13: // expiratory flow time
+            case 17: // inspiratory flow time
+                _flowMeter = tmp;
+                break;
+
+            case 21: // respiratory frequency
+                if (_stopwatch.IsRunning)
+                    _respiratoryFrequencyDictionary.Add(_stopwatch.ElapsedMilliseconds, tmp);
+                break;
         }
     }
 }
