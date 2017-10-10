@@ -24,7 +24,7 @@ public class CalibrationSceneManager : MonoBehaviour
     public LevelLoader levelLoader;
     public ClockArrowSpin clockArrowSpin;
 
-    private void Start()
+    private void Awake()
     {
 
 #if UNITY_EDITOR
@@ -205,6 +205,7 @@ public class CalibrationSceneManager : MonoBehaviour
                         serialController.InitializePitacoRequest();
                         while (!SerialGetOffset.IsUsingOffset) yield return null;
 #endif
+                        yield return new WaitForSeconds(1);
                         balloonText.text = "(expire, inspire com força e aguarde)";
                         EnableClockFlow();
                         yield return new WaitForSeconds(8);
@@ -261,6 +262,7 @@ public class CalibrationSceneManager : MonoBehaviour
                         while (!SerialGetOffset.IsUsingOffset) yield return null;
 #endif
 
+                        yield return new WaitForSeconds(1);
                         balloonText.text = "(relaxe, expire o máximo de tempo possível e aguarde)";
                         EnableClockFlow();
 
@@ -334,6 +336,7 @@ public class CalibrationSceneManager : MonoBehaviour
                         while (!SerialGetOffset.IsUsingOffset) yield return null;
 #endif
 
+                        yield return new WaitForSeconds(1);
                         balloonText.text = "(relaxe, inspire o máximo de tempo possível e aguarde)";
                         EnableClockFlow();
 
@@ -408,6 +411,7 @@ public class CalibrationSceneManager : MonoBehaviour
                         while (!SerialGetOffset.IsUsingOffset) yield return null;
 #endif
 
+                        yield return new WaitForSeconds(1);
                         balloonText.text = "(relaxe e respire usando o PITACO por 1 minuto.)";
                         EnableClockFlow();
 
