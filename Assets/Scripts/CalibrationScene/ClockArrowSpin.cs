@@ -5,18 +5,18 @@ public class ClockArrowSpin : MonoBehaviour
     public bool SpinClock { get; set; }
 
     public SerialController serialController;
-    
-    void OnEnable()
+
+    private void OnEnable()
     {
         serialController.OnSerialMessageReceived += OnSerialMessageReceived;
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         serialController.OnSerialMessageReceived -= OnSerialMessageReceived;
     }
 
-    void OnSerialMessageReceived(string msg)
+    private void OnSerialMessageReceived(string msg)
     {
         if (!SpinClock) return;
 
