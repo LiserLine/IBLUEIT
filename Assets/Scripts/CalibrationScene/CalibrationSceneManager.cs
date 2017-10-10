@@ -444,6 +444,8 @@ public class CalibrationSceneManager : MonoBehaviour
 
                     #endregion
 
+                    #region Ending Steps
+
                     case 24:
                         dudeMsg = "Ótimo, você está pronto para começar a jogar! Bom jogo!";
                         DudeShowMessage(dudeMsg);
@@ -460,6 +462,8 @@ public class CalibrationSceneManager : MonoBehaviour
                         levelLoader.LoadScene(2);
                         break;
 
+                    #endregion
+
                     default: // Reload Scene
                         levelLoader.LoadScene(3);
                         break;
@@ -472,6 +476,8 @@ public class CalibrationSceneManager : MonoBehaviour
             yield return null;
         }
     }
+
+    #region Step Controllers
 
     public void ExecuteNextStep()
     {
@@ -489,6 +495,10 @@ public class CalibrationSceneManager : MonoBehaviour
         _stepNum++;
         _executeStep = jumpToStep;
     }
+
+    #endregion
+
+    #region Dude Messages
 
     private void DudeShowMessage(string msg)
     {
@@ -532,6 +542,10 @@ public class CalibrationSceneManager : MonoBehaviour
         tutoDude.GetComponent<Animator>().SetBool("Talking", false);
     }
 
+    #endregion
+
+    #region TutoClock Controller
+
     private void EnableClockFlow()
     {
         tutoClock.GetComponent<SpriteRenderer>().color = Color.green;
@@ -543,6 +557,28 @@ public class CalibrationSceneManager : MonoBehaviour
         tutoClock.GetComponent<SpriteRenderer>().color = Color.white;
         clockArrowSpin.SpinClock = false;
     }
+
+    #endregion
+
+    #region Resetters
+
+    private void ResetExerciseCounter()
+    {
+        _exerciseCounter = 0;
+    }
+
+    private void ResetFlowMeter()
+    {
+        _flowMeter = 0f;
+    }
+
+    private void ResetExerciseAndFlowMeter()
+    {
+        ResetExerciseCounter();
+        ResetFlowMeter();
+    }
+
+    #endregion
 
     private void OnSerialMessageReceived(string arrived)
     {
@@ -590,21 +626,5 @@ public class CalibrationSceneManager : MonoBehaviour
                     break;
             }
         }
-    }
-
-    private void ResetExerciseCounter()
-    {
-        _exerciseCounter = 0;
-    }
-
-    private void ResetFlowMeter()
-    {
-        _flowMeter = 0f;
-    }
-
-    private void ResetExerciseAndFlowMeter()
-    {
-        ResetExerciseCounter();
-        ResetFlowMeter();
     }
 }
