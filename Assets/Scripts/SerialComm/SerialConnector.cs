@@ -91,7 +91,6 @@ public class SerialConnector : MonoBehaviour
     {
         if (Application.platform == RuntimePlatform.OSXPlayer ||
             Application.platform == RuntimePlatform.OSXEditor ||
-            Application.platform == RuntimePlatform.OSXDashboardPlayer ||
             Application.platform == RuntimePlatform.LinuxPlayer)
         {
             return Directory.GetFiles("/dev/").Where(port => port.StartsWith("/dev/tty.usb") || port.StartsWith("/dev/ttyUSB")).ToArray();
