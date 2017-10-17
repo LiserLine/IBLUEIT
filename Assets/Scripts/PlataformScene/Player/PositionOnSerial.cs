@@ -20,7 +20,6 @@ public class PositionOnSerial : MonoBehaviour
             {
                 Name = "NetRunner",
                 Id = 0,
-                CalibrationDone = false,
             };
         }
 #endif
@@ -31,7 +30,7 @@ public class PositionOnSerial : MonoBehaviour
 
     private void Update()
     {
-        ChangeBehaviourHotkey();
+        //ChangeBehaviourHotkey();
     }
 
     private void ChangeBehaviourHotkey()
@@ -64,7 +63,7 @@ public class PositionOnSerial : MonoBehaviour
         PitacoRecorder.Instance.Stop();
 
         var stage = GameManager.Instance.Stage;
-        PitacoRecorder.Instance.WriteData(_player, stage, GameConstants.GetSessionsPath(_player), true);
+        PitacoRecorder.Instance.WriteData(_player, stage, true);
     }
 
     private void OnSerialMessageReceived(string msg)

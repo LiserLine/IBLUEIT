@@ -37,7 +37,7 @@ public class PitacoRecorder
         _incomingDataDictionary.Add(_stopwatch.ElapsedMilliseconds, value);
     }
 
-    public void WriteData(string path = null, bool clear = false)
+    public void WriteData(string path = null, bool clearRecords = false)
     {
         if (_incomingDataDictionary.Count == 0) return;
 
@@ -61,13 +61,13 @@ public class PitacoRecorder
 
         GameUtilities.WriteAllText(filepath, _sb.ToString());
 
-        if (clear)
+        if (clearRecords)
         {
-            Clear();
+            ClearRecords();
         }
     }
 
-    public void WriteData(Player plr, Stage stg, string path, bool clear = false)
+    public void WriteData(Player plr, Stage stg, bool clearRecords = false)
     {
         var configString = new[]
         {
@@ -79,10 +79,12 @@ public class PitacoRecorder
         _sb.AppendLine($"{plr.Id};{plr.Name};{plr.Disfunction};{_recordStart};{_recordFinish};{stg.Id};");
         _sb.AppendLine();
 
-        WriteData(path, clear);
+        var path = GameConstants.GetSessionsPath(plr);
+
+        WriteData(path, clearRecords);
     }
 
-    public void Clear()
+    public void ClearRecords()
     {
         _sb.Clear();
         _incomingDataDictionary.Clear();
