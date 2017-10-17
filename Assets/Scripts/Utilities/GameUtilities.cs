@@ -31,6 +31,9 @@ public static class GameUtilities
         long startZero = 0, endZero = 0;
         long firstCurveTime = 0, secondCurveTime = 0;
 
+        long sumTimes = 0;
+        int quantCycles = 0;
+
         for (var i = 1; i < respirationSamples.Count; i++)
         {
             var actualTime = respirationSamples[i].Key;
