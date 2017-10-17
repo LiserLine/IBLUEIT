@@ -110,18 +110,18 @@ public class PositionOnSerial : MonoBehaviour
 
         _transform.position = Vector3.Lerp(a, b, Time.deltaTime * 15f);
 
-        PitacoRecorder.Instance.Add(_transform.position.y);
+        PitacoRecorder.Instance.AddIncomingData(_transform.position.y);
     }
 
     private void OnPlataformStageStart()
     {
-        PitacoRecorder.Instance.Start();
+        PitacoRecorder.Instance.StartRecording();
     }
 
     private void OnPlataformStageEnd()
     {
         GameManager.Instance.Player.SessionsDone++;
-        PitacoRecorder.Instance.Stop();
+        PitacoRecorder.Instance.StopRecording();
         PitacoRecorder.Instance.WriteData(GameManager.Instance.Player, GameManager.Instance.Stage, true);
     }
 

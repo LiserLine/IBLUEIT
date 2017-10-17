@@ -20,20 +20,23 @@ public class PitacoRecorder
         _stopwatch = new Stopwatch();
     }
 
-    public void Start()
+    public void StartRecording()
     {
         _recordStart = DateTime.Now;
         _stopwatch.Start();
     }
 
-    public void Stop()
+    public void StopRecording()
     {
         _recordFinish = DateTime.Now;
         _stopwatch.Stop();
     }
 
-    public void Add(float value)
+    public void AddIncomingData(float value)
     {
+        if (!_stopwatch.IsRunning)
+            throw new Exception("You must execute StartRecording to add values.");
+
         _incomingDataDictionary.Add(_stopwatch.ElapsedMilliseconds, value);
     }
 
