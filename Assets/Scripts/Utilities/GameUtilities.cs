@@ -26,7 +26,7 @@ public static class GameUtilities
 
     public static float CalculateMeanFlow(List<KeyValuePair<long, float>> respirationSamples)
     {
-        float cyclesPerSec = 0f;
+        float cyclesPerSec = 0.16f; //ToDo - remake this code
 
         long startZero = 0, endZero = 0;
         long firstCurveTime = 0, secondCurveTime = 0;
