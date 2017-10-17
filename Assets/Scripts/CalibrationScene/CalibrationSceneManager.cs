@@ -17,7 +17,7 @@ public class CalibrationSceneManager : MonoBehaviour
     private float _flowMeter;
     private RespiratoryInfo _respiratoryInfoTemp;
     private Stopwatch _stopwatch;
-    private Dictionary<long, float> _respiratoryFrequencyDictionary;
+    private Dictionary<long, float> _respirationSamples;
 
     public Text firstTimeText, balloonText;
     public GameObject enterButton, enterButtonSmall, firstTimePanel, tutoDude, tutoClock, textBalloon;
@@ -43,7 +43,7 @@ public class CalibrationSceneManager : MonoBehaviour
         // Initialization
         _respiratoryInfoTemp = new RespiratoryInfo();
         _stopwatch = new Stopwatch();
-        _respiratoryFrequencyDictionary = new Dictionary<long, float>();
+        _respirationSamples = new Dictionary<long, float>();
 
         _firstTimePlaying = !GameManager.Instance.Player.CalibrationDone;
         GameManager.Instance.Player.CalibrationDone = false;
@@ -413,28 +413,26 @@ public class CalibrationSceneManager : MonoBehaviour
 #endif
 
                         yield return new WaitForSeconds(1);
-                        balloonText.text = "(relaxe e respire usando o PITACO por 1 minuto.)";
+                        balloonText.text = "(relaxe e respire usando o PITACO por 1 minuto)";
                         EnableClockFlow();
 
                         // Wait for player input to be greather than threshold
                         _stopwatch.Restart();
 
-                        while (_stopwatch.ElapsedMilliseconds < 65000)
+                        while (_stopwatch.ElapsedMilliseconds < 5000) // ToDo - change back to 65000
                             yield return null;
 
                         _stopwatch.Stop();
 
-                        CalculateMeanFlow();
+                        _flowMeter = GameUtilities.CalculateMeanFlow(_respirationSamples.ToList());
 
                         DisableClockFlow();
 
-                        if (_flowMeter > 0) // ToDo
+                        // ToDo - Check if 0.05 cycles/sec is good enough 
+                        // ToDo - Create a constant value of 0.05 on GameConstants
+                        if (_flowMeter > 0.05f) 
                         {
-                            if (_stopwatch.ElapsedMilliseconds > _respiratoryInfoTemp.ExpiratoryFlowTime)
-                                _respiratoryInfoTemp.ExpiratoryFlowTime = _stopwatch.ElapsedMilliseconds;
-
                             SetNextStep(true);
-
                             continue;
                         }
                         else
@@ -479,64 +477,6 @@ public class CalibrationSceneManager : MonoBehaviour
             }
 
             yield return null;
-        }
-    }
-
-    private void CalculateMeanFlow()
-    {
-        // ToDo - try lambda expressions
-        bool semiCicleCompleted = false;
-        bool cicleCompleted = false;
-        long firstValueInstant = 0;
-        long lastValueInstant = 0;
-        long timeSum = 0;
-        int timeCount = 0;
-        float v1 = 0f;
-
-        var pairs = _respiratoryFrequencyDictionary.ToList();
-        for (var i = 0; i < pairs.Count; i++)
-        {
-            var key = pairs[i].Key;
-            var value = pairs[i].Value;
-
-            if (value < -GameConstants.PitacoThreshold && value > GameConstants.PitacoThreshold)
-            {
-                if (firstValueInstant == 0)
-                {
-                    firstValueInstant = pairs[i - 1].Key;
-                    v1 = value;
-                }
-
-                if (semiCicleCompleted && v1 >= value)
-                {
-                    semiCicleCompleted = false;
-                    cicleCompleted = false;
-                    firstValueInstant = 0;
-                    lastValueInstant = 0;
-                    timeSum = 0;
-                    timeCount = 0;
-                    v1 = 0f;
-                }
-
-                if (firstValueInstant > 0)
-                {
-                    timeSum += key;
-                    timeCount++;
-                }
-            }
-            else
-            {
-                if (semiCicleCompleted)
-                {
-                    cicleCompleted = true;
-
-                }
-
-                if (firstValueInstant > 0)
-                {
-                    semiCicleCompleted = true;
-                }
-            }
         }
     }
 
@@ -648,7 +588,7 @@ public class CalibrationSceneManager : MonoBehaviour
         if (arrived.Length < 1 || !SerialGetOffset.IsUsingOffset)
             return;
 
-        var tmp = GameConstants.ParseSerialMessage(arrived);
+        var tmp = GameUtilities.ParseSerialMessage(arrived);
         tmp -= SerialGetOffset.Offset;
 
         switch (_stepNum)
@@ -686,7 +626,7 @@ public class CalibrationSceneManager : MonoBehaviour
 
             case 21: // respiratory frequency
                 if (_stopwatch.IsRunning)
-                    _respiratoryFrequencyDictionary.Add(_stopwatch.ElapsedMilliseconds, tmp);
+                    _respirationSamples.Add(_stopwatch.ElapsedMilliseconds, tmp);
                 break;
         }
     }
