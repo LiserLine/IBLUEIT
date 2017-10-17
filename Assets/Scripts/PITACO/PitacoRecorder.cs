@@ -32,7 +32,7 @@ public class PitacoRecorder
         _stopwatch.Stop();
     }
 
-    public void AddIncomingData(float value)
+    public void RecordValue(float value)
     {
         if (!_stopwatch.IsRunning)
             throw new Exception("You must execute StartRecording to add values.");

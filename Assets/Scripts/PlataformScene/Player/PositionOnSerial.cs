@@ -110,7 +110,7 @@ public class PositionOnSerial : MonoBehaviour
 
         _transform.position = Vector3.Lerp(a, b, Time.deltaTime * 15f);
 
-        PitacoRecorder.Instance.AddIncomingData(_transform.position.y);
+        PitacoRecorder.Instance.RecordValue(_transform.position.y);
     }
 
     private void OnPlataformStageStart()
