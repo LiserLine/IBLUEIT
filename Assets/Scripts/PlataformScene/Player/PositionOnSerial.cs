@@ -2,7 +2,6 @@
 
 public class PositionOnSerial : MonoBehaviour
 {
-    private Player _player;
     private Transform _transform;
     private float _cameraOffset;
     private const float RelativeLimit = 0.3f;
@@ -10,7 +9,7 @@ public class PositionOnSerial : MonoBehaviour
     public ControlBehaviour Behaviour;
     public SerialController SerialController;
 
-    private void Awake()
+    private void Start()
     {
 
 #if UNITY_EDITOR
@@ -19,7 +18,25 @@ public class PositionOnSerial : MonoBehaviour
             GameManager.Instance.Player = new Player
             {
                 Name = "NetRunner",
-                Id = 0,
+                Id = 9999,
+                RespiratoryInfo = new RespiratoryInfo
+                {
+                    InspiratoryPeakFlow = 300f,
+                    ExpiratoryPeakFlow = 600f,
+                    InspiratoryFlowTime = 1f,
+                    ExpiratoryFlowTime = 3f,
+                    RespirationFrequency = 6f                    
+                },
+                CalibrationDone = true,
+                SessionsDone = 1,
+            };
+        }
+
+        if (GameManager.Instance.Stage == null)
+        {
+            GameManager.Instance.Stage = new Stage
+            {
+                Id = 777,
             };
         }
 #endif
@@ -54,16 +71,13 @@ public class PositionOnSerial : MonoBehaviour
     private void OnEnable()
     {
         SerialController.OnSerialMessageReceived += OnSerialMessageReceived;
-        PitacoRecorder.Instance.Start();
+        OnPlataformStageStart(); //ToDo - handle this to an event
     }
 
     private void OnDisable()
     {
         SerialController.OnSerialMessageReceived -= OnSerialMessageReceived;
-        PitacoRecorder.Instance.Stop();
-
-        var stage = GameManager.Instance.Stage;
-        PitacoRecorder.Instance.WriteData(_player, stage, true);
+        OnPlataformStageEnd(); //ToDo - handle this to an event
     }
 
     private void OnSerialMessageReceived(string msg)
@@ -76,7 +90,7 @@ public class PositionOnSerial : MonoBehaviour
 
         sensorValue = (sensorValue < -GameConstants.PitacoThreshold || sensorValue > GameConstants.PitacoThreshold) ? sensorValue : 0f;
 
-        var nextPosition = _cameraOffset * sensorValue / _player.RespiratoryInfo.ExpiratoryPeakFlow * GameConstants.UserPowerMercy;
+        var nextPosition = _cameraOffset * sensorValue / GameManager.Instance.Player.RespiratoryInfo.ExpiratoryPeakFlow * GameConstants.UserPowerMercy;
 
         Vector3 a = _transform.position;
         Vector3 b = Vector3.zero;
@@ -97,6 +111,18 @@ public class PositionOnSerial : MonoBehaviour
         _transform.position = Vector3.Lerp(a, b, Time.deltaTime * 15f);
 
         PitacoRecorder.Instance.Add(_transform.position.y);
+    }
+
+    private void OnPlataformStageStart()
+    {
+        PitacoRecorder.Instance.Start();
+    }
+
+    private void OnPlataformStageEnd()
+    {
+        GameManager.Instance.Player.SessionsDone++;
+        PitacoRecorder.Instance.Stop();
+        PitacoRecorder.Instance.WriteData(GameManager.Instance.Player, GameManager.Instance.Stage, true);
     }
 
     private void OnCollisionEnter(Collision collision)
