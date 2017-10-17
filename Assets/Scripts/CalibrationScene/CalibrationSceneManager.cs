@@ -11,7 +11,7 @@ using Debug = UnityEngine.Debug;
 public class CalibrationSceneManager : MonoBehaviour
 {
     private bool _executeStep, _sceneOpen, _firstTimePlaying;
-    private int _stepNum = 16; //ToDo - change back to 1 when code is done
+    private int _stepNum = 20; //ToDo - change back to 1 when code is done
     private int _exerciseCounter;
     private const int FlowTimeThreshold = 1000; // In Miliseconds
     private float _flowMeter;
@@ -25,7 +25,7 @@ public class CalibrationSceneManager : MonoBehaviour
     public LevelLoader levelLoader;
     public ClockArrowSpin clockArrowSpin;
 
-    private void Awake()
+    private void Start()
     {
 
 #if UNITY_EDITOR
@@ -34,7 +34,7 @@ public class CalibrationSceneManager : MonoBehaviour
             GameManager.Instance.Player = new Player
             {
                 Name = "NetRunner",
-                Id = 0,
+                Id = 9999,
                 CalibrationDone = false,
             };
         }
