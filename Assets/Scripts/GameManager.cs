@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     public Player Player { get; set; }
     public Stage Stage { get; set; }
 
-    private void Start()
+    private void Awake()
     {
         if (Instance == null)
         {
