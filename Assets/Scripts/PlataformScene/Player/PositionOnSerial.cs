@@ -25,7 +25,7 @@ public class PositionOnSerial : MonoBehaviour
                     ExpiratoryPeakFlow = 600f,
                     InspiratoryFlowTime = 1f,
                     ExpiratoryFlowTime = 3f,
-                    RespirationFrequency = 6f                    
+                    RespirationFrequency = 0.1666f                    
                 },
                 CalibrationDone = true,
                 SessionsDone = 1,
@@ -86,7 +86,7 @@ public class PositionOnSerial : MonoBehaviour
 
         if (msg.Length < 1) return;
 
-        var sensorValue = GameConstants.ParseSerialMessage(msg) - SerialGetOffset.Offset;
+        var sensorValue = GameUtilities.ParseSerialMessage(msg) - SerialGetOffset.Offset;
 
         sensorValue = (sensorValue < -GameConstants.PitacoThreshold || sensorValue > GameConstants.PitacoThreshold) ? sensorValue : 0f;
 

@@ -14,9 +14,7 @@ public class GameConstants
 
     public const float UserPowerMercy = 0.6f;
     public const float PitacoThreshold = 20f;
-
-    public static float ParseSerialMessage(string msg) => float.Parse(msg.Replace('.', ','));
-
+    
     public static string GetSessionsPath(int plrId)
     {
         return PacientsPath + plrId + Path.AltDirectorySeparatorChar;

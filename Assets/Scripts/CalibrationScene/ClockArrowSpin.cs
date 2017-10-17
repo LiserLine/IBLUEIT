@@ -24,7 +24,7 @@ public class ClockArrowSpin : MonoBehaviour
 
         if (msg.Length < 1) return;
 
-        var snsrVal = GameConstants.ParseSerialMessage(msg) - SerialGetOffset.Offset;
+        var snsrVal = GameUtilities.ParseSerialMessage(msg) - SerialGetOffset.Offset;
 
         snsrVal = snsrVal < -GameConstants.PitacoThreshold || snsrVal > GameConstants.PitacoThreshold ? snsrVal : 0f;
 
