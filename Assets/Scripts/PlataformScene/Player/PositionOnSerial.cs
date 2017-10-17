@@ -12,9 +12,21 @@ public class PositionOnSerial : MonoBehaviour
 
     private void Awake()
     {
+
+#if UNITY_EDITOR
+        if (GameManager.Instance.Player == null)
+        {
+            GameManager.Instance.Player = new Player
+            {
+                Name = "NetRunner",
+                Id = 0,
+                CalibrationDone = false,
+            };
+        }
+#endif
+
         _transform = GetComponent<Transform>();
         _cameraOffset = Camera.main.orthographicSize - Camera.main.transform.position.y - 1;
-        _player = GameManager.Instance?.Player;
     }
 
     private void Update()
@@ -51,13 +63,8 @@ public class PositionOnSerial : MonoBehaviour
         SerialController.OnSerialMessageReceived -= OnSerialMessageReceived;
         PitacoRecorder.Instance.Stop();
 
-#if UNITY_EDITOR
-        PitacoRecorder.Instance.WriteData();
-#else
         var stage = GameManager.Instance.Stage;
         PitacoRecorder.Instance.WriteData(_player, stage, GameConstants.GetSessionsPath(_player), true);
-#endif
-
     }
 
     private void OnSerialMessageReceived(string msg)
@@ -70,13 +77,7 @@ public class PositionOnSerial : MonoBehaviour
 
         sensorValue = (sensorValue < -GameConstants.PitacoThreshold || sensorValue > GameConstants.PitacoThreshold) ? sensorValue : 0f;
 
-#if UNITY_EDITOR
-        var expiratoryPeakFlow = 300f; //debug
-        var nextPosition = _cameraOffset * sensorValue / expiratoryPeakFlow * GameConstants.UserPowerMercy;
-#else
-        Debug.Log($"UserPowerMercy: {GameConstants.UserPowerMercy}");
-        var nextPosition = _cameraOffset * sensorValue / _player.ExpiratoryPeakFlow * GameConstants.UserPowerMercy;
-#endif
+        var nextPosition = _cameraOffset * sensorValue / _player.RespiratoryInfo.ExpiratoryPeakFlow * GameConstants.UserPowerMercy;
 
         Vector3 a = _transform.position;
         Vector3 b = Vector3.zero;
