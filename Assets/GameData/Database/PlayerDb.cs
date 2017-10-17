@@ -40,7 +40,7 @@ public class PlayerDb
 
             var plr = new Player
             {
-                Id = uint.Parse(grid[i][0]),
+                Id = int.Parse(grid[i][0]),
                 Name = grid[i][1],
                 Birthday = DateTime.ParseExact(grid[i][2], @"dd/MM/yyyy", CultureInfo.InvariantCulture),
                 Observations = grid[i][3],
@@ -55,8 +55,8 @@ public class PlayerDb
                 },
                 LastLevel = byte.Parse(grid[i][10]),
                 OpenLevel = byte.Parse(grid[i][11]),
-                TotalScore = uint.Parse(grid[i][12]),
-                SessionsDone = uint.Parse(grid[i][13]),
+                TotalScore = int.Parse(grid[i][12]),
+                SessionsDone = int.Parse(grid[i][13]),
                 CalibrationDone = bool.Parse(grid[i][14])
             };
 

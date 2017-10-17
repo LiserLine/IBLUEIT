@@ -2,7 +2,7 @@
 
 public class Player
 {
-    public uint Id { get; set; }
+    public int Id { get; set; }
 
     public string Name { get; set; }
 
@@ -18,9 +18,9 @@ public class Player
 
     public byte OpenLevel { get; set; }
 
-    public uint TotalScore { get; set; }
+    public int TotalScore { get; set; }
 
-    public uint SessionsDone { get; set; }
+    public int SessionsDone { get; set; }
 
     public bool CalibrationDone { get; set; }
 }

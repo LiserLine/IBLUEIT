@@ -128,7 +128,7 @@ public class MainCanvasManager : MonoBehaviour
             Name = playerName,
             Birthday = birthday,
             Disfunction = disfunction,
-            Id = (uint)DatabaseManager.Instance.Players.PlayerList.Count + 1,
+            Id = DatabaseManager.Instance.Players.PlayerList.Count + 1,
             Observations = observations
         };
 
