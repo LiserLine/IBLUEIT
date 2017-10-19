@@ -1,5 +1,6 @@
 ﻿using System.IO;
 
+//ToDo - Load this class from CSV file
 public class GameConstants
 {
 #if UNITY_ANDROID
@@ -13,16 +14,16 @@ public class GameConstants
     public static readonly string PacientListFile = PacientsPath + "_pacientsList.csv";
 
     public const float UserPowerMercy = 0.6f;
-    public const float PitacoThreshold = 20f;
-    
-    public static string GetSessionsPath(int plrId)
-    {
-        return PacientsPath + plrId + Path.AltDirectorySeparatorChar;
-    }
 
+    //ToDo - Threshold based on disfunction ?
+    //ToDo - test if this threshold is good
+    public const float RespiratoryFrequencyThreshold = 1000f; //In Milliseconds
+
+    public const float PitacoThreshold = 10f;
+    
     public static string GetSessionsPath(Player plr)
     {
-        return GetSessionsPath(plr.Id);
+        return PacientsPath + plr.Id + Path.AltDirectorySeparatorChar;
     }
 }
 

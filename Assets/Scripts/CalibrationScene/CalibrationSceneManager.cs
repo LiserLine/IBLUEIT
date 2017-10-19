@@ -11,7 +11,7 @@ using Debug = UnityEngine.Debug;
 public class CalibrationSceneManager : MonoBehaviour
 {
     private bool _executeStep, _sceneOpen, _firstTimePlaying;
-    private int _stepNum = 20; //ToDo - change back to 1 when code is done
+    private int _stepNum = 1;
     private int _exerciseCounter;
     private const int FlowTimeThreshold = 1000; // In Miliseconds
     private float _flowMeter;
@@ -264,7 +264,7 @@ public class CalibrationSceneManager : MonoBehaviour
 #endif
 
                         yield return new WaitForSeconds(1);
-                        balloonText.text = "(relaxe, expire o máximo de tempo possível e aguarde)";
+                        balloonText.text = "(inspire, expire o máximo de tempo possível e aguarde)";
                         EnableClockFlow();
 
                         // Wait for player input to be greather than threshold
@@ -338,7 +338,7 @@ public class CalibrationSceneManager : MonoBehaviour
 #endif
 
                         yield return new WaitForSeconds(1);
-                        balloonText.text = "(relaxe, inspire o máximo de tempo possível e aguarde)";
+                        balloonText.text = "(expire, inspire o máximo de tempo possível e aguarde)";
                         EnableClockFlow();
 
                         // Wait for player input to be greather than threshold
@@ -395,7 +395,7 @@ public class CalibrationSceneManager : MonoBehaviour
                     case 20:
                         ResetExerciseCounter();
                         ResetFlowMeter();
-                        dudeMsg = "E para finalizar, respire tranquilamente no PITACO por 60 segundos.";
+                        dudeMsg = "E para finalizar, respire tranquilamente no PITACO por 30 segundos.";
                         DudeShowMessage(dudeMsg);
                         SetNextStep();
                         break;
@@ -413,13 +413,13 @@ public class CalibrationSceneManager : MonoBehaviour
 #endif
 
                         yield return new WaitForSeconds(1);
-                        balloonText.text = "(relaxe e respire usando o PITACO por 1 minuto)";
+                        balloonText.text = "(relaxe e respire usando o PITACO por 30 segundos)";
                         EnableClockFlow();
 
                         // Wait for player input to be greather than threshold
                         _stopwatch.Restart();
 
-                        while (_stopwatch.ElapsedMilliseconds < 5000) // ToDo - change back to 65000
+                        while (_stopwatch.ElapsedMilliseconds < 30 * 1000)
                             yield return null;
 
                         _stopwatch.Stop();
@@ -428,10 +428,9 @@ public class CalibrationSceneManager : MonoBehaviour
 
                         DisableClockFlow();
 
-                        // ToDo - Check if 0.05 cycles/sec is good enough 
-                        // ToDo - Create a constant value of 0.05 on GameConstants
-                        if (_flowMeter > 0.05f) 
+                        if (_flowMeter > GameConstants.RespiratoryFrequencyThreshold)
                         {
+                            _respiratoryInfoTemp.RespirationFrequency = _flowMeter;
                             SetNextStep(true);
                             continue;
                         }
@@ -443,31 +442,36 @@ public class CalibrationSceneManager : MonoBehaviour
 
                     case 22:
                         DudeCongratulate();
+                        SetStep(23);
                         break;
 
                     #endregion
 
                     #region Ending Steps
 
-                    case 24:
-                        dudeMsg = "Ótimo, você está pronto para começar a jogar! Bom jogo!";
+                    case 23:
+                        dudeMsg = "Ótimo, agora você está pronto para começar a jogar! Bom jogo!";
                         DudeShowMessage(dudeMsg);
                         SetNextStep();
                         break;
 
-                    case 25:
+                    case 24:
                         GameManager.Instance.Player.CalibrationDone = true;
                         GameManager.Instance.Player.RespiratoryInfo = _respiratoryInfoTemp;
-                        DatabaseManager.Instance.Players.Save();
-                        firstTimePanel.SetActive(false);
-                        firstTimePanel.GetComponent<Image>().CrossFadeAlpha(1, 1, false);
-                        yield return new WaitForSeconds(1.5f);
-                        levelLoader.LoadScene(2);
+                        DatabaseManager.Instance?.Players.Save();
+
+                        tutoClock.SetActive(false);
+                        tutoDude.SetActive(false);
+                        textBalloon.SetActive(false);
+
+                        firstTimePanel.SetActive(true); //ToDo - try to crossfade alpha from 0 to max
+                        
+                        levelLoader.LoadScene(2); //ToDo - ternario para quando implementar minigames
                         break;
 
                     #endregion
 
-                    default: // Reload Scene
+                    case 99: // Reload Scene
                         levelLoader.LoadScene(3);
                         break;
                 }
@@ -536,7 +540,7 @@ public class CalibrationSceneManager : MonoBehaviour
         var dudeMsg = "O PITACO não está conectado. Conecte-o ao computador!";
         enterButton.SetActive(true);
         DudeShowMessage(dudeMsg);
-        SetStep(0);
+        SetStep(99);
     }
 
     private void DudeClearMessage()
