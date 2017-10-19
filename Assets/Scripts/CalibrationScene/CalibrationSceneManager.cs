@@ -588,7 +588,7 @@ public class CalibrationSceneManager : MonoBehaviour
         if (arrived.Length < 1 || !SerialGetOffset.IsUsingOffset)
             return;
 
-        var tmp = GameUtilities.ParseSerialMessage(arrived);
+        var tmp = GameUtilities.ParseFloat(arrived);
         tmp -= SerialGetOffset.Offset;
 
         switch (_stepNum)

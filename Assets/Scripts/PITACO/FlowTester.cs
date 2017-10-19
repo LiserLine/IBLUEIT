@@ -26,7 +26,7 @@ public class FlowTester : MonoBehaviour
 
         if (msg.Length < 1) return;
 
-        var sensorValue = GameUtilities.ParseSerialMessage(msg) - SerialGetOffset.Offset;
+        var sensorValue = GameUtilities.ParseFloat(msg) - SerialGetOffset.Offset;
 
         PitacoRecorder.Instance.RecordValue(sensorValue);
     }

@@ -31,7 +31,7 @@ public class SerialGetOffset : MonoBehaviour
     {
         if (IsUsingOffset) return;
 
-        Offset += msg.Length > 1 ? float.Parse(msg.Replace('.', ',')) : 0f;
+        Offset += msg.Length > 1 ? GameUtilities.ParseFloat(msg) : 0f;
         _count++;
 
         if (_count != NumberOfSamples) return;

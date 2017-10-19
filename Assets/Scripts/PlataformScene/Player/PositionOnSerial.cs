@@ -86,7 +86,7 @@ public class PositionOnSerial : MonoBehaviour
 
         if (msg.Length < 1) return;
 
-        var sensorValue = GameUtilities.ParseSerialMessage(msg) - SerialGetOffset.Offset;
+        var sensorValue = GameUtilities.ParseFloat(msg) - SerialGetOffset.Offset;
 
         sensorValue = (sensorValue < -GameConstants.PitacoThreshold || sensorValue > GameConstants.PitacoThreshold) ? sensorValue : 0f;
 

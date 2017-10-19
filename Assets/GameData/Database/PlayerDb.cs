@@ -47,11 +47,11 @@ public class PlayerDb
                 Disfunction = (Disfunctions)Enum.Parse(typeof(Disfunctions), grid[i][4]),
                 RespiratoryInfo = new RespiratoryInfo
                 {
-                    InspiratoryPeakFlow = float.Parse(grid[i][5].Replace('.', ',')),
-                    ExpiratoryPeakFlow = float.Parse(grid[i][6].Replace('.', ',')),
-                    InspiratoryFlowTime = float.Parse(grid[i][7].Replace('.', ',')),
-                    ExpiratoryFlowTime = float.Parse(grid[i][8].Replace('.', ',')),
-                    RespirationFrequency = float.Parse(grid[i][9].Replace('.', ',')),
+                    InspiratoryPeakFlow = GameUtilities.ParseFloat(grid[i][5]),
+                    ExpiratoryPeakFlow = GameUtilities.ParseFloat(grid[i][6]),
+                    InspiratoryFlowTime = GameUtilities.ParseFloat(grid[i][7]),
+                    ExpiratoryFlowTime = GameUtilities.ParseFloat(grid[i][8]),
+                    RespirationFrequency = GameUtilities.ParseFloat(grid[i][9]),
                 },
                 LastLevel = byte.Parse(grid[i][10]),
                 OpenLevel = byte.Parse(grid[i][11]),
