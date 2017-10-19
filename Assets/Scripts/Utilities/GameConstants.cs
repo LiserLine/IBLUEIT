@@ -17,7 +17,7 @@ public class GameConstants
 
     //ToDo - Threshold based on disfunction ?
     //ToDo - test if this threshold is good
-    public const float RespiratoryFrequencyThreshold = 1000f; //In Milliseconds
+    public const int RespiratoryFrequencyThreshold = 1000; //In Milliseconds
 
     public const float PitacoThreshold = 10f;
     
