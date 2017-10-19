@@ -1,4 +1,4 @@
-// I Blue It Serial Connection
+// PITACO Serial Connection
 
 const unsigned char MPX5010DP_PIN = 2;
 const float MPX5010DP_VOLT_OFFSET = 0.2;
