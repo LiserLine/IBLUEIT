@@ -17,7 +17,7 @@ public class CalibrationSceneManager : MonoBehaviour
     private float _flowMeter;
     private RespiratoryInfo _respiratoryInfoTemp;
     private Stopwatch _stopwatch;
-    private Dictionary<long, float> _respirationSamples;
+    private Dictionary<long, float> _respiratorySamples;
 
     public Text firstTimeText, balloonText;
     public GameObject enterButton, enterButtonSmall, firstTimePanel, tutoDude, tutoClock, textBalloon;
@@ -43,7 +43,7 @@ public class CalibrationSceneManager : MonoBehaviour
         // Initialization
         _respiratoryInfoTemp = new RespiratoryInfo();
         _stopwatch = new Stopwatch();
-        _respirationSamples = new Dictionary<long, float>();
+        _respiratorySamples = new Dictionary<long, float>();
 
         _firstTimePlaying = !GameManager.Instance.Player.CalibrationDone;
         GameManager.Instance.Player.CalibrationDone = false;
@@ -390,7 +390,7 @@ public class CalibrationSceneManager : MonoBehaviour
 
                     #endregion
 
-                    #region Flow Measurement
+                    #region Respiratory Frequency
 
                     case 20:
                         ResetExerciseCounter();
@@ -424,7 +424,7 @@ public class CalibrationSceneManager : MonoBehaviour
 
                         _stopwatch.Stop();
 
-                        _flowMeter = GameUtilities.CalculateMeanFlow(_respirationSamples.ToList());
+                        _flowMeter = GameUtilities.CalculateMeanFlow(_respiratorySamples.ToList());
 
                         DisableClockFlow();
 
@@ -626,7 +626,7 @@ public class CalibrationSceneManager : MonoBehaviour
 
             case 21: // respiratory frequency
                 if (_stopwatch.IsRunning)
-                    _respirationSamples.Add(_stopwatch.ElapsedMilliseconds, tmp);
+                    _respiratorySamples.Add(_stopwatch.ElapsedMilliseconds, tmp);
                 break;
         }
     }
