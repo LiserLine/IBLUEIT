@@ -11,20 +11,8 @@ public class Spawner : MonoBehaviour
     public GameObject[] Obstacles = new GameObject[1];
     public GameObject[] Items = new GameObject[1];
 
-    private void Awake()
+    private void OnEnable()
     {
-
-#if UNITY_EDITOR
-        if (GameManager.Instance.Player == null)
-        {
-            GameManager.Instance.Player = new Player
-            {
-                Name = "NetRunner",
-                Id = 0
-            };
-        }
-#endif
-
         _transform = this.GetComponent<Transform>();
 
         //ToDo - carrega dados do jogador (limites)
