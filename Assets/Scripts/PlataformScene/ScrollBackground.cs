@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class ScrollUV : MonoBehaviour
+public class ScrollBackground : MonoBehaviour
 {
     private MeshRenderer _mr;
     public float BackgroundSpeed = 1f;
