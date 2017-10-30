@@ -465,7 +465,7 @@ public class CalibrationSceneManager : MonoBehaviour
                         textBalloon.SetActive(false);
 
                         firstTimePanel.SetActive(true); //ToDo - try to crossfade alpha from 0 to max
-                        
+
                         levelLoader.LoadScene(2); //ToDo - ternario para quando implementar minigames
                         break;
 
@@ -486,17 +486,30 @@ public class CalibrationSceneManager : MonoBehaviour
 
     #region Step Controllers
 
+    /// <summary>
+    /// Method to execute next step of calibration.
+    /// Some buttons use this to execute the next step.
+    /// </summary>
     public void ExecuteNextStep()
     {
         _executeStep = true;
     }
 
+    /// <summary>
+    /// Sets a step to be executed on next step iteration.
+    /// </summary>
+    /// <param name="step">Step number</param>
+    /// <param name="jumpToStep">Flag to execute the step automatically</param>
     private void SetStep(int step, bool jumpToStep = false)
     {
         _stepNum = step;
         _executeStep = jumpToStep;
     }
 
+    /// <summary>
+    /// Sets the next step to be executed on next step iteration.
+    /// </summary>
+    /// <param name="jumpToStep">Flag to execute the step automatically</param>
     private void SetNextStep(bool jumpToStep = false)
     {
         _stepNum++;
