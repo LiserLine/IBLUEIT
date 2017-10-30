@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
@@ -31,6 +32,7 @@ public class GameManager : MonoBehaviour
                 Id = 9999,
                 RespiratoryInfo = new RespiratoryInfo
                 {
+                    // raw simulated values
                     InspiratoryPeakFlow = 300f,
                     ExpiratoryPeakFlow = 600f,
                     InspiratoryFlowTime = 1f,
@@ -39,6 +41,11 @@ public class GameManager : MonoBehaviour
                 },
                 CalibrationDone = true,
                 SessionsDone = 1,
+                OpenLevel = 1,
+                Birthday = DateTime.Parse("08/08/2018"),
+                Disfunction = Disfunctions.Normal,
+                Observations = string.Empty,
+                TotalScore = 1337,
             };
         }
 #endif

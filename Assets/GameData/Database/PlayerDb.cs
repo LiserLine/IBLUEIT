@@ -53,11 +53,10 @@ public class PlayerDb
                     ExpiratoryFlowTime = GameUtilities.ParseFloat(grid[i][8]),
                     RespirationFrequency = GameUtilities.ParseFloat(grid[i][9]),
                 },
-                LastLevel = byte.Parse(grid[i][10]),
-                OpenLevel = byte.Parse(grid[i][11]),
-                TotalScore = int.Parse(grid[i][12]),
-                SessionsDone = int.Parse(grid[i][13]),
-                CalibrationDone = bool.Parse(grid[i][14])
+                OpenLevel = int.Parse(grid[i][10]),
+                TotalScore = int.Parse(grid[i][11]),
+                SessionsDone = int.Parse(grid[i][12]),
+                CalibrationDone = bool.Parse(grid[i][13])
             };
 
             _playerList.Add(plr);
@@ -70,7 +69,7 @@ public class PlayerDb
     {
         var items = new[] { "Id", "Name", "Birthday", "Observations", "Disfunction",
             "InspiratoryPeakFlow", "ExpiratoryPeakFlow", "InspiratoryFlowTime", "ExpiratoryFlowTime", "RespirationFrequency",
-            "LastLevel", "OpenLevel", "TotalScore", "SessionsDone", "CalibrationDone" };
+            "OpenLevel", "TotalScore", "SessionsDone", "CalibrationDone" };
 
         var sb = new StringBuilder();
         sb.AppendLine(items.Aggregate((a, b) => a + ";" + b));
@@ -81,7 +80,7 @@ public class PlayerDb
             sb.AppendLine(
                 $"{plr.Id};{plr.Name};{plr.Birthday:dd/MM/yyyy};{plr.Observations};{plr.Disfunction};" +
                 $"{plr.RespiratoryInfo.InspiratoryPeakFlow};{plr.RespiratoryInfo.ExpiratoryPeakFlow};{plr.RespiratoryInfo.InspiratoryFlowTime};{plr.RespiratoryInfo.ExpiratoryFlowTime};" +
-                $"{plr.RespiratoryInfo.RespirationFrequency};{plr.LastLevel};{plr.OpenLevel};{plr.TotalScore};{plr.SessionsDone};{plr.CalibrationDone};");
+                $"{plr.RespiratoryInfo.RespirationFrequency};{plr.OpenLevel};{plr.TotalScore};{plr.SessionsDone};{plr.CalibrationDone};");
         }
 
         //ToDo - mudar para File append quando arquivo já existir

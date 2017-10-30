@@ -130,7 +130,9 @@ public class MainSceneManager : MonoBehaviour
             Disfunction = disfunction,
             Id = DatabaseManager.Instance.Players.PlayerList.Count + 1,
             Observations = observations,
-            RespiratoryInfo = new RespiratoryInfo()
+            RespiratoryInfo = new RespiratoryInfo(),
+            CalibrationDone = false,
+            OpenLevel = 1
         };
 
         var tmpPlr = DatabaseManager.Instance.Players.GetPlayer(playerName);

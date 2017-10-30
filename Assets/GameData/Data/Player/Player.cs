@@ -14,9 +14,7 @@ public class Player
 
     public Disfunctions Disfunction { get; set; }
 
-    public byte LastLevel { get; set; }
-
-    public byte OpenLevel { get; set; }
+    public int OpenLevel { get; set; }
 
     public int TotalScore { get; set; }
 
