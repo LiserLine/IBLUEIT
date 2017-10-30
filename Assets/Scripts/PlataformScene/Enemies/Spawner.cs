@@ -9,7 +9,7 @@ public class Spawner : MonoBehaviour
 
     [Header("Settings")]
     public GameObject[] Obstacles = new GameObject[1];
-    public GameObject[] Items = new GameObject[1];
+    public GameObject[] Targets = new GameObject[1];
 
     private void OnEnable()
     {
@@ -51,7 +51,7 @@ public class Spawner : MonoBehaviour
         }
         else //Items
         {
-            Instantiate(Items[0], _transform.position, _transform.rotation);
+            Instantiate(Targets[0], _transform.position, _transform.rotation);
         }
 
         _delta = 0f;
