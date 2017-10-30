@@ -35,7 +35,7 @@ public class SerialController : MonoBehaviour
     public bool IsConnected { get; private set; }
 
     [Tooltip("Initialize data request to PITACO")]
-    public bool PitacoRequest;
+    public bool RequestPitacoData;
 
     // Constants used to mark the start and end of a connection. There is no
     // way you can generate clashing messages from your serial device, as I
@@ -87,13 +87,13 @@ public class SerialController : MonoBehaviour
 
     private void Start()
     {
-        if (PitacoRequest)
+        if (RequestPitacoData)
             StartCoroutine(DelayedRequestValues());
     }
 
     public void InitializePitacoRequest()
     {
-        if (PitacoRequest) return;
+        if (RequestPitacoData) return;
         StartCoroutine(DelayedRequestValues());
     }
 
@@ -105,7 +105,7 @@ public class SerialController : MonoBehaviour
         yield return new WaitForSeconds(2f);
         Debug.Log("Requesting values...");
         SendSerialMessage("r");
-        PitacoRequest = true;
+        RequestPitacoData = true;
     }
 
     /// <summary>
