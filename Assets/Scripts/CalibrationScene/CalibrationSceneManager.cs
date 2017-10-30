@@ -348,8 +348,8 @@ public class CalibrationSceneManager : MonoBehaviour
                         ResetFlowMeter();
                         if (_stopwatch.ElapsedMilliseconds > FlowTimeThreshold)
                         {
-                            if (_stopwatch.ElapsedMilliseconds > _respiratoryInfoTemp.ExpiratoryFlowTime)
-                                _respiratoryInfoTemp.ExpiratoryFlowTime = _stopwatch.ElapsedMilliseconds;
+                            if (_stopwatch.ElapsedMilliseconds > _respiratoryInfoTemp.InspiratoryFlowTime)
+                                _respiratoryInfoTemp.InspiratoryFlowTime = _stopwatch.ElapsedMilliseconds;
 
                             _exerciseCounter++;
 
