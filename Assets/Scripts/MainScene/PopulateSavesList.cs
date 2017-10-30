@@ -5,11 +5,13 @@ public class PopulateSavesList : MonoBehaviour
 {
     public GameObject ButtonPrefab;
 
-    public void Start()
+    public void OnEnable()
     {
         var obstructiveTranslation = LocalizationManager.Instance?.GetLocalizedValue("txtObstructive");
         var restrictiveTranslation = LocalizationManager.Instance?.GetLocalizedValue("txtRestrictive");
         var normalTranslation = LocalizationManager.Instance?.GetLocalizedValue("txtNormal");
+
+        DatabaseManager.Instance.I
 
         foreach (var plr in DatabaseManager.Instance.Players.PlayerList)
         {
