@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainCanvasManager : MonoBehaviour
+public class MainSceneManager : MonoBehaviour
 {
     private GameObject _activePanel;
 

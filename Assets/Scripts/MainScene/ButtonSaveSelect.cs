@@ -7,7 +7,7 @@ public class ButtonSaveSelect : MonoBehaviour
         var player = GetComponent<PlayerHolder>().Player;
         GameManager.Instance.Player = player;
         Debug.Log($"{player.Name} save loaded.");
-        GameObject.Find("Canvas").GetComponent<MainCanvasManager>().GoToPanel3();
+        GameObject.Find("Canvas").GetComponent<MainSceneManager>().GoToPanel3();
     }
 }
 
