@@ -20,5 +20,28 @@ public class GameManager : MonoBehaviour
         }
 
         DontDestroyOnLoad(gameObject);
+        
+#if UNITY_EDITOR // debug player for testing
+
+        if (Player == null)
+        {
+            Player = new Player
+            {
+                Name = "Netrunner",
+                Id = 9999,
+                RespiratoryInfo = new RespiratoryInfo
+                {
+                    InspiratoryPeakFlow = 300f,
+                    ExpiratoryPeakFlow = 600f,
+                    InspiratoryFlowTime = 1f,
+                    ExpiratoryFlowTime = 3f,
+                    RespirationFrequency = 3f,
+                },
+                CalibrationDone = true,
+                SessionsDone = 1,
+            };
+        }
+#endif
+
     }
 }

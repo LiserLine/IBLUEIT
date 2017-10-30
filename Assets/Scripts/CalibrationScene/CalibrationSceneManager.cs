@@ -27,20 +27,6 @@ public class CalibrationSceneManager : MonoBehaviour
 
     private void Start()
     {
-
-#if UNITY_EDITOR
-        if (GameManager.Instance.Player == null)
-        {
-            GameManager.Instance.Player = new Player
-            {
-                Name = "NetRunner",
-                Id = 9999,
-                CalibrationDone = false,
-            };
-        }
-#endif
-
-        // Initialization
         _respiratoryInfoTemp = new RespiratoryInfo();
         _stopwatch = new Stopwatch();
         _respiratorySamples = new Dictionary<long, float>();

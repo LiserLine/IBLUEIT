@@ -11,35 +11,6 @@ public class PositionOnSerial : MonoBehaviour
 
     private void Awake()
     {
-
-#if UNITY_EDITOR
-        if (GameManager.Instance.Player == null)
-        {
-            GameManager.Instance.Player = new Player
-            {
-                Name = "NetRunner",
-                Id = 9999,
-                RespiratoryInfo = new RespiratoryInfo
-                {
-                    InspiratoryPeakFlow = 300f,
-                    ExpiratoryPeakFlow = 600f,
-                    InspiratoryFlowTime = 1f,
-                    ExpiratoryFlowTime = 3f,
-                    RespirationFrequency = 0.1666f                    
-                },
-                CalibrationDone = true,
-                SessionsDone = 1,
-            };
-        }
-
-        if (GameManager.Instance.Stage == null)
-        {
-            GameManager.Instance.Stage = new Stage
-            {
-                Id = 777,
-            };
-        }
-#endif
         _serialController = GameObject.FindGameObjectWithTag("SerialController").GetComponent<SerialController>();
         _transform = GetComponent<Transform>();
         _cameraOffset = Camera.main.orthographicSize - Camera.main.transform.position.y - 1;
