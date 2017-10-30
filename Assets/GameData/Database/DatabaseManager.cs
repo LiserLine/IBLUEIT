@@ -22,6 +22,11 @@ public class DatabaseManager : MonoBehaviour
 
         Debug.Log("Loading Databases...");
 
+        LoadPlayers();
+    }
+
+    private void LoadPlayers()
+    {
         Players = new PlayerDb();
         Debug.Log($"{Players.PlayerList?.Count} players found.");
     }
