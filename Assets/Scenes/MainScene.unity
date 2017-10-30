@@ -848,6 +848,11 @@ Prefab:
       propertyPath: PitacoRequest
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114714990227864830, guid: a65acf0cbf56b80419f74ebf0bc845f4,
+        type: 2}
+      propertyPath: RequestPitacoData
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114792205271020740, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 2}
@@ -9584,7 +9589,7 @@ RectTransform:
   m_GameObject: {fileID: 2024984412}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 90}
-  m_LocalScale: {x: 0.013888888, y: 0.013888888, z: 0.013888888}
+  m_LocalScale: {x: 0.013888889, y: 0.013888889, z: 0.013888889}
   m_Children:
   - {fileID: 216915302}
   - {fileID: 917275251}
