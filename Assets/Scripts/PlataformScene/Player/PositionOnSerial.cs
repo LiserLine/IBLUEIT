@@ -4,12 +4,12 @@ public class PositionOnSerial : MonoBehaviour
 {
     private Transform _transform;
     private float _cameraOffset;
+    private SerialController _serialController;
     private const float RelativeLimit = 0.3f;
 
     public ControlBehaviour Behaviour;
-    public SerialController SerialController;
 
-    private void Start()
+    private void Awake()
     {
 
 #if UNITY_EDITOR
@@ -40,7 +40,7 @@ public class PositionOnSerial : MonoBehaviour
             };
         }
 #endif
-
+        _serialController = GameObject.FindGameObjectWithTag("SerialController").GetComponent<SerialController>();
         _transform = GetComponent<Transform>();
         _cameraOffset = Camera.main.orthographicSize - Camera.main.transform.position.y - 1;
     }
@@ -70,13 +70,13 @@ public class PositionOnSerial : MonoBehaviour
 
     private void OnEnable()
     {
-        SerialController.OnSerialMessageReceived += OnSerialMessageReceived;
+        _serialController.OnSerialMessageReceived += OnSerialMessageReceived;
         OnPlataformStageStart(); //ToDo - handle this to an event
     }
 
     private void OnDisable()
     {
-        SerialController.OnSerialMessageReceived -= OnSerialMessageReceived;
+        _serialController.OnSerialMessageReceived -= OnSerialMessageReceived;
         OnPlataformStageEnd(); //ToDo - handle this to an event
     }
 
