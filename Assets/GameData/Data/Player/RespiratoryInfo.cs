@@ -28,7 +28,7 @@
 
     public float RespirationFrequency
     {
-        get { return _rf * GameConstants.UserPowerMercy; }
+        get { return _rf / GameConstants.UserPowerMercy; }
         set { _rf = value; }
     }
 
