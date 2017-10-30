@@ -7,31 +7,33 @@ public class Spawner : MonoBehaviour
     private float _spawnEveryXSec;
     private float _movementSpeed;
 
+    private float _levelInfluence = 1; // ToDo - based on CSV
+    private float _disfuncionInfluencer = 1; // ToDo - based on Enum
+
     [Header("Settings")]
     public GameObject[] Obstacles = new GameObject[1];
     public GameObject[] Targets = new GameObject[1];
 
     private void OnEnable()
     {
-        _transform = this.GetComponent<Transform>();
-
-        //ToDo - carrega dados do jogador (limites)
-        //ToDo - setar maximos pro jogador
-
-        _movementSpeed = GameManager.Instance.Player.RespiratoryInfo.RespirationFrequency * 0.3f; //ToDo - should we be using this?                
-        _spawnEveryXSec = 5f;
+        _transform = GetComponent<Transform>();
+        _movementSpeed = GameManager.Instance.Player.RespiratoryInfo.RespirationFrequency * _levelInfluence;
+        _spawnEveryXSec = GameManager.Instance.Player.RespiratoryInfo.RespirationFrequency;
     }
 
     private void Update()
     {
-        UpdateYPosition();
+        if (!SerialGetOffset.IsUsingOffset)
+            return;
+
+        SetYPosision();
         ReleaseObject();
     }
 
-    private void UpdateYPosition()
+    private void SetYPosision()
     {
         _transform.position = new Vector3(_transform.position.x,
-            Mathf.Sin(Time.time * _movementSpeed) * GameManager.Instance.Player.RespiratoryInfo.ExpiratoryPeakFlow,
+            Mathf.Sin(Time.deltaTime * _movementSpeed) * GameManager.Instance.Player.RespiratoryInfo.ExpiratoryPeakFlow,
             _transform.position.z);
     }
 
