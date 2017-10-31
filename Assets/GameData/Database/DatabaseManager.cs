@@ -21,7 +21,6 @@ public class DatabaseManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         Debug.Log("Loading Databases...");
-
         LoadPlayers();
     }
 

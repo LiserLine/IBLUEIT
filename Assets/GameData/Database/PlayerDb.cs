@@ -7,13 +7,15 @@ using System.Text;
 
 public class PlayerDb
 {
-    private readonly List<Player> _playerList;
+    private readonly List<Player> _playerList = new List<Player>();
 
     public List<Player> PlayerList
     {
         get
         {
-            if (!IsLoaded) Load();
+            if (!IsLoaded)
+                Load();
+
             return _playerList;
         }
     }
@@ -22,8 +24,6 @@ public class PlayerDb
 
     public PlayerDb()
     {
-        _playerList = new List<Player>();
-
         if (File.Exists(GameConstants.PacientListFile))
             Load();
         else
@@ -32,11 +32,14 @@ public class PlayerDb
 
     public void Load()
     {
+        _playerList.Clear();
+
         var csvData = GameUtilities.ReadAllText(GameConstants.PacientListFile);
         var grid = CsvParser2.Parse(csvData);
         for (var i = 1; i < grid.Length; i++)
         {
-            if (string.IsNullOrEmpty(grid[i][0])) continue;
+            if (string.IsNullOrEmpty(grid[i][0]))
+                continue;
 
             var plr = new Player
             {
@@ -83,7 +86,6 @@ public class PlayerDb
                 $"{plr.RespiratoryInfo.RespirationFrequency};{plr.OpenLevel};{plr.TotalScore};{plr.SessionsDone};{plr.CalibrationDone};");
         }
 
-        //ToDo - mudar para File append quando arquivo já existir
         GameUtilities.WriteAllText(GameConstants.PacientListFile, sb.ToString());
     }
 
@@ -91,7 +93,6 @@ public class PlayerDb
     {
         _playerList.Add(plr);
         Save();
-        IsLoaded = false;
     }
 
     public Player GetAt(int i)
