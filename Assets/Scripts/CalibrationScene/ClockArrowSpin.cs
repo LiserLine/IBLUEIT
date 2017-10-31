@@ -26,7 +26,7 @@ public class ClockArrowSpin : MonoBehaviour
 
         var snsrVal = GameUtilities.ParseFloat(msg) - SerialGetOffset.Offset;
 
-        snsrVal = snsrVal < -GameConstants.PitacoThreshold || snsrVal > GameConstants.PitacoThreshold ? snsrVal : 0f;
+        snsrVal = snsrVal < -GameConstants.PitacoThreshold * 0.5f || snsrVal > GameConstants.PitacoThreshold * 0.5f ? snsrVal : 0f;
 
         this.transform.Rotate(Vector3.back, snsrVal);
     }
