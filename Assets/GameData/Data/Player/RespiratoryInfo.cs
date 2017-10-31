@@ -40,5 +40,25 @@
         _eft = 0f;
         _rf = 0f;
     }
+
+    /// <summary>
+    /// Returns raw sensor/respiratory values calibrated from the player.
+    /// </summary>
+    /// <returns></returns>
+    public RawRespiratoryInfo GetRawInfo()
+    {
+        return new RawRespiratoryInfo
+        {
+            InspiratoryFlowTime = _ift,
+            ExpiratoryFlowTime = _eft,
+            ExpiratoryPeakFlow = _epf,
+            InspiratoryPeakFlow = _ipf,
+            RespirationFrequency = _rf
+        };
+    }
 }
 
+public struct RawRespiratoryInfo
+{
+    public float InspiratoryPeakFlow, ExpiratoryPeakFlow, InspiratoryFlowTime, ExpiratoryFlowTime, RespirationFrequency;
+}

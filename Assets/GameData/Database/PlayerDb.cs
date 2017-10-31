@@ -80,10 +80,12 @@ public class PlayerDb
         for (var i = 0; i < _playerList.Count; i++)
         {
             var plr = GetAt(i);
+            var rawInfo = plr.RespiratoryInfo.GetRawInfo();
+
             sb.AppendLine(
                 $"{plr.Id};{plr.Name};{plr.Birthday:dd/MM/yyyy};{plr.Observations};{plr.Disfunction};" +
-                $"{plr.RespiratoryInfo.InspiratoryPeakFlow};{plr.RespiratoryInfo.ExpiratoryPeakFlow};{plr.RespiratoryInfo.InspiratoryFlowTime};{plr.RespiratoryInfo.ExpiratoryFlowTime};" +
-                $"{plr.RespiratoryInfo.RespirationFrequency};{plr.OpenLevel};{plr.TotalScore};{plr.SessionsDone};{plr.CalibrationDone};");
+                $"{rawInfo.InspiratoryPeakFlow};{rawInfo.ExpiratoryPeakFlow};{rawInfo.InspiratoryFlowTime};{rawInfo.ExpiratoryFlowTime};" +
+                $"{rawInfo.RespirationFrequency};{plr.OpenLevel};{plr.TotalScore};{plr.SessionsDone};{plr.CalibrationDone};");
         }
 
         GameUtilities.WriteAllText(GameConstants.PacientListFile, sb.ToString());

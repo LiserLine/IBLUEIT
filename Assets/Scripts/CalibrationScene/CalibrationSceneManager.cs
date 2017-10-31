@@ -10,7 +10,7 @@ using Debug = UnityEngine.Debug;
 
 public class CalibrationSceneManager : MonoBehaviour
 {
-    private bool _executeStep, _sceneOpen, _firstTimePlaying;
+    private bool _executeStep, _sceneOpen, _firstTimePlaying, _acceptingValues;
     private int _stepNum = 1;
     private int _exerciseCounter;
     private const int FlowTimeThreshold = 1000; // In Miliseconds
@@ -130,7 +130,9 @@ public class CalibrationSceneManager : MonoBehaviour
                         }
 
                         serialController.InitializePitacoRequest();
-                        while (!SerialGetOffset.IsUsingOffset) yield return null;
+
+                        while (!SerialGetOffset.IsUsingOffset)
+                            yield return null;
 
                         balloonText.text = "(inspire, assopre bem forte no PITACO e aguarde)";
 
@@ -190,7 +192,9 @@ public class CalibrationSceneManager : MonoBehaviour
 
 #if UNITY_EDITOR
                         serialController.InitializePitacoRequest();
-                        while (!SerialGetOffset.IsUsingOffset) yield return null;
+
+                        while (!SerialGetOffset.IsUsingOffset)
+                            yield return null;
 #endif
                         yield return new WaitForSeconds(1);
                         balloonText.text = "(expire, inspire com força e aguarde)";
@@ -256,7 +260,7 @@ public class CalibrationSceneManager : MonoBehaviour
                         // Wait for player input to be greather than threshold
                         _stopwatch.Reset();
 
-                        while (_flowMeter <= GameConstants.PitacoThreshold)
+                        while (_flowMeter <= GameConstants.PitacoThreshold * 1.5f)
                             yield return null;
 
                         _stopwatch.Start();
@@ -330,7 +334,7 @@ public class CalibrationSceneManager : MonoBehaviour
                         // Wait for player input to be greather than threshold
                         _stopwatch.Reset();
 
-                        while (_flowMeter >= -GameConstants.PitacoThreshold)
+                        while (_flowMeter >= -GameConstants.PitacoThreshold * 0.75f)  // Inspirating is weaker than expirating
                             yield return null;
 
                         _stopwatch.Start();
@@ -556,12 +560,14 @@ public class CalibrationSceneManager : MonoBehaviour
     {
         tutoClock.GetComponent<SpriteRenderer>().color = Color.green;
         clockArrowSpin.SpinClock = true;
+        _acceptingValues = true;
     }
 
     private void DisableClockFlow()
     {
         tutoClock.GetComponent<SpriteRenderer>().color = Color.white;
         clockArrowSpin.SpinClock = false;
+        _acceptingValues = false;
     }
 
     #endregion
@@ -588,7 +594,7 @@ public class CalibrationSceneManager : MonoBehaviour
 
     private void OnSerialMessageReceived(string arrived)
     {
-        if (arrived.Length < 1 || !SerialGetOffset.IsUsingOffset)
+        if (!_acceptingValues || arrived.Length < 1 || !SerialGetOffset.IsUsingOffset)
             return;
 
         var tmp = GameUtilities.ParseFloat(arrived);
@@ -604,7 +610,7 @@ public class CalibrationSceneManager : MonoBehaviour
                     if (_flowMeter > _respiratoryInfoTemp.ExpiratoryPeakFlow)
                     {
                         _respiratoryInfoTemp.ExpiratoryPeakFlow = _flowMeter;
-                        Debug.Log($"ExpiratoryPeakFlow: {_respiratoryInfoTemp.ExpiratoryPeakFlow}");
+                        Debug.Log($"ExpiratoryPeakFlow: {_flowMeter}");
                     }
                 }
                 break;
@@ -617,7 +623,7 @@ public class CalibrationSceneManager : MonoBehaviour
                     if (_flowMeter < _respiratoryInfoTemp.InspiratoryPeakFlow)
                     {
                         _respiratoryInfoTemp.InspiratoryPeakFlow = _flowMeter;
-                        Debug.Log($"InspiratoryPeakFlow: {_respiratoryInfoTemp.InspiratoryPeakFlow}");
+                        Debug.Log($"InspiratoryPeakFlow: {_flowMeter}");
                     }
                 }
                 break;

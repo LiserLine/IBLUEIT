@@ -1219,6 +1219,11 @@ Prefab:
       propertyPath: PitacoRequest
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114714990227864830, guid: a65acf0cbf56b80419f74ebf0bc845f4,
+        type: 2}
+      propertyPath: RequestPitacoData
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 2}
   m_IsPrefabParent: 0
