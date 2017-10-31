@@ -260,12 +260,12 @@ public class CalibrationSceneManager : MonoBehaviour
                         // Wait for player input to be greather than threshold
                         _stopwatch.Reset();
 
-                        while (_flowMeter <= GameConstants.PitacoThreshold * 1.5f)
+                        while (_flowMeter <= GameConstants.PitacoThreshold)
                             yield return null;
 
                         _stopwatch.Start();
 
-                        while (_flowMeter > GameConstants.PitacoThreshold)
+                        while (_flowMeter > GameConstants.PitacoThreshold * 0.7f)
                             yield return null;
 
                         DisableClockFlow();
@@ -334,12 +334,12 @@ public class CalibrationSceneManager : MonoBehaviour
                         // Wait for player input to be greather than threshold
                         _stopwatch.Reset();
 
-                        while (_flowMeter >= -GameConstants.PitacoThreshold * 0.75f)  // Inspirating is weaker than expirating
+                        while (_flowMeter >= -GameConstants.PitacoThreshold)
                             yield return null;
 
                         _stopwatch.Start();
 
-                        while (_flowMeter < -GameConstants.PitacoThreshold)
+                        while (_flowMeter < -GameConstants.PitacoThreshold * 0.5f)  // Inspirating is weaker than expirating
                             yield return null;
 
                         _stopwatch.Stop();
