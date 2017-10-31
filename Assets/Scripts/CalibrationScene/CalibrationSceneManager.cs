@@ -416,6 +416,8 @@ public class CalibrationSceneManager : MonoBehaviour
 
                         _flowMeter = GameUtilities.CalculateMeanFlow(_respiratorySamples.ToList());
 
+                        Debug.Log($"RespirationFrequency: {_flowMeter}");
+
                         DisableClockFlow();
 
                         if (_flowMeter > GameConstants.RespiratoryFrequencyThreshold)
