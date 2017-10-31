@@ -9,7 +9,7 @@ public class MainSceneManager : MonoBehaviour
     public GameObject Panel1, Panel2, Panel3, PanelNewGame, PanelLoadGame;
     public PanelMessage PanelMessage;
     public LevelLoader LevelLoader;
-    public GameObject[] ObjectsToHide;
+    public GameObject[] HideOnSelection;
 
     private void SwitchPanels(ref GameObject newPanel)
     {
@@ -20,7 +20,7 @@ public class MainSceneManager : MonoBehaviour
 
     private void HideObjects()
     {
-        foreach (var obj in ObjectsToHide)
+        foreach (var obj in HideOnSelection)
         {
             obj.SetActive(false);
         }
@@ -28,7 +28,7 @@ public class MainSceneManager : MonoBehaviour
 
     private void ShowObjects()
     {
-        foreach (var obj in ObjectsToHide)
+        foreach (var obj in HideOnSelection)
         {
             obj.SetActive(true);
         }

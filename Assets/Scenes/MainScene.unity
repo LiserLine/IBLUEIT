@@ -9698,11 +9698,10 @@ MonoBehaviour:
   PanelLoadGame: {fileID: 1861656188}
   PanelMessage: {fileID: 1406530258}
   LevelLoader: {fileID: 1368942840}
-  ObjectsToHide:
+  HideOnSelection:
   - {fileID: 8719714}
-  - {fileID: 1145710956}
+  - {fileID: 1010669852}
   - {fileID: 1557007251}
-  - {fileID: 917275250}
 --- !u!1 &2046131059
 GameObject:
   m_ObjectHideFlags: 0
