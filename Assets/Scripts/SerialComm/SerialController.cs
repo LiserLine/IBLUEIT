@@ -31,7 +31,9 @@ public class SerialController : MonoBehaviour
     public delegate void SerialMessageHandler(string message);
     public event SerialMessageHandler OnSerialMessageReceived;
 
-    // Variable to signalize if this component is connected to the serial device
+    /// <summary>
+    /// Signalize if this component is connected to a serial device
+    /// </summary>
     public bool IsConnected { get; private set; }
 
     [Tooltip("Initialize data request to PITACO")]
@@ -55,6 +57,7 @@ public class SerialController : MonoBehaviour
             BaudRate,
             ReconnectionDelay,
             MaxUnreadMessages);
+
         Thread = new Thread(new ThreadStart(SerialThread.RunForever));
         Thread.Start();
     }
@@ -80,7 +83,9 @@ public class SerialController : MonoBehaviour
         }
 
         // This reference shouldn't be null at this point anyway.
-        if (Thread == null) return;
+        if (Thread == null)
+            return;
+
         Thread.Join();
         Thread = null;
     }
@@ -93,7 +98,9 @@ public class SerialController : MonoBehaviour
 
     public void InitializePitacoRequest()
     {
-        if (RequestPitacoData) return;
+        if (RequestPitacoData)
+            return;
+
         StartCoroutine(DelayedRequestValues());
     }
 
@@ -152,7 +159,6 @@ public class SerialController : MonoBehaviour
     private void OnDisconnection()
     {
         IsConnected = false;
-        //_requestingValues = false;
         Debug.Log("Connection attempt failed or disconnection detected!");
     }
 
@@ -185,6 +191,6 @@ public class SerialController : MonoBehaviour
     private TearDownFunction _userDefinedTearDownFunction;
     public void SetTearDownFunction(TearDownFunction userFunction)
     {
-        this._userDefinedTearDownFunction = userFunction;
+        _userDefinedTearDownFunction = userFunction;
     }
 }
