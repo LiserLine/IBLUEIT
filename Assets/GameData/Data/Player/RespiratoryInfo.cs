@@ -14,18 +14,27 @@
         set { _epf = value; }
     }
 
+    /// <summary>
+    /// Inspiratory Flow Time (in milliseconds)
+    /// </summary>
     public float InspiratoryFlowTime
     {
         get { return _ift * GameConstants.UserPowerMercy; }
         set { _ift = value; }
     }
 
+    /// <summary>
+    /// Expiratory Flow Time (in milliseconds)
+    /// </summary>
     public float ExpiratoryFlowTime
     {
         get { return _eft * GameConstants.UserPowerMercy; }
         set { _eft = value; }
     }
 
+    /// <summary>
+    /// Respiration Frequency (mean time of one cycle, in milliseconds)
+    /// </summary>
     public float RespirationFrequency
     {
         get { return _rf / GameConstants.UserPowerMercy; }
