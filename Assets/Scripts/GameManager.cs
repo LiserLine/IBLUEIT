@@ -21,9 +21,8 @@ public class GameManager : MonoBehaviour
         }
 
         DontDestroyOnLoad(gameObject);
-        
-#if UNITY_EDITOR // debug player for testing
 
+#if UNITY_EDITOR // debug player for testing
         if (Player == null)
         {
             Player = new Player
@@ -49,6 +48,5 @@ public class GameManager : MonoBehaviour
             };
         }
 #endif
-
     }
 }
