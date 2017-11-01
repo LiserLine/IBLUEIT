@@ -3,32 +3,34 @@
 public class MenuButtonsOnClick : MonoBehaviour
 {
     public GameObject menuPanel, gamePanel, gameElements, serialCommPrefab;
+    public PlataformSceneManager sceneManager;
+
+    private void OnEnable()
+    {
+        GameManager.Instance.Stage.OnStageEnd += LoadMenu;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.Stage.OnStageEnd -= LoadMenu;
+    }
 
     public void LoadStage(int stageId)
     {
         Instantiate(serialCommPrefab);
-        GameManager.Instance.Stage = new Stage
-        {
-            Id = stageId,
-        };
 
         menuPanel.SetActive(false);
         gamePanel.SetActive(true);
         gameElements.SetActive(true);
+
+        sceneManager.StartStage(stageId);
     }
 
     public void LoadMenu()
     {
-        var sComm = GameObject.Find("SerialController");
-        Destroy(sComm);
-
+        sceneManager.EndStage();
+        gameElements.SetActive(false);
         menuPanel.SetActive(true);
         gamePanel.SetActive(false);
-        gameElements.SetActive(false);
     }
-
-    //private void OnSerialMessageReceived(string msg)
-    //{
-
-    //}
 }
