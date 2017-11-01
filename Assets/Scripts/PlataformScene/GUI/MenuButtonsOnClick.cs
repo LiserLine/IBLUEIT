@@ -5,30 +5,25 @@ public class MenuButtonsOnClick : MonoBehaviour
     public GameObject menuPanel, gamePanel, gameElements, serialCommPrefab;
     public PlataformSceneManager sceneManager;
 
-    private void OnEnable()
-    {
-        GameManager.Instance.Stage.OnStageEnd += LoadMenu;
-    }
-
-    private void OnDisable()
-    {
-        GameManager.Instance.Stage.OnStageEnd -= LoadMenu;
-    }
-
     public void LoadStage(int stageId)
     {
         Instantiate(serialCommPrefab);
 
+        GameManager.Instance.Stage = new PlataformStage { Id = stageId };
+        GameManager.Instance.Stage.OnStageEnd += LoadMenu;
+
+        GameManager.Instance.Stage.Start();
+
         menuPanel.SetActive(false);
         gamePanel.SetActive(true);
         gameElements.SetActive(true);
-
-        sceneManager.StartStage(stageId);
     }
 
     public void LoadMenu()
     {
-        sceneManager.EndStage();
+        sceneManager.StopStageOnTimeLimit();
+        GameManager.Instance.Stage.OnStageEnd -= LoadMenu;
+
         gameElements.SetActive(false);
         menuPanel.SetActive(true);
         gamePanel.SetActive(false);

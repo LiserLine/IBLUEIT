@@ -13,12 +13,18 @@ public class Stage
 
     public virtual void Start()
     {
+        if (IsRunning)
+            throw new Exception("Stage is already running.");
+
         OnStageStart?.Invoke();
         IsRunning = true;
     }
 
     public virtual void Stop()
     {
+        if (!IsRunning)
+            return;
+
         OnStageEnd?.Invoke();
         IsRunning = false;
     }
@@ -96,4 +102,3 @@ public class PlataformStage : Stage
         base.Start();
     }
 }
-

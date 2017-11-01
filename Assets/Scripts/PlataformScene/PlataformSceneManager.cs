@@ -11,18 +11,12 @@ public class PlataformSceneManager : MonoBehaviour
             _dt += Time.deltaTime;
             if (_dt >= ((PlataformStage)GameManager.Instance.Stage).TimeLimit)
             {
-                EndStage();
+                StopStageOnTimeLimit();
             }
         }
     }
 
-    public void StartStage(int stageId)
-    {
-        GameManager.Instance.Stage = new PlataformStage { Id = stageId };
-        GameManager.Instance.Stage.Start();
-    }
-
-    public void EndStage()
+    public void StopStageOnTimeLimit()
     {
         if (!GameManager.Instance.Stage.IsRunning)
             return;
