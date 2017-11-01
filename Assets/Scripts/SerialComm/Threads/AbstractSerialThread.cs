@@ -252,10 +252,13 @@ public abstract class AbstractSerialThread
             {
                 _inputQueue.Enqueue(inputMessage);
             }
+#if UNITY_EDITOR
+#else
             else
             {
                 Debug.LogWarning("Queue is full. Dropping message: " + inputMessage);
             }
+#endif
         }
         catch (TimeoutException)
         {
