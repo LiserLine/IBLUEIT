@@ -20,18 +20,27 @@ public class GameConstants
     public const int RespiratoryFrequencyThreshold = 1000; //In Milliseconds
 
     public const float PitacoThreshold = 10f;
-    
+
     public static string GetSessionsPath(Player plr)
     {
         return PacientsPath + plr.Id + Path.AltDirectorySeparatorChar;
     }
+
+    public static readonly PlataformConstants Plataform = new PlataformConstants();
 }
 
 public enum Disfunctions
 {
-    Normal,
-    Restrictive,
-    Obstructive
+    Restrictive = 1,
+    Normal = 2,
+    Obstructive = 3
+}
+
+public enum PlataformElements
+{
+    Targets,
+    Obstacles,
+    TargetAndObstacles = Targets | Obstacles
 }
 
 public enum ControlBehaviour
