@@ -9,10 +9,19 @@ public class PlataformSceneManager : MonoBehaviour
         if (GameManager.Instance.Stage != null && GameManager.Instance.Stage.IsRunning && SerialGetOffset.IsUsingOffset)
         {
             _dt += Time.deltaTime;
+
+#if UNITY_EDITOR
+            if (_dt >= 10)
+            {
+                StopStageOnTimeLimit();
+            }
+#else
             if (_dt >= ((PlataformStage)GameManager.Instance.Stage).TimeLimit)
             {
                 StopStageOnTimeLimit();
             }
+#endif
+
         }
     }
 
