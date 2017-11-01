@@ -13,7 +13,8 @@ public class Spawner : MonoBehaviour
 
     private void OnEnable()
     {
-        _spawnEveryXSec = ((PlataformStage)GameManager.Instance.Stage).SpawnDelay;
+        var stageInfo = (PlataformStage)GameManager.Instance.Stage;
+        _spawnEveryXSec = (float) stageInfo.TimeLimit / stageInfo.SpawnQuantitity;
         GameManager.Instance.Stage.OnStageEnd += DestroySpawnedObjects;
     }
 

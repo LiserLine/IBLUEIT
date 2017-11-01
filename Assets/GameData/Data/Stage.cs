@@ -43,20 +43,6 @@ public class PlataformStage : Stage
     public int SpawnQuantitity { get; private set; }
 
     /// <summary>
-    /// Spawn delay for Spawner (SpawnQuantitity / TimeLimit)
-    /// </summary>
-    public int SpawnDelay
-    {
-        get
-        {
-            if (!IsRunning)
-                throw new Exception("Plataform is not running. Start a stage to use SpawnDelay.");
-
-            return SpawnQuantitity / TimeLimit;
-        }
-    }
-
-    /// <summary>
     /// Elements used on the game.
     /// </summary>
     public PlataformElements Elements { get; private set; }
