@@ -50,10 +50,24 @@ public class PlataformStage : Stage
         }
     }
 
+    /// <summary>
+    /// Elements used on the game.
+    /// </summary>
     public PlataformElements Elements { get; private set; }
+
+    /// <summary>
+    /// Multiplier used to define max and min sizes of obstacles.
+    /// </summary>
     public float ObstacleSizeMultiplier { get; private set; }
+
+    /// <summary>
+    /// Multiplier used to define max and min height of targets.
+    /// </summary>
     public float TargetHeightMultiplier { get; private set; }
 
+    /// <summary>
+    /// Initializes the Stage variables and start the stage.
+    /// </summary>
     public override void Start()
     {
         if (Id >= 1 && Id <= 3)
