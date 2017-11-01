@@ -8,12 +8,9 @@ public class MenuButtonsOnClick : MonoBehaviour
     public void LoadStage(int stageId)
     {
         Instantiate(serialCommPrefab);
-
         GameManager.Instance.Stage = new PlataformStage { Id = stageId };
         GameManager.Instance.Stage.OnStageEnd += LoadMenu;
-
         GameManager.Instance.Stage.Start();
-
         menuPanel.SetActive(false);
         gamePanel.SetActive(true);
         gameElements.SetActive(true);
@@ -21,9 +18,8 @@ public class MenuButtonsOnClick : MonoBehaviour
 
     public void LoadMenu()
     {
-        sceneManager.StopStageOnTimeLimit();
         GameManager.Instance.Stage.OnStageEnd -= LoadMenu;
-
+        GameManager.Instance.Stage.Stop();
         gameElements.SetActive(false);
         menuPanel.SetActive(true);
         gamePanel.SetActive(false);

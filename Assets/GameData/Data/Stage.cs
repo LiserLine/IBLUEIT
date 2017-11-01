@@ -17,6 +17,7 @@ public class Stage
             throw new Exception("Stage is already running.");
 
         OnStageStart?.Invoke();
+
         IsRunning = true;
     }
 
@@ -26,6 +27,7 @@ public class Stage
             return;
 
         OnStageEnd?.Invoke();
+
         IsRunning = false;
     }
 }
