@@ -4,18 +4,22 @@ public class Spawner : MonoBehaviour
 {
     private float _dt;
     private float _spawnEveryXSec;
-    private float _plrBasedHeight;
 
     private float _levelInfluence = 1; // ToDo - based on CSV
-    private float _disfunctionInfluence = 1; // ToDo - based on Enum
+    private Disfunctions _disfunctionInfluence; // ToDo - based on Enum
 
     public GameObject[] Obstacles;
     public GameObject[] Targets;
 
     private void OnEnable()
     {
-        _plrBasedHeight = GameManager.Instance.Player.RespiratoryInfo.RespirationFrequency * _levelInfluence;
-        _spawnEveryXSec = GameManager.Instance.Player.RespiratoryInfo.RespirationFrequency;
+        _spawnEveryXSec = ((PlataformStage)GameManager.Instance.Stage).TimeLimit;
+        GameManager.Instance.Stage.OnStageEnd += DestroySpawnedObjects;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.Stage.OnStageEnd -= DestroySpawnedObjects;
     }
 
     private void Update()
@@ -41,7 +45,7 @@ public class Spawner : MonoBehaviour
         var nextPos = new Vector3
         {
             x = this.transform.position.x,
-            y = sineOnTime * cameraHeightFromZero / (sineOnTime >= 0f ? GameManager.Instance.Player.RespiratoryInfo.ExpiratoryPeakFlow : GameManager.Instance.Player.RespiratoryInfo.InspiratoryPeakFlow) ,
+            y = sineOnTime * cameraHeightFromZero,
             z = this.transform.position.z
         };
 
@@ -51,6 +55,7 @@ public class Spawner : MonoBehaviour
     private void ReleaseObject()
     {
         var rnd = Random.Range(0, 2);
+
         if (rnd == 0) //Obstacles
         {
             //Instantiate(Obstacles[0], this.transform); <- Waveform movement
@@ -61,6 +66,15 @@ public class Spawner : MonoBehaviour
         else //Items
         {
             Instantiate(Targets[0], this.transform.position, this.transform.rotation);
+        }
+    }
+
+    private void DestroySpawnedObjects()
+    {
+        var objs = GameObject.FindGameObjectsWithTag("SpawnedObject");
+        foreach (var go in objs)
+        {
+            Destroy(go);
         }
     }
 }
