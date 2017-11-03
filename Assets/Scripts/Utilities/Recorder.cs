@@ -94,7 +94,7 @@ public class GameSessionRecorder : Recorder
 
         foreach (var pair in _positionDictionary)
         {
-            _sb.AppendLine($"{pair.Key};{pair.Value}");
+            _sb.AppendLine($"{pair.Key};{pair.Value:F}");
         }
 
         var filePath = plr != null ? GameConstants.GetSessionsPath(plr) + $"GAME-SESSION_{plr.SessionsDone}.csv" : GameConstants.SaveDataPath + $"GAME-SESSION_{RecordStart:yyyyMMdd_HHmmss}.csv";
