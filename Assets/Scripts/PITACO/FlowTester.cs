@@ -2,22 +2,25 @@
 
 public class FlowTester : MonoBehaviour
 {
+    private PitacoRecorder _pitacoRecorder;
+
     public SerialController SerialController;
 
     private void Start()
     {
         SerialController.OnSerialMessageReceived += OnSerialMessageReceived;
+        _pitacoRecorder = new PitacoRecorder("Pitaco");
     }
 
     private void OnEnable()
     {
-        PitacoRecorder.Instance.StartRecording();
+        _pitacoRecorder.StartRecording();
     }
 
     private void OnDisable()
     {
-        PitacoRecorder.Instance.StopRecording();
-        PitacoRecorder.Instance.WriteData(null, null, true);
+        _pitacoRecorder.StopRecording();
+        _pitacoRecorder.WriteData(null, null, true);
     }
 
     private void OnSerialMessageReceived(string msg)
@@ -28,6 +31,6 @@ public class FlowTester : MonoBehaviour
 
         var sensorValue = GameUtilities.ParseFloat(msg) - SerialGetOffset.Offset;
 
-        PitacoRecorder.Instance.RecordValue(sensorValue);
+        _pitacoRecorder.RecordValue(sensorValue);
     }
 }
