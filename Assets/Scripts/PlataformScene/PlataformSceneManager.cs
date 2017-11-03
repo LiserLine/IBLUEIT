@@ -11,7 +11,7 @@ public class PlataformSceneManager : MonoBehaviour
             _dt += Time.deltaTime;
 
 #if UNITY_EDITOR
-            if (_dt >= 10)
+            if (_dt >= 60)
             {
                 StopStageOnTimeLimit();
             }
@@ -33,9 +33,9 @@ public class PlataformSceneManager : MonoBehaviour
         var sComm = GameObject.FindGameObjectWithTag("SerialController");
         Destroy(sComm);
 
-        Debug.LogWarning("ToDo - write player session data"); // ToDo - write player session data
-
         GameManager.Instance.Stage.Stop();
-        Debug.Log($"Stage {GameManager.Instance.Stage.Id} terminated.");
+        _dt = 0;
+
+        Debug.Log($"Stage {GameManager.Instance.Stage.Id} terminated.");        
     }
 }
