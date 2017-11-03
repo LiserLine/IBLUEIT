@@ -2,23 +2,57 @@
 
 public class PositionOnSerial : MonoBehaviour
 {
-    private Transform _transform;
-    private float _cameraOffset;
+    private float _plrHeightOffset;
     private SerialController _serialController;
     private const float RelativeLimit = 0.3f;
+    private GameSessionRecorder _gameSessionRecorder;
+    private PitacoRecorder _pitacoRecorder;
+    private float _dt;
 
     public ControlBehaviour Behaviour;
 
-    private void Awake()
+    private void OnEnable()
     {
+        _plrHeightOffset = 9; //ToDo - Get this properlly
+
         _serialController = GameObject.FindGameObjectWithTag("SerialController").GetComponent<SerialController>();
-        _transform = GetComponent<Transform>();
-        _cameraOffset = Camera.main.orthographicSize - Camera.main.transform.position.y - 1;
+        _serialController.OnSerialMessageReceived += OnSerialMessageReceived;
+
+        _gameSessionRecorder = new GameSessionRecorder("GameSession");
+        _pitacoRecorder = new PitacoRecorder("Pitaco");
+
+        _gameSessionRecorder.StartRecording();
+        _pitacoRecorder.StartRecording();
+    }
+
+    private void OnDisable()
+    {
+        _serialController.OnSerialMessageReceived -= OnSerialMessageReceived;
+
+        GameManager.Instance.Player.SessionsDone++;
+
+        _pitacoRecorder.StopRecording();
+        _pitacoRecorder.WriteData(GameManager.Instance.Player, GameManager.Instance.Stage, true);
+
+        _gameSessionRecorder.StopRecording();
+        _gameSessionRecorder.WriteData(GameManager.Instance.Player, GameManager.Instance.Stage, true);
     }
 
     private void Update()
     {
         //ChangeBehaviourHotkey();
+
+        _dt += Time.deltaTime;
+        if (_dt <= 0.2f)
+            return;
+
+        RecordPosition();
+        _dt = 0f;
+    }
+
+    private void RecordPosition()
+    {
+        _gameSessionRecorder.RecordValue(this.transform.position);
     }
 
     private void ChangeBehaviourHotkey()
@@ -39,61 +73,40 @@ public class PositionOnSerial : MonoBehaviour
         }
     }
 
-    private void OnEnable()
-    {
-        _serialController.OnSerialMessageReceived += OnSerialMessageReceived;
-        OnPlataformStageStart(); //ToDo - handle this to an event
-    }
-
-    private void OnDisable()
-    {
-        _serialController.OnSerialMessageReceived -= OnSerialMessageReceived;
-        OnPlataformStageEnd(); //ToDo - handle this to an event
-    }
-
     private void OnSerialMessageReceived(string msg)
     {
-        if (!SerialGetOffset.IsUsingOffset) return;
-
-        if (msg.Length < 1) return;
+        if (!SerialGetOffset.IsUsingOffset || msg.Length < 1)
+            return;
 
         var sensorValue = GameUtilities.ParseFloat(msg) - SerialGetOffset.Offset;
 
-        sensorValue = (sensorValue < -GameConstants.PitacoThreshold || sensorValue > GameConstants.PitacoThreshold) ? sensorValue : 0f;
+        sensorValue = sensorValue < -GameConstants.PitacoThreshold || sensorValue > GameConstants.PitacoThreshold ? sensorValue : 0f;
 
-        var nextPosition = _cameraOffset * sensorValue / GameManager.Instance.Player.RespiratoryInfo.ExpiratoryPeakFlow * GameConstants.UserPowerMercy;
+        var limit = sensorValue > 0 ? GameManager.Instance.Player.RespiratoryInfo.ExpiratoryPeakFlow : -GameManager.Instance.Player.RespiratoryInfo.InspiratoryPeakFlow;
 
-        Vector3 a = _transform.position;
+        var nextPosition = sensorValue * (_plrHeightOffset / limit);
+
+        // se for pra baixo, descer mais dependendo da força do paciente
+
+        Vector3 a = this.transform.position;
         Vector3 b = Vector3.zero;
         switch (Behaviour)
         {
             case ControlBehaviour.Absolute:
-                b = new Vector3(_transform.position.x, nextPosition, _transform.position.z);
+                b = new Vector3(this.transform.position.x, nextPosition, this.transform.position.z);
                 break;
 
             case ControlBehaviour.Relative:
                 if (!(nextPosition >= -RelativeLimit && nextPosition <= RelativeLimit))
                 {
-                    b = _transform.position + new Vector3(0f, nextPosition);
+                    b = this.transform.position + new Vector3(0f, nextPosition);
                 }
                 break;
         }
 
-        _transform.position = Vector3.Lerp(a, b, Time.deltaTime * 15f);
+        this.transform.position = Vector3.Lerp(a, b, Time.deltaTime * 15f);
 
-        PitacoRecorder.Instance.RecordValue(_transform.position.y);
-    }
-
-    private void OnPlataformStageStart()
-    {
-        PitacoRecorder.Instance.StartRecording();
-    }
-
-    private void OnPlataformStageEnd()
-    {
-        GameManager.Instance.Player.SessionsDone++;
-        PitacoRecorder.Instance.StopRecording();
-        PitacoRecorder.Instance.WriteData(GameManager.Instance.Player, GameManager.Instance.Stage, true);
+        _pitacoRecorder.RecordValue(sensorValue);
     }
 
     private void OnCollisionEnter(Collision collision)
