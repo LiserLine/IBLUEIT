@@ -2,7 +2,7 @@
 
 public class MenuButtonsOnClick : MonoBehaviour
 {
-    public GameObject menuPanel, gamePanel, gameElements, serialCommPrefab;
+    public GameObject menuPanel, waterPanel, gamePanel, gameElements, serialCommPrefab;
     public PlataformSceneManager sceneManager;
 
     public void LoadStage(int stageId)
@@ -13,6 +13,7 @@ public class MenuButtonsOnClick : MonoBehaviour
         GameManager.Instance.Stage.Start();
         menuPanel.SetActive(false);
         gamePanel.SetActive(true);
+        waterPanel.SetActive(true);
         gameElements.SetActive(true);
     }
 
@@ -21,6 +22,7 @@ public class MenuButtonsOnClick : MonoBehaviour
         GameManager.Instance.Stage.OnStageEnd -= LoadMenu;
         GameManager.Instance.Stage.Stop();
         gameElements.SetActive(false);
+        waterPanel.SetActive(false);
         menuPanel.SetActive(true);
         gamePanel.SetActive(false);
     }
