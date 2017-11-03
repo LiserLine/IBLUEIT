@@ -4,6 +4,7 @@ public class Spawner : MonoBehaviour
 {
     private float _dt;
     private float _spawnEveryXSec;
+    private float _cameraBounds;
 
     private float _distanceBetweenSpawns;
 
@@ -17,6 +18,7 @@ public class Spawner : MonoBehaviour
         stage.OnStageEnd += DestroySpawnedObjects;
         _distanceBetweenSpawns = GameManager.Instance.Player.Disfunction == Disfunctions.Restrictive ? 7f : 14f;
         _dt = _spawnEveryXSec;
+        _cameraBounds = 9; // ToDo - get this properlly
     }
 
     private void OnDisable()
@@ -42,12 +44,11 @@ public class Spawner : MonoBehaviour
     private void UpdatePosition()
     {
         var sineOnTime = Mathf.Sin(Time.time);
-        var cameraBounds = 9; // ToDo - get this properlly
 
         var nextPos = new Vector3
         {
             x = this.transform.position.x,
-            y = sineOnTime * cameraBounds / GameManager.Instance.Stage.Id,
+            y = sineOnTime * _cameraBounds / GameManager.Instance.Stage.Id,
             z = this.transform.position.z
         };
 
@@ -101,11 +102,20 @@ public class Spawner : MonoBehaviour
         //var go = Instantiate(Obstacles[obstacleIndex1], new Vector3(this.transform.position.x, -randomHeightOffset), this.transform.rotation);
         //var go2 = Instantiate(Obstacles[obstacleIndex2], new Vector3(this.transform.position.x + _distanceBetweenSpawns, randomHeightOffset), this.transform.rotation);
 
-        var go = Instantiate(Obstacles[obstacleIndex1], new Vector3(this.transform.position.x, 1f + disfunctionMultiplier / 3), this.transform.rotation);
-        var go2 = Instantiate(Obstacles[obstacleIndex2], new Vector3(this.transform.position.x + _distanceBetweenSpawns, -1f - disfunctionMultiplier * 2 / 2), this.transform.rotation);
+        var go = Instantiate(Obstacles[obstacleIndex1], new Vector3(this.transform.position.x, 0f), this.transform.rotation);
+        var go2 = Instantiate(Obstacles[obstacleIndex2], new Vector3(this.transform.position.x + _distanceBetweenSpawns, 0f), this.transform.rotation);
 
         go.transform.localScale = new Vector3(go.transform.localScale.x * sizeMultiplier, go.transform.localScale.y * sizeMultiplier, 1);
         go2.transform.localScale = new Vector3(go2.transform.localScale.x * sizeMultiplier * disfunctionMultiplier, go2.transform.localScale.y * sizeMultiplier * disfunctionMultiplier, 1);
+
+        var goPos = go.transform.position;
+        var go2Pos = go2.transform.position;
+
+        goPos.y += go.transform.localScale.y / 2;
+        go2Pos.y -= go2.transform.localScale.y / 2;
+
+        go.transform.position = goPos;
+        go2.transform.position = go2Pos;
     }
 
     private void DestroySpawnedObjects()
