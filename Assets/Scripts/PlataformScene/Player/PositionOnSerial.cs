@@ -52,7 +52,7 @@ public class PositionOnSerial : MonoBehaviour
 
     private void RecordPosition()
     {
-        _gameSessionRecorder.RecordValue(this.transform.position);
+        _gameSessionRecorder.RecordValue(this.transform.position.y);
     }
 
     private void ChangeBehaviourHotkey()
