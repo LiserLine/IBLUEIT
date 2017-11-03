@@ -14,7 +14,7 @@ public class Player
 
     public Disfunctions Disfunction { get; set; }
 
-    public int OpenLevel { get; set; }
+    public int StagesOpened { get; set; }
 
     public int TotalScore { get; set; }
 

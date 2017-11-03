@@ -8,7 +8,7 @@ public class StageButton : MonoBehaviour
 
     void Start()
     {
-        if (GameManager.Instance.Player.OpenLevel >= StageId)
+        if (GameManager.Instance.Player.StagesOpened >= StageId)
         {
             GetComponent<Button>().interactable = true;
         }

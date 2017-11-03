@@ -132,7 +132,7 @@ public class MainSceneManager : MonoBehaviour
             Observations = observations,
             RespiratoryInfo = new RespiratoryInfo(),
             CalibrationDone = false,
-            OpenLevel = 1
+            StagesOpened = 1
         };
 
         var tmpPlr = DatabaseManager.Instance.Players.GetPlayer(playerName);

@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
                 },
                 CalibrationDone = false,
                 SessionsDone = 1,
-                OpenLevel = 1,
+                StagesOpened = 9,
                 Birthday = DateTime.Parse("08/08/2018"),
                 Disfunction = Disfunctions.Normal,
                 Observations = string.Empty,
