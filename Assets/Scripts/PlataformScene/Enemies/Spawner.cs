@@ -16,7 +16,7 @@ public class Spawner : MonoBehaviour
         var stage = (PlataformStage)GameManager.Instance.Stage;
         _spawnEveryXSec = (float)stage.TimeLimit / stage.SpawnQuantitity;
         stage.OnStageEnd += DestroySpawnedObjects;
-        _distanceBetweenSpawns = 10f; // ToDO - is this good enough?
+        _distanceBetweenSpawns = GameManager.Instance.Player.RespiratoryInfo.RespirationFrequency / 1000 * 3.5f; // ToDO - is this good enough?
         _dt = _spawnEveryXSec;
         _cameraBounds = 9; // ToDo - get this properlly
     }
@@ -48,7 +48,7 @@ public class Spawner : MonoBehaviour
         var nextPos = new Vector3
         {
             x = this.transform.position.x,
-            y = sineOnTime * _cameraBounds / GameManager.Instance.Stage.Id,
+            y = sineOnTime * _cameraBounds / (GameManager.Instance.Stage.Id < 4 ? 2 : 1),
             z = this.transform.position.z
         };
 
@@ -85,8 +85,20 @@ public class Spawner : MonoBehaviour
     {
         var targetIndex = Random.Range(0, Targets.Length);
         var target = Instantiate(Targets[targetIndex], this.transform.position, this.transform.rotation);
+
         var nextPosition = target.transform.position;
-        nextPosition.y *= heightMultiplier;
+
+        if (target.transform.position.y > 0) // ins
+        {
+            var peak2Cam = _cameraBounds / -GameManager.Instance.Player.RespiratoryInfo.InspiratoryPeakFlow;
+            nextPosition.y = heightMultiplier * GameManager.Instance.Player.RespiratoryInfo.InspiratoryPeakFlow * peak2Cam;
+        }
+        else // exp
+        {
+            var peak2Cam = _cameraBounds / GameManager.Instance.Player.RespiratoryInfo.ExpiratoryPeakFlow;
+            nextPosition.y = heightMultiplier * GameManager.Instance.Player.RespiratoryInfo.ExpiratoryPeakFlow * peak2Cam;
+        }
+
         target.transform.position = nextPosition;
     }
 
@@ -115,11 +127,11 @@ public class Spawner : MonoBehaviour
         var scaleExp = GameManager.Instance.Player.RespiratoryInfo.ExpiratoryFlowTime / 1000;
 
         //ToDo - Do I really need this?
-        scaleExp *= GameConstants.UserPowerMercy + 1;
-        scaleIns *= GameConstants.UserPowerMercy + 1;
+        scaleExp *= (GameConstants.UserPowerMercy + 1) * 2;
+        scaleIns *= (GameConstants.UserPowerMercy + 1) * 2;
 
-        go.transform.localScale = new Vector3(scaleIns, scaleIns, 1);
-        go2.transform.localScale = new Vector3(scaleExp, scaleExp, 1);
+        go.transform.localScale = new Vector3(scaleExp, scaleExp, 1);
+        go2.transform.localScale = new Vector3(scaleIns, scaleIns, 1);
 
         var goPos = go.transform.position;
         var go2Pos = go2.transform.position;

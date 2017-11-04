@@ -4,7 +4,6 @@ public class PositionOnSerial : MonoBehaviour
 {
     private float _plrHeightOffset;
     private SerialController _serialController;
-    private const float RelativeLimit = 0.3f;
     private GameSessionRecorder _gameSessionRecorder;
     private PitacoRecorder _pitacoRecorder;
     private float _dt;
@@ -85,6 +84,17 @@ public class PositionOnSerial : MonoBehaviour
         var limit = sensorValue > 0 ? GameManager.Instance.Player.RespiratoryInfo.ExpiratoryPeakFlow : -GameManager.Instance.Player.RespiratoryInfo.InspiratoryPeakFlow;
 
         var nextPosition = sensorValue * (_plrHeightOffset / limit);
+
+        var cameraBounds = 9; //ToDO - get this in a proper way
+
+        if (nextPosition > cameraBounds)
+        {
+            nextPosition = cameraBounds;
+        }
+        else if (nextPosition < -cameraBounds)
+        {
+            nextPosition = -cameraBounds;
+        }
 
         // se for pra baixo, descer mais dependendo da força do paciente
 
