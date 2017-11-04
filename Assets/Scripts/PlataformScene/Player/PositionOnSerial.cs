@@ -93,14 +93,11 @@ public class PositionOnSerial : MonoBehaviour
         switch (Behaviour)
         {
             case ControlBehaviour.Absolute:
-                b = new Vector3(this.transform.position.x, nextPosition, this.transform.position.z);
+                b = new Vector3(this.transform.position.x, -nextPosition, this.transform.position.z);
                 break;
 
             case ControlBehaviour.Relative:
-                if (!(nextPosition >= -RelativeLimit && nextPosition <= RelativeLimit))
-                {
-                    b = this.transform.position + new Vector3(0f, nextPosition);
-                }
+                b = this.transform.position + new Vector3(0f, -nextPosition); //ToDO - test this
                 break;
         }
 
