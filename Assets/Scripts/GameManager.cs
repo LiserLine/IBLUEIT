@@ -32,11 +32,11 @@ public class GameManager : MonoBehaviour
                 RespiratoryInfo = new RespiratoryInfo
                 {
                     // raw simulated values
-                    InspiratoryPeakFlow = -200f,
-                    ExpiratoryPeakFlow = 700f,
-                    InspiratoryFlowTime = 4000f,
-                    ExpiratoryFlowTime = 6000f,
-                    RespirationFrequency = 3000f,
+                    InspiratoryPeakFlow = -250,
+                    ExpiratoryPeakFlow = 520,
+                    InspiratoryFlowTime = 4300,
+                    ExpiratoryFlowTime = 3200,
+                    RespirationFrequency = 2500
                 },
                 CalibrationDone = false,
                 SessionsDone = 1,
