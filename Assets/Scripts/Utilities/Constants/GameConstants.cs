@@ -40,7 +40,7 @@ public enum PlataformElements
 {
     Targets,
     Obstacles,
-    TargetAndObstacles = Targets | Obstacles
+    TargetAndObstacles
 }
 
 public enum ControlBehaviour
