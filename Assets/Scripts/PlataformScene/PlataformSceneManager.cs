@@ -6,23 +6,24 @@ public class PlataformSceneManager : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager.Instance.Stage != null && GameManager.Instance.Stage.IsRunning && SerialGetOffset.IsUsingOffset)
-        {
-            _dt += Time.deltaTime;
+        if (GameManager.Instance.Stage == null || !GameManager.Instance.Stage.IsRunning || !SerialGetOffset.IsUsingOffset)
+            return;
+
+        _dt += Time.deltaTime;
 
 #if UNITY_EDITOR
-            if (_dt >= 60)
-            {
-                StopStageOnTimeLimit();
-            }
+        if (_dt <= 60)
+            return;
+
+        StopStageOnTimeLimit();
 #else
-            if (_dt >= ((PlataformStage)GameManager.Instance.Stage).TimeLimit)
-            {
-                StopStageOnTimeLimit();
-            }
+            if (_dt <= ((PlataformStage)GameManager.Instance.Stage).TimeLimit)
+                return;
+
+            StopStageOnTimeLimit();
 #endif
 
-        }
+        _dt = 0;
     }
 
     public void StopStageOnTimeLimit()
@@ -34,8 +35,7 @@ public class PlataformSceneManager : MonoBehaviour
         Destroy(sComm);
 
         GameManager.Instance.Stage.Stop();
-        _dt = 0;
 
-        Debug.Log($"Stage {GameManager.Instance.Stage.Id} terminated.");        
+        Debug.Log($"Stage {GameManager.Instance.Stage.Id} terminated.");
     }
 }
