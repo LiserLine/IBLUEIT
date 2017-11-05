@@ -24,6 +24,7 @@ public class Spawner : MonoBehaviour
     private void OnDisable()
     {
         GameManager.Instance.Stage.OnStageEnd -= DestroySpawnedObjects;
+        _dt = 0;
     }
 
     private void Update()
