@@ -145,7 +145,10 @@ public class Spawner : MonoBehaviour
 
     private void DestroySpawnedObjects()
     {
-        var spawnedObjs = GameObject.FindGameObjectsWithTag("SpawnedObject");
+        var targets = GameObject.FindGameObjectsWithTag("SpawnedTarget");
+        var obstacles = GameObject.FindGameObjectsWithTag("SpawnedObstacle");
+
+        var spawnedObjs = targets.Union(obstacles);
 
         foreach (var obj in spawnedObjs)
             Destroy(obj);

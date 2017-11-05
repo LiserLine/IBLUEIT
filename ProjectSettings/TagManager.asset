@@ -6,7 +6,8 @@ TagManager:
   tags:
   - SerialController
   - SceneController
-  - SpawnedObject
+  - SpawnedObstacle
+  - SpawnedTarget
   layers:
   - Default
   - TransparentFX

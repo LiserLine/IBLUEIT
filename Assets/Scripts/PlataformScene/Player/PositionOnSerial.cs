@@ -51,7 +51,17 @@ public class PositionOnSerial : MonoBehaviour
 
     private void RecordPosition()
     {
-        _gameSessionRecorder.RecordValue(this.transform.position.y);
+        var plr = GameObject.FindGameObjectWithTag("Player");
+        var targets = GameObject.FindGameObjectsWithTag("SpawnedTarget");
+        var obstacles = GameObject.FindGameObjectsWithTag("SpawnedObstacle");
+
+        _gameSessionRecorder.RecordValue(Time.time, plr.tag, 0, plr.transform.position);
+
+        foreach (var target in targets)
+            _gameSessionRecorder.RecordValue(Time.time, target.tag, target.GetInstanceID(), target.transform.position);
+
+        foreach (var obstacle in obstacles)
+            _gameSessionRecorder.RecordValue(Time.time, obstacle.tag, obstacle.GetInstanceID(), obstacle.transform.position);
     }
 
     private void ChangeBehaviourHotkey()
