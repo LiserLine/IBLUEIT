@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PositionOnSerial : MonoBehaviour
 {
@@ -121,10 +119,5 @@ public class PositionOnSerial : MonoBehaviour
         this.transform.position = Vector3.Lerp(a, b, Time.deltaTime * 15f);
 
         _pitacoRecorder.RecordValue(sensorValue);
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        Destroy(collision.gameObject);
     }
 }
