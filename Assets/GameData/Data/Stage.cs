@@ -10,6 +10,7 @@ public class Stage
 
     public int Id { get; set; }
     public bool IsRunning { get; set; }
+    public int Score { get; set; }
 
     public virtual void Start()
     {

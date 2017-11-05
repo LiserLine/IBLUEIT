@@ -13,7 +13,7 @@ public class GameConstants
     public static readonly string LocalizationPath = SaveDataPath + "localization.dat";
     public static readonly string PacientListFile = PacientsPath + "_pacientsList.csv";
 
-    public const float UserPowerMercy = 0.6f;
+    public const float UserPowerMercy = 0.5f;
 
     //ToDo - Threshold based on disfunction ?
     //ToDo - test if this threshold is good

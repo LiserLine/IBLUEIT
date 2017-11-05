@@ -29,15 +29,17 @@ public class SerialGetOffset : MonoBehaviour
 
     private void OnSerialMessageReceived(string msg)
     {
-        if (IsUsingOffset) return;
+        if (IsUsingOffset)
+            return;
 
         Offset += msg.Length > 1 ? GameUtilities.ParseFloat(msg) : 0f;
         _count++;
 
-        if (_count != NumberOfSamples) return;
+        if (_count != NumberOfSamples)
+            return;
 
         Offset /= NumberOfSamples;
-        Debug.Log($"Offset set to {Offset}");
+        Debug.Log($"Offset is {Offset}");
 
         IsUsingOffset = true;
     }

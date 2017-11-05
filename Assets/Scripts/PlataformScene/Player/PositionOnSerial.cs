@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using System.Globalization;
+using System.Linq;
+using UnityEngine;
 
 public class PositionOnSerial : MonoBehaviour
 {
-    private float _plrHeightOffset;
+    private float _cameraBounds;
     private SerialController _serialController;
     private GameSessionRecorder _gameSessionRecorder;
     private PitacoRecorder _pitacoRecorder;
@@ -12,7 +14,7 @@ public class PositionOnSerial : MonoBehaviour
 
     private void OnEnable()
     {
-        _plrHeightOffset = 9; //ToDo - Get this properlly
+        _cameraBounds = 9; //ToDo - Get this properlly
 
         _serialController = GameObject.FindGameObjectWithTag("SerialController").GetComponent<SerialController>();
         _serialController.OnSerialMessageReceived += OnSerialMessageReceived;
@@ -42,14 +44,14 @@ public class PositionOnSerial : MonoBehaviour
         //ChangeBehaviourHotkey();
 
         _dt += Time.deltaTime;
-        if (_dt <= 0.2f)
+        if (_dt <= 1f / 30f)
             return;
 
-        RecordPosition();
+        RecordObjects(); // 30FPS
         _dt = 0f;
     }
 
-    private void RecordPosition()
+    private void RecordObjects()
     {
         var plr = GameObject.FindGameObjectWithTag("Player");
         var targets = GameObject.FindGameObjectsWithTag("SpawnedTarget");
@@ -88,22 +90,17 @@ public class PositionOnSerial : MonoBehaviour
             return;
 
         var sensorValue = GameUtilities.ParseFloat(msg) - SerialGetOffset.Offset;
-
         sensorValue = sensorValue < -GameConstants.PitacoThreshold || sensorValue > GameConstants.PitacoThreshold ? sensorValue : 0f;
-
         var limit = sensorValue > 0 ? GameManager.Instance.Player.RespiratoryInfo.ExpiratoryPeakFlow : -GameManager.Instance.Player.RespiratoryInfo.InspiratoryPeakFlow;
 
-        var nextPosition = sensorValue * (_plrHeightOffset / limit);
-
-        var cameraBounds = 9; //ToDO - get this in a proper way
-
-        if (nextPosition > cameraBounds)
+        var nextPosition = sensorValue * _cameraBounds / limit;
+        if (nextPosition > _cameraBounds)
         {
-            nextPosition = cameraBounds;
+            nextPosition = _cameraBounds + 1;
         }
-        else if (nextPosition < -cameraBounds)
+        else if (nextPosition < -_cameraBounds)
         {
-            nextPosition = -cameraBounds;
+            nextPosition = -_cameraBounds - 1;
         }
 
         // se for pra baixo, descer mais dependendo da força do paciente
