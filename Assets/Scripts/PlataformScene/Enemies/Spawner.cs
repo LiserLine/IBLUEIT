@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class Spawner : MonoBehaviour
         var stage = (PlataformStage)GameManager.Instance.Stage;
         _spawnEveryXSec = (float)stage.TimeLimit / stage.SpawnQuantitity;
         stage.OnStageEnd += DestroySpawnedObjects;
-        _distanceBetweenSpawns = GameManager.Instance.Player.RespiratoryInfo.RespirationFrequency / 1000 * 3.5f; // ToDO - is this good enough?
+        _distanceBetweenSpawns = GameManager.Instance.Player.RespiratoryInfo.RespirationFrequency / 1000 * (stage.Id / 3f) + 1; // ToDO - is this good enough?
         _dt = _spawnEveryXSec;
         _cameraBounds = 9; // ToDo - get this properlly
     }
@@ -89,16 +90,8 @@ public class Spawner : MonoBehaviour
 
         var nextPosition = target.transform.position;
 
-        if (target.transform.position.y > 0) // ins
-        {
-            var peak2Cam = _cameraBounds / -GameManager.Instance.Player.RespiratoryInfo.InspiratoryPeakFlow;
-            nextPosition.y = heightMultiplier * GameManager.Instance.Player.RespiratoryInfo.InspiratoryPeakFlow * peak2Cam;
-        }
-        else // exp
-        {
-            var peak2Cam = _cameraBounds / GameManager.Instance.Player.RespiratoryInfo.ExpiratoryPeakFlow;
-            nextPosition.y = heightMultiplier * GameManager.Instance.Player.RespiratoryInfo.ExpiratoryPeakFlow * peak2Cam;
-        }
+        var limit = target.transform.position.y > 0 ? GameManager.Instance.Player.RespiratoryInfo.InspiratoryPeakFlow : GameManager.Instance.Player.RespiratoryInfo.ExpiratoryPeakFlow;
+        nextPosition.y = heightMultiplier * limit * _cameraBounds / limit;
 
         target.transform.position = nextPosition;
     }
@@ -128,8 +121,8 @@ public class Spawner : MonoBehaviour
         var scaleExp = GameManager.Instance.Player.RespiratoryInfo.ExpiratoryFlowTime / 1000;
 
         //ToDo - Do I really need this?
-        scaleExp *= (GameConstants.UserPowerMercy + 1) * 2;
-        scaleIns *= (GameConstants.UserPowerMercy + 1) * 2;
+        scaleExp *= (GameConstants.UserPowerMercy + 1) * 2 * sizeMultiplier;
+        scaleIns *= (GameConstants.UserPowerMercy + 1) * 2 * sizeMultiplier;
 
         go.transform.localScale = new Vector3(scaleExp, scaleExp, 1);
         go2.transform.localScale = new Vector3(scaleIns, scaleIns, 1);
