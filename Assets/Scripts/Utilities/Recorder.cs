@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
 using UnityEngine;
 
@@ -55,11 +54,10 @@ public abstract class Recorder
 public class GameSessionRecorder : Recorder
 {
     private readonly StringBuilder _sb;
-    private readonly Dictionary<long, float> _positionDictionary;
+    private int _numLines;
 
     public GameSessionRecorder(string recorderName) : base(recorderName)
     {
-        _positionDictionary = new Dictionary<long, float>();
         _sb = new StringBuilder();
     }
 
@@ -68,48 +66,23 @@ public class GameSessionRecorder : Recorder
         throw new NotImplementedException();
     }
 
-    private Vector2 ParseVector2(string str)
-    {
-        throw new NotImplementedException();
-    }
-
     public override void WriteData(Player plr, Stage stg, bool clearRecords = false)
     {
-        if (_positionDictionary.Count == 0)
+        if (_sb.Length == 0)
             return;
 
-        UnityEngine.Debug.Log($"({RecorderName}) Writing {_positionDictionary.Count} values from position dictionary...");
+        UnityEngine.Debug.Log($"({RecorderName}) Writing {_numLines} values from game session...");
 
-        if (plr != null)
-        {
-            var configString = new[]
-            {
-                "SessionId", "PlayerId", "PlayerName", "PlayerDisfunction", "SessionStart", "SessionFinish", "StageId"
-            };
-            _sb.AppendLine(configString.Aggregate((a, b) => a + ";" + b));
+        _sb.Insert(0, "time;tag;id;positionX;positionY\n");
 
-            _sb.AppendLine($"{plr.SessionsDone};{plr.Id};{plr.Name};{plr.Disfunction};{RecordStart};{RecordFinish};{stg.Id};");
-            _sb.AppendLine();
-        }
-
-        foreach (var pair in _positionDictionary)
-        {
-            _sb.AppendLine($"{pair.Key};{pair.Value:F}");
-        }
-
-        var filePath = plr != null ? GameConstants.GetSessionsPath(plr) + $"GAME-SESSION_{plr.SessionsDone}.csv" : GameConstants.SaveDataPath + $"GAME-SESSION_{RecordStart:yyyyMMdd_HHmmss}.csv";
-
+        var filePath = GameConstants.GetSessionsPath(plr) + $"{plr.SessionsDone}_GAME-SESSION.csv";
         GameUtilities.WriteAllText(filePath, _sb.ToString());
-
-        if (clearRecords)
-        {
-            ClearRecords();
-        }
     }
 
-    public void RecordValue(float Yposition)
+    public void RecordValue(float time, string tag, int id, Vector2 position)
     {
-        _positionDictionary.Add(Stopwatch.ElapsedMilliseconds, Yposition);
+        _sb.AppendLine($"{time:F};{tag};{id};{position.x:F};{position.y:F}");
+        _numLines++;
     }
 }
 
@@ -139,31 +112,17 @@ public class PitacoRecorder : Recorder
 
         UnityEngine.Debug.Log($"({RecorderName}) Writing {_incomingDataDictionary.Count} values from incoming data dictionary...");
 
-        if (plr != null)
-        {
-            var configString = new[]
-            {
-                "SessionId", "PlayerId", "PlayerName", "PlayerDisfunction", "SessionStart", "SessionFinish", "StageId"
-            };
-            _sb.AppendLine(configString.Aggregate((a, b) => a + ";" + b));
-
-            _sb.AppendLine($"{plr.SessionsDone};{plr.Id};{plr.Name};{plr.Disfunction};{RecordStart};{RecordFinish};{stg.Id};");
-            _sb.AppendLine();
-        }
+        _sb.Insert(0, "time;value\n");
 
         foreach (var pair in _incomingDataDictionary)
-        {
             _sb.AppendLine($"{pair.Key};{pair.Value}");
-        }
 
-        var filePath = plr != null ? GameConstants.GetSessionsPath(plr) + $"PITACO-SESSION_{plr.SessionsDone}.csv" : GameConstants.SaveDataPath + $"PITACO-SESSION_{RecordStart:yyyyMMdd_HHmmss}.csv";
+        var filePath = plr != null ? GameConstants.GetSessionsPath(plr) + $"{plr.SessionsDone}_PITACO-SESSION.csv" : GameConstants.SaveDataPath + $"{RecordStart:yyyyMMdd_HHmmss}_PITACO-SESSION.csv";
 
         GameUtilities.WriteAllText(filePath, _sb.ToString());
 
         if (clearRecords)
-        {
             ClearRecords();
-        }
     }
 
     public override void ClearRecords()
