@@ -6,7 +6,7 @@ public class StageButton : MonoBehaviour
 {
     public int StageId;
 
-    void Start()
+    private void FixedUpdate()
     {
         if (GameManager.Instance.Player.StagesOpened >= StageId)
         {
