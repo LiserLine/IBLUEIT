@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.XR.WSA.WebCam;
 
 public class PositionOnSerial : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public class PositionOnSerial : MonoBehaviour
     private GameSessionRecorder _gameSessionRecorder;
     private PitacoRecorder _pitacoRecorder;
     private float _dt;
+    private bool _recording;
 
     public ControlBehaviour Behaviour;
 
@@ -19,26 +21,30 @@ public class PositionOnSerial : MonoBehaviour
 
         _gameSessionRecorder = new GameSessionRecorder("GameSession");
         _pitacoRecorder = new PitacoRecorder("Pitaco");
-
-        _gameSessionRecorder.StartRecording();
-        _pitacoRecorder.StartRecording();
     }
 
     private void OnDisable()
     {
         _serialController.OnSerialMessageReceived -= OnSerialMessageReceived;
 
-        GameManager.Instance.Player.SessionsDone++;
-
         _pitacoRecorder.StopRecording();
         _pitacoRecorder.WriteData(GameManager.Instance.Player, GameManager.Instance.Stage, true);
 
         _gameSessionRecorder.StopRecording();
         _gameSessionRecorder.WriteData(GameManager.Instance.Player, GameManager.Instance.Stage, true);
+
+        _recording = false;
     }
 
     private void Update()
     {
+        if (!_recording && SerialGetOffset.IsUsingOffset)
+        {
+            _gameSessionRecorder.StartRecording();
+            _pitacoRecorder.StartRecording();
+            _recording = true;
+        }
+
         //ChangeBehaviourHotkey();
 
         _dt += Time.deltaTime;
@@ -100,8 +106,6 @@ public class PositionOnSerial : MonoBehaviour
         {
             nextPosition = -_cameraBounds - 1;
         }
-
-        // se for pra baixo, descer mais dependendo da força do paciente
 
         Vector3 a = this.transform.position;
         Vector3 b = Vector3.zero;
