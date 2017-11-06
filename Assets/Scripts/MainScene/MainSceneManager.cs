@@ -54,7 +54,7 @@ public class MainSceneManager : MonoBehaviour
 
     public void ShowGameInfo()
     {
-        var credits = $"I Blue It - v0.0.0 (DEV)" +
+        var credits = $"I Blue It - v0.0.1 (PROTOTYPE)" +
                       $"\n[Renato Hartmann Grimes]" +
                       $"\nEletrical Engineering Department" +
                       $"\n[Marcelo da Silva Hounsell]" +
