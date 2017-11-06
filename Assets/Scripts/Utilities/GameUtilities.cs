@@ -38,7 +38,7 @@ public static class GameUtilities
 
         if (File.Exists(filepath))
         {
-            File.AppendAllText(filepath, sessionInfo);
+            File.AppendAllText(filepath, Environment.NewLine + sessionInfo);
         }
         else
         {
@@ -82,7 +82,8 @@ public static class GameUtilities
                 startTime = 0;
             }
 
-            if (firstCurveTime == 0 || secondCurveTime == 0) continue;
+            if (firstCurveTime == 0 || secondCurveTime == 0)
+                continue;
 
             var cycleTime = firstCurveTime + secondCurveTime;
             sumTimes += cycleTime;
