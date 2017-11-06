@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 using UnityEngine;
 
@@ -68,14 +69,18 @@ public class GameSessionRecorder : Recorder
 
     public override void WriteData(Player plr, Stage stg, bool clearRecords = false)
     {
-        if (_sb.Length == 0)
+        if (_numLines == 0)
+            return;
+
+        var filePath = GameConstants.GetSessionsPath(plr) + $"{plr.SessionsDone}_GAME-SESSION.csv";
+
+        if (File.Exists(filePath))
             return;
 
         UnityEngine.Debug.Log($"({RecorderName}) Writing {_numLines} values from game session...");
 
         _sb.Insert(0, "time;tag;id;positionX;positionY\n");
 
-        var filePath = GameConstants.GetSessionsPath(plr) + $"{plr.SessionsDone}_GAME-SESSION.csv";
         GameUtilities.WriteAllText(filePath, _sb.ToString());
     }
 
@@ -110,14 +115,17 @@ public class PitacoRecorder : Recorder
         if (_incomingDataDictionary.Count == 0)
             return;
 
+        var filePath = plr != null ? GameConstants.GetSessionsPath(plr) + $"{plr.SessionsDone}_PITACO-SESSION.csv" : GameConstants.SaveDataPath + $"{RecordStart:yyyyMMdd_HHmmss}_PITACO-SESSION.csv";
+
+        if (File.Exists(filePath))
+            return;
+
         UnityEngine.Debug.Log($"({RecorderName}) Writing {_incomingDataDictionary.Count} values from incoming data dictionary...");
 
         _sb.Insert(0, "time;value\n");
 
         foreach (var pair in _incomingDataDictionary)
             _sb.AppendLine($"{pair.Key};{pair.Value}");
-
-        var filePath = plr != null ? GameConstants.GetSessionsPath(plr) + $"{plr.SessionsDone}_PITACO-SESSION.csv" : GameConstants.SaveDataPath + $"{RecordStart:yyyyMMdd_HHmmss}_PITACO-SESSION.csv";
 
         GameUtilities.WriteAllText(filePath, _sb.ToString());
 
