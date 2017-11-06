@@ -26,6 +26,11 @@ public class GameConstants
         return PacientsPath + plr.Id + Path.AltDirectorySeparatorChar;
     }
 
+    public static string GetHistoryPath(Player plr)
+    {
+        return GetSessionsPath(plr) + "_history.csv";
+    }
+
     public static readonly PlataformConstants Plataform = new PlataformConstants();
 }
 

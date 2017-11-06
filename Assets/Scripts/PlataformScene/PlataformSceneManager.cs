@@ -59,9 +59,7 @@ public class PlataformSceneManager : MonoBehaviour
             Debug.Log($"Not enough score to open next stage! {stage.Score} < {stage.SpawnedScore}");
         }
 
-        Debug.Log($"{stage.Id};{stage.StartTime};{stage.EndTime};{stage.Score};{stage.SpawnedScore};{stage.Elements};" +
-                  $"{stage.GameLevel};{stage.HeightLevel};{stage.SizeLevel};{stage.IntervalLevel};{stage.TimeLimit}");
-
-        DatabaseManager.Instance.Players.Save();
+        GameUtilities.WritePlataformSession(GameManager.Instance.Player, stage);
+        DatabaseManager.Instance?.Players.Save();
     }
 }

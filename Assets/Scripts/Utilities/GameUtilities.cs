@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,6 +24,27 @@ public static class GameUtilities
     }
 
     public static float ParseFloat(string value) => float.Parse(value.Replace('.', ','));
+
+    public static void WritePlataformSession(Player plr, PlataformStage stage)
+    {
+        const string sessionData = "sessionId;stageId;stageStartTime;stageEndTime;stageScore;stageSpawnedScore;stageElements;" +
+                                   "stageGameLevel;stageHeightLevel;stageSizeLevel;stageIntervalLevel;stageTimeLimit";
+
+        var sessionInfo =
+            $"{plr.SessionsDone};{stage.Id};{stage.StartTime};{stage.EndTime};{stage.Score};{stage.SpawnedScore};{stage.Elements};" +
+            $"{stage.GameLevel};{stage.HeightLevel};{stage.SizeLevel};{stage.IntervalLevel};{stage.TimeLimit};";
+
+        var filepath = GameConstants.GetHistoryPath(plr);
+
+        if (File.Exists(filepath))
+        {
+            File.AppendAllText(filepath, sessionInfo);
+        }
+        else
+        {
+            WriteAllText(filepath, sessionData + Environment.NewLine + sessionInfo);
+        }
+    }
 
     public static float CalculateMeanFlow(List<KeyValuePair<long, float>> respiratorySamples)
     {
