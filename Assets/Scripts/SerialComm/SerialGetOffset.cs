@@ -43,4 +43,10 @@ public class SerialGetOffset : MonoBehaviour
 
         IsUsingOffset = true;
     }
+
+    public static void ResetData()
+    {
+        Offset = 0f;
+        IsUsingOffset = false;
+    }
 }
