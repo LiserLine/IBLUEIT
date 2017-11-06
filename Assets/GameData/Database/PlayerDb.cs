@@ -57,7 +57,7 @@ public class PlayerDb
                     RespirationFrequency = GameUtilities.ParseFloat(grid[i][9]),
                 },
                 StagesOpened = int.Parse(grid[i][10]),
-                TotalScore = int.Parse(grid[i][11]),
+                TotalScore = GameUtilities.ParseFloat(grid[i][11]),
                 SessionsDone = int.Parse(grid[i][12]),
                 CalibrationDone = bool.Parse(grid[i][13])
             };
@@ -85,7 +85,7 @@ public class PlayerDb
             sb.AppendLine(
                 $"{plr.Id};{plr.Name};{plr.Birthday:dd/MM/yyyy};{plr.Observations};{plr.Disfunction};" +
                 $"{rawInfo.InspiratoryPeakFlow};{rawInfo.ExpiratoryPeakFlow};{rawInfo.InspiratoryFlowTime};{rawInfo.ExpiratoryFlowTime};" +
-                $"{rawInfo.RespirationFrequency};{plr.StagesOpened};{plr.TotalScore};{plr.SessionsDone};{plr.CalibrationDone};");
+                $"{rawInfo.RespirationFrequency};{plr.StagesOpened};{Math.Truncate(plr.TotalScore)};{plr.SessionsDone};{plr.CalibrationDone};");
         }
 
         GameUtilities.WriteAllText(GameConstants.PacientListFile, sb.ToString());

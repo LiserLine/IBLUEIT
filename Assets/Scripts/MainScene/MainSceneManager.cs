@@ -161,17 +161,23 @@ public class MainSceneManager : MonoBehaviour
     {
         var player = GameManager.Instance.Player;
 
+        if (player == null)
+        {
+            PanelMessage.ShowError("NULL PLAYER");
+            return;
+        }
+
         var txtBDay = LocalizationManager.Instance?.GetLocalizedValue("txtBDay");
         var txtDisfunction = LocalizationManager.Instance?.GetLocalizedValue("txtDisfunction");
         var txtScoreMax = LocalizationManager.Instance?.GetLocalizedValue("txtScoreMax");
         var txtSessions = LocalizationManager.Instance?.GetLocalizedValue("txtSessions");
 
-        var plrInfo = $"{player?.Name}" +
-                      $"\nID: {player?.Id}" +
-                      $"\n{txtBDay}: {player?.Birthday:dd/MM/yyyy}" +
-                      $"\n{txtDisfunction}: {player?.Disfunction}" +
-                      $"\n{txtScoreMax}: {player?.TotalScore}" +
-                      $"\n{txtSessions}: {player?.SessionsDone}";
+        var plrInfo = $"{player.Name}" +
+                      $"\nID: {player.Id}" +
+                      $"\n{txtBDay}: {player.Birthday:dd/MM/yyyy}" +
+                      $"\n{txtDisfunction}: {player.Disfunction}" +
+                      $"\n{txtScoreMax}: {Math.Truncate(player.TotalScore)}" +
+                      $"\n{txtSessions}: {player.SessionsDone}";
 
         PanelMessage.ShowInfo(plrInfo);
     }

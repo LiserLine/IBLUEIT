@@ -16,7 +16,7 @@ public class Player
 
     public int StagesOpened { get; set; }
 
-    public int TotalScore { get; set; }
+    public float TotalScore { get; set; }
 
     public int SessionsDone { get; set; }
 

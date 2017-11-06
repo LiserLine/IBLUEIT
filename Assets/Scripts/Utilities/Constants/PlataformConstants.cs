@@ -6,6 +6,8 @@ public class PlataformConstants
     public ObstacleSizeMultiplier ObstacleSizeMultiplier = new ObstacleSizeMultiplier();
     public SpawnQuantity SpawnQuantity = new SpawnQuantity();
     public TimeLimits TimeLimits = new TimeLimits();
+
+    public float NextStageOpenProportion = 0.7f;
 }
 
 public class TargetHeightMultiplier
