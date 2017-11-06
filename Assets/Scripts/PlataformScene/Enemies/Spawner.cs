@@ -130,7 +130,7 @@ public class Spawner : MonoBehaviour
         goPos.y -= go.transform.localScale.y / 2;
         go2Pos.y += go2.transform.localScale.y / 2;
 
-        go2Pos.x = 2 * (go.transform.localScale.x + go2.transform.localScale.x);
+        go2Pos.x = goPos.x + (go.transform.localScale.x + go2.transform.localScale.x);
 
         go.transform.position = goPos;
         go2.transform.position = go2Pos;
