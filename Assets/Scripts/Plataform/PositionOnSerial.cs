@@ -10,6 +10,7 @@ public class PositionOnSerial : MonoBehaviour
     private bool _recording;
 
     public ControlBehaviour Behaviour;
+    public Animator Animator;
 
     private void OnEnable()
     {
@@ -44,6 +45,7 @@ public class PositionOnSerial : MonoBehaviour
             _recording = true;
         }
 
+        SetAnimation();
         //ChangeBehaviourHotkey();
 
         _dt += Time.deltaTime;
@@ -52,6 +54,29 @@ public class PositionOnSerial : MonoBehaviour
 
         RecordObjects(); // 30FPS
         _dt = 0f;
+    }
+
+    private void SetAnimation()
+    {
+        var pos = this.transform.position.y;
+        if (pos > 1)
+        {
+            Animator.SetBool("isFloating", false);
+            Animator.SetBool("isDownwarding", false);
+            Animator.SetBool("isUpwarding", true);
+        }
+        else if (pos < -1)
+        {
+            Animator.SetBool("isFloating", false);
+            Animator.SetBool("isUpwarding", false);
+            Animator.SetBool("isDownwarding", true);
+        }
+        else
+        {
+            Animator.SetBool("isFloating", true);
+            Animator.SetBool("isUpwarding", false);
+            Animator.SetBool("isDownwarding", false);
+        }
     }
 
     private void RecordObjects()
