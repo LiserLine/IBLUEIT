@@ -146,7 +146,7 @@ public class PlataformStage : Stage
         {
             Elements = PlataformElements.Targets;
             TargetHeightMultiplier = Id == 3 ? GameConstants.Plataform.TargetHeightMultiplier.Med : GameConstants.Plataform.TargetHeightMultiplier.Min;
-            SpawnQuantitity = Id == 1 ? GameConstants.Plataform.SpawnQuantity.Stage1 : (Id == 2 ? GameConstants.Plataform.SpawnQuantity.Stage2 : GameConstants.Plataform.SpawnQuantity.Stage3);
+            SpawnQuantitity = Id == 1 ? GameConstants.Plataform.SpawnQuantity.Stage1_1 : (Id == 2 ? GameConstants.Plataform.SpawnQuantity.Stage1_2 : GameConstants.Plataform.SpawnQuantity.Stage1_3);
             TimeLimit = GameConstants.Plataform.TimeLimits.World1;
         }
         else if (Id >= 4 && Id <= 6)
@@ -154,14 +154,14 @@ public class PlataformStage : Stage
             Elements = PlataformElements.TargetAndObstacles;
             TargetHeightMultiplier = Id == 4 ? GameConstants.Plataform.TargetHeightMultiplier.Med : GameConstants.Plataform.TargetHeightMultiplier.Max;
             ObstacleSizeMultiplier = Id == 6 ? GameConstants.Plataform.ObstacleSizeMultiplier.Med : GameConstants.Plataform.ObstacleSizeMultiplier.Min;
-            SpawnQuantitity = Id == 4 ? GameConstants.Plataform.SpawnQuantity.Stage4 : (Id == 5 ? GameConstants.Plataform.SpawnQuantity.Stage5 : GameConstants.Plataform.SpawnQuantity.Stage6);
+            SpawnQuantitity = Id == 4 ? GameConstants.Plataform.SpawnQuantity.Stage2_1 : (Id == 5 ? GameConstants.Plataform.SpawnQuantity.Stage2_2 : GameConstants.Plataform.SpawnQuantity.Stage6);
             TimeLimit = GameConstants.Plataform.TimeLimits.World2;
         }
         else if (Id >= 7 && Id <= 9)
         {
             Elements = PlataformElements.Obstacles;
             ObstacleSizeMultiplier = Id == 7 ? GameConstants.Plataform.ObstacleSizeMultiplier.Med : GameConstants.Plataform.ObstacleSizeMultiplier.Max;
-            SpawnQuantitity = Id == 7 ? GameConstants.Plataform.SpawnQuantity.Stage7 : (Id == 8 ? GameConstants.Plataform.SpawnQuantity.Stage8 : GameConstants.Plataform.SpawnQuantity.Stage9);
+            SpawnQuantitity = Id == 7 ? GameConstants.Plataform.SpawnQuantity.Stage3_1 : (Id == 8 ? GameConstants.Plataform.SpawnQuantity.Stage3_2 : GameConstants.Plataform.SpawnQuantity.Stage3_3);
             TimeLimit = GameConstants.Plataform.TimeLimits.World3;
         }
 

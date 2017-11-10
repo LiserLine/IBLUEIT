@@ -26,17 +26,17 @@ public class ObstacleSizeMultiplier
 
 public class SpawnQuantity
 {
-    public readonly int Stage1 = 5;
-    public readonly int Stage2 = 6;
-    public readonly int Stage3 = 6;
+    public readonly int Stage1_1 = 5;
+    public readonly int Stage1_2 = 6;
+    public readonly int Stage1_3 = 6;
 
-    public readonly int Stage4 = 8;
-    public readonly int Stage5 = 9;
-    public readonly int Stage6 = 10;
+    public readonly int Stage2_1 = 8;
+    public readonly int Stage2_2 = 9;
+    public readonly int Stage2_3 = 10;
 
-    public readonly int Stage7 = 13;
-    public readonly int Stage8 = 14;
-    public readonly int Stage9 = 15;
+    public readonly int Stage3_1 = 13;
+    public readonly int Stage3_2 = 14;
+    public readonly int Stage3_3 = 15;
 }
 
 public class TimeLimits
