@@ -154,7 +154,7 @@ public class PlataformStage : Stage
             Elements = PlataformElements.TargetAndObstacles;
             TargetHeightMultiplier = Id == 4 ? GameConstants.Plataform.TargetHeightMultiplier.Med : GameConstants.Plataform.TargetHeightMultiplier.Max;
             ObstacleSizeMultiplier = Id == 6 ? GameConstants.Plataform.ObstacleSizeMultiplier.Med : GameConstants.Plataform.ObstacleSizeMultiplier.Min;
-            SpawnQuantitity = Id == 4 ? GameConstants.Plataform.SpawnQuantity.Stage2_1 : (Id == 5 ? GameConstants.Plataform.SpawnQuantity.Stage2_2 : GameConstants.Plataform.SpawnQuantity.Stage6);
+            SpawnQuantitity = Id == 4 ? GameConstants.Plataform.SpawnQuantity.Stage2_1 : (Id == 5 ? GameConstants.Plataform.SpawnQuantity.Stage2_2 : GameConstants.Plataform.SpawnQuantity.Stage2_3);
             TimeLimit = GameConstants.Plataform.TimeLimits.World2;
         }
         else if (Id >= 7 && Id <= 9)
