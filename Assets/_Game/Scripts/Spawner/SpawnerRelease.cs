@@ -1,6 +1,5 @@
 ﻿using NaughtyAttributes;
 using UnityEngine;
-using UnityEngine.Experimental.UIElements;
 
 public partial class Spawner
 {
@@ -9,54 +8,52 @@ public partial class Spawner
     private float expSizeAccumulator;
     private float expHeightAccumulator;
 
-    public delegate void ObjectReleasedHandler(EnemyType enemyType, ref GameObject go1, ref GameObject go2);
+    public delegate void ObjectReleasedHandler(EnemyType type, ref GameObject obj1, ref GameObject obj2);
     public static event ObjectReleasedHandler OnObjectReleased;
-
-    private float cameraBounds = 2.5f; //ToDo - get this properlly
-
+    
     private EnemyType lastEnemyType;
 
     [Button("Release Objects")]
     private void Release()
     {
-        GameObject go1, go2;
+        GameObject airObj, waterObj;
 
         switch (this.spawnObjects)
         {
             case EnemyType.Targets:
-                ReleaseTargetAir(out go1);
-                ReleaseTargetWater(out go2);
-                DistanciateTargets(ref go2, ref go1);
+                ReleaseTargetAir(out airObj);
+                ReleaseTargetWater(out waterObj);
+                DistanciateTargets(ref airObj, ref waterObj);
                 lastEnemyType = EnemyType.Targets;
                 break;
             case EnemyType.Obstacles:
-                ReleaseObstacleAir(out go1);
-                ReleaseObstacleWater(out go2);
-                DistanciateObstacles(ref go2, ref go1);
+                ReleaseObstacleAir(out airObj);
+                ReleaseObstacleWater(out waterObj);
+                DistanciateObstacles(ref waterObj, ref airObj);
                 lastEnemyType = EnemyType.Obstacles;
                 break;
             default: //EnemyType.TargetsAndObstacles
                 if (Random.Range(0, 2) == 0)
                 {
-                    ReleaseTargetAir(out go1);
-                    ReleaseTargetWater(out go2);
-                    DistanciateTargets(ref go2, ref go1);
+                    ReleaseTargetAir(out airObj);
+                    ReleaseTargetWater(out waterObj);
+                    DistanciateTargets(ref airObj, ref waterObj);
                     lastEnemyType = EnemyType.Targets;
                 }
                 else
                 {
-                    ReleaseObstacleAir(out go1);
-                    ReleaseObstacleWater(out go2);
-                    DistanciateObstacles(ref go2, ref go1);
+                    ReleaseObstacleAir(out airObj);
+                    ReleaseObstacleWater(out waterObj);
+                    DistanciateObstacles(ref waterObj, ref airObj);
                     lastEnemyType = EnemyType.Obstacles;
                 }
                 break;
         }
 
-        go1.GetComponent<MoveObject>().speed = objectSpeed;
-        go2.GetComponent<MoveObject>().speed = objectSpeed;
+        airObj.GetComponent<MoveObject>().speed = objectSpeed;
+        waterObj.GetComponent<MoveObject>().speed = objectSpeed;
 
-        OnObjectReleased?.Invoke(lastEnemyType, ref go1, ref go2);
+        OnObjectReleased?.Invoke(lastEnemyType, ref airObj, ref waterObj);
     }
 
     #region Targets
@@ -84,8 +81,8 @@ public partial class Spawner
             this.transform);
 
         var posY = (1f + this.insHeightAccumulator / 100f)
-                   * Player.playerDto.RespiratoryInfo.InspiratoryPeakFlow
-                   * cameraBounds / Mathf.Abs(Player.playerDto.RespiratoryInfo.InspiratoryPeakFlow)
+                   * -Player.playerDto.RespiratoryInfo.InspiratoryPeakFlow
+                   * CameraBoundary.Limit / Mathf.Abs(Player.playerDto.RespiratoryInfo.InspiratoryPeakFlow)
                    * Random.Range(0.4f, this.gameDifficulty / 100f);
 
         var pos = spawned.transform.position;
@@ -103,11 +100,11 @@ public partial class Spawner
 
         var posY = (1f + this.expHeightAccumulator / 100f)
                    * Player.playerDto.RespiratoryInfo.ExpiratoryPeakFlow
-                   * cameraBounds / Mathf.Abs(Player.playerDto.RespiratoryInfo.ExpiratoryPeakFlow)
+                   * CameraBoundary.Limit / Mathf.Abs(Player.playerDto.RespiratoryInfo.ExpiratoryPeakFlow)
                    * Random.Range(0.4f, this.gameDifficulty / 100f);
 
         var pos = spawned.transform.position;
-        pos.y = posY;
+        pos.y = -posY;
         spawned.transform.position = pos;
     }
 
@@ -169,6 +166,15 @@ public partial class Spawner
         var tmpPosition = spawned.transform.position;
         tmpPosition.y -= spawned.transform.localScale.y / 2;
         spawned.transform.position = tmpPosition;
+    }
+
+    #endregion
+
+    #region Relaxing Time
+
+    private void RelaxingTime()
+    {
+        // soltar enemies de acordo com a doença da pessoa
     }
 
     #endregion

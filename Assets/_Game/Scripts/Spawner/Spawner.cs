@@ -19,7 +19,7 @@ public partial class Spawner : MonoBehaviour
 
     [BoxGroup("Stage Settings")]
     [Dropdown("gameDifficulties")]
-    public float gameDifficulty;
+    public float gameDifficulty = 40f;
 
     private float[] gameDifficulties = { 40f, 50f, 60f, 70f, 80f, 90f, 100f };
 
@@ -29,7 +29,7 @@ public partial class Spawner : MonoBehaviour
 
     [BoxGroup("Targets")]
     [Slider(1f, 5f)]
-    public float distanceBetweenTargets = 2f;
+    public float distanceBetweenTargets = 1.5f;
 
     [BoxGroup("Targets")]
     [Slider(5f, 15f)]
@@ -51,7 +51,7 @@ public partial class Spawner : MonoBehaviour
     public float distanceBetweenObstacles = 3f;
 
     [BoxGroup("Obstacles")]
-    [Slider(5f, 15f)]
+    [Slider(5f, 30f)]
     public float sizeIncrement = 10f;
 
     [BoxGroup("Obstacles")]
@@ -67,7 +67,6 @@ public partial class Spawner : MonoBehaviour
 
     private float timer;
     private bool spawnEnabled;
-    private float maximumScore;
 
     private void OnEnable()
     {
