@@ -18,7 +18,7 @@ public partial class Scorer
                 return;
 
             OnEnemyMiss?.Invoke(collision.gameObject); //avoided object
-            score += collision.gameObject.transform.localScale.x * (1f + (1f / spawner.spawnDelay)) * spawner.gameDifficulty;
+            score += CalculateObstacleScore(collision.gameObject.transform.localScale.x, spawner.spawnDelay, spawner.gameDifficulty);
         }
     }
 }
