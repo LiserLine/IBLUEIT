@@ -43,7 +43,7 @@ void ListenCommand(char cmd)
 	else if (cmd == 'f' || cmd == 'F')
 	{
 		isSampling = false;
-		isCalibrated =false;
+		isCalibrated = false;
 	}
 	
 	//RECALIBRATE
