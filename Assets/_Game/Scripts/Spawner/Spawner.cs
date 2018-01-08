@@ -10,60 +10,86 @@ public enum EnemyType //ToDo - move from here
 
 public partial class Spawner : MonoBehaviour
 {
-    [BoxGroup("Stage Settings")]
-    public EnemyType spawnObjects;
+    public EnemyType SpawnObjects => spawnObjects;
+    public float SpawnDelay => spawnDelay;
+    public float GameDifficulty => gameDifficulty;
 
     [BoxGroup("Stage Settings")]
+    [SerializeField]
+    private EnemyType spawnObjects;
+
+    [BoxGroup("Stage Settings")]
+    [SerializeField]
     [Tooltip("Delay between spawned objects.")]
-    public float spawnDelay = 5;
+    private float spawnDelay = 5;
 
     [BoxGroup("Stage Settings")]
     [Dropdown("gameDifficulties")]
-    public float gameDifficulty = 40f;
+    [SerializeField]
+    private float gameDifficulty = 40f;
 
     private float[] gameDifficulties = { 40f, 50f, 60f, 70f, 80f, 90f, 100f };
 
     [BoxGroup("Stage Settings")]
     [Slider(1f, 5f)]
-    public float objectSpeed = 1;
+    [SerializeField]
+    private float objectSpeed = 1;
 
     [BoxGroup("Targets")]
     [Slider(1f, 5f)]
-    public float distanceBetweenTargets = 1.5f;
+    [SerializeField]
+    private float distanceBetweenTargets = 1.5f;
 
     [BoxGroup("Targets")]
     [Slider(5f, 15f)]
-    public float heightIncrement = 10f;
+    [SerializeField]
+    private float heightIncrement = 10f;
 
     [BoxGroup("Targets")]
+    [SerializeField]
     [Slider(1, 10)]
-    public int targetThresholdLevelUp = 3;
+    private int targetThresholdLevelUp = 3;
 
     [BoxGroup("Targets")]
+    [SerializeField]
     [Slider(1, 10)]
-    public int targetThresholdLevelDown = 2;
+    private int targetThresholdLevelDown = 2;
 
     [BoxGroup("Targets")]
-    public GameObject[] targetsAir, targetsWater;
+    [SerializeField]
+    private GameObject[] targetsAir;
+
+    [BoxGroup("Targets")]
+    [SerializeField]
+    private GameObject[] targetsWater;
 
     [BoxGroup("Obstacles")]
+    [SerializeField]
     [Slider(1f, 5f)]
-    public float distanceBetweenObstacles = 3f;
+    private float distanceBetweenObstacles = 3f;
 
     [BoxGroup("Obstacles")]
+    [SerializeField]
     [Slider(5f, 30f)]
-    public float sizeIncrement = 10f;
+    private float sizeIncrement = 10f;
 
     [BoxGroup("Obstacles")]
+    [SerializeField]
     [Slider(1, 10)]
-    public int obstacleThresholdLevelUp = 3;
+    private int obstacleThresholdLevelUp = 3;
 
     [BoxGroup("Obstacles")]
+    [SerializeField]
     [Slider(1, 10)]
-    public int obstacleThresholdLevelDown = 2;
+    private int obstacleThresholdLevelDown = 2;
 
     [BoxGroup("Obstacles")]
-    public GameObject[] obstaclesAir, obstaclesWater;
+    [SerializeField]
+    private GameObject[] obstaclesAir;
+
+    [BoxGroup("Obstacles")]
+    [SerializeField]
+    private GameObject[] obstaclesWater;
 
     private float timer;
     private bool spawnEnabled;

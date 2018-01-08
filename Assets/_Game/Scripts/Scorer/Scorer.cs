@@ -28,13 +28,13 @@ public partial class Scorer : MonoBehaviour
     {
         if (enemytype == EnemyType.Targets)
         {
-            maxScore += CalculateTargetScore(go1.transform.position.y, spawner.spawnDelay, spawner.gameDifficulty);
-            maxScore += CalculateTargetScore(go2.transform.position.y, spawner.spawnDelay, spawner.gameDifficulty);
+            maxScore += CalculateTargetScore(go1.transform.position.y, spawner.SpawnDelay, spawner.GameDifficulty);
+            maxScore += CalculateTargetScore(go2.transform.position.y, spawner.SpawnDelay, spawner.GameDifficulty);
         }
         else if(enemytype == EnemyType.Targets)
         {
-            maxScore += CalculateObstacleScore(go1.transform.localScale.x, spawner.spawnDelay, spawner.gameDifficulty);
-            maxScore += CalculateObstacleScore(go2.transform.localScale.x, spawner.spawnDelay, spawner.gameDifficulty);
+            maxScore += CalculateObstacleScore(go1.transform.localScale.x, spawner.SpawnDelay, spawner.GameDifficulty);
+            maxScore += CalculateObstacleScore(go2.transform.localScale.x, spawner.SpawnDelay, spawner.GameDifficulty);
         }
     }
 
@@ -42,17 +42,17 @@ public partial class Scorer : MonoBehaviour
     {
         if (hit.tag.Contains("Target"))
         {
-            score += CalculateTargetScore(hit.transform.position.y, spawner.spawnDelay, spawner.gameDifficulty);
+            score += CalculateTargetScore(hit.transform.position.y, spawner.SpawnDelay, spawner.GameDifficulty);
         }
     }
 
-    private float CalculateTargetScore(float height, float spawnDelay, float gameDifficulty)
+    private float CalculateTargetScore(float height, float SpawnDelay, float GameDifficulty)
     {
-        return Mathf.Abs(height) * (1f + (1f / spawnDelay)) * gameDifficulty;
+        return Mathf.Abs(height) * (1f + (1f / SpawnDelay)) * GameDifficulty;
     }
 
-    private float CalculateObstacleScore(float size, float spawnDelay, float gameDifficulty)
+    private float CalculateObstacleScore(float size, float SpawnDelay, float GameDifficulty)
     {
-        return size * (1f + (1f / spawnDelay)) * gameDifficulty;
+        return size * (1f + (1f / SpawnDelay)) * GameDifficulty;
     }
 }

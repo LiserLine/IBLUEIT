@@ -39,7 +39,7 @@ public class Background : MonoBehaviour
 
     private void SwitchBackground()
     {
-        switch (spawner.spawnObjects)
+        switch (spawner.SpawnObjects)
         {
             case EnemyType.Targets:
                 bgRenderer.material = day;
