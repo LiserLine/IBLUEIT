@@ -23,12 +23,19 @@ public class StageManager : MonoBehaviour
     {
         SerialController.OnSerialConnected += StartStage;
         Player.OnPlayerDeath += EndStage;
+        Spawner.OnRelaxTimeStart += Spawner_OnRelaxTimeStart;
+    }
+
+    private void Spawner_OnRelaxTimeStart()
+    {
+        timer -= 20f;
     }
 
     public void OnDisable()
     {
         SerialController.OnSerialConnected -= StartStage;
         Player.OnPlayerDeath -= EndStage;
+        Spawner.OnRelaxTimeStart -= Spawner_OnRelaxTimeStart;
     }
 
     [Button("Start Stage")]

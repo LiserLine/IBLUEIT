@@ -23,7 +23,6 @@ public partial class Player
     {
         if (hit.tag.Contains("Target"))
         {
-            Destroy(hit);
             //ToDo - play animation get
             //ToDo - capture object
         }

@@ -8,6 +8,8 @@ TagManager:
   - AirTarget
   - WaterObstacle
   - WaterTarget
+  - BonusTarget
+  - RelaxCoin
   layers:
   - Default
   - TransparentFX

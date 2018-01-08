@@ -40,7 +40,7 @@ public partial class Scorer : MonoBehaviour
 
     private void Player_OnEnemyHit(GameObject hit)
     {
-        if (hit.tag.Contains("Target"))
+        if (hit.tag.Equals("AirTarget") || hit.tag.Equals("WaterTarget"))
         {
             score += CalculateTargetScore(hit.transform.position.y, spawner.SpawnDelay, spawner.GameDifficulty);
         }

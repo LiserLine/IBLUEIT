@@ -23,6 +23,8 @@ public partial class Spawner : MonoBehaviour
     [Tooltip("Delay between spawned objects.")]
     private float spawnDelay = 5;
 
+    private float _spawnDelay;
+
     [BoxGroup("Stage Settings")]
     [Dropdown("gameDifficulties")]
     [SerializeField]
@@ -91,6 +93,16 @@ public partial class Spawner : MonoBehaviour
     [SerializeField]
     private GameObject[] obstaclesWater;
 
+    [BoxGroup("Relax Time")]
+    [Tooltip("Number of bonus coins required to start bonus time.")]
+    [SerializeField]
+    [Slider(1, 5)]
+    private int relaxBonusTrigger = 2;
+
+    [BoxGroup("Relax Time")]
+    [SerializeField]
+    private GameObject relaxInsPrefab, relaxExpPrefab, relaxZeroPrefab;
+
     private float timer;
     private bool spawnEnabled;
 
@@ -101,6 +113,8 @@ public partial class Spawner : MonoBehaviour
         Player.OnPlayerDeath += DisableSpawn;
         Player.OnEnemyHit += Player_OnEnemyHit;
         Scorer.OnEnemyMiss += Player_OnEnemyMiss;
+
+        _spawnDelay = spawnDelay;
     }
 
     private void OnDisable()

@@ -1,17 +1,17 @@
 ﻿using UnityEngine;
 
 public partial class Scorer
-{ 
+{
     public delegate void EnemyMissedHandler(GameObject miss);
     public static event EnemyMissedHandler OnEnemyMiss;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag.Contains("Target"))
+        if (collision.gameObject.tag.Equals("AirTarget") || collision.gameObject.tag.Equals("WaterTarget"))
         {
             OnEnemyMiss?.Invoke(collision.gameObject);
         }
-        else if (collision.gameObject.tag.Contains("Obstacle"))
+        else if (collision.gameObject.tag.Equals("AirObstacle") || collision.gameObject.tag.Equals("WaterObstacle"))
         {
             var hp = collision.gameObject.GetComponent<Obstacle>().HeartPoint;
             if (hp <= 0)

@@ -6,6 +6,7 @@ public partial class Spawner
     private int airObstaclesHit;
     private int waterTargetsHit;
     private int waterObstaclesHit;
+    private int relaxCoinHit;
 
     private void Player_OnEnemyHit(GameObject hit)
     {
@@ -44,6 +45,14 @@ public partial class Spawner
                 {
                     expSizeAccumulator -= sizeIncrement;
                     waterObstaclesHit = 0;
+                }
+                break;
+            case "RelaxCoin":
+                relaxCoinHit++;
+                if (relaxCoinHit >= relaxBonusTrigger)
+                {
+                    isRelaxTime = true;
+                    relaxCoinHit = 0;
                 }
                 break;
         }

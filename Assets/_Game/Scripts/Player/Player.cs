@@ -41,4 +41,13 @@ public partial class Player : MonoBehaviour
     {
         SerialController.OnSerialMessageReceived -= PositionOnSerial;
     }
+
+    private void Update()
+    {
+
+#if UNITY_EDITOR
+        Move();
+#endif
+
+    }
 }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using NaughtyAttributes;
+﻿using NaughtyAttributes;
 using UnityEngine;
 
 public partial class Spawner
@@ -8,19 +7,28 @@ public partial class Spawner
     private float insHeightAccumulator;
     private float expSizeAccumulator;
     private float expHeightAccumulator;
+    private bool isRelaxTime;
 
     public delegate void ObjectReleasedHandler(EnemyType type, ref GameObject obj1, ref GameObject obj2);
     public static event ObjectReleasedHandler OnObjectReleased;
-    
+
+    public delegate void RelaxTimeStartHandler();
+    public static event RelaxTimeStartHandler OnRelaxTimeStart;
+
     private EnemyType lastEnemyType;
 
     [Button("Release Objects")]
     private void Release()
     {
-        GameObject airObj, waterObj;
-
-        switch (this.spawnObjects)
+        if (isRelaxTime)
         {
+            spawnDelay = 20f;
+            ReleaseRelaxTime();
+            isRelaxTime = false;
+        }
+        else
+        {
+            spawnDelay = _spawnDelay;
             switch (this.spawnObjects)
             {
                 case EnemyType.Targets:
@@ -30,10 +38,8 @@ public partial class Spawner
                     ReleaseObstacles();
                     break;
                 default:
-                    if (Random.Range(0, 2) == 0)
-                        ReleaseTargets();
-                    else
-                        ReleaseObstacles();
+                    if (Random.Range(0, 2) == 0) ReleaseTargets();
+                    else ReleaseObstacles();
                     break;
             }
         }
@@ -113,7 +119,7 @@ public partial class Spawner
 
     private void DistanciateObstacles(ref GameObject go1, ref GameObject go2)
     {
-        if(lastEnemyType == EnemyType.Obstacles)
+        if (lastEnemyType == EnemyType.Obstacles)
             go1.transform.Translate(distanceBetweenObstacles, 0f, 0f);
 
         go2.transform.Translate(go1.transform.position.x + distanceBetweenObstacles - go2.transform.position.x, 0f, 0f);
@@ -155,11 +161,39 @@ public partial class Spawner
 
     #endregion
 
-    #region Relaxing Time
+    #region Relax Time
 
-    private void RelaxingTime()
+    [Button("Release Relax Time")]
+    private void ReleaseRelaxTime()
     {
-        // soltar enemies de acordo com a doença da pessoa
+        var disfunction = (int)Player.playerDto.Disfunction;
+        var objects = new GameObject[11 + 4 * disfunction];
+        int i;
+
+        for (i = 0; i < 4; i++)
+            objects[i] = Instantiate(relaxInsPrefab, this.transform.position, this.transform.rotation, this.transform);
+
+        for (; i < 11; i++)
+            objects[i] = Instantiate(relaxZeroPrefab, this.transform.position, this.transform.rotation, this.transform);
+
+        for (; i < objects.Length; i++)
+            objects[i] = Instantiate(relaxExpPrefab, this.transform.position, this.transform.rotation, this.transform);
+
+        for (i = 0; i < objects.Length; i++)
+        {
+            objects[i].GetComponent<MoveObject>().speed = objectSpeed;
+            objects[i].transform.Translate(i, 0f, 0f);
+        }
+
+        for (i = 0; i < objects.Length; i++)
+        {
+            if (i < 4)
+                objects[i].transform.Translate(0f, 0.1f * CameraBoundary.Limit, 0f);
+            else if (i > 10)
+                objects[i].transform.Translate(0f, 0.15f * -CameraBoundary.Limit, 0f);
+        }
+
+        OnRelaxTimeStart?.Invoke();
     }
 
     #endregion
