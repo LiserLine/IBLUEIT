@@ -7,7 +7,7 @@ public partial class Player
         if (msg.Length < 1)
             return;
 
-        var sensorValue = GameUtilities.ParseFloat(msg);
+        var sensorValue = Utils.ParseFloat(msg);
 
         sensorValue = sensorValue < -GameConstants.PitacoThreshold || sensorValue > GameConstants.PitacoThreshold ? sensorValue : 0f;
 
@@ -15,7 +15,7 @@ public partial class Player
 
         var nextPosition = sensorValue * CameraBoundary.Limit / limit;
 
-        GameUtilities.Clip(nextPosition, -CameraBoundary.Limit, CameraBoundary.Limit);
+        Utils.Clip(nextPosition, -CameraBoundary.Limit, CameraBoundary.Limit);
 
         var from = this.transform.position;
         var to = new Vector3(this.transform.position.x, -nextPosition, this.transform.position.z);

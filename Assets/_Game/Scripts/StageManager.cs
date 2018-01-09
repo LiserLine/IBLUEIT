@@ -17,7 +17,7 @@ public class StageManager : MonoBehaviour
     private float timer;
 
     [Slider(30, 120)]
-    public int playSessionTime = 30;
+    public static int playSessionTime = 30;
 
     public void OnEnable()
     {

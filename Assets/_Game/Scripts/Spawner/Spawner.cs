@@ -3,9 +3,9 @@ using UnityEngine;
 
 public enum EnemyType //ToDo - move from here
 {
-    Targets,
-    TargetsAndObstacles,
-    Obstacles
+    Targets = 0,
+    Obstacles = 1,
+    TargetsAndObstacles = 2
 }
 
 public partial class Spawner : MonoBehaviour
