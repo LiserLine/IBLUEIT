@@ -1,16 +1,17 @@
 ﻿/*
+ * Adaptation from:
  * http://wiki.unity3d.com/index.php?title=FramesPerSecond
 */
 
 using UnityEngine;
 
-public class FPSDisplay : MonoBehaviour
+public partial class Debugger
 {
-    private float _deltaTime;
+    private float fpsTimer;
     private readonly GUIStyle _style = new GUIStyle();
     private Rect _rect;
 
-    private void Awake()
+    private void AlignDisplayBox()
     {
         int w = Screen.width, h = Screen.height;
         _style.alignment = TextAnchor.UpperLeft;
@@ -19,15 +20,15 @@ public class FPSDisplay : MonoBehaviour
         _rect = new Rect(0, 0, w, h * 2 / 100);
     }
 
-    private void Update()
+    private void UpdateFpsDisplayTimer()
     {
-        _deltaTime += (Time.deltaTime - _deltaTime) * 0.1f;
+        fpsTimer += (Time.deltaTime - fpsTimer) * 0.1f;
     }
 
-    private void OnGUI()
+    private void DisplayFramesPerSecond()
     {
-        var msec = _deltaTime * 1000.0f;
-        var fps = 1.0f / _deltaTime;
+        var msec = fpsTimer * 1000.0f;
+        var fps = 1.0f / fpsTimer;
         var text = $"{msec:0.0} ms ({fps:0.} fps)";
         GUI.Label(_rect, text, _style);
     }

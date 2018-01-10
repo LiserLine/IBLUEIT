@@ -53,6 +53,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd97d0c3169c9f54e97f034609f3debd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _deltaTime: 0
+  _rect:
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!114 &114341761862712954
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -64,6 +70,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed887027077830744bcff8206f5fb2f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneToLoad: 
 --- !u!114 &114815009438457586
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -75,3 +82,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8ce1055fdb81b740843a09c4c5f41f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _messageOutput: 
