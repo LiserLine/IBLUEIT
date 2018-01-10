@@ -15,7 +15,7 @@ public partial class Player
 
         var nextPosition = sensorValue * CameraBoundary.Limit / limit;
 
-        Utils.Clip(nextPosition, -CameraBoundary.Limit, CameraBoundary.Limit);
+        nextPosition = Utils.Clip(nextPosition, -CameraBoundary.Limit, CameraBoundary.Limit);
 
         var from = this.transform.position;
         var to = new Vector3(this.transform.position.x, -nextPosition, this.transform.position.z);

@@ -118,7 +118,7 @@ public partial class Spawner : MonoBehaviour
         StageManager.Instance.OnStageEnd += DisableSpawn;
         Player.OnPlayerDeath += DisableSpawn;
         Player.OnEnemyHit += Player_OnEnemyHit;
-        ScoreManager.OnEnemyMiss += Player_OnEnemyMiss;
+        Scorer.OnEnemyMiss += Player_OnEnemyMiss;
 
         _spawnDelay = spawnDelay;
     }
@@ -127,7 +127,7 @@ public partial class Spawner : MonoBehaviour
     {
         Player.OnPlayerDeath -= DisableSpawn;
         Player.OnEnemyHit -= Player_OnEnemyHit;
-        ScoreManager.OnEnemyMiss -= Player_OnEnemyMiss;
+        Scorer.OnEnemyMiss -= Player_OnEnemyMiss;
 
         PreloadSettingsPath = string.Empty;
     }
