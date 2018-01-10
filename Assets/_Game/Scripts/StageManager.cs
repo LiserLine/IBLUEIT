@@ -2,24 +2,30 @@
 using NaughtyAttributes;
 using UnityEngine;
 
-public class StageManager : MonoBehaviour
+public class StageManager : Singleton<StageManager>
 {
+    public int PlaySessionTime
+    {
+        get { return playSessionTime; }
+        set { playSessionTime = value; }
+    }
+
     public delegate void StageStartHandler();
-    public static event StageStartHandler OnStageStart;
+    public event StageStartHandler OnStageStart;
 
     public delegate void StageEndHandler();
-    public static event StageEndHandler OnStageEnd;
+    public event StageEndHandler OnStageEnd;
 
     public delegate void StageResetHandler();
-    public static event StageResetHandler OnStageReset;
+    public event StageResetHandler OnStageReset;
 
     private bool isRunning;
     private float timer;
 
     [Slider(30, 120)]
-    public static int playSessionTime = 30;
+    private int playSessionTime = 30;
 
-    public void OnEnable()
+    private void OnEnable()
     {
         SerialController.OnSerialConnected += StartStage;
         Player.OnPlayerDeath += EndStage;
@@ -31,7 +37,7 @@ public class StageManager : MonoBehaviour
         timer -= 20f;
     }
 
-    public void OnDisable()
+    private void OnDisable()
     {
         SerialController.OnSerialConnected -= StartStage;
         Player.OnPlayerDeath -= EndStage;
@@ -67,7 +73,7 @@ public class StageManager : MonoBehaviour
 
         timer += Time.deltaTime;
 
-        if (timer > playSessionTime)
+        if (timer > PlaySessionTime)
             EndStage();
     }
 }

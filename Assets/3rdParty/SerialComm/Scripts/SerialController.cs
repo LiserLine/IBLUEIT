@@ -70,7 +70,7 @@ public partial class SerialController : MonoBehaviour
     // ------------------------------------------------------------------------
     private void OnEnable()
     {
-        StageManager.OnStageStart += InitSamplingDelayed;
+        StageManager.Instance.OnStageStart += InitSamplingDelayed;
         Connect();
     }
 
@@ -166,7 +166,7 @@ public partial class SerialController : MonoBehaviour
     // ------------------------------------------------------------------------
     private void OnDisable()
     {
-        StageManager.OnStageStart -= InitSamplingDelayed;
+        //StageManager.Instance.OnStageStart -= InitSamplingDelayed;
         Disconnect();
     }
 

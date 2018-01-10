@@ -14,6 +14,15 @@ public partial class Spawner : MonoBehaviour
     public float SpawnDelay => spawnDelay;
     public float GameDifficulty => gameDifficulty;
 
+    /// <summary>
+    /// Write a path to this variable if the spawner needs to
+    /// load settings from a CSV file before starting the game.
+    /// </summary>
+    public static string PreloadSettingsPath;
+
+    private float timer;
+    private bool spawnEnabled;
+
     [BoxGroup("Stage Settings")]
     [SerializeField]
     private EnemyType spawnObjects;
@@ -103,27 +112,30 @@ public partial class Spawner : MonoBehaviour
     [SerializeField]
     private GameObject relaxInsPrefab, relaxExpPrefab, relaxZeroPrefab;
 
-    private float timer;
-    private bool spawnEnabled;
-
     private void OnEnable()
     {
-        StageManager.OnStageStart += EnableSpawn;
-        StageManager.OnStageEnd += DisableSpawn;
+        StageManager.Instance.OnStageStart += EnableSpawn;
+        StageManager.Instance.OnStageEnd += DisableSpawn;
         Player.OnPlayerDeath += DisableSpawn;
         Player.OnEnemyHit += Player_OnEnemyHit;
-        Scorer.OnEnemyMiss += Player_OnEnemyMiss;
+        ScoreManager.OnEnemyMiss += Player_OnEnemyMiss;
 
         _spawnDelay = spawnDelay;
     }
 
     private void OnDisable()
     {
-        StageManager.OnStageStart -= EnableSpawn;
-        StageManager.OnStageEnd -= DisableSpawn;
         Player.OnPlayerDeath -= DisableSpawn;
         Player.OnEnemyHit -= Player_OnEnemyHit;
-        Scorer.OnEnemyMiss -= Player_OnEnemyMiss;
+        ScoreManager.OnEnemyMiss -= Player_OnEnemyMiss;
+
+        PreloadSettingsPath = string.Empty;
+    }
+
+    private void Start()
+    {
+        if (!string.IsNullOrEmpty(PreloadSettingsPath))
+            LoadCsv(PreloadSettingsPath);
     }
 
     [Button("Enable Spawn")]

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 public partial class Spawner
 {
-    private void WriteCsv(string path)
+    [ContextMenu("Write Settings")]
+    private void WriteCsv()
     {
         var items = new[]
         {
@@ -18,9 +20,9 @@ public partial class Spawner
 
         sb.AppendLine($"{(int)spawnObjects};{spawnDelay};{gameDifficulty};{objectSpeed};{distanceBetweenTargets};{heightIncrement};" +
                       $"{targetThresholdLevelUp};{targetThresholdLevelDown};{distanceBetweenObstacles};{sizeIncrement};" +
-                      $"{obstacleThresholdLevelUp};{obstacleThresholdLevelDown};{relaxBonusTrigger};{StageManager.playSessionTime}");
+                      $"{obstacleThresholdLevelUp};{obstacleThresholdLevelDown};{relaxBonusTrigger};{StageManager.Instance.PlaySessionTime}");
 
-        Utils.WriteAllText(path, sb.ToString());
+        Utils.WriteAllText(@"settings/stages/new_stage.csv", sb.ToString());
     }
 
     private void LoadCsv(string path)
@@ -40,6 +42,6 @@ public partial class Spawner
         obstacleThresholdLevelUp = int.Parse(grid[1][10]);
         obstacleThresholdLevelDown = int.Parse(grid[1][11]);
         relaxBonusTrigger = int.Parse(grid[1][12]);
-        StageManager.playSessionTime = int.Parse(grid[1][13]);
+        StageManager.Instance.PlaySessionTime = int.Parse(grid[1][13]);
     }
 }

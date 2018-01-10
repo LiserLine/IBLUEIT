@@ -140,7 +140,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b766b22cd710b0d4988e736335e3bafa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playSessionTime: 30
 --- !u!4 &25974385
 Transform:
   m_ObjectHideFlags: 0
@@ -346,7 +345,7 @@ GameObject:
   - component: {fileID: 1252824017}
   - component: {fileID: 1252824019}
   m_Layer: 0
-  m_Name: Scorer
+  m_Name: ScoreManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -643,8 +642,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnObjects: 0
   spawnDelay: 5
-  gameDifficulty: 40
-  objectSpeed: 1.3
+  gameDifficulty: 50
+  objectSpeed: 1.7
   distanceBetweenTargets: 1.5
   heightIncrement: 10
   targetThresholdLevelUp: 2
@@ -670,7 +669,7 @@ MonoBehaviour:
   - {fileID: 1698614461066178, guid: 635dc713c0ea81640a1bfd96efdb67eb, type: 2}
   - {fileID: 1798566247012108, guid: cf9845efd623eb64db906dda8d8cb26f, type: 2}
   - {fileID: 1713550843387982, guid: 005ebede8fcc0754c91b6e45868d9671, type: 2}
-  relaxBonusTrigger: 3
+  relaxBonusTrigger: 2
   relaxInsPrefab: {fileID: 1883807985188296, guid: 8d39bb053491d8a488ef09def3d3f666,
     type: 2}
   relaxExpPrefab: {fileID: 1187751789533314, guid: 232f0d138e15f0440bf1ff4275a78875,
