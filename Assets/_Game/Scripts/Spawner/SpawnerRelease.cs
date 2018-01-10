@@ -78,8 +78,10 @@ public partial class Spawner
             this.transform.rotation,
             this.transform);
 
-        var posY = (1f + this.insHeightAccumulator / 100f) * CameraBoundary.Limit *
+        var posY = (1f + this.insHeightAccumulator / 100f) * CameraLimits.Boundary *
                    Random.Range(0.4f, this.gameDifficulty / 100f);
+
+        posY = Utils.Clip(posY, 0.4f * CameraLimits.Boundary, CameraLimits.Boundary);
 
         spawned.transform.Translate(0f, posY, 0f);
     }
@@ -92,8 +94,10 @@ public partial class Spawner
             this.transform.rotation,
             this.transform);
 
-        var posY = (1f + this.expHeightAccumulator / 100f) * CameraBoundary.Limit *
+        var posY = (1f + this.expHeightAccumulator / 100f) * CameraLimits.Boundary *
                    Random.Range(0.4f, this.gameDifficulty / 100f);
+
+        posY = Utils.Clip(posY, -CameraLimits.Boundary, 0.4f * -CameraLimits.Boundary);
 
         spawned.transform.Translate(0f, -posY, 0f);
     }
@@ -134,9 +138,9 @@ public partial class Spawner
             this.transform.rotation,
             this.transform);
 
-        var scale = (Player.playerDto.RespiratoryInfo.ExpiratoryFlowTime / 1000f)
+        var scale = (Player.Data.RespiratoryInfo.ExpiratoryFlowTime / 1000f)
                     * (1f + (this.insSizeAccumulator / 100f))
-                    * (float)Player.playerDto.Disfunction
+                    * (float)Player.Data.Disfunction
                     * this.gameDifficulty / 100f;
 
         spawned.transform.localScale = new Vector3(scale, scale, 1);
@@ -152,7 +156,7 @@ public partial class Spawner
             this.transform.rotation,
             this.transform);
 
-        var scale = (Player.playerDto.RespiratoryInfo.ExpiratoryFlowTime / 1000f)
+        var scale = (Player.Data.RespiratoryInfo.ExpiratoryFlowTime / 1000f)
                     * (1f + (this.expSizeAccumulator / 100f));
 
         spawned.transform.localScale = new Vector3(scale, scale, 1);
@@ -166,7 +170,7 @@ public partial class Spawner
     [Button("Release Relax Time")]
     private void ReleaseRelaxTime()
     {
-        var disfunction = (int)Player.playerDto.Disfunction;
+        var disfunction = (int)Player.Data.Disfunction;
         var objects = new GameObject[11 + 4 * disfunction];
         int i;
 
@@ -188,9 +192,9 @@ public partial class Spawner
         for (i = 0; i < objects.Length; i++)
         {
             if (i < 4)
-                objects[i].transform.Translate(0f, 0.1f * CameraBoundary.Limit, 0f);
+                objects[i].transform.Translate(0f, 0.1f * CameraLimits.Boundary, 0f);
             else if (i > 10)
-                objects[i].transform.Translate(0f, 0.15f * -CameraBoundary.Limit, 0f);
+                objects[i].transform.Translate(0f, 0.15f * -CameraLimits.Boundary, 0f);
         }
 
         OnRelaxTimeStart?.Invoke();

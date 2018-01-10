@@ -1,6 +1,6 @@
 ﻿using System;
 
-public class PlayerDto
+public class PlayerData
 {
     public int Id { get; set; }
 

@@ -11,14 +11,14 @@ public partial class Player
 
         sensorValue = sensorValue < -GameConstants.PitacoThreshold || sensorValue > GameConstants.PitacoThreshold ? sensorValue : 0f;
 
-        var peak = sensorValue > 0 ? playerDto.RespiratoryInfo.ExpiratoryPeakFlow : -playerDto.RespiratoryInfo.InspiratoryPeakFlow;
+        var peak = sensorValue > 0 ? Data.RespiratoryInfo.ExpiratoryPeakFlow : -Data.RespiratoryInfo.InspiratoryPeakFlow;
 
-        var nextPosition = sensorValue * CameraBoundary.Limit / peak;
+        var nextPosition = sensorValue * CameraLimits.Boundary / peak;
 
-        nextPosition = Utils.Clip(nextPosition, -CameraBoundary.Limit, CameraBoundary.Limit);
+        nextPosition = Utils.Clip(nextPosition, -CameraLimits.Boundary, CameraLimits.Boundary);
 
         var from = this.transform.position;
-        var to = new Vector3(this.transform.position.x, -nextPosition, this.transform.position.z);
+        var to = new Vector3(this.transform.position.x, nextPosition, this.transform.position.z);
 
         this.transform.position = Vector3.Lerp(from, to, Time.deltaTime * 10f);
 

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public partial class Player : MonoBehaviour
 {
-    public static PlayerDto playerDto;
+    public static PlayerData Data;
 
     [SerializeField]
     private int heartPoints = 5;
@@ -12,8 +12,8 @@ public partial class Player : MonoBehaviour
     {
 
 #if UNITY_EDITOR
-        if (playerDto == null)
-            playerDto = new PlayerDto
+        if (Data == null)
+            Data = new PlayerData
             {
                 Id = 999,
                 Birthday = DateTime.Now,
