@@ -20,9 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4232447213037016}
   - component: {fileID: 114341761862712954}
-  - component: {fileID: 114193590022826436}
-  - component: {fileID: 114815009438457586}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Debugger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,23 +40,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114193590022826436
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1234908604554834}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd97d0c3169c9f54e97f034609f3debd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _deltaTime: 0
-  _rect:
-    x: 0
-    y: 0
-    width: 0
-    height: 0
 --- !u!114 &114341761862712954
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -70,16 +51,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed887027077830744bcff8206f5fb2f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: 
---- !u!114 &114815009438457586
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1234908604554834}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8ce1055fdb81b740843a09c4c5f41f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _messageOutput: 
+  sceneToLoad: Main

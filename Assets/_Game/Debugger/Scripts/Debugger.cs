@@ -15,7 +15,7 @@ public partial class Debugger : MonoBehaviour
             _messageOutput = message;
         };
 
-        AlignDisplayBox();
+        AlignFpsDisplayBox();
     }
 
     private void OnGUI()

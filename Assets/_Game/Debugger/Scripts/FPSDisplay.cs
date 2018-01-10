@@ -11,11 +11,11 @@ public partial class Debugger
     private readonly GUIStyle _style = new GUIStyle();
     private Rect _rect;
 
-    private void AlignDisplayBox()
+    private void AlignFpsDisplayBox()
     {
         int w = Screen.width, h = Screen.height;
         _style.alignment = TextAnchor.UpperLeft;
-        _style.fontSize = h * 2 / 40;
+        _style.fontSize = h * 1 / 40;
         _style.normal.textColor = new Color(0.0f, 0.0f, 0.5f, 1.0f);
         _rect = new Rect(0, 0, w, h * 2 / 100);
     }
