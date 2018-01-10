@@ -22,7 +22,7 @@ public partial class Spawner
                       $"{targetThresholdLevelUp};{targetThresholdLevelDown};{distanceBetweenObstacles};{sizeIncrement};" +
                       $"{obstacleThresholdLevelUp};{obstacleThresholdLevelDown};{relaxBonusTrigger};{stageManager.PlaySessionTime}");
 
-        Utils.WriteAllText(@"settings/stages/new_stage.csv", sb.ToString());
+        Utils.WriteAllText(Application.streamingAssetsPath + @"/GameSettings/stages/_new.csv", sb.ToString());
     }
 
     private void LoadCsv(string path)

@@ -10,6 +10,8 @@ public class StageManager : MonoBehaviour
         set { playSessionTime = value; }
     }
 
+    #region Events
+
     public delegate void StageStartHandler();
     public static event StageStartHandler OnStageStart;
 
@@ -18,6 +20,8 @@ public class StageManager : MonoBehaviour
 
     public delegate void StageResetHandler();
     public static event StageResetHandler OnStageReset;
+
+    #endregion
 
     private bool isRunning;
     private float timer;
@@ -74,7 +78,7 @@ public class StageManager : MonoBehaviour
 
         timer += Time.deltaTime;
 
-        if (timer > PlaySessionTime)
+        if (timer > playSessionTime)
             EndStage();
     }
 }

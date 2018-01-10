@@ -23,9 +23,6 @@ public partial class Spawner : MonoBehaviour
     private float timer;
     private bool spawnEnabled;
 
-    [SerializeField]
-    private StageManager stageManager;
-
     [BoxGroup("Stage Settings")]
     [SerializeField]
     private EnemyType spawnObjects;
@@ -114,6 +111,9 @@ public partial class Spawner : MonoBehaviour
     [BoxGroup("Relax Time")]
     [SerializeField]
     private GameObject relaxInsPrefab, relaxExpPrefab, relaxZeroPrefab;
+
+    [SerializeField]
+    private StageManager stageManager;
 
     private void OnEnable()
     {
