@@ -22,6 +22,7 @@ public class StageManager : Singleton<StageManager>
     private bool isRunning;
     private float timer;
 
+    [SerializeField]
     [Slider(30, 120)]
     private int playSessionTime = 30;
 
