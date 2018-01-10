@@ -70,8 +70,18 @@ public partial class SerialController : MonoBehaviour
     // ------------------------------------------------------------------------
     private void OnEnable()
     {
-        StageManager.Instance.OnStageStart += InitSamplingDelayed;
+        StageManager.OnStageStart += InitSamplingDelayed;
         Connect();
+    }
+
+    // ------------------------------------------------------------------------
+    // Invoked whenever the SerialController gameobject is deactivated.
+    // It stops and destroys the thread that was reading from the serial device.
+    // ------------------------------------------------------------------------
+    private void OnDisable()
+    {
+        StageManager.OnStageStart -= InitSamplingDelayed;
+        Disconnect();
     }
 
     private void Connect()
@@ -89,6 +99,35 @@ public partial class SerialController : MonoBehaviour
         IsConnected = true;
 
         Debug.Log($"Connected to {portName}:{baudRate}");
+    }
+
+    private void Disconnect()
+    {
+        // If there is a user-defined tear-down function, execute it before
+        // closing the underlying COM port.
+        userDefinedTearDownFunction?.Invoke();
+
+        StopSampling();
+
+        // The serialThread reference should never be null at this point,
+        // unless an Exception happened in the OnEnable(), in which case I've
+        // no idea what face Unity will make.
+        if (serialThread != null)
+        {
+            serialThread.RequestStop();
+            serialThread = null;
+        }
+
+        // This reference shouldn't be null at this point anyway.
+        if (thread != null)
+        {
+            thread.Join();
+            thread = null;
+        }
+
+        IsConnected = false;
+
+        Debug.Log("Serial disconnected.");
     }
 
     /// <summary>
@@ -158,45 +197,6 @@ public partial class SerialController : MonoBehaviour
         }
 
         return SerialPort.GetPortNames(); //windows
-    }
-
-    // ------------------------------------------------------------------------
-    // Invoked whenever the SerialController gameobject is deactivated.
-    // It stops and destroys the thread that was reading from the serial device.
-    // ------------------------------------------------------------------------
-    private void OnDisable()
-    {
-        //StageManager.Instance.OnStageStart -= InitSamplingDelayed;
-        Disconnect();
-    }
-
-    private void Disconnect()
-    {
-        // If there is a user-defined tear-down function, execute it before
-        // closing the underlying COM port.
-        userDefinedTearDownFunction?.Invoke();
-
-        StopSampling();
-
-        // The serialThread reference should never be null at this point,
-        // unless an Exception happened in the OnEnable(), in which case I've
-        // no idea what face Unity will make.
-        if (serialThread != null)
-        {
-            serialThread.RequestStop();
-            serialThread = null;
-        }
-
-        // This reference shouldn't be null at this point anyway.
-        if (thread != null)
-        {
-            thread.Join();
-            thread = null;
-        }
-
-        IsConnected = false;
-
-        Debug.Log("Serial disconnected.");
     }
 
     // ------------------------------------------------------------------------

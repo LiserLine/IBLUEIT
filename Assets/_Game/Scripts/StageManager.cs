@@ -2,7 +2,7 @@
 using NaughtyAttributes;
 using UnityEngine;
 
-public class StageManager : Singleton<StageManager>
+public class StageManager : MonoBehaviour
 {
     public int PlaySessionTime
     {
@@ -11,13 +11,13 @@ public class StageManager : Singleton<StageManager>
     }
 
     public delegate void StageStartHandler();
-    public event StageStartHandler OnStageStart;
+    public static event StageStartHandler OnStageStart;
 
     public delegate void StageEndHandler();
-    public event StageEndHandler OnStageEnd;
+    public static event StageEndHandler OnStageEnd;
 
     public delegate void StageResetHandler();
-    public event StageResetHandler OnStageReset;
+    public static event StageResetHandler OnStageReset;
 
     private bool isRunning;
     private float timer;

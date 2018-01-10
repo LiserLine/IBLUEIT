@@ -123,7 +123,7 @@ GameObject:
   - component: {fileID: 25974385}
   - component: {fileID: 25974384}
   m_Layer: 0
-  m_Name: Stage Manager
+  m_Name: StageManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -692,6 +692,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1deb92e20a39d9e46b30ffae6cdd9f75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stageManager: {fileID: 25974384}
   spawnObjects: 0
   spawnDelay: 5
   gameDifficulty: 50

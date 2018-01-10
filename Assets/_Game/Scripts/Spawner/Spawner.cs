@@ -23,6 +23,9 @@ public partial class Spawner : MonoBehaviour
     private float timer;
     private bool spawnEnabled;
 
+    [SerializeField]
+    private StageManager stageManager;
+
     [BoxGroup("Stage Settings")]
     [SerializeField]
     private EnemyType spawnObjects;
@@ -114,8 +117,8 @@ public partial class Spawner : MonoBehaviour
 
     private void OnEnable()
     {
-        StageManager.Instance.OnStageStart += EnableSpawn;
-        StageManager.Instance.OnStageEnd += DisableSpawn;
+        StageManager.OnStageStart += EnableSpawn;
+        StageManager.OnStageEnd += DisableSpawn;
         Player.OnPlayerDeath += DisableSpawn;
         Player.OnEnemyHit += Player_OnEnemyHit;
         Scorer.OnEnemyMiss += Player_OnEnemyMiss;
@@ -125,6 +128,8 @@ public partial class Spawner : MonoBehaviour
 
     private void OnDisable()
     {
+        StageManager.OnStageStart -= EnableSpawn;
+        StageManager.OnStageEnd -= DisableSpawn;
         Player.OnPlayerDeath -= DisableSpawn;
         Player.OnEnemyHit -= Player_OnEnemyHit;
         Scorer.OnEnemyMiss -= Player_OnEnemyMiss;
