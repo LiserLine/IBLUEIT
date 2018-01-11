@@ -4,8 +4,8 @@ using UnityEngine;
 public enum EnemyType //ToDo - move from here
 {
     Targets = 0,
-    Obstacles = 1,
-    TargetsAndObstacles = 2
+    TargetsAndObstacles = 1,
+    Obstacles = 2
 }
 
 public partial class Spawner : MonoBehaviour
@@ -15,10 +15,9 @@ public partial class Spawner : MonoBehaviour
     public float GameDifficulty => gameDifficulty;
 
     /// <summary>
-    /// Write a path to this variable if the spawner needs to
-    /// load settings from a CSV file before starting the game.
+    /// Write an stage ID to load settings from a StageList before starting the game.
     /// </summary>
-    public static string PreloadSettingsPath;
+    public static int StageToLoad = 8;
 
     private float timer;
     private bool spawnEnabled;
@@ -37,9 +36,9 @@ public partial class Spawner : MonoBehaviour
     [BoxGroup("Stage Settings")]
     [Dropdown("gameDifficulties")]
     [SerializeField]
-    private float gameDifficulty = 40f;
+    private float gameDifficulty = 50f;
 
-    private float[] gameDifficulties = { 40f, 50f, 60f, 70f, 80f, 90f, 100f };
+    private readonly float[] gameDifficulties = { 30f, 40f, 50f, 60f, 70f, 80f, 90f, 100f };
 
     [BoxGroup("Stage Settings")]
     [Slider(1f, 5f)]
@@ -133,14 +132,12 @@ public partial class Spawner : MonoBehaviour
         Player.OnPlayerDeath -= DisableSpawn;
         Player.OnEnemyHit -= Player_OnEnemyHit;
         Scorer.OnEnemyMiss -= Player_OnEnemyMiss;
-
-        PreloadSettingsPath = string.Empty;
     }
 
     private void Start()
     {
-        if (!string.IsNullOrEmpty(PreloadSettingsPath))
-            LoadCsv(PreloadSettingsPath);
+        if (StageToLoad > 0)
+            LoadCsv(StageToLoad);
     }
 
     [Button("Enable Spawn")]

@@ -27,7 +27,6 @@ public class StageManager : MonoBehaviour
     private float timer;
 
     [SerializeField]
-    [Slider(30, 120)]
     private int playSessionTime = 30;
 
     private void OnEnable()
