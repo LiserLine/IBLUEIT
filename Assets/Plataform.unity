@@ -692,13 +692,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1deb92e20a39d9e46b30ffae6cdd9f75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stageManager: {fileID: 25974384}
   spawnObjects: 0
   spawnDelay: 5
-  gameDifficulty: 50
-  objectSpeed: 1.7
-  distanceBetweenTargets: 1.5
-  heightIncrement: 10
+  gameDifficulty: 40
+  objectSpeed: 1
+  distanceBetweenTargets: 2
+  heightIncrement: 5
   targetThresholdLevelUp: 2
   targetThresholdLevelDown: 1
   targetsAir:
@@ -710,9 +709,9 @@ MonoBehaviour:
   - {fileID: 1774716689977566, guid: d1752f78c2f593942bc47468330258f6, type: 2}
   - {fileID: 1979597902831624, guid: a670f0d87658b7d46ba729b539ff537f, type: 2}
   - {fileID: 1582079116040042, guid: 85cb7fcf034d3e6408a4335337549ba3, type: 2}
-  distanceBetweenObstacles: 3
-  sizeIncrement: 10
-  obstacleThresholdLevelUp: 2
+  distanceBetweenObstacles: 1
+  sizeIncrement: 5
+  obstacleThresholdLevelUp: 1
   obstacleThresholdLevelDown: 1
   obstaclesAir:
   - {fileID: 1596007118193250, guid: 2245c0c7b8a839449b4f0651efd04e5f, type: 2}
@@ -729,3 +728,4 @@ MonoBehaviour:
     type: 2}
   relaxZeroPrefab: {fileID: 1333510693921846, guid: 8d137fde9eced754eb5fa6ee9ac39d53,
     type: 2}
+  stageManager: {fileID: 25974384}

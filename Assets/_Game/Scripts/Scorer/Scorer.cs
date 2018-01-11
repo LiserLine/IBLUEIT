@@ -16,6 +16,13 @@ public partial class Scorer : MonoBehaviour
         score = 0;
         Player.OnEnemyHit += Player_OnEnemyHit;
         Spawner.OnObjectReleased += MaxScoreUpdate;
+        StageManager.OnStageEnd += CalculateResult;
+    }
+
+    //ToDo - remove this from here
+    private void CalculateResult()
+    {
+        Debug.Log(score >= maxScore * 0.7f ? "Stage completed!" : "Stage Failed!");
     }
 
     private void OnDisable()
@@ -31,7 +38,7 @@ public partial class Scorer : MonoBehaviour
             maxScore += CalculateTargetScore(go1.transform.position.y, spawner.SpawnDelay, spawner.GameDifficulty);
             maxScore += CalculateTargetScore(go2.transform.position.y, spawner.SpawnDelay, spawner.GameDifficulty);
         }
-        else if(enemytype == EnemyType.Targets)
+        else if (enemytype == EnemyType.Obstacles)
         {
             maxScore += CalculateObstacleScore(go1.transform.localScale.x, spawner.SpawnDelay, spawner.GameDifficulty);
             maxScore += CalculateObstacleScore(go2.transform.localScale.x, spawner.SpawnDelay, spawner.GameDifficulty);
@@ -40,7 +47,7 @@ public partial class Scorer : MonoBehaviour
 
     private void Player_OnEnemyHit(GameObject hit)
     {
-        if (hit.tag.Equals("AirTarget") || hit.tag.Equals("WaterTarget"))
+        if (hit.tag.Equals("AirTarget") || hit.tag.Equals("WaterTarget") || hit.tag.Equals("RelaxCoin"))
         {
             score += CalculateTargetScore(hit.transform.position.y, spawner.SpawnDelay, spawner.GameDifficulty);
         }
