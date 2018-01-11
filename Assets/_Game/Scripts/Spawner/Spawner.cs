@@ -1,4 +1,6 @@
-﻿using NaughtyAttributes;
+﻿using System;
+using System.Collections.Generic;
+using NaughtyAttributes;
 using UnityEngine;
 
 public enum EnemyType //ToDo - move from here
@@ -20,7 +22,9 @@ public partial class Spawner : MonoBehaviour
     public static int StageToLoad = 8;
 
     private float timer;
+    private float savedSpawnDelay;
     private bool spawnEnabled;
+    private Queue<Tuple<GameObject,GameObject>> spawnedQueue;
 
     [BoxGroup("Stage Settings")]
     [SerializeField]
@@ -30,8 +34,6 @@ public partial class Spawner : MonoBehaviour
     [SerializeField]
     [Tooltip("Delay between spawned objects.")]
     private float spawnDelay = 5;
-
-    private float _spawnDelay;
 
     [BoxGroup("Stage Settings")]
     [Dropdown("gameDifficulties")]
@@ -44,11 +46,6 @@ public partial class Spawner : MonoBehaviour
     [Slider(1f, 5f)]
     [SerializeField]
     private float objectSpeed = 1;
-
-    [BoxGroup("Targets")]
-    [Slider(1f, 5f)]
-    [SerializeField]
-    private float distanceBetweenTargets = 1.5f;
 
     [BoxGroup("Targets")]
     [Slider(5f, 15f)]
@@ -72,11 +69,6 @@ public partial class Spawner : MonoBehaviour
     [BoxGroup("Targets")]
     [SerializeField]
     private GameObject[] targetsWater;
-
-    [BoxGroup("Obstacles")]
-    [SerializeField]
-    [Slider(1f, 5f)]
-    private float distanceBetweenObstacles = 3f;
 
     [BoxGroup("Obstacles")]
     [SerializeField]
@@ -114,6 +106,16 @@ public partial class Spawner : MonoBehaviour
     [SerializeField]
     private StageManager stageManager;
 
+    private void Awake()
+    {
+        spawnedQueue = new Queue<Tuple<GameObject, GameObject>>();
+
+        if (StageToLoad > 0)
+            LoadCsv(StageToLoad);
+
+        savedSpawnDelay = spawnDelay;
+    }
+
     private void OnEnable()
     {
         StageManager.OnStageStart += EnableSpawn;
@@ -121,11 +123,6 @@ public partial class Spawner : MonoBehaviour
         Player.OnPlayerDeath += DisableSpawn;
         Player.OnEnemyHit += Player_OnEnemyHit;
         Scorer.OnEnemyMiss += Player_OnEnemyMiss;
-
-        if (StageToLoad > 0)
-            LoadCsv(StageToLoad);
-
-        _spawnDelay = spawnDelay;
     }
 
     private void OnDisable()
@@ -167,7 +164,7 @@ public partial class Spawner : MonoBehaviour
         if (timer > spawnDelay)
         {
             timer = 0f;
-            Release();
+            Spawn();
         }
     }
 }

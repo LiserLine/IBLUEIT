@@ -1,5 +1,8 @@
-﻿using NaughtyAttributes;
+﻿using System;
+using System.Linq;
+using NaughtyAttributes;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public partial class Spawner
 {
@@ -16,22 +19,22 @@ public partial class Spawner
     public delegate void RelaxTimeStartHandler();
     public static event RelaxTimeStartHandler OnRelaxTimeStart;
 
-    private EnemyType lastEnemyType;
+    private readonly float minDistanceBetweenSpawns = 3.5f;
 
-    [Button("Release Objects")]
-    private void Release()
+    [Button("Spawn Objects")]
+    private void Spawn()
     {
         if (isRelaxTime && !isRelaxTimeDone)
         {
             spawnDelay = 20f;
-            ReleaseRelaxTime();
+            SpawnRelaxTime();
             isRelaxTime = false;
             isRelaxTimeDone = true;
         }
         else
         {
-            spawnDelay = _spawnDelay;
-            switch (this.spawnObjects)
+            spawnDelay = savedSpawnDelay;
+            switch (spawnObjects)
             {
                 case EnemyType.Targets:
                     ReleaseTargets();
@@ -47,59 +50,79 @@ public partial class Spawner
         }
     }
 
+    private void DistanciateSpawns(ref GameObject first)
+    {
+        if (spawnedQueue.Count < 1)
+            return;
+
+        var lastObj = spawnedQueue.Last().Item2;
+        var lastPos = lastObj.transform.position.x + lastObj.transform.localScale.x / 2f;
+
+        var relativeDistance = first.transform.position.x - lastPos;
+
+        if (relativeDistance > 0 && relativeDistance < minDistanceBetweenSpawns)
+            first.transform.Translate(minDistanceBetweenSpawns - relativeDistance, 0f, 0f);
+        else if (relativeDistance < minDistanceBetweenSpawns && relativeDistance < 0)
+            first.transform.Translate(-relativeDistance + minDistanceBetweenSpawns, 0f, 0f);
+    }
+
+    private void UpdateSpeed(ref GameObject go)
+    {
+        go.GetComponent<MoveObject>().speed = objectSpeed;
+    }
+
     #region Targets
 
     private void ReleaseTargets()
     {
         GameObject airObj, waterObj;
 
-        ReleaseTargetAir(out airObj);
-        ReleaseTargetWater(out waterObj);
+        InstanciateTargetAir(out airObj);
+        InstanciateTargetWater(out waterObj);
+
+        DistanciateSpawns(ref airObj);
         DistanciateTargets(ref airObj, ref waterObj);
-        lastEnemyType = EnemyType.Targets;
 
-        airObj.GetComponent<MoveObject>().speed = objectSpeed;
-        waterObj.GetComponent<MoveObject>().speed = objectSpeed;
+        UpdateSpeed(ref airObj);
+        UpdateSpeed(ref waterObj);
 
-        OnObjectReleased?.Invoke(lastEnemyType, ref airObj, ref waterObj);
+        spawnedQueue.Enqueue(new Tuple<GameObject, GameObject>(airObj, waterObj));
+        OnObjectReleased?.Invoke(EnemyType.Targets, ref airObj, ref waterObj);
     }
 
-    private void DistanciateTargets(ref GameObject go1, ref GameObject go2)
+    private void DistanciateTargets(ref GameObject first, ref GameObject second)
     {
-        if (lastEnemyType == EnemyType.Obstacles)
-            go1.transform.Translate(distanceBetweenTargets * 1.5f, 0f, 0f);
-
-        go2.transform.Translate(go1.transform.position.x + distanceBetweenTargets - go2.transform.position.x, 0f, 0f);
+        second.transform.Translate(first.transform.position.x + 2f - second.transform.position.x, 0f, 0f);
     }
 
-    private void ReleaseTargetAir(out GameObject spawned)
+    private void InstanciateTargetAir(out GameObject spawned)
     {
-        var index = Random.Range(0, this.targetsAir.Length);
+        var index = Random.Range(0, targetsAir.Length);
         spawned = Instantiate(targetsAir[index],
-            this.transform.position,
-            this.transform.rotation,
-            this.transform);
+            transform.position,
+            transform.rotation,
+            transform);
 
-        var posY = (1f + this.insHeightAccumulator / 100f) * CameraLimits.Boundary *
-                   Random.Range((gameDifficulties[0] / 100f), this.gameDifficulty / 100f);
+        var posY = (1f + insHeightAccumulator / 100f) * CameraLimits.Boundary *
+                   Random.Range(gameDifficulties[0] / 100f, gameDifficulty / 100f);
 
-        posY = Utils.Clip(posY, (gameDifficulties[0] / 100f) * CameraLimits.Boundary, CameraLimits.Boundary);
+        posY = Utils.Clip(posY, gameDifficulties[0] / 100f * CameraLimits.Boundary, CameraLimits.Boundary);
 
         spawned.transform.Translate(0f, posY, 0f);
     }
 
-    private void ReleaseTargetWater(out GameObject spawned)
+    private void InstanciateTargetWater(out GameObject spawned)
     {
-        var index = Random.Range(0, this.targetsWater.Length);
+        var index = Random.Range(0, targetsWater.Length);
         spawned = Instantiate(targetsWater[index],
-            this.transform.position,
-            this.transform.rotation,
-            this.transform);
+            transform.position,
+            transform.rotation,
+            transform);
 
-        var posY = (1f + this.expHeightAccumulator / 100f) * CameraLimits.Boundary *
-                   Random.Range((gameDifficulties[0] / 100f), this.gameDifficulty / 100f);
+        var posY = (1f + expHeightAccumulator / 100f) * CameraLimits.Boundary *
+                   Random.Range(gameDifficulties[0] / 100f, gameDifficulty / 100f);
 
-        posY = Utils.Clip(-posY, -CameraLimits.Boundary, (gameDifficulties[0] / 100f) * -CameraLimits.Boundary);
+        posY = Utils.Clip(-posY, -CameraLimits.Boundary, gameDifficulties[0] / 100f * -CameraLimits.Boundary);
 
         spawned.transform.Translate(0f, posY, 0f);
     }
@@ -112,54 +135,61 @@ public partial class Spawner
     {
         GameObject airObj, waterObj;
 
-        ReleaseObstacleAir(out airObj);
-        ReleaseObstacleWater(out waterObj);
+        InstanciateObstacleAir(out airObj);
+        InstanciateObstacleWater(out waterObj);
+
+        DistanciateSpawns(ref waterObj);
         DistanciateObstacles(ref waterObj, ref airObj);
-        lastEnemyType = EnemyType.Obstacles;
 
-        airObj.GetComponent<MoveObject>().speed = objectSpeed;
-        waterObj.GetComponent<MoveObject>().speed = objectSpeed;
+        UpdateSpeed(ref airObj);
+        UpdateSpeed(ref waterObj);
 
-        OnObjectReleased?.Invoke(lastEnemyType, ref airObj, ref waterObj);
+        spawnedQueue.Enqueue(new Tuple<GameObject, GameObject>(waterObj, airObj));
+
+        OnObjectReleased?.Invoke(EnemyType.Obstacles, ref waterObj, ref airObj);
     }
 
-    private void DistanciateObstacles(ref GameObject go1, ref GameObject go2)
+    private void DistanciateObstacles(ref GameObject first, ref GameObject second)
     {
-        if (lastEnemyType == EnemyType.Obstacles)
-            go1.transform.Translate(distanceBetweenObstacles, 0f, 0f);
+        var firstPos = first.transform.position.x + first.transform.localScale.x / 2f;
+        var secondPos = second.transform.position.x - second.transform.localScale.x / 2f;
 
-        go2.transform.Translate(go1.transform.position.x + distanceBetweenObstacles - go2.transform.position.x, 0f, 0f);
+        second.transform.Translate(firstPos + 3f - secondPos, 0f, 0f);
     }
 
-    private void ReleaseObstacleAir(out GameObject spawned)
+    private void InstanciateObstacleAir(out GameObject spawned)
     {
         var index = Random.Range(0, obstaclesAir.Length);
 
         spawned = Instantiate(obstaclesAir[index],
-            new Vector3(this.transform.position.x, 0f),
-            this.transform.rotation,
-            this.transform);
+            new Vector3(transform.position.x, 0f),
+            transform.rotation,
+            transform);
 
-        var scale = (Player.Data.RespiratoryInfo.ExpiratoryFlowTime / 1000f)
-                    * (1f + (this.insSizeAccumulator / 100f))
+        var scaleFromPlayer = Player.Data.RespiratoryInfo.ExpiratoryFlowTime / 1000f;
+
+        var scale = scaleFromPlayer
+                    * (1f + insSizeAccumulator / 100f)
                     * (float)Player.Data.Disfunction
-                    * this.gameDifficulty / 100f;
+                    * gameDifficulty / 100f;
+
+        scale = Utils.Clip(scale, scaleFromPlayer * 0.7f, scale);
 
         spawned.transform.localScale = new Vector3(scale, scale, 1);
         spawned.transform.Translate(0f, spawned.transform.localScale.y / 2, 0f);
     }
 
-    private void ReleaseObstacleWater(out GameObject spawned)
+    private void InstanciateObstacleWater(out GameObject spawned)
     {
         var index = Random.Range(0, obstaclesWater.Length);
 
         spawned = Instantiate(obstaclesWater[index],
-            new Vector3(this.transform.position.x, 0f),
-            this.transform.rotation,
-            this.transform);
+            new Vector3(transform.position.x, 0f),
+            transform.rotation,
+            transform);
 
-        var scale = (Player.Data.RespiratoryInfo.ExpiratoryFlowTime / 1000f)
-                    * (1f + (this.expSizeAccumulator / 100f));
+        var scale = Player.Data.RespiratoryInfo.ExpiratoryFlowTime / 1000f
+                    * (1f + expSizeAccumulator / 100f);
 
         spawned.transform.localScale = new Vector3(scale, scale, 1);
         spawned.transform.Translate(0f, -spawned.transform.localScale.y / 2, 0f);
@@ -169,21 +199,21 @@ public partial class Spawner
 
     #region Relax Time
 
-    [Button("Release Relax Time")]
-    private void ReleaseRelaxTime()
+    [Button("Spawn Relax Time")]
+    private void SpawnRelaxTime()
     {
         var disfunction = (int)Player.Data.Disfunction;
         var objects = new GameObject[11 + 4 * disfunction];
         int i;
 
         for (i = 0; i < 4; i++)
-            objects[i] = Instantiate(relaxInsPrefab, this.transform.position, this.transform.rotation, this.transform);
+            objects[i] = Instantiate(relaxInsPrefab, transform.position, transform.rotation, transform);
 
         for (; i < 11; i++)
-            objects[i] = Instantiate(relaxZeroPrefab, this.transform.position, this.transform.rotation, this.transform);
+            objects[i] = Instantiate(relaxZeroPrefab, transform.position, transform.rotation, transform);
 
         for (; i < objects.Length; i++)
-            objects[i] = Instantiate(relaxExpPrefab, this.transform.position, this.transform.rotation, this.transform);
+            objects[i] = Instantiate(relaxExpPrefab, transform.position, transform.rotation, transform);
 
         for (i = 0; i < objects.Length; i++)
         {
