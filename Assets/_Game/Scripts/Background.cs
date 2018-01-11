@@ -21,10 +21,14 @@ public class Background : MonoBehaviour
     [SerializeField]
     private Material night;
 
+    private void Awake()
+    {
+        bgRenderer = this.GetComponent<Renderer>();
+        _mr = this.GetComponent<MeshRenderer>();
+    }
+
     private void Start()
     {
-        bgRenderer = this.gameObject.GetComponent<Renderer>();
-        _mr = this.gameObject.GetComponent<MeshRenderer>();
         ResizeToCamera();
         SwitchBackground();
     }
