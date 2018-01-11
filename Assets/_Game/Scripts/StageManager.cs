@@ -15,15 +15,15 @@ public class StageManager : MonoBehaviour
     public delegate void StageStartHandler();
     public static event StageStartHandler OnStageStart;
 
+    public delegate void StageTimeUpHandler();
+    public static event StageTimeUpHandler OnStageTimeUp;
+
     public delegate void StageEndHandler();
     public static event StageEndHandler OnStageEnd;
 
-    public delegate void StageResetHandler();
-    public static event StageResetHandler OnStageReset;
-
     #endregion
 
-    private bool isRunning;
+    private bool isRunning, isTimedUp;
     private float timer;
 
     [SerializeField]
@@ -55,19 +55,21 @@ public class StageManager : MonoBehaviour
         OnStageStart?.Invoke();
     }
 
+    private void TimeUp()
+    {
+        isTimedUp = true;
+        OnStageTimeUp?.Invoke();
+    }
+
     [Button("End Stage")]
     private void EndStage()
     {
+        if(!isTimedUp)
+            TimeUp();
+
         timer = 0;
         isRunning = false;
         OnStageEnd?.Invoke();
-    }
-
-    [Button("Reset Stage")]
-    private void ResetStage()
-    {
-        OnStageReset?.Invoke();
-        throw new NotImplementedException();
     }
 
     private void Update()
@@ -76,8 +78,11 @@ public class StageManager : MonoBehaviour
             return;
 
         timer += Time.deltaTime;
-
+        
         if (timer > playSessionTime)
+            TimeUp();
+
+        if (isTimedUp && Spawner.ObjectsRemaining == 0)
             EndStage();
     }
 }

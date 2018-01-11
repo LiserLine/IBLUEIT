@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NaughtyAttributes;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ public partial class Spawner : MonoBehaviour
     public EnemyType SpawnObjects => spawnObjects;
     public float SpawnDelay => spawnDelay;
     public float GameDifficulty => gameDifficulty;
+    public static int ObjectsRemaining => spawnedList.Count;
 
     /// <summary>
     /// Write an stage ID to load settings from a StageList before starting the game.
@@ -24,7 +26,8 @@ public partial class Spawner : MonoBehaviour
     private float timer;
     private float savedSpawnDelay;
     private bool spawnEnabled;
-    private Queue<Tuple<GameObject,GameObject>> spawnedQueue;
+
+    private static List<GameObject> spawnedList;
 
     [BoxGroup("Stage Settings")]
     [SerializeField]
@@ -108,7 +111,8 @@ public partial class Spawner : MonoBehaviour
 
     private void Awake()
     {
-        spawnedQueue = new Queue<Tuple<GameObject, GameObject>>();
+        spawnedList?.Clear();
+        spawnedList = new List<GameObject>();
 
         if (StageToLoad > 0)
             LoadCsv(StageToLoad);
@@ -119,19 +123,34 @@ public partial class Spawner : MonoBehaviour
     private void OnEnable()
     {
         StageManager.OnStageStart += EnableSpawn;
-        StageManager.OnStageEnd += DisableSpawn;
+        StageManager.OnStageTimeUp += DisableSpawn;
         Player.OnPlayerDeath += DisableSpawn;
         Player.OnEnemyHit += Player_OnEnemyHit;
         Scorer.OnEnemyMiss += Player_OnEnemyMiss;
+        Destroyer.OnObjectDestroyed += RemoveObject;
     }
 
     private void OnDisable()
     {
         StageManager.OnStageStart -= EnableSpawn;
-        StageManager.OnStageEnd -= DisableSpawn;
+        StageManager.OnStageTimeUp -= DisableSpawn;
         Player.OnPlayerDeath -= DisableSpawn;
         Player.OnEnemyHit -= Player_OnEnemyHit;
         Scorer.OnEnemyMiss -= Player_OnEnemyMiss;
+    }
+
+    private void Update()
+    {
+        if (!spawnEnabled)
+            return;
+
+        timer += Time.deltaTime;
+
+        if (timer > spawnDelay)
+        {
+            timer = 0f;
+            Spawn();
+        }
     }
 
     [Button("Enable Spawn")]
@@ -154,17 +173,14 @@ public partial class Spawner : MonoBehaviour
         timer = 0f;
     }
 
-    private void Update()
+    //private void RemoveObject(int guid)
+    //{
+    //    var first = spawnedList.First(x => x.GetHashCode() == guid);
+    //    spawnedList.Remove(first);
+    //}
+
+    private void RemoveObject(GameObject goner)
     {
-        if (!spawnEnabled)
-            return;
-
-        timer += Time.deltaTime;
-
-        if (timer > spawnDelay)
-        {
-            timer = 0f;
-            Spawn();
-        }
+        spawnedList.Remove(goner);
     }
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using NaughtyAttributes;
+using UnityEngine;
 
 public partial class Scorer : MonoBehaviour
 {
@@ -6,9 +7,11 @@ public partial class Scorer : MonoBehaviour
     private Spawner spawner;
 
     [SerializeField]
+    [ReadOnly]
     private float score;
 
     [SerializeField]
+    [ReadOnly]
     private float maxScore;
 
     private void OnEnable()
@@ -19,16 +22,16 @@ public partial class Scorer : MonoBehaviour
         StageManager.OnStageEnd += CalculateResult;
     }
 
-    //ToDo - remove this from here
-    private void CalculateResult()
-    {
-        Debug.Log(score >= maxScore * 0.7f ? "Stage completed!" : "Stage Failed!");
-    }
-
     private void OnDisable()
     {
         Player.OnEnemyHit -= Player_OnEnemyHit;
         Spawner.OnObjectReleased -= MaxScoreUpdate;
+        StageManager.OnStageEnd -= CalculateResult;
+    }
+
+    private void CalculateResult()
+    {
+        Debug.Log(score >= maxScore * 0.7f ? "Stage completed!" : "Stage Failed!");
     }
 
     private void MaxScoreUpdate(EnemyType enemytype, ref GameObject go1, ref GameObject go2)

@@ -52,10 +52,10 @@ public partial class Spawner
 
     private void DistanciateSpawns(ref GameObject first)
     {
-        if (spawnedQueue.Count < 1)
+        if (spawnedList.Count < 1)
             return;
 
-        var lastObj = spawnedQueue.Last().Item2;
+        var lastObj = spawnedList.Last();
         var lastPos = lastObj.transform.position.x + lastObj.transform.localScale.x / 2f;
 
         var relativeDistance = first.transform.position.x - lastPos;
@@ -86,7 +86,9 @@ public partial class Spawner
         UpdateSpeed(ref airObj);
         UpdateSpeed(ref waterObj);
 
-        spawnedQueue.Enqueue(new Tuple<GameObject, GameObject>(airObj, waterObj));
+        spawnedList.Add(airObj);
+        spawnedList.Add(waterObj);
+        
         OnObjectReleased?.Invoke(EnemyType.Targets, ref airObj, ref waterObj);
     }
 
@@ -143,8 +145,9 @@ public partial class Spawner
 
         UpdateSpeed(ref airObj);
         UpdateSpeed(ref waterObj);
-
-        spawnedQueue.Enqueue(new Tuple<GameObject, GameObject>(waterObj, airObj));
+        
+        spawnedList.Add(waterObj);
+        spawnedList.Add(airObj);
 
         OnObjectReleased?.Invoke(EnemyType.Obstacles, ref waterObj, ref airObj);
     }
