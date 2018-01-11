@@ -129,7 +129,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff1e9000a19055b45b2ea0e537418ee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
   destroyTimer: 60
 --- !u!114 &114679256219115294
 MonoBehaviour:
@@ -142,6 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2902a13907468d74296f1f7997acb97b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  heartPoint: 1
 --- !u!212 &212167453767790058
 SpriteRenderer:
   m_ObjectHideFlags: 1

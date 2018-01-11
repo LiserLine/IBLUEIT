@@ -154,7 +154,7 @@ public partial class Spawner
         var firstPos = first.transform.position.x + first.transform.localScale.x / 2f;
         var secondPos = second.transform.position.x - second.transform.localScale.x / 2f;
 
-        second.transform.Translate(firstPos + 3f - secondPos, 0f, 0f);
+        second.transform.Translate(firstPos + 2f - secondPos, 0f, 0f);
     }
 
     private void InstanciateObstacleAir(out GameObject spawned)
