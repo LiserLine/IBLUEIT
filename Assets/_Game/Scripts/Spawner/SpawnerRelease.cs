@@ -8,6 +8,7 @@ public partial class Spawner
     private float expSizeAccumulator;
     private float expHeightAccumulator;
     private bool isRelaxTime;
+    private bool isRelaxTimeDone;
 
     public delegate void ObjectReleasedHandler(EnemyType type, ref GameObject obj1, ref GameObject obj2);
     public static event ObjectReleasedHandler OnObjectReleased;
@@ -20,11 +21,12 @@ public partial class Spawner
     [Button("Release Objects")]
     private void Release()
     {
-        if (isRelaxTime)
+        if (isRelaxTime && !isRelaxTimeDone)
         {
             spawnDelay = 20f;
             ReleaseRelaxTime();
             isRelaxTime = false;
+            isRelaxTimeDone = true;
         }
         else
         {
@@ -79,9 +81,9 @@ public partial class Spawner
             this.transform);
 
         var posY = (1f + this.insHeightAccumulator / 100f) * CameraLimits.Boundary *
-                   Random.Range(0.4f, this.gameDifficulty / 100f);
+                   Random.Range((gameDifficulties[0] / 100f), this.gameDifficulty / 100f);
 
-        posY = Utils.Clip(posY, 0.4f * CameraLimits.Boundary, CameraLimits.Boundary);
+        posY = Utils.Clip(posY, (gameDifficulties[0] / 100f) * CameraLimits.Boundary, CameraLimits.Boundary);
 
         spawned.transform.Translate(0f, posY, 0f);
     }
@@ -95,11 +97,11 @@ public partial class Spawner
             this.transform);
 
         var posY = (1f + this.expHeightAccumulator / 100f) * CameraLimits.Boundary *
-                   Random.Range(0.4f, this.gameDifficulty / 100f);
+                   Random.Range((gameDifficulties[0] / 100f), this.gameDifficulty / 100f);
 
-        posY = Utils.Clip(posY, -CameraLimits.Boundary, 0.4f * -CameraLimits.Boundary);
+        posY = Utils.Clip(-posY, -CameraLimits.Boundary, (gameDifficulties[0] / 100f) * -CameraLimits.Boundary);
 
-        spawned.transform.Translate(0f, -posY, 0f);
+        spawned.transform.Translate(0f, posY, 0f);
     }
 
     #endregion
@@ -186,7 +188,7 @@ public partial class Spawner
         for (i = 0; i < objects.Length; i++)
         {
             objects[i].GetComponent<MoveObject>().speed = objectSpeed;
-            objects[i].transform.Translate(i, 0f, 0f);
+            objects[i].transform.Translate(i / 2f, 0f, 0f);
         }
 
         for (i = 0; i < objects.Length; i++)
