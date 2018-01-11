@@ -122,6 +122,9 @@ public partial class Spawner : MonoBehaviour
         Player.OnEnemyHit += Player_OnEnemyHit;
         Scorer.OnEnemyMiss += Player_OnEnemyMiss;
 
+        if (StageToLoad > 0)
+            LoadCsv(StageToLoad);
+
         _spawnDelay = spawnDelay;
     }
 
@@ -132,12 +135,6 @@ public partial class Spawner : MonoBehaviour
         Player.OnPlayerDeath -= DisableSpawn;
         Player.OnEnemyHit -= Player_OnEnemyHit;
         Scorer.OnEnemyMiss -= Player_OnEnemyMiss;
-    }
-
-    private void Start()
-    {
-        if (StageToLoad > 0)
-            LoadCsv(StageToLoad);
     }
 
     [Button("Enable Spawn")]
@@ -160,7 +157,7 @@ public partial class Spawner : MonoBehaviour
         timer = 0f;
     }
 
-    public void Update()
+    private void Update()
     {
         if (!spawnEnabled)
             return;
