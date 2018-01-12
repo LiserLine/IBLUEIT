@@ -1,7 +1,7 @@
 ﻿using NaughtyAttributes;
 using UnityEngine;
 
-public class StageManager : MonoBehaviour
+public class StageManager : Singleton<StageManager>
 {
     public int PlaySessionTime
     {
@@ -9,18 +9,14 @@ public class StageManager : MonoBehaviour
         set { playSessionTime = value; }
     }
 
-    #region Events
-
     public delegate void StageStartHandler();
-    public static event StageStartHandler OnStageStart;
+    public event StageStartHandler OnStageStart;
 
     public delegate void StageTimeUpHandler();
-    public static event StageTimeUpHandler OnStageTimeUp;
+    public event StageTimeUpHandler OnStageTimeUp;
 
     public delegate void StageEndHandler();
-    public static event StageEndHandler OnStageEnd;
-
-    #endregion
+    public event StageEndHandler OnStageEnd;
 
     private bool isRunning, isTimedUp;
     private float timer;
@@ -30,21 +26,14 @@ public class StageManager : MonoBehaviour
 
     private void OnEnable()
     {
-        SerialController.OnSerialConnected += StartStage;
-        Player.OnPlayerDeath += EndStage;
-        Spawner.OnRelaxTimeStart += Spawner_OnRelaxTimeStart;
+        SerialController.Instance.OnSerialConnected += StartStage;
+        Player.Instance.OnPlayerDeath += EndStage;
+        Spawner.Instance.OnRelaxTimeStart += Spawner_OnRelaxTimeStart;
     }
 
     private void Spawner_OnRelaxTimeStart()
     {
         timer -= 20f;
-    }
-
-    private void OnDisable()
-    {
-        SerialController.OnSerialConnected -= StartStage;
-        Player.OnPlayerDeath -= EndStage;
-        Spawner.OnRelaxTimeStart -= Spawner_OnRelaxTimeStart;
     }
 
     [Button("Start Stage")]
@@ -81,7 +70,7 @@ public class StageManager : MonoBehaviour
         if (timer > playSessionTime)
             TimeUp();
 
-        if (isTimedUp && Spawner.ObjectsRemaining == 0)
+        if (isTimedUp && Spawner.Instance.ObjectsOnScene == 0)
             EndStage();
     }
 }

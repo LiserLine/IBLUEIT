@@ -5,10 +5,10 @@ using UnityEngine;
 public partial class Player
 {
     public delegate void PlayerDeathHandler();
-    public static event PlayerDeathHandler OnPlayerDeath;
+    public event PlayerDeathHandler OnPlayerDeath;
 
     public delegate void EnemyHitHandler(GameObject go);
-    public static event EnemyHitHandler OnEnemyHit;
+    public event EnemyHitHandler OnEnemyHit;
 
     [SerializeField]
     private int invincibilityTime = 1;

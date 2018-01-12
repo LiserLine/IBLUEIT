@@ -23,18 +23,19 @@
  * THE SOFTWARE.
 */
 
-using System;
 using UnityEngine;
 
 public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T _instance;
 
+    public bool Persistent;
+
     public static T Instance
     {
         get
         {
-            if (!Instantiated)
+            if (_instance == null)
                 CreateInstance();
 
             return _instance;
@@ -43,60 +44,23 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
     private static void CreateInstance()
     {
-        if (Destroyed)
-            return;
-
         var type = typeof(T);
         var objects = FindObjectsOfType<T>();
 
-        if (objects.Length > 0)
-        {
-            if (objects.Length > 1)
-            {
-                Debug.LogWarning($"There is more than one instance of Singleton of type \"{type}\"." +
-                                 "Keeping the first one. Destroying the others.");
-
-                for (var i = 1; i < objects.Length; i++)
-                    Destroy(objects[i].gameObject);
-            }
-
-            _instance = objects[0];
-            _instance.gameObject.SetActive(true);
-            Instantiated = true;
-            Destroyed = false;
-
+        if (objects.Length < 1)
             return;
-        }
 
-        string prefabName;
-        GameObject gameObject;
-        var attribute = Attribute.GetCustomAttribute(type, typeof(PrefabAttribute)) as PrefabAttribute;
-
-        if (string.IsNullOrEmpty(attribute?.Name))
+        if (objects.Length > 1)
         {
-            prefabName = type.ToString();
-            gameObject = new GameObject();
-        }
-        else
-        {
-            prefabName = attribute.Name;
-            gameObject = Instantiate(Resources.Load<GameObject>(prefabName));
-            if (gameObject == null)
-                throw new Exception($"Could not find Prefab \"{prefabName}\" on Resources for Singleton of type \"{type}\".");
+            Debug.LogWarning($"There is more than one instance of Singleton of type \"{type}\"." +
+                             "Keeping the first one. Destroying the others.");
+
+            for (var i = 1; i < objects.Length; i++)
+                Destroy(objects[i].gameObject);
         }
 
-        gameObject.name = prefabName;
-
-        if (_instance == null)
-            _instance = gameObject.GetComponent<T>() ?? gameObject.AddComponent<T>();
-
-        Instantiated = true;
-        Destroyed = false;
+        _instance = objects[0];
     }
-
-    public bool Persistent;
-    public static bool Instantiated { get; private set; }
-    public static bool Destroyed { get; private set; }
 
     protected virtual void Awake()
     {
@@ -119,17 +83,6 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
     private void OnDestroy()
     {
-        Destroyed = true;
-        Instantiated = false;
+        _instance = null;
     }
-
-    public void Touch() { }
-}
-
-[AttributeUsage(AttributeTargets.Class)]
-public class PrefabAttribute : Attribute
-{
-    public readonly string Name;
-    public PrefabAttribute(string name) { Name = name; }
-    public PrefabAttribute() { Name = null; }
 }

@@ -140,7 +140,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b766b22cd710b0d4988e736335e3bafa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playSessionTime: 30
+  Persistent: 0
+  playSessionTime: 10
 --- !u!4 &25974385
 Transform:
   m_ObjectHideFlags: 0
@@ -401,6 +402,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93ab1962d099ab443ae4d79533408088, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Persistent: 0
   heartPoints: 5
   invincibilityTime: 2
 --- !u!70 &684932087
@@ -519,7 +521,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0d201fcdd5b49a4db0beb416c5d4f90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawner: {fileID: 1772985458}
+  Persistent: 0
   score: 0
   maxScore: 0
 --- !u!1 &1517265482
@@ -566,7 +568,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scrollSpeed: 0.05
-  spawner: {fileID: 1772985458}
   day: {fileID: 2100000, guid: a8078ee16a7c7b34db2152e7f5c7babd, type: 2}
   afternoon: {fileID: 2100000, guid: 17cc4e6d0d916374ba7c1a5ff2c94fdf, type: 2}
   night: {fileID: 2100000, guid: 52b9105a5a744eb4c8567e92cfb5cb57, type: 2}
@@ -759,6 +760,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1deb92e20a39d9e46b30ffae6cdd9f75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Persistent: 0
   spawnObjects: 2
   spawnDelay: 5
   gameDifficulty: 60

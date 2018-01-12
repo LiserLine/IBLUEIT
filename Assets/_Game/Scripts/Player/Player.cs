@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public partial class Player : MonoBehaviour
+public partial class Player : Singleton<Player>
 {
     public static PlayerData Data;
 
@@ -34,12 +34,7 @@ public partial class Player : MonoBehaviour
             };
 #endif
 
-        SerialController.OnSerialMessageReceived += PositionOnSerial;
-    }
-
-    private void OnDisable()
-    {
-        SerialController.OnSerialMessageReceived -= PositionOnSerial;
+        SerialController.Instance.OnSerialMessageReceived += PositionOnSerial;
     }
 
     private void Update()

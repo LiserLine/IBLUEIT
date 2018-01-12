@@ -12,6 +12,7 @@ using System.IO.Ports;
 using System.Linq;
 using UnityEngine;
 using System.Threading;
+using UnityEngine.Collections;
 
 /**
  * This class allows a Unity program to continually check for messages from a
@@ -27,20 +28,27 @@ using System.Threading;
  * on the integrity of the message. It's up to the one that makes sense of the
  * data.
  */
-public partial class SerialController : MonoBehaviour
+public partial class SerialController : Singleton<SerialController>
 {
-    public bool IsConnected { get; private set; }
+    public bool IsConnected => isConnected;
 
+    [SerializeField]
+    [ReadOnly]
+    private bool isConnected;
+
+    [SerializeField]
     [Tooltip("Baud rate that the serial device is using to transmit data.")]
-    public int baudRate = 115200;
+    private int baudRate = 115200;
 
+    [SerializeField]
     [Tooltip("After an error in the serial communication, or an unsuccessful " +
              "connect, how many milliseconds we should wait.")]
-    public int reconnectionDelay = 1000;
+    private int reconnectionDelay = 1000;
 
+    [SerializeField]
     [Tooltip("Maximum number of unread data messages in the queue. " +
              "New messages will be discarded.")]
-    public int maxUnreadMessages = 1;
+    private int maxUnreadMessages = 1;
 
     // Constants used to mark the start and end of a connection. There is no
     // way you can generate clashing messages from your serial device, as I
@@ -55,13 +63,13 @@ public partial class SerialController : MonoBehaviour
     private SerialThread serialThread;
 
     public delegate void SerialConnectedHandler();
-    public static event SerialConnectedHandler OnSerialConnected;
+    public event SerialConnectedHandler OnSerialConnected;
 
     public delegate void SerialDisconnectedHandler();
-    public static event SerialDisconnectedHandler OnSerialDisconnected;
+    public event SerialDisconnectedHandler OnSerialDisconnected;
 
     public delegate void SerialMessageReceivedHandler(string msg);
-    public static event SerialMessageReceivedHandler OnSerialMessageReceived;
+    public event SerialMessageReceivedHandler OnSerialMessageReceived;
 
     // ------------------------------------------------------------------------
     // Invoked whenever the SerialController gameobject is activated.
@@ -70,7 +78,7 @@ public partial class SerialController : MonoBehaviour
     // ------------------------------------------------------------------------
     private void OnEnable()
     {
-        StageManager.OnStageStart += InitSamplingDelayed;
+        StageManager.Instance.OnStageStart += InitSamplingDelayed;
         Connect();
     }
 
@@ -80,7 +88,6 @@ public partial class SerialController : MonoBehaviour
     // ------------------------------------------------------------------------
     private void OnDisable()
     {
-        StageManager.OnStageStart -= InitSamplingDelayed;
         Disconnect();
     }
 
@@ -96,7 +103,7 @@ public partial class SerialController : MonoBehaviour
         thread = new Thread(serialThread.RunForever);
         thread.Start();
 
-        IsConnected = true;
+        isConnected = true;
 
         Debug.Log($"Connected to {portName}:{baudRate}");
     }
@@ -125,7 +132,7 @@ public partial class SerialController : MonoBehaviour
             thread = null;
         }
 
-        IsConnected = false;
+        isConnected = false;
 
         Debug.Log("Serial disconnected.");
     }

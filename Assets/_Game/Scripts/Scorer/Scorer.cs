@@ -1,11 +1,8 @@
 ﻿using NaughtyAttributes;
 using UnityEngine;
 
-public partial class Scorer : MonoBehaviour
+public partial class Scorer : Singleton<Scorer>
 {
-    [SerializeField]
-    private Spawner spawner;
-
     [SerializeField]
     [ReadOnly]
     private float score;
@@ -17,20 +14,13 @@ public partial class Scorer : MonoBehaviour
     private void OnEnable()
     {
         score = 0;
-        Player.OnEnemyHit += Player_OnEnemyHit;
-        Spawner.OnObjectReleased += MaxScoreUpdate;
-        StageManager.OnStageEnd += CalculateResult;
-    }
-
-    private void OnDisable()
-    {
-        Player.OnEnemyHit -= Player_OnEnemyHit;
-        Spawner.OnObjectReleased -= MaxScoreUpdate;
-        StageManager.OnStageEnd -= CalculateResult;
+        Player.Instance.OnEnemyHit += Player_OnEnemyHit;
+        Spawner.Instance.OnObjectReleased += MaxScoreUpdate;
+        StageManager.Instance.OnStageEnd += CalculateResult;
     }
 
     private void CalculateResult()
-    {
+    {   
         Debug.Log(score >= maxScore * 0.7f ? "Stage completed!" : "Stage Failed!");
     }
 
@@ -38,13 +28,13 @@ public partial class Scorer : MonoBehaviour
     {
         if (enemytype == EnemyType.Targets)
         {
-            maxScore += CalculateTargetScore(go1.transform.position.y, spawner.SpawnDelay, spawner.GameDifficulty);
-            maxScore += CalculateTargetScore(go2.transform.position.y, spawner.SpawnDelay, spawner.GameDifficulty);
+            maxScore += CalculateTargetScore(go1.transform.position.y, Spawner.Instance.SpawnDelay, Spawner.Instance.GameDifficulty);
+            maxScore += CalculateTargetScore(go2.transform.position.y, Spawner.Instance.SpawnDelay, Spawner.Instance.GameDifficulty);
         }
         else if (enemytype == EnemyType.Obstacles)
         {
-            maxScore += CalculateObstacleScore(go1.transform.localScale.x, spawner.SpawnDelay, spawner.GameDifficulty);
-            maxScore += CalculateObstacleScore(go2.transform.localScale.x, spawner.SpawnDelay, spawner.GameDifficulty);
+            maxScore += CalculateObstacleScore(go1.transform.localScale.x, Spawner.Instance.SpawnDelay, Spawner.Instance.GameDifficulty);
+            maxScore += CalculateObstacleScore(go2.transform.localScale.x, Spawner.Instance.SpawnDelay, Spawner.Instance.GameDifficulty);
         }
     }
 
@@ -52,7 +42,7 @@ public partial class Scorer : MonoBehaviour
     {
         if (hit.tag.Equals("AirTarget") || hit.tag.Equals("WaterTarget") || hit.tag.Equals("RelaxCoin"))
         {
-            score += CalculateTargetScore(hit.transform.position.y, spawner.SpawnDelay, spawner.GameDifficulty);
+            score += CalculateTargetScore(hit.transform.position.y, Spawner.Instance.SpawnDelay, Spawner.Instance.GameDifficulty);
         }
     }
 

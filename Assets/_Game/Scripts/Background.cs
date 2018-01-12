@@ -10,9 +10,6 @@ public class Background : MonoBehaviour
     private float scrollSpeed = 0.1f;
 
     [SerializeField]
-    private Spawner spawner;
-
-    [SerializeField]
     private Material day;
 
     [SerializeField]
@@ -43,7 +40,7 @@ public class Background : MonoBehaviour
 
     private void SwitchBackground()
     {
-        switch (spawner.SpawnObjects)
+        switch (Spawner.Instance.SpawnObjects)
         {
             case EnemyType.Targets:
                 bgRenderer.material = day;

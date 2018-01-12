@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using NaughtyAttributes;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -14,12 +13,12 @@ public partial class Spawner
     private bool isRelaxTimeDone;
 
     public delegate void ObjectReleasedHandler(EnemyType type, ref GameObject obj1, ref GameObject obj2);
-    public static event ObjectReleasedHandler OnObjectReleased;
+    public event ObjectReleasedHandler OnObjectReleased;
 
     public delegate void RelaxTimeStartHandler();
-    public static event RelaxTimeStartHandler OnRelaxTimeStart;
+    public event RelaxTimeStartHandler OnRelaxTimeStart;
 
-    private readonly float minDistanceBetweenSpawns = 3.5f;
+    private const float minDistanceBetweenSpawns = 3.5f;
 
     [Button("Spawn Objects")]
     private void Spawn()

@@ -43,6 +43,6 @@ public partial class Spawner
         relaxBonusTrigger = int.Parse(grid[id][11]);
         stageManager.PlaySessionTime = int.Parse(grid[id][12]);
 
-        Debug.Log($"Information loaded for stage {id}.");
+        Debug.Log($"Stage {id} loaded.");
     }
 }

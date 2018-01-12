@@ -3,7 +3,7 @@
 public partial class Scorer
 {
     public delegate void EnemyMissedHandler(GameObject miss);
-    public static event EnemyMissedHandler OnEnemyMiss;
+    public event EnemyMissedHandler OnEnemyMiss;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -18,7 +18,7 @@ public partial class Scorer
                 return;
 
             OnEnemyMiss?.Invoke(collision.gameObject); //avoided object
-            score += CalculateObstacleScore(collision.gameObject.transform.localScale.x, spawner.SpawnDelay, spawner.GameDifficulty);
+            score += CalculateObstacleScore(collision.gameObject.transform.localScale.x, Spawner.Instance.SpawnDelay, Spawner.Instance.GameDifficulty);
         }
     }
 }

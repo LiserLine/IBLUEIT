@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
 
@@ -11,23 +9,22 @@ public enum EnemyType //ToDo - move from here
     Obstacles = 2
 }
 
-public partial class Spawner : MonoBehaviour
+public partial class Spawner : Singleton<Spawner>
 {
     public EnemyType SpawnObjects => spawnObjects;
     public float SpawnDelay => spawnDelay;
     public float GameDifficulty => gameDifficulty;
-    public static int ObjectsRemaining => spawnedList.Count;
+    public int ObjectsOnScene => spawnedList.Count;
 
     /// <summary>
     /// Write an stage ID to load settings from a StageList before starting the game.
     /// </summary>
-    public static int StageToLoad;
+    public static int StageToLoad = 11;
 
     private float timer;
     private float savedSpawnDelay;
     private bool spawnEnabled;
-
-    private static List<GameObject> spawnedList;
+    private List<GameObject> spawnedList;
 
     [BoxGroup("Stage Settings")]
     [SerializeField]
@@ -109,8 +106,10 @@ public partial class Spawner : MonoBehaviour
     [SerializeField]
     private StageManager stageManager;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         spawnedList?.Clear();
         spawnedList = new List<GameObject>();
 
@@ -118,25 +117,18 @@ public partial class Spawner : MonoBehaviour
             LoadCsv(StageToLoad);
 
         savedSpawnDelay = spawnDelay;
+
+        SubscribeEvents();
     }
 
-    private void OnEnable()
+    private void SubscribeEvents()
     {
-        StageManager.OnStageStart += EnableSpawn;
-        StageManager.OnStageTimeUp += DisableSpawn;
-        Player.OnPlayerDeath += DisableSpawn;
-        Player.OnEnemyHit += Player_OnEnemyHit;
-        Scorer.OnEnemyMiss += Player_OnEnemyMiss;
+        StageManager.Instance.OnStageStart += EnableSpawn;
+        StageManager.Instance.OnStageTimeUp += DisableSpawn;
+        Player.Instance.OnPlayerDeath += DisableSpawn;
+        Player.Instance.OnEnemyHit += Player_OnEnemyHit;
+        Scorer.Instance.OnEnemyMiss += Player_OnEnemyMiss;
         Destroyer.OnObjectDestroyed += RemoveObject;
-    }
-
-    private void OnDisable()
-    {
-        StageManager.OnStageStart -= EnableSpawn;
-        StageManager.OnStageTimeUp -= DisableSpawn;
-        Player.OnPlayerDeath -= DisableSpawn;
-        Player.OnEnemyHit -= Player_OnEnemyHit;
-        Scorer.OnEnemyMiss -= Player_OnEnemyMiss;
     }
 
     private void Update()
@@ -172,12 +164,6 @@ public partial class Spawner : MonoBehaviour
         spawnEnabled = false;
         timer = 0f;
     }
-
-    //private void RemoveObject(int guid)
-    //{
-    //    var first = spawnedList.First(x => x.GetHashCode() == guid);
-    //    spawnedList.Remove(first);
-    //}
 
     private void RemoveObject(GameObject goner)
     {
