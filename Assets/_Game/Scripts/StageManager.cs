@@ -52,7 +52,7 @@ public class StageManager : Singleton<StageManager>
     [Button("End Stage")]
     private void EndStage()
     {
-        if(!isTimedUp)
+        if (!isTimedUp)
             TimeUp();
 
         timer = 0;
@@ -66,7 +66,7 @@ public class StageManager : Singleton<StageManager>
             return;
 
         timer += Time.deltaTime;
-        
+
         if (timer > playSessionTime)
             TimeUp();
 

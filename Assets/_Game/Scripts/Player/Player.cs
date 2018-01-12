@@ -5,6 +5,8 @@ public partial class Player : Singleton<Player>
 {
     public static PlayerData Data;
 
+    public int HeartPoins => heartPoints;
+
     [SerializeField]
     private int heartPoints = 5;
 

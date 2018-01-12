@@ -8,6 +8,7 @@ public partial class Debugger : MonoBehaviour
 #if UNITY_EDITOR
 #else
         Destroy(this.gameObject);
+        return;
 #endif
 
         Application.logMessageReceived += (message, stacktrace, type) =>

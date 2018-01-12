@@ -13,6 +13,8 @@ public partial class Player
     [SerializeField]
     private int invincibilityTime = 1;
 
+    private bool isPlayerDead;
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         HitResult(collision.gameObject);
@@ -46,9 +48,15 @@ public partial class Player
     [Button("Take Damage")]
     private void TakeDamage()
     {
+        if (isPlayerDead)
+            return;
+
         heartPoints--;
 
-        if (heartPoints <= 0)
-            OnPlayerDeath?.Invoke();
+        if (heartPoints > 0)
+            return;
+
+        isPlayerDead = true;
+        OnPlayerDeath?.Invoke();
     }
 }
