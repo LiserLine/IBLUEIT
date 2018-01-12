@@ -19,7 +19,7 @@ public partial class Spawner : Singleton<Spawner>
     /// <summary>
     /// Write an stage ID to load settings from a StageList before starting the game.
     /// </summary>
-    public static int StageToLoad = 11;
+    public static int StageToLoad;
 
     private float timer;
     private float savedSpawnDelay;
