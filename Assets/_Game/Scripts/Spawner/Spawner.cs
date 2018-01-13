@@ -23,7 +23,6 @@ public partial class Spawner : Singleton<Spawner>
     public static int StageToLoad;
 
     private float timer;
-    private float savedSpawnDelay;
     private bool spawnEnabled;
     private List<GameObject> objectsOnScene;
 
@@ -117,8 +116,6 @@ public partial class Spawner : Singleton<Spawner>
         if (StageToLoad > 0)
             LoadCsv(StageToLoad);
 
-        savedSpawnDelay = spawnDelay;
-
         SubscribeEvents();
     }
 
@@ -126,6 +123,7 @@ public partial class Spawner : Singleton<Spawner>
     {
         StageManager.Instance.OnStageStart += EnableSpawn;
         StageManager.Instance.OnStageTimeUp += DisableSpawn;
+        StageManager.Instance.OnStageEnd += Clean;
         Player.Instance.OnPlayerDeath += DisableSpawn;
         Player.Instance.OnEnemyHit += Player_OnEnemyHit;
         Scorer.Instance.OnEnemyMiss += Player_OnEnemyMiss;
@@ -164,8 +162,6 @@ public partial class Spawner : Singleton<Spawner>
 
         spawnEnabled = false;
         timer = 0f;
-
-        Clean();
     }
 
     private void Clean()

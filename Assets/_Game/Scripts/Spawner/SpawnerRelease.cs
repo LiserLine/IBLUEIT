@@ -25,14 +25,12 @@ public partial class Spawner
     {
         if (isRelaxTime && !isRelaxTimeDone)
         {
-            spawnDelay = 20f;
             SpawnRelaxTime();
             isRelaxTime = false;
             isRelaxTimeDone = true;
         }
         else
         {
-            spawnDelay = savedSpawnDelay;
             switch (spawnObjects)
             {
                 case EnemyType.Targets:
@@ -230,6 +228,9 @@ public partial class Spawner
             else if (i > 10)
                 objects[i].transform.Translate(0f, 0.15f * -CameraLimits.Boundary, 0f);
         }
+
+        foreach(var go in objects)
+            objectsOnScene.Add(go);
 
         OnRelaxTimeStart?.Invoke();
     }

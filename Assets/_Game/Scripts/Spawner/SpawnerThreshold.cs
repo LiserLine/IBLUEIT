@@ -50,10 +50,7 @@ public partial class Spawner
             case "RelaxCoin":
                 relaxCoinHit++;
                 if (relaxCoinHit >= relaxBonusTrigger)
-                {
                     isRelaxTime = true;
-                    relaxCoinHit = 0;
-                }
                 break;
         }
     }

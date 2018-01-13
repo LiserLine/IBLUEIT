@@ -36,6 +36,7 @@ public class StageManager : Singleton<StageManager>
     private void Spawner_OnRelaxTimeStart()
     {
         timer -= 20f;
+        timer = Mathf.Clamp(timer, 0f, PlaySessionTime);
     }
 
     [Button("Start Stage")]

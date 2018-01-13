@@ -5,7 +5,7 @@ public class MoveObject : MonoBehaviour
     public float speed { get; set; } = 1;
 
     [SerializeField]
-    private int destroyTimer = 60;
+    private int destroyTimer = 200;
 
     private void OnEnable()
     {
