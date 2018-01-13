@@ -14,7 +14,7 @@ public partial class Spawner : Singleton<Spawner>
     public EnemyType SpawnObjects => spawnObjects;
     public float SpawnDelay => spawnDelay;
     public float GameDifficulty => gameDifficulty;
-    public int ObjectsOnScene => spawnedList.Count;
+    public int ObjectsOnScene => objectsOnScene.Count;
 
     /// <summary>
     /// Write an stage ID to load settings from a StageList before starting the game.
@@ -24,7 +24,7 @@ public partial class Spawner : Singleton<Spawner>
     private float timer;
     private float savedSpawnDelay;
     private bool spawnEnabled;
-    private List<GameObject> spawnedList;
+    private List<GameObject> objectsOnScene;
 
     [BoxGroup("Stage Settings")]
     [SerializeField]
@@ -110,8 +110,8 @@ public partial class Spawner : Singleton<Spawner>
     {
         base.Awake();
 
-        spawnedList?.Clear();
-        spawnedList = new List<GameObject>();
+        objectsOnScene?.Clear();
+        objectsOnScene = new List<GameObject>();
 
         if (StageToLoad > 0)
             LoadCsv(StageToLoad);
@@ -163,10 +163,12 @@ public partial class Spawner : Singleton<Spawner>
 
         spawnEnabled = false;
         timer = 0f;
+
+        Clean();
     }
 
     private void RemoveObject(GameObject goner)
     {
-        spawnedList.Remove(goner);
+        objectsOnScene.Remove(goner);
     }
 }
