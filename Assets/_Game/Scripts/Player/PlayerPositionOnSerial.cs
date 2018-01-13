@@ -9,7 +9,7 @@ public partial class Player
 
         var sensorValue = Utils.ParseFloat(msg);
 
-        sensorValue = sensorValue < -GameConstants.PitacoThreshold || sensorValue > GameConstants.PitacoThreshold ? sensorValue : 0f;
+        sensorValue = sensorValue < -GameManager.PitacoThreshold || sensorValue > GameManager.PitacoThreshold ? sensorValue : 0f;
 
         var peak = sensorValue > 0 ? Data.RespiratoryInfo.ExpiratoryPeakFlow : -Data.RespiratoryInfo.InspiratoryPeakFlow;
 
