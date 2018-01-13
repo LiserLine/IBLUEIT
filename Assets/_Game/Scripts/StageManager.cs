@@ -9,6 +9,8 @@ public class StageManager : Singleton<StageManager>
         set { playSessionTime = value; }
     }
 
+    public float Timer => timer;
+
     public delegate void StageStartHandler();
     public event StageStartHandler OnStageStart;
 
