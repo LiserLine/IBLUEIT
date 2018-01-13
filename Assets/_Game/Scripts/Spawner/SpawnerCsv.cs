@@ -32,7 +32,7 @@ public partial class Spawner
 
         spawnObjects = (EnemyType)Enum.Parse(typeof(EnemyType), grid[id][1]);
         spawnDelay = Utils.ParseFloat(grid[id][2]);
-        gameDifficulty = Utils.Clip(Utils.ParseFloat(grid[id][3]), gameDifficulties[0], 100f);
+        gameDifficulty = Mathf.Clamp(Utils.ParseFloat(grid[id][3]), gameDifficulties[0], 100f);
         objectSpeed = Utils.ParseFloat(grid[id][4]);
         heightIncrement = Utils.ParseFloat(grid[id][5]);
         targetThresholdLevelUp = int.Parse(grid[id][6]);

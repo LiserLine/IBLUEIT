@@ -107,7 +107,7 @@ public partial class Spawner
         var posY = (1f + insHeightAccumulator / 100f) * CameraLimits.Boundary *
                    Random.Range(gameDifficulties[0] / 100f, gameDifficulty / 100f);
 
-        posY = Utils.Clip(posY, gameDifficulties[0] / 100f * CameraLimits.Boundary, CameraLimits.Boundary);
+        posY = Mathf.Clamp(posY, gameDifficulties[0] / 100f * CameraLimits.Boundary, CameraLimits.Boundary);
 
         spawned.transform.Translate(0f, posY, 0f);
     }
@@ -123,7 +123,7 @@ public partial class Spawner
         var posY = (1f + expHeightAccumulator / 100f) * CameraLimits.Boundary *
                    Random.Range(gameDifficulties[0] / 100f, gameDifficulty / 100f);
 
-        posY = Utils.Clip(-posY, -CameraLimits.Boundary, gameDifficulties[0] / 100f * -CameraLimits.Boundary);
+        posY = Mathf.Clamp(-posY, -CameraLimits.Boundary, gameDifficulties[0] / 100f * -CameraLimits.Boundary);
 
         spawned.transform.Translate(0f, posY, 0f);
     }
@@ -175,7 +175,7 @@ public partial class Spawner
                     * (float)Player.Data.Disfunction
                     * gameDifficulty / 100f;
 
-        scale = Utils.Clip(scale, scaleFromPlayer * 0.7f, scale);
+        scale = Mathf.Clamp(scale, scaleFromPlayer * 0.7f, scale);
 
         spawned.transform.localScale = new Vector3(scale, scale, 1);
         spawned.transform.Translate(0f, spawned.transform.localScale.y / 2, 0f);
