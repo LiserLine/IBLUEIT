@@ -15,6 +15,7 @@ public partial class Spawner : Singleton<Spawner>
     public float SpawnDelay => spawnDelay;
     public float GameDifficulty => gameDifficulty;
     public int ObjectsOnScene => objectsOnScene.Count;
+    public int RelaxTrigger => relaxBonusTrigger;
 
     /// <summary>
     /// Write an stage ID to load settings from a StageList before starting the game.
