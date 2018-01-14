@@ -11,7 +11,11 @@ public partial class Player
     public event EnemyHitHandler OnEnemyHit;
 
     [SerializeField]
-    private int invincibilityTime = 1;
+    private Animator animator;
+
+    [SerializeField]
+    [BoxGroup("Properties")]
+    private int invincibilityTime = 2;
 
     private bool isPlayerDead;
 
@@ -32,8 +36,7 @@ public partial class Player
         {
             TakeDamage();
             StartCoroutine(DisableCollisionForXSeconds(invincibilityTime));
-            //todo - play ghost animation
-            //todo - disable collision for 3 seconds
+            animator.SetTrigger("DamageTaken");
         }
     }
 

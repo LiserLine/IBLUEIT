@@ -804,6 +804,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Persistent: 0
   heartPoints: 5
+  animator: {fileID: 1451766584}
   invincibilityTime: 2
 --- !u!70 &684932087
 CapsuleCollider2D:
@@ -1670,6 +1671,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!95 &1451766584 stripped
+Animator:
+  m_PrefabParentObject: {fileID: 95191716280218792, guid: b2df1bf30ba44844cb4c3bf45413870d,
+    type: 2}
+  m_PrefabInternal: {fileID: 587047503}
 --- !u!1 &1465862122
 GameObject:
   m_ObjectHideFlags: 0
@@ -2067,7 +2073,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86e9f6249f73674488fc119d08164615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeDuration: 0.1
+  shakeDuration: 0.5
   shakeAmount: 0.1
   decreaseFactor: 1
 --- !u!1 &1772985456
