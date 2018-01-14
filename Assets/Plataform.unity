@@ -1301,6 +1301,7 @@ GameObject:
   m_Component:
   - component: {fileID: 921868978}
   - component: {fileID: 921868976}
+  - component: {fileID: 921868977}
   m_Layer: 0
   m_Name: Recorder
   m_TagString: Untagged
@@ -1320,6 +1321,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FileName: PlaySessionData
+--- !u!114 &921868977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 921868975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60dd70acad3a04542b9872967c34ab27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FileName: PitacoData
 --- !u!4 &921868978
 Transform:
   m_ObjectHideFlags: 0
