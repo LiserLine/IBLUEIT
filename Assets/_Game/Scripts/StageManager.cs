@@ -1,7 +1,7 @@
 ﻿using NaughtyAttributes;
 using UnityEngine;
 
-public class StageManager : Singleton<StageManager>
+public partial class StageManager : Singleton<StageManager>
 {
     public int PlaySessionTime
     {
