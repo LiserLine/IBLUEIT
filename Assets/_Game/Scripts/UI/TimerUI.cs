@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class Timer : MonoBehaviour
+public class TimerUI : MonoBehaviour
 {
     [SerializeField]
     private Text timerText;

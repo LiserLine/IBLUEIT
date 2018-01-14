@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class LifeCounter : MonoBehaviour
+public class LifeCounterUI : MonoBehaviour
 {
     [SerializeField]
     private Image heartSprite;

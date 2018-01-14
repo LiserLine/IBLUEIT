@@ -5,10 +5,16 @@ using Random = UnityEngine.Random;
 
 public partial class Spawner
 {
-    private float insSizeAccumulator;
+    public float InspiratoryHeightLevel => 1f + insHeightAccumulator / 100f;
+    public float ExpiratoryHeightLevel => 1f + expHeightAccumulator / 100f;
+    public float ExpiratorySizeLevel => 1f + expSizeAccumulator / 100f;
+
     private float insHeightAccumulator;
-    private float expSizeAccumulator;
     private float expHeightAccumulator;
+
+    private float insSizeAccumulator;
+    private float expSizeAccumulator;
+
     private bool isRelaxTime;
     private bool isRelaxTimeDone;
 
@@ -85,7 +91,7 @@ public partial class Spawner
 
         objectsOnScene.Add(airObj);
         objectsOnScene.Add(waterObj);
-        
+
         OnObjectReleased?.Invoke(EnemyType.Targets, ref airObj, ref waterObj);
     }
 
@@ -142,7 +148,7 @@ public partial class Spawner
 
         UpdateSpeed(ref airObj);
         UpdateSpeed(ref waterObj);
-        
+
         objectsOnScene.Add(waterObj);
         objectsOnScene.Add(airObj);
 
@@ -229,7 +235,7 @@ public partial class Spawner
                 objects[i].transform.Translate(0f, 0.15f * -CameraLimits.Boundary, 0f);
         }
 
-        foreach(var go in objects)
+        foreach (var go in objects)
             objectsOnScene.Add(go);
 
         OnRelaxTimeStart?.Invoke();
