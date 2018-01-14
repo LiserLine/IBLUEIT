@@ -2,12 +2,15 @@
 
 public class Destroyer : MonoBehaviour
 {
-    public delegate void ObjectDestroyedHandler(GameObject goner);
-    public static event ObjectDestroyedHandler OnObjectDestroyed;
+    private void Start()
+    {
+        var distance = Camera.main.orthographicSize * Camera.main.aspect;
+        this.gameObject.transform.Translate(-distance - 2f, 0f, 0f);
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        OnObjectDestroyed?.Invoke(collision.gameObject);
+        Spawner.Instance.ObjectsOnScene.Remove(collision.gameObject);
         Destroy(collision.gameObject);
     }
 }

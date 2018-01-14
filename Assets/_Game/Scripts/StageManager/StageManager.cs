@@ -73,7 +73,7 @@ public partial class StageManager : Singleton<StageManager>
         if (timer > playSessionTime)
             TimeUp();
 
-        if (isTimedUp && Spawner.Instance.ObjectsOnScene == 0)
+        if (isTimedUp && Spawner.Instance.ObjectsOnScene.Count == 0)
             EndStage();
     }
 }

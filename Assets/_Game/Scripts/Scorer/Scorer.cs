@@ -3,6 +3,9 @@ using UnityEngine;
 
 public partial class Scorer : Singleton<Scorer>
 {
+    public float Score => score;
+    public float MaxScore => maxScore;
+
     [SerializeField]
     [ReadOnly]
     private float score;

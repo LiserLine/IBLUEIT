@@ -14,7 +14,7 @@ public partial class Spawner : Singleton<Spawner>
     public EnemyType SpawnObjects => spawnObjects;
     public float SpawnDelay => spawnDelay;
     public float GameDifficulty => gameDifficulty;
-    public int ObjectsOnScene => objectsOnScene.Count;
+    public List<GameObject> ObjectsOnScene => objectsOnScene;
     public int RelaxTrigger => relaxBonusTrigger;
 
     /// <summary>
@@ -127,7 +127,6 @@ public partial class Spawner : Singleton<Spawner>
         Player.Instance.OnPlayerDeath += DisableSpawn;
         Player.Instance.OnEnemyHit += Player_OnEnemyHit;
         Scorer.Instance.OnEnemyMiss += Player_OnEnemyMiss;
-        Destroyer.OnObjectDestroyed += RemoveObject;
     }
 
     private void Update()
@@ -177,8 +176,8 @@ public partial class Spawner : Singleton<Spawner>
         objectsOnScene.Clear();
     }
 
-    private void RemoveObject(GameObject goner)
+    private void OnDestroy()
     {
-        objectsOnScene.Remove(goner);
+        StageToLoad = 0;
     }
 }

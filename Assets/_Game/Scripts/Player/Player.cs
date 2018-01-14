@@ -19,7 +19,7 @@ public partial class Player : Singleton<Player>
         if (Data == null)
             Data = new PlayerData
             {
-                Id = 999,
+                Id = -1,
                 Birthday = DateTime.Now,
                 CalibrationDone = true,
                 Disfunction = DisfunctionType.Normal,
