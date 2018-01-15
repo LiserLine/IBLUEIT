@@ -38,10 +38,10 @@ public class PlataformRecorder : Recorder<PlataformRecorder>
     {
         var path = @"savedata/pacients/" + Player.Data.Id + @"/" + $"{recordStart:yyyyMMdd-HHmmss}_" + FileName + ".csv";
 
-        sb.Insert(0, "StageId;Start;Stop;InsHeightLevel;ExpHeightLevel;ExpSizeLevel;Score;MaxScore;Mercy;PitacoThreshold" + Environment.NewLine +
+        sb.Insert(0, "StageId;Start;Stop;InsHeightLevel;ExpHeightLevel;ExpSizeLevel;Score;MaxScore;Mercy;PitacoThreshold\n" +
                      $"{Spawner.StageToLoad};{recordStart:s};{recordStop:s};{Spawner.Instance.InspiratoryHeightLevel};{Spawner.Instance.ExpiratoryHeightLevel};" +
                      $"{Spawner.Instance.ExpiratorySizeLevel};{Scorer.Instance.Score};{Scorer.Instance.MaxScore};{GameManager.Mercy};{GameManager.PitacoThreshold}" +
-                     Environment.NewLine + "time;tag;instanceId;posX;posY" + Environment.NewLine);
+                     "\ntime;tag;instanceId;posX;posY\n");
 
         Utils.WriteAllText(path, sb.ToString());
     }

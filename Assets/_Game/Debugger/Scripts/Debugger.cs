@@ -1,8 +1,15 @@
-﻿using UnityEngine;
+﻿using NaughtyAttributes;
+using UnityEngine;
 
 public partial class Debugger : MonoBehaviour
 {
-    public void Awake()
+    [Button("Freeze Scene")]
+    private void Freeze() => Time.timeScale = 0f;
+
+    [Button("Unfreeze Scene")]
+    private void Unfreeze() => Time.timeScale = 1f;
+
+    private void Awake()
     {
 
 #if UNITY_EDITOR

@@ -1,10 +1,16 @@
 ﻿using NaughtyAttributes;
 using UnityEngine;
 
+public enum GameResult
+{
+    Failure = 0,
+    Success = 1
+}
+
 public partial class Scorer : Singleton<Scorer>
 {
-    public float Score => score;
-    public float MaxScore => maxScore;
+    public float Score => Mathf.Round(score);
+    public float MaxScore => Mathf.Round(maxScore);
 
     [SerializeField]
     [ReadOnly]
@@ -14,6 +20,9 @@ public partial class Scorer : Singleton<Scorer>
     [ReadOnly]
     private float maxScore;
 
+    public delegate void ResultCalculatedHandler(GameResult result);
+    public event ResultCalculatedHandler OnResultCalculated;
+
     private void OnEnable()
     {
         score = 0;
@@ -22,10 +31,8 @@ public partial class Scorer : Singleton<Scorer>
         StageManager.Instance.OnStageEnd += CalculateResult;
     }
 
-    private void CalculateResult()
-    {   
-        Debug.Log(score >= maxScore * 0.7f ? "Stage completed!" : "Stage Failed!");
-    }
+    private void CalculateResult() =>
+        OnResultCalculated?.Invoke(score >= maxScore * 0.7f ? GameResult.Success : GameResult.Failure);
 
     private void MaxScoreUpdate(EnemyType enemytype, ref GameObject go1, ref GameObject go2)
     {
