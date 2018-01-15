@@ -149,7 +149,7 @@ public partial class SerialController : Singleton<SerialController>
         var ports = GetPortNames();
         
         if (ports.Length < 1)
-            throw new Exception("No compatible device found.");
+            throw new Exception("No compatible serial device found.");
 
         foreach (var port in ports)
         {

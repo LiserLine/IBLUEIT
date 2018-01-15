@@ -32,15 +32,13 @@ public class ErrorHandler : MonoBehaviour
     {
         if (!hasError)
             return;
-
-        GUI.color = Color.red;
-
+       
         GUI.Box(windowRect, ""); GUI.Box(windowRect, ""); GUI.Box(windowRect, ""); //opacity hax
 
         windowRect = GUI.Window(0, windowRect, Flush, "[Error Handler] Unexpected program error occured!!!");
 
         GUI.Label(labelRect,
-            "The game will be close because of an unexpected program error.\n" +
+            "The game will be closed because of an unexpected program error.\n" +
             "Please report this error to the developer.\n" +
             $"A screenshot has been generated at \"{Environment.CurrentDirectory}\".\n" +
             $"Time Stamp: {DateTime.Now:s}\n\n" +
