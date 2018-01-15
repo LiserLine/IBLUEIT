@@ -76,7 +76,7 @@ public partial class SerialController : Singleton<SerialController>
     // It creates a new thread that tries to connect to the serial device
     // and start reading from it.
     // ------------------------------------------------------------------------
-    private void OnEnable()
+    private void Start()
     {
         StageManager.Instance.OnStageStart += InitSamplingDelayed;
         Connect();
@@ -110,6 +110,9 @@ public partial class SerialController : Singleton<SerialController>
 
     private void Disconnect()
     {
+        if (!IsConnected)
+            return;
+
         // If there is a user-defined tear-down function, execute it before
         // closing the underlying COM port.
         userDefinedTearDownFunction?.Invoke();
@@ -144,10 +147,9 @@ public partial class SerialController : Singleton<SerialController>
     private string AutoConnect()
     {
         var ports = GetPortNames();
-
-        Debug.Log($"{ports.Length} ports found.");
+        
         if (ports.Length < 1)
-            return null;
+            throw new Exception("No compatible device found.");
 
         foreach (var port in ports)
         {
@@ -247,6 +249,9 @@ public partial class SerialController : Singleton<SerialController>
     // ------------------------------------------------------------------------
     public void SendSerialMessage(string message)
     {
+        if (!IsConnected)
+            return;
+
         serialThread.SendSerialMessage(message);
     }
 
