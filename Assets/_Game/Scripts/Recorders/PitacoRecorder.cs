@@ -31,6 +31,9 @@ public class PitacoRecorder : Recorder<PitacoRecorder>
 
     private void FlushData()
     {
+        if (sb.Length < 0)
+            return;
+
         var path = @"savedata/pacients/" + Player.Data.Id + @"/" + $"{recordStart:yyyyMMdd-HHmmss}_" + FileName + ".csv";
 
         sb.Insert(0, "time;value" + Environment.NewLine);
