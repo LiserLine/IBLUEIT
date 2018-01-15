@@ -43,7 +43,7 @@ public class ErrorHandler : MonoBehaviour
             "The game will be close because of an unexpected program error.\n" +
             "Please report this error to the developer.\n" +
             $"A screenshot has been generated at \"{Environment.CurrentDirectory}\".\n" +
-            $"Time Stamp: {DateTime.Now:F}\n\n" +
+            $"Time Stamp: {DateTime.Now:s}\n\n" +
             $"{errorMsg}\n\n{stack}");
     }
 
