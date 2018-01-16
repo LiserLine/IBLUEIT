@@ -39,6 +39,7 @@ public partial class Player : Singleton<Player>
 #endif
 
         SerialController.Instance.OnSerialMessageReceived += PositionOnSerial;
+        SerialController.Instance.OnSerialMessageReceived += AnimationOnSerial;
     }
 
     private void Update()
