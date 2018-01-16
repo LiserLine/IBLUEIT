@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class GameManager : Singleton<GameManager>
+public partial class GameManager : Singleton<GameManager>
 {
     public static float PitacoThreshold { get; private set; } = 7.5f;
     public static float Mercy { get; private set; } = 0.4f;
