@@ -25,12 +25,12 @@ public class ResultScreenUI : GenericUI<ResultScreenUI>
         }
 
         resultInfo.text =
-            $"Score: {Scorer.Instance.Score} / {Scorer.Instance.MaxScore} ({Mathf.Round(Scorer.Instance.Score / Scorer.Instance.MaxScore * 100f)}%)\n" +
-            $"Fase: {Spawner.StageToLoad}\n" +
-            $"Nível Altura: {Spawner.Instance.InspiratoryHeightLevel}\n" +
-            $"Nível Profundidade: {Spawner.Instance.ExpiratoryHeightLevel}\n" +
-            $"Nível Tamanho: {Spawner.Instance.ExpiratorySizeLevel}\n" +
-            $"Jogador: {Player.Data.Name} ({Player.Data.Id})";
+            $"• Score: {Scorer.Instance.Score} / {Scorer.Instance.MaxScore} ({Mathf.Round(Scorer.Instance.Score / Scorer.Instance.MaxScore * 100f)}%)\n" +
+            $"• Fase: {Spawner.StageToLoad}\n" +
+            $"• Nível Altura: {Spawner.Instance.InspiratoryHeightLevel}\n" +
+            $"• Nível Profundidade: {Spawner.Instance.ExpiratoryHeightLevel}\n" +
+            $"• Nível Tamanho: {Spawner.Instance.ExpiratorySizeLevel}\n" +
+            $"• Jogador: {Player.Data.Name} ({Player.Data.Id})";
 
         base.Show();
 
