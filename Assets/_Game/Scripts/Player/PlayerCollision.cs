@@ -29,6 +29,7 @@ public partial class Player
     {
         if (hit.tag.Contains("Target"))
         {
+            AudioManager.Instance.PlaySound("TargetGet");
             //ToDo - play animation get
             //ToDo - capture object
         }
@@ -37,6 +38,10 @@ public partial class Player
             TakeDamage();
             StartCoroutine(DisableCollisionForXSeconds(invincibilityTime));
             animator.SetTrigger("DamageTaken");
+        }
+        else if (hit.tag.Contains("Relax"))
+        {
+            AudioManager.Instance.PlaySound("BonusGet");
         }
     }
 
@@ -55,6 +60,8 @@ public partial class Player
             return;
 
         heartPoints--;
+
+        AudioManager.Instance.PlaySound("PlayerDamage");
 
         if (heartPoints > 0)
             return;
