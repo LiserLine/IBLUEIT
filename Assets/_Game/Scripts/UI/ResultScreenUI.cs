@@ -2,26 +2,26 @@
 using UnityEngine.UI;
 
 //ToDo - separar em text game objects e dividir em textos para auxiliar na programaçao do localization system
-public class ResultScreenUI : MonoBehaviour
+public class ResultScreenUI : GenericUI<ResultScreenUI>
 {
     [SerializeField]
     private Text finalResult, motivationText, resultInfo;
 
-    private void Awake() => Scorer.Instance.OnResultCalculated += ShowResultScreen;
+    private void Awake() => Scorer.Instance.OnResultCalculated += Show;
 
-    private void ShowResultScreen(GameResult result)
+    private void Show(GameResult result)
     {
-        Time.timeScale = 0f;
-
         if (result == GameResult.Success)
         {
             finalResult.text = "GoGoGo!";
-            motivationText.text = "Muito bem! Continue assim!";
+            motivationText.text = "Muito bem! Você passou de fase. Continue assim!";
+            AudioManager.Instance.PlaySound("StageClear");
         }
         else
         {
             finalResult.text = "YOU BLEW IT";
             motivationText.text = "Você não conseguiu pontos suficientes. Não desista!";
+            AudioManager.Instance.PlaySound("PlayerDamage");
         }
 
         resultInfo.text =
@@ -32,6 +32,8 @@ public class ResultScreenUI : MonoBehaviour
             $"Nível Tamanho: {Spawner.Instance.ExpiratorySizeLevel}\n" +
             $"Jogador: {Player.Data.Name} ({Player.Data.Id})";
 
-        this.transform.localScale = Vector3.one;
+        base.Show();
+
+        GameManager.Instance.PauseGame();
     }
 }

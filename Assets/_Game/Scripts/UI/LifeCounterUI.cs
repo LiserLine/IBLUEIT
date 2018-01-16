@@ -14,8 +14,5 @@ public class LifeCounterUI : MonoBehaviour
         Player.Instance.OnEnemyHit += UpdateHeartPoints;
     }
 
-    private void UpdateHeartPoints(GameObject go)
-    {
-        heartSprite.fillAmount = Player.Instance.HeartPoins / startHP;
-    }
+    private void UpdateHeartPoints(GameObject go) => heartSprite.fillAmount = Player.Instance.HeartPoins / startHP;
 }

@@ -10,10 +10,7 @@ public class RelaxCoinUI : MonoBehaviour
 
     private float coinsHit;
 
-    private void Awake()
-    {
-        Player.Instance.OnEnemyHit += UpdateSprite;
-    }
+    private void Awake() => Player.Instance.OnEnemyHit += UpdateSprite;
 
     private void UpdateSprite(GameObject go)
     {
