@@ -2038,7 +2038,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1405056536}
         m_MethodName: UnPauseGame
         m_Mode: 1
         m_Arguments:
@@ -2499,6 +2499,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1385279699}
+--- !u!114 &1405056536 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114939197993058354, guid: 0e15757e75d1fba47b3b451052327148,
+    type: 2}
+  m_PrefabInternal: {fileID: 1490564109}
+  m_Script: {fileID: 11500000, guid: 89c1000eaecb11742af18f34ba7346ac, type: 3}
 --- !u!1 &1410877789
 GameObject:
   m_ObjectHideFlags: 0
@@ -2772,7 +2778,7 @@ MonoBehaviour:
           m_StringArgument: GamePause
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1405056536}
         m_MethodName: PauseGame
         m_Mode: 1
         m_Arguments:
