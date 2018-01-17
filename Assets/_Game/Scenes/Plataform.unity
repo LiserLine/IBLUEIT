@@ -896,6 +896,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afa60677e482ed348b516fdd492db70b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Persistent: 0
   loadingScreen: {fileID: 354750900}
 --- !u!4 &574519390
 Transform:
@@ -3104,6 +3105,7 @@ GameObject:
   - component: {fileID: 1517265486}
   - component: {fileID: 1517265485}
   - component: {fileID: 1517265484}
+  - component: {fileID: 1517265488}
   m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
@@ -3135,6 +3137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dc3e95a3a4c9254e9648f65afca3a82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scroll: 0
   scrollSpeed: 0.05
   day: {fileID: 2100000, guid: a8078ee16a7c7b34db2152e7f5c7babd, type: 2}
   afternoon: {fileID: 2100000, guid: 17cc4e6d0d916374ba7c1a5ff2c94fdf, type: 2}
@@ -3194,6 +3197,17 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1517265482}
   m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1517265488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1517265482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9b44f28c282d8b4f932fceed45868d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1625377246
 GameObject:
   m_ObjectHideFlags: 0
@@ -3337,6 +3351,28 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1638950147}
+--- !u!1 &1686963868 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 128384, guid: a65acf0cbf56b80419f74ebf0bc845f4, type: 2}
+  m_PrefabInternal: {fileID: 657093610}
+--- !u!114 &1686963869 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 11442534, guid: a65acf0cbf56b80419f74ebf0bc845f4,
+    type: 2}
+  m_PrefabInternal: {fileID: 657093610}
+  m_Script: {fileID: 11500000, guid: 8bc5f48af2cffd747a079fe8c632e2c8, type: 3}
+--- !u!114 &1686963870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1686963868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 656c8a499a397d8419062015cb0e7f80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serialController: {fileID: 1686963869}
 --- !u!1 &1733034027
 GameObject:
   m_ObjectHideFlags: 0
@@ -3635,7 +3671,6 @@ MonoBehaviour:
     type: 2}
   relaxZeroPrefab: {fileID: 1333510693921846, guid: 8d137fde9eced754eb5fa6ee9ac39d53,
     type: 2}
-  stageManager: {fileID: 25974384}
 --- !u!1 &1813356614
 GameObject:
   m_ObjectHideFlags: 0
