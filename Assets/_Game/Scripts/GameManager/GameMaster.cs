@@ -6,9 +6,6 @@ public partial class GameMaster : Singleton<GameMaster>
     public static float Mercy { get; private set; } = 0.4f;
     public static float PlataformMinScoreMultiplier { get; private set; } = 0.7f;
 
-    //ToDo - Test this variable before implementing in CSV
-    public static int RespiratoryFrequencyThreshold { get; private set; } = 700; //In Milliseconds
-
     private bool isLoaded;
 
     protected override void Awake()

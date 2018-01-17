@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 
-public class Background : MonoBehaviour
+public class PlataformWallpaper : MonoBehaviour
 {
     private Vector2 _offset;
     private MeshRenderer _mr;
     private Renderer bgRenderer;
+
+    [SerializeField]
+    private bool scroll;
 
     [SerializeField]
     private float scrollSpeed = 0.1f;
@@ -24,19 +27,7 @@ public class Background : MonoBehaviour
         _mr = this.GetComponent<MeshRenderer>();
     }
 
-    private void Start()
-    {
-        ResizeToCamera();
-        SwitchBackground();
-    }
-
-    private void ResizeToCamera()
-    {
-        var cam = Camera.main;
-        var height = 2f * cam.orthographicSize;
-        var width = height * cam.aspect;
-        this.transform.localScale = new Vector3(width, height);
-    }
+    private void Start() => SwitchBackground();
 
     private void SwitchBackground()
     {
@@ -54,10 +45,7 @@ public class Background : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        Scroll();
-    }
+    private void Update() => Scroll();
 
     private void Scroll()
     {
