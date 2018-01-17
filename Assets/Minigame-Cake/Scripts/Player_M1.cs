@@ -10,7 +10,7 @@ public class Player_M1 : MonoBehaviour
     public bool stopedFlow;
     public float sensorValue;
 
-    void OnEnable() => SerialController.Instance.OnSerialMessageReceived += OnMessageReceived;
+    void Start() => SerialController.Instance.OnSerialMessageReceived += OnMessageReceived;
     
     void OnMessageReceived(string msg)
     {

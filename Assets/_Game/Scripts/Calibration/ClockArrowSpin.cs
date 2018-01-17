@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 
+//ToDo - Use an animation for this
 public class ClockArrowSpin : MonoBehaviour
 {
     public bool SpinClock { get; set; }
 
-    private void OnEnable() => SerialController.Instance.OnSerialMessageReceived += OnSerialMessageReceived;
+    private void Start() => SerialController.Instance.OnSerialMessageReceived += OnSerialMessageReceived;
 
     private void OnSerialMessageReceived(string msg)
     {
