@@ -11,6 +11,9 @@ public class SceneLoader : MonoBehaviour
     {
         if (loadingScreen == null)
             loadingScreen = FindObjectOfType<LoadingScreenUI>();
+
+        if (loadingScreen == null)
+            Debug.LogWarning("No Loading Screen UI found!");
     }
 
     private IEnumerator LoadSceneAsync(int sceneIndex)
