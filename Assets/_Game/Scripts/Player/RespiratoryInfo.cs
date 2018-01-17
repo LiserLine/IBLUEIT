@@ -4,13 +4,13 @@
 
     public float InspiratoryPeakFlow
     {
-        get { return _ipf * GameManager.Mercy; }
+        get { return _ipf * GameMaster.Mercy; }
         set { _ipf = value; }
     }
 
     public float ExpiratoryPeakFlow
     {
-        get { return _epf * GameManager.Mercy; }
+        get { return _epf * GameMaster.Mercy; }
         set { _epf = value; }
     }
 
@@ -19,7 +19,7 @@
     /// </summary>
     public float InspiratoryFlowTime
     {
-        get { return _ift * GameManager.Mercy; }
+        get { return _ift * GameMaster.Mercy; }
         set { _ift = value; }
     }
 
@@ -28,7 +28,7 @@
     /// </summary>
     public float ExpiratoryFlowTime
     {
-        get { return _eft * GameManager.Mercy; }
+        get { return _eft * GameMaster.Mercy; }
         set { _eft = value; }
     }
 
@@ -37,7 +37,7 @@
     /// </summary>
     public float RespirationFrequency
     {
-        get { return _rf / GameManager.Mercy; }
+        get { return _rf / GameMaster.Mercy; }
         set { _rf = value; }
     }
 

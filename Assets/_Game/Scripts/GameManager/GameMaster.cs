@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 
-public partial class GameManager : Singleton<GameManager>
+public partial class GameMaster : Singleton<GameMaster>
 {
     public static float PitacoThreshold { get; private set; } = 7.5f;
     public static float Mercy { get; private set; } = 0.4f;
     public static float PlataformMinScoreMultiplier { get; private set; } = 0.7f;
+
+    //ToDo - Test this variable before implementing in CSV
+    public static int RespiratoryFrequencyThreshold { get; private set; } = 700; //In Milliseconds
 
     private bool isLoaded;
 

@@ -23,14 +23,14 @@ public class AudioManager : Singleton<AudioManager>
 
     private void OnEnable()
     {
-        GameManager.Instance.OnGamePause += PauseSounds;
-        GameManager.Instance.OnGameUnPause += UnPauseSounds;
+        GameMaster.Instance.OnGamePause += PauseSounds;
+        GameMaster.Instance.OnGameUnPause += UnPauseSounds;
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.OnGamePause -= PauseSounds;
-        GameManager.Instance.OnGameUnPause -= UnPauseSounds;
+        GameMaster.Instance.OnGamePause -= PauseSounds;
+        GameMaster.Instance.OnGameUnPause -= UnPauseSounds;
     }
 
     public void PlaySound(string soundName) => sounds.First(sound => sound.name.Equals(soundName)).Play();

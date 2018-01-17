@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public partial class GameManager
+public partial class GameMaster
 {
     public delegate void GamePauseHandler();
     public event GamePauseHandler OnGamePause;

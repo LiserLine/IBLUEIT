@@ -32,7 +32,7 @@ public partial class Scorer : Singleton<Scorer>
     }
 
     private void CalculateResult() =>
-        OnResultCalculated?.Invoke(score >= maxScore * GameManager.PlataformMinScoreMultiplier ? GameResult.Success : GameResult.Failure);
+        OnResultCalculated?.Invoke(score >= maxScore * GameMaster.PlataformMinScoreMultiplier ? GameResult.Success : GameResult.Failure);
 
     private void MaxScoreUpdate(EnemyType enemytype, ref GameObject go1, ref GameObject go2)
     {

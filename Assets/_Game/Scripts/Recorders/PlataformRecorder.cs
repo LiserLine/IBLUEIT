@@ -55,7 +55,7 @@ public class PlataformRecorder : Recorder<PlataformRecorder>
     private string GetPlataformData() =>
         $"{Spawner.StageToLoad};{recordStart:s};{recordStop:s};{Spawner.Instance.InspiratoryHeightLevel};" +
         $"{Spawner.Instance.ExpiratoryHeightLevel};{Spawner.Instance.ExpiratorySizeLevel};{Scorer.Instance.Score};" +
-        $"{Scorer.Instance.MaxScore};{GameManager.Mercy};{GameManager.PitacoThreshold};{GameManager.PlataformMinScoreMultiplier}";
+        $"{Scorer.Instance.MaxScore};{GameMaster.Mercy};{GameMaster.PitacoThreshold};{GameMaster.PlataformMinScoreMultiplier}";
 
     private void UpdatePlataformHistory()
     {
