@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using UnityEngine;
 
@@ -23,4 +24,52 @@ public class Utils
         return File.ReadAllText(filepath, Encoding.UTF8);
     }
 
+    public static float CalculateMeanFlow(List<KeyValuePair<long, float>> respiratorySamples)
+    {
+        long startTime = 0, firstCurveTime = 0, secondCurveTime = 0, sumTimes = 0;
+        float quantCycles = 0;
+
+        for (var i = 1; i < respiratorySamples.Count; i++)
+        {
+            var actualTime = respiratorySamples[i].Key;
+            var actualValue = respiratorySamples[i].Value;
+
+            var lastTime = respiratorySamples[i - 1].Key;
+
+            if (actualValue < -GameMaster.PitacoThreshold || actualValue > GameMaster.PitacoThreshold)
+            {
+                if (startTime == 0)
+                {
+                    startTime = lastTime;
+                }
+            }
+            else
+            {
+                if (startTime == 0)
+                    continue;
+
+                if (firstCurveTime == 0)
+                {
+                    firstCurveTime = actualTime - startTime;
+                }
+                else if (secondCurveTime == 0)
+                {
+                    secondCurveTime = actualTime - startTime;
+                }
+
+                startTime = 0;
+            }
+
+            if (firstCurveTime == 0 || secondCurveTime == 0)
+                continue;
+
+            var cycleTime = firstCurveTime + secondCurveTime;
+            sumTimes += cycleTime;
+            quantCycles++;
+            firstCurveTime = 0;
+            secondCurveTime = 0;
+        }
+
+        return sumTimes / quantCycles;
+    }
 }

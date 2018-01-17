@@ -2,7 +2,7 @@
 using NaughtyAttributes;
 using UnityEngine;
 
-public enum EnemyType //ToDo - move from here
+public enum EnemyType
 {
     Targets = 0,
     TargetsAndObstacles = 1,
@@ -103,9 +103,6 @@ public partial class Spawner : Singleton<Spawner>
     [SerializeField]
     private GameObject relaxInsPrefab, relaxExpPrefab, relaxZeroPrefab;
 
-    [SerializeField]
-    private StageManager stageManager;
-
     protected override void Awake()
     {
         base.Awake();
@@ -165,8 +162,6 @@ public partial class Spawner : Singleton<Spawner>
 
     private void Clean()
     {
-        //ToDo - clean anim? like cuphead or w/e
-
         if (objectsOnScene.Count < 1)
             return;
 

@@ -42,7 +42,7 @@ public class PlataformRecorder : Recorder<PlataformRecorder>
 
     private void FlushPlaySession()
     {
-        var path = @"savedata/pacients/" + Player.Data.Id + @"/" + $"{recordStart:yyyyMMdd-HHmmss}_" + FileName + ".csv";
+        var path = @"savedata/pacients/" + PlayerData.Player.Id + @"/" + $"{recordStart:yyyyMMdd-HHmmss}_" + FileName + ".csv";
         sb.Insert(0, $"{PlataformCsvKeys}\n{GetPlataformData()}\n\n{ObjectsCsvKeys}\n");
         Utils.WriteAllText(path, sb.ToString());
     }
@@ -59,7 +59,7 @@ public class PlataformRecorder : Recorder<PlataformRecorder>
 
     private void UpdatePlataformHistory()
     {
-        var path = @"savedata/pacients/" + Player.Data.Id + @"/_PlataformHistory.csv";
+        var path = @"savedata/pacients/" + PlayerData.Player.Id + @"/_PlataformHistory.csv";
 
         if (!File.Exists(path))
         {

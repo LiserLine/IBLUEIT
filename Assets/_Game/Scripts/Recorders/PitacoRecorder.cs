@@ -34,7 +34,7 @@ public class PitacoRecorder : Recorder<PitacoRecorder>
         if (sb.Length < 0)
             return;
 
-        var path = @"savedata/pacients/" + Player.Data.Id + @"/" + $"{recordStart:yyyyMMdd-HHmmss}_" + FileName + ".csv";
+        var path = @"savedata/pacients/" + PlayerData.Player.Id + @"/" + $"{recordStart:yyyyMMdd-HHmmss}_" + FileName + ".csv";
 
         sb.Insert(0, "time;value" + Environment.NewLine);
 

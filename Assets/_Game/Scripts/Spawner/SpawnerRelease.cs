@@ -172,11 +172,11 @@ public partial class Spawner
             transform.rotation,
             transform);
 
-        var scaleFromPlayer = Player.Data.RespiratoryInfo.ExpiratoryFlowTime / 1000f;
+        var scaleFromPlayer = PlayerData.Player.RespiratoryInfo.ExpiratoryFlowTime / 1000f;
 
         var scale = scaleFromPlayer
                     * (1f + insSizeAccumulator / 100f)
-                    * (float)Player.Data.Disfunction
+                    * (float)PlayerData.Player.Disfunction
                     * gameDifficulty / 100f;
 
         scale = Mathf.Clamp(scale, scaleFromPlayer * 0.7f, scale);
@@ -194,7 +194,7 @@ public partial class Spawner
             transform.rotation,
             transform);
 
-        var scale = Player.Data.RespiratoryInfo.ExpiratoryFlowTime / 1000f
+        var scale = PlayerData.Player.RespiratoryInfo.ExpiratoryFlowTime / 1000f
                     * (1f + expSizeAccumulator / 100f);
 
         spawned.transform.localScale = new Vector3(scale, scale, 1);
@@ -208,7 +208,7 @@ public partial class Spawner
     [Button("Spawn Relax Time")]
     private void SpawnRelaxTime()
     {
-        var disfunction = (int)Player.Data.Disfunction;
+        var disfunction = (int)PlayerData.Player.Disfunction;
         var objects = new GameObject[11 + 4 * disfunction];
         int i;
 

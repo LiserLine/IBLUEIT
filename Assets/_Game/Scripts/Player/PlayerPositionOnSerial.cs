@@ -9,9 +9,9 @@ public partial class Player
 
         var sensorValue = Utils.ParseFloat(msg);
 
-        sensorValue = sensorValue < -GameManager.PitacoThreshold || sensorValue > GameManager.PitacoThreshold ? sensorValue : 0f;
+        sensorValue = sensorValue < -GameMaster.PitacoThreshold || sensorValue > GameMaster.PitacoThreshold ? sensorValue : 0f;
 
-        var peak = sensorValue > 0 ? Data.RespiratoryInfo.ExpiratoryPeakFlow : -Data.RespiratoryInfo.InspiratoryPeakFlow;
+        var peak = sensorValue > 0 ? PlayerData.Player.RespiratoryInfo.ExpiratoryPeakFlow : -PlayerData.Player.RespiratoryInfo.InspiratoryPeakFlow;
 
         var nextPosition = sensorValue * CameraLimits.Boundary / peak;
 

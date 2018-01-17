@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-//ToDo - separar em text game objects e dividir em textos para auxiliar na programaçao do localization system
 public class ResultScreenUI : GenericUI<ResultScreenUI>
 {
     [SerializeField]
@@ -30,10 +29,10 @@ public class ResultScreenUI : GenericUI<ResultScreenUI>
             $"• Nível Altura: {Spawner.Instance.InspiratoryHeightLevel}\n" +
             $"• Nível Profundidade: {Spawner.Instance.ExpiratoryHeightLevel}\n" +
             $"• Nível Tamanho: {Spawner.Instance.ExpiratorySizeLevel}\n" +
-            $"• Jogador: {Player.Data.Name} ({Player.Data.Id})";
+            $"• Jogador: {PlayerData.Player.Name} ({PlayerData.Player.Id})";
 
         base.Show();
 
-        GameManager.Instance.PauseGame();
+        GameMaster.Instance.PauseGame();
     }
 }

@@ -20,7 +20,7 @@ public partial class Spawner
 
         sb.AppendLine($"{0};{(int)spawnObjects};{spawnDelay};{gameDifficulty};{objectSpeed};{heightIncrement};" +
                               $"{targetThresholdLevelUp};{targetThresholdLevelDown};{sizeIncrement};" +
-                              $"{obstacleThresholdLevelUp};{obstacleThresholdLevelDown};{relaxBonusTrigger};{stageManager.PlaySessionTime}");
+                              $"{obstacleThresholdLevelUp};{obstacleThresholdLevelDown};{relaxBonusTrigger};{StageManager.Instance.PlaySessionTime}");
 
         Utils.WriteAllText(Application.streamingAssetsPath + @"/GameSettings/NewStageInfo.csv", sb.ToString());
     }
@@ -41,7 +41,7 @@ public partial class Spawner
         obstacleThresholdLevelUp = int.Parse(grid[id][9]);
         obstacleThresholdLevelDown = int.Parse(grid[id][10]);
         relaxBonusTrigger = int.Parse(grid[id][11]);
-        stageManager.PlaySessionTime = int.Parse(grid[id][12]);
+        StageManager.Instance.PlaySessionTime = int.Parse(grid[id][12]);
 
         Debug.Log($"Stage {id} loaded.");
     }
