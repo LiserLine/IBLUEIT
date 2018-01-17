@@ -10,7 +10,7 @@ public enum GameResult
 public partial class Scorer : Singleton<Scorer>
 {
     public float Score => score;
-    public float MaxScore => score;
+    public float MaxScore => maxScore;
 
     [SerializeField]
     [ReadOnly]
