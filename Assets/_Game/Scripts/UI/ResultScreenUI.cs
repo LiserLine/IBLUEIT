@@ -25,7 +25,7 @@ public class ResultScreenUI : GenericUI<ResultScreenUI>
         }
 
         resultInfo.text =
-            $"• Score: {Scorer.Instance.Score} / {Scorer.Instance.MaxScore} ({Mathf.Round(Scorer.Instance.Score / Scorer.Instance.MaxScore * 100f)}%)\n" +
+            $"• Score: {Mathf.Round(Scorer.Instance.Score)} / {Mathf.Round(Scorer.Instance.MaxScore)} ({Mathf.Round(Scorer.Instance.Score / Scorer.Instance.MaxScore * 100f)}%)\n" +
             $"• Fase: {Spawner.StageToLoad}\n" +
             $"• Nível Altura: {Spawner.Instance.InspiratoryHeightLevel}\n" +
             $"• Nível Profundidade: {Spawner.Instance.ExpiratoryHeightLevel}\n" +

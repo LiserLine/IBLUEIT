@@ -9,8 +9,8 @@ public enum GameResult
 
 public partial class Scorer : Singleton<Scorer>
 {
-    public float Score => Mathf.Round(score);
-    public float MaxScore => Mathf.Round(maxScore);
+    public float Score => score;
+    public float MaxScore => score;
 
     [SerializeField]
     [ReadOnly]
