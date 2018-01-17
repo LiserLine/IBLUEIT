@@ -3540,6 +3540,22 @@ MonoBehaviour:
     randomPitch: 0
     loop: 0
     playOnAwake: 0
+  - name: PlataformTimeUp
+    clip: {fileID: 8300000, guid: d3e597e0c25c0e04eb88c08f7ff85259, type: 3}
+    volume: 0.7
+    pitch: 1
+    randomVolume: 0
+    randomPitch: 0
+    loop: 0
+    playOnAwake: 0
+  - name: BonusTargetGet
+    clip: {fileID: 8300000, guid: b9514baa0475b9b45bb86315fe5f1b28, type: 3}
+    volume: 0.7
+    pitch: 1
+    randomVolume: 0
+    randomPitch: 0
+    loop: 0
+    playOnAwake: 0
 --- !u!4 &1733034029
 Transform:
   m_ObjectHideFlags: 0

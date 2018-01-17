@@ -9,6 +9,10 @@ public class TimerUI : MonoBehaviour
     [SerializeField]
     private Image fillSprite;
 
+    private void Awake() => StageManager.Instance.OnStageTimeUp += PlayTimeUpAudio;
+
+    private void PlayTimeUpAudio() => AudioManager.Instance.PlaySound("PlataformTimeUp");
+
     private void FixedUpdate()
     {
         if (StageManager.Instance.Timer / StageManager.Instance.PlaySessionTime > 1f)

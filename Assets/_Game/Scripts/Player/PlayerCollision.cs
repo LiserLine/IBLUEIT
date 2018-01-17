@@ -27,21 +27,26 @@ public partial class Player
 
     private void HitResult(GameObject hit)
     {
-        if (hit.tag.Contains("Target"))
+        if (hit.tag.Equals("WaterTarget") || hit.tag.Equals("AirTarget"))
         {
-            AudioManager.Instance.PlaySound("TargetGet");
             //ToDo - play animation get
             //ToDo - capture object
+            AudioManager.Instance.PlaySound("TargetGet");
         }
-        else if (hit.tag.Contains("Obstacle"))
+        else if (hit.tag.Equals("WaterObstacle") || hit.tag.Equals("AirObstacle"))
         {
             TakeDamage();
             StartCoroutine(DisableCollisionForXSeconds(invincibilityTime));
             animator.SetTrigger("DamageTaken");
+            AudioManager.Instance.PlaySound("PlayerDamage");
         }
-        else if (hit.tag.Contains("Relax"))
+        else if (hit.tag.Equals("RelaxCoin"))
         {
             AudioManager.Instance.PlaySound("BonusGet");
+        }
+        else if (hit.tag.Equals("BonusTarget"))
+        {
+            AudioManager.Instance.PlaySound("BonusTargetGet");
         }
     }
 
@@ -60,8 +65,6 @@ public partial class Player
             return;
 
         heartPoints--;
-
-        AudioManager.Instance.PlaySound("PlayerDamage");
 
         if (heartPoints > 0)
             return;
