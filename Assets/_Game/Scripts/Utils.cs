@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
@@ -19,9 +20,15 @@ public class Utils
         Debug.LogFormat("File saved: {0}", filepath);
     }
 
-    public static string ReadAllText(string filepath)
+    public static string ReadAllText(string filepath) => File.ReadAllText(filepath, Encoding.UTF8);
+
+    public static string MachineSpecs()
     {
-        return File.ReadAllText(filepath, Encoding.UTF8);
+        return "System Information:\n\n" +
+               $"- Machine Name: {Environment.MachineName}\n" +
+               $"- User Name: {Environment.UserName}\n" +
+               $"- OS Version: {Environment.OSVersion}\n" +
+               $"- Is64BitOperatingSystem: {Environment.Is64BitOperatingSystem}";
     }
 
     public static float CalculateMeanFlow(List<KeyValuePair<long, float>> respiratorySamples)
