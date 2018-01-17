@@ -110,6 +110,7 @@ public class CalibrationController : MonoBehaviour
                     #region Respiratory Frequency
 
                     case 2:
+                        SerialController.Instance.Recalibrate();
                         ResetExerciseCounter();
                         ResetFlowMeter();
                         runningStep = CalibrationSteps.RespiratoryFrequency;
@@ -170,6 +171,7 @@ public class CalibrationController : MonoBehaviour
                     #region Inspiration Peak
 
                     case 5:
+                        SerialController.Instance.Recalibrate();
                         PrepareNextExercise();
                         runningStep = CalibrationSteps.InspiratoryPeak;
                         dudeMsg = "Agora mediremos sua força. Quando o relógio ficar verde, INSPIRE bem forte.";
@@ -226,6 +228,7 @@ public class CalibrationController : MonoBehaviour
                     #region Expiration Peak
 
                     case 9:
+                        SerialController.Instance.Recalibrate();
                         dudeMsg = "Agora faremos ao contrário. Quando o relógio ficar verde, ASSOPRE bem forte.";
                         PrepareNextExercise();
                         runningStep = CalibrationSteps.ExpiratoryPeak;
@@ -287,6 +290,7 @@ public class CalibrationController : MonoBehaviour
                     #region Expiration Time
 
                     case 13:
+                        SerialController.Instance.Recalibrate();
                         PrepareNextExercise();
                         runningStep = CalibrationSteps.ExpiratoryFlow;
                         dudeMsg = "Agora vamos medir o tempo. Quando o relógio ficar verde, relaxe e ASSOPRE o máximo de tempo possível.";
@@ -361,6 +365,7 @@ public class CalibrationController : MonoBehaviour
                     #region Inspiration Time
 
                     case 17:
+                        SerialController.Instance.Recalibrate();
                         PrepareNextExercise();
                         runningStep = CalibrationSteps.InspiratoryFlow;
                         dudeMsg = "Agora, quando o relógio ficar verde, INSPIRE o máximo de tempo possível.";
