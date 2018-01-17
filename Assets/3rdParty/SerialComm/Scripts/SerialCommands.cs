@@ -8,27 +8,18 @@ public partial class SerialController
     /// Sends an "echo" message to device.
     /// </summary>
     [Button("Send Echo")]
-    private void SendEcho()
-    {
-        SendSerialMessage("e");
-    }
+    private void SendEcho() => SendSerialMessage("e");
 
     /// <summary>
     /// Send a message to device to start sending samples.
     /// </summary>
     [Button("Initialize Sampling")]
-    private void InitSampling()
-    {
-        SendSerialMessage("r");
-    }
+    public void InitSampling() => SendSerialMessage("r");
 
     /// <summary>
     /// Send a message to device to start sending samples after 1.5 seconds.
     /// </summary>
-    private void InitSamplingDelayed()
-    {
-        StartCoroutine(InitSampleDelayedCoroutine());
-    }
+    private void InitSamplingDelayed() => StartCoroutine(InitSampleDelayedCoroutine());
 
     private IEnumerator InitSampleDelayedCoroutine()
     {
@@ -40,17 +31,11 @@ public partial class SerialController
     /// Send a message to device to stop sampling.
     /// </summary>
     [Button("Stop Sampling")]
-    private void StopSampling()
-    {
-        SendSerialMessage("f");
-    }
+    public void StopSampling() => SendSerialMessage("f");
 
     /// <summary>
     /// Send a message to recalibrate device.
     /// </summary>
     [Button("Recalibrate")]
-    private void Recalibrate()
-    {
-        SendSerialMessage("c");
-    }
+    public void Recalibrate() => SendSerialMessage("c");
 }

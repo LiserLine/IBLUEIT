@@ -76,20 +76,13 @@ public partial class SerialController : Singleton<SerialController>
     // It creates a new thread that tries to connect to the serial device
     // and start reading from it.
     // ------------------------------------------------------------------------
-    private void Start()
-    {
-        StageManager.Instance.OnStageStart += InitSamplingDelayed;
-        Connect();
-    }
+    private void Start() => Connect();
 
     // ------------------------------------------------------------------------
     // Invoked whenever the SerialController gameobject is deactivated.
     // It stops and destroys the thread that was reading from the serial device.
     // ------------------------------------------------------------------------
-    private void OnDisable()
-    {
-        Disconnect();
-    }
+    private void OnDisable() => Disconnect();
 
     private void Connect()
     {
@@ -261,9 +254,5 @@ public partial class SerialController : Singleton<SerialController>
     // ------------------------------------------------------------------------
     public delegate void TearDownFunction();
     private TearDownFunction userDefinedTearDownFunction;
-    public void SetTearDownFunction(TearDownFunction userFunction)
-    {
-        this.userDefinedTearDownFunction = userFunction;
-    }
-
+    public void SetTearDownFunction(TearDownFunction userFunction) => this.userDefinedTearDownFunction = userFunction;
 }
