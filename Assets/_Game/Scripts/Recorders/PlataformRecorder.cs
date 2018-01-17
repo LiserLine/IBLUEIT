@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using UnityEngine;
 
 public class PlataformRecorder : Recorder<PlataformRecorder>
@@ -10,7 +9,6 @@ public class PlataformRecorder : Recorder<PlataformRecorder>
     {
         StageManager.Instance.OnStageStart += StartRecord;
         StageManager.Instance.OnStageEnd += StopRecord;
-
         sb = new StringBuilder();
     }
 
@@ -38,9 +36,10 @@ public class PlataformRecorder : Recorder<PlataformRecorder>
     {
         var path = @"savedata/pacients/" + Player.Data.Id + @"/" + $"{recordStart:yyyyMMdd-HHmmss}_" + FileName + ".csv";
 
-        sb.Insert(0, "StageId;Start;Stop;InsHeightLevel;ExpHeightLevel;ExpSizeLevel;Score;MaxScore;Mercy;PitacoThreshold\n" +
-                     $"{Spawner.StageToLoad};{recordStart:s};{recordStop:s};{Spawner.Instance.InspiratoryHeightLevel};{Spawner.Instance.ExpiratoryHeightLevel};" +
-                     $"{Spawner.Instance.ExpiratorySizeLevel};{Scorer.Instance.Score};{Scorer.Instance.MaxScore};{GameManager.Mercy};{GameManager.PitacoThreshold}" +
+        sb.Insert(0, "StageId;Start;Stop;InsHeightLevel;ExpHeightLevel;ExpSizeLevel;Score;MaxScore;Mercy;PitacoThreshold;PlataformMinScoreMultiplier\n" +
+                     $"{Spawner.StageToLoad};{recordStart:s};{recordStop:s};{Spawner.Instance.InspiratoryHeightLevel};" +
+                     $"{Spawner.Instance.ExpiratoryHeightLevel};{Spawner.Instance.ExpiratorySizeLevel};{Scorer.Instance.Score};" +
+                     $"{Scorer.Instance.MaxScore};{GameManager.Mercy};{GameManager.PitacoThreshold};{GameManager.PlataformMinScoreMultiplier}" +
                      "\ntime;tag;instanceId;posX;posY\n");
 
         Utils.WriteAllText(path, sb.ToString());

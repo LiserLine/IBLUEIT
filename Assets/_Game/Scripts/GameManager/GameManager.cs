@@ -4,6 +4,7 @@ public partial class GameManager : Singleton<GameManager>
 {
     public static float PitacoThreshold { get; private set; } = 7.5f;
     public static float Mercy { get; private set; } = 0.4f;
+    public static float PlataformMinScoreMultiplier { get; private set; } = 0.7f;
 
     private bool isLoaded;
 
@@ -26,5 +27,6 @@ public partial class GameManager : Singleton<GameManager>
 
         PitacoThreshold = Utils.ParseFloat(grid[1][0]);
         Mercy = Utils.ParseFloat(grid[1][1]);
+        PlataformMinScoreMultiplier = Mathf.Clamp(Utils.ParseFloat(grid[1][1]), 0.5f, 1f);
     }
 }
