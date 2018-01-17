@@ -27,6 +27,6 @@ public partial class GameManager : Singleton<GameManager>
 
         PitacoThreshold = Utils.ParseFloat(grid[1][0]);
         Mercy = Utils.ParseFloat(grid[1][1]);
-        PlataformMinScoreMultiplier = Mathf.Clamp(Utils.ParseFloat(grid[1][1]), 0.5f, 1f);
+        PlataformMinScoreMultiplier = Mathf.Clamp(Utils.ParseFloat(grid[1][2]), 0.5f, 1f);
     }
 }

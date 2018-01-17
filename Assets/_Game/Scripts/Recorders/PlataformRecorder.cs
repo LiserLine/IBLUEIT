@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.IO;
+using System.Text;
 using UnityEngine;
 
 public class PlataformRecorder : Recorder<PlataformRecorder>
@@ -34,14 +35,39 @@ public class PlataformRecorder : Recorder<PlataformRecorder>
 
     private void FlushData()
     {
+        FlushPlaySession();
+        sb.Clear();
+        UpdatePlataformHistory();
+    }
+
+    private void FlushPlaySession()
+    {
         var path = @"savedata/pacients/" + Player.Data.Id + @"/" + $"{recordStart:yyyyMMdd-HHmmss}_" + FileName + ".csv";
-
-        sb.Insert(0, "StageId;Start;Stop;InsHeightLevel;ExpHeightLevel;ExpSizeLevel;Score;MaxScore;Mercy;PitacoThreshold;PlataformMinScoreMultiplier\n" +
-                     $"{Spawner.StageToLoad};{recordStart:s};{recordStop:s};{Spawner.Instance.InspiratoryHeightLevel};" +
-                     $"{Spawner.Instance.ExpiratoryHeightLevel};{Spawner.Instance.ExpiratorySizeLevel};{Scorer.Instance.Score};" +
-                     $"{Scorer.Instance.MaxScore};{GameManager.Mercy};{GameManager.PitacoThreshold};{GameManager.PlataformMinScoreMultiplier}" +
-                     "\ntime;tag;instanceId;posX;posY\n");
-
+        sb.Insert(0, $"{PlataformCsvKeys}\n{GetPlataformData()}\n\n{ObjectsCsvKeys}\n");
         Utils.WriteAllText(path, sb.ToString());
+    }
+
+    private const string ObjectsCsvKeys = "time;tag;instanceId;posX;posY";
+
+    private const string PlataformCsvKeys = "StageId;Start;Stop;InsHeightLevel;ExpHeightLevel;ExpSizeLevel;" +
+                                            "Score;MaxScore;Mercy;PitacoThreshold;PlataformMinScoreMultiplier";
+
+    private string GetPlataformData() =>
+        $"{Spawner.StageToLoad};{recordStart:s};{recordStop:s};{Spawner.Instance.InspiratoryHeightLevel};" +
+        $"{Spawner.Instance.ExpiratoryHeightLevel};{Spawner.Instance.ExpiratorySizeLevel};{Scorer.Instance.Score};" +
+        $"{Scorer.Instance.MaxScore};{GameManager.Mercy};{GameManager.PitacoThreshold};{GameManager.PlataformMinScoreMultiplier}";
+
+    private void UpdatePlataformHistory()
+    {
+        var path = @"savedata/pacients/" + Player.Data.Id + @"/_PlataformHistory.csv";
+
+        if (!File.Exists(path))
+        {
+            sb.AppendLine(PlataformCsvKeys);
+            sb.Append(GetPlataformData());
+            Utils.WriteAllText(path, sb.ToString());
+        }
+        else
+            File.AppendAllText(path, $"\n{GetPlataformData()}");
     }
 }
