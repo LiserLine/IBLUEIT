@@ -30,7 +30,7 @@ public class CalibrationController : MonoBehaviour
     private ClockArrowSpin clockArrowSpin;
 
     private bool executeStep, sceneOpen, firstTimePlaying, acceptingValues;
-    private int stepNum = 21;
+    private int stepNum = 2;
     private int exerciseCounter;
     private const int flowTimeThreshold = 1000; // In Miliseconds
     private const int respiratoryFrequencyThreshold = 700; //In Milliseconds //ToDo - Test this variable before implementing in CSV
@@ -216,6 +216,7 @@ public class CalibrationController : MonoBehaviour
                         }
 
                     case 7:
+
                         DudeCongratulate();
                         break;
 
@@ -440,6 +441,7 @@ public class CalibrationController : MonoBehaviour
                     #region Ending Steps
 
                     case 21:
+                        AudioManager.Instance.PlaySound("Claps");
                         dudeMsg = "Ótimo, agora você está pronto para começar a jogar! Bom jogo!";
                         DudeShowMessage(dudeMsg);
                         SetNextStep();
@@ -480,10 +482,7 @@ public class CalibrationController : MonoBehaviour
     /// Method to execute next step of calibration.
     /// Some buttons use this to execute the next step.
     /// </summary>
-    public void ExecuteNextStep()
-    {
-        executeStep = true;
-    }
+    public void ExecuteNextStep() => executeStep = true;
 
     /// <summary>
     /// Sets a step to be executed on next step iteration.
@@ -520,7 +519,7 @@ public class CalibrationController : MonoBehaviour
     {
         var dudeMsg = "Muito bem!";
         DudeShowMessage(dudeMsg);
-        //todo - quicky claps sounds
+        AudioManager.Instance.PlaySound("Success");
         SetStep(exerciseCounter == 3 ? stepNum + 2 : stepNum + 1);
     }
 
@@ -533,6 +532,7 @@ public class CalibrationController : MonoBehaviour
 
     private void DudeWarnUnknownFlow()
     {
+        AudioManager.Instance.PlaySound("Failure");
         var dudeMsg = "Não consegui medir sua respiração. Vamos tentar novamente?";
         DudeShowMessage(dudeMsg);
         SetStep(stepNum);

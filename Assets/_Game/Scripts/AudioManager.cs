@@ -37,7 +37,7 @@ public class AudioManager : Singleton<AudioManager>
 
     public void PauseSounds()
     {
-        foreach (var sound in sounds.Where(s => s.loop))
+        foreach (var sound in sounds.Where(s => s.loop && !s.name.Contains("BGM")))
             sound.Pause();
     }
 
