@@ -9,6 +9,6 @@
 
         sensorValue = sensorValue < -GameMaster.PitacoThreshold || sensorValue > GameMaster.PitacoThreshold ? sensorValue : 0f;
 
-        this.animator.Play(sensorValue > 0 ? "Dolphin-Jump" : "Dolphin-Move");
+        this.animator.Play(sensorValue < 0 ? "Dolphin-Jump" : "Dolphin-Move");
     }
 }

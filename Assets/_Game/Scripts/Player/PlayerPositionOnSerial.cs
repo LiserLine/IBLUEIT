@@ -18,7 +18,7 @@ public partial class Player
         nextPosition = Mathf.Clamp(nextPosition, -CameraLimits.Boundary, CameraLimits.Boundary);
 
         var from = this.transform.position;
-        var to = new Vector3(this.transform.position.x, nextPosition, this.transform.position.z);
+        var to = new Vector3(this.transform.position.x, -nextPosition, this.transform.position.z);
 
         this.transform.position = Vector3.Lerp(from, to, Time.deltaTime * 10f);
 
