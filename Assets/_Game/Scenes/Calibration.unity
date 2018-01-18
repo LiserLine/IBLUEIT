@@ -618,7 +618,7 @@ MonoBehaviour:
   sounds:
   - name: BGM_Calibration
     clip: {fileID: 8300000, guid: 3e60cc3249e1e5a44863b8021b4d33f5, type: 3}
-    volume: 0.7
+    volume: 0.3
     pitch: 1
     randomVolume: 0
     randomPitch: 0
@@ -634,11 +634,11 @@ MonoBehaviour:
     playOnAwake: 0
   - name: Claps
     clip: {fileID: 8300000, guid: bb996853239d2f041bd8fd9cdcea0be0, type: 3}
-    volume: 0.5
+    volume: 1.5
     pitch: 1
     randomVolume: 0.1
     randomPitch: 0
-    loop: 0
+    loop: 1
     playOnAwake: 0
   - name: Success
     clip: {fileID: 8300000, guid: 123f8d024d281af4391060555b8b95f0, type: 3}
@@ -820,6 +820,11 @@ Prefab:
     - target: {fileID: 1066319680065006, guid: 0e15757e75d1fba47b3b451052327148, type: 2}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114370396941397342, guid: 0e15757e75d1fba47b3b451052327148,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0e15757e75d1fba47b3b451052327148, type: 2}
