@@ -17,6 +17,9 @@ public class ErrorHandler : MonoBehaviour
 
     private void OnLogMessageReceived(string message, string stackTrace, LogType type)
     {
+        if (hasError || !this.isActiveAndEnabled)
+            return;
+
         if (type != LogType.Exception || type == LogType.Error)
             return;
 
