@@ -641,7 +641,7 @@ MonoBehaviour:
     loop: 0
     playOnAwake: 0
   - name: Success
-    clip: {fileID: 8300000, guid: 568da353f6b04c14dbd1eac262748f7d, type: 3}
+    clip: {fileID: 8300000, guid: 123f8d024d281af4391060555b8b95f0, type: 3}
     volume: 0.5
     pitch: 1
     randomVolume: 0.1
