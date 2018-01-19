@@ -1,7 +1,7 @@
 ﻿StageId;SpawnObjects;SpawnDelay;GameDifficulty;ObjectSpeed;Target_HeightIncrement;Target_LevelUp;Target_LevelDown;Obstacle_SizeIncrement;Obstacle_LevelUp;Obstacle_LevelDown;RelaxTimeBonusTrigger;PlaySessionTime
 1;0;3;30;1;5;2;1;0;0;0;1;45
-2;0;3;30;1;10;2;1;0;0;0;2;60
-3;0;3;30;1;15;2;1;0;0;0;2;60
+2;0;3;30;1,25;10;2;1;0;0;0;2;60
+3;0;3;30;1,25;15;2;1;0;0;0;2;60
 4;0;4;40;1,5;5;2;1;0;0;0;2;60
 5;0;4;40;1,5;10;2;1;0;0;0;2;60
 6;0;4;40;1,5;15;2;1;0;0;0;2;60
