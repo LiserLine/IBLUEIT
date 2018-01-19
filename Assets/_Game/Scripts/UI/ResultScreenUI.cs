@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class ResultScreenUI : GenericUI<ResultScreenUI>
+public class ResultScreenUI : BasicUI<ResultScreenUI>
 {
     [SerializeField]
     private Text finalResult, motivationText, resultInfo;

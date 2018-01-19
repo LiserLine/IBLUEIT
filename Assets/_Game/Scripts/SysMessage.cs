@@ -24,5 +24,5 @@ public class SysMessage
         MessageBox.Show(question, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
     public static DialogResult OkCancelQuestion(string question) =>
-        MessageBox.Show(question, "", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+        MessageBox.Show(question, "", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
 }

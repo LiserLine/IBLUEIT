@@ -1,6 +1,6 @@
 ﻿using UnityEngine.UI;
 
-public class LoadingScreenUI : GenericUI<LoadingScreenUI>
+public class LoadingScreenUI : BasicUI<LoadingScreenUI>
 {
     public Slider Slider;
 }
