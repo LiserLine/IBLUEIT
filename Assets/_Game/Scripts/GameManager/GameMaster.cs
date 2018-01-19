@@ -29,4 +29,6 @@ public partial class GameMaster : Singleton<GameMaster>
         Mercy = Utils.ParseFloat(grid[1][1]);
         PlataformMinScoreMultiplier = Mathf.Clamp(Utils.ParseFloat(grid[1][2]), 0.5f, 1f);
     }
+
+    public void QuitGame() => Application.Quit();
 }
