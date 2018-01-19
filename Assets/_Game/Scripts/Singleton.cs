@@ -83,6 +83,7 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
     private void OnDestroy()
     {
-        _instance = null;
+        if (!Persistent)
+            _instance = null;
     }
 }
