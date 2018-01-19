@@ -9,10 +9,11 @@ public partial class Player : Singleton<Player>
     [BoxGroup("Properties")]
     private int heartPoints = 5;
 
-    private void OnEnable()
+    private void Start()
     {
         SerialController.Instance.OnSerialMessageReceived += PositionOnSerial;
         SerialController.Instance.OnSerialMessageReceived += AnimationOnSerial;
+        StageManager.Instance.OnStageEnd += SaveRecords;
     }
 
     private void Update()
@@ -22,5 +23,12 @@ public partial class Player : Singleton<Player>
         Move();
 #endif
 
+    }
+
+    private void SaveRecords()
+    {
+        PlayerData.Player.SessionsDone++;
+        PlayerData.Player.TotalScore += Scorer.Instance.Score;
+        PlayerDb.Instance.Save();
     }
 }
