@@ -31,8 +31,17 @@ public partial class Scorer : Singleton<Scorer>
         StageManager.Instance.OnStageEnd += CalculateResult;
     }
 
-    private void CalculateResult() =>
-        OnResultCalculated?.Invoke(score >= maxScore * GameMaster.PlataformMinScoreMultiplier ? GameResult.Success : GameResult.Failure);
+    private void CalculateResult()
+    {
+        var result = score >= maxScore * GameMaster.PlataformMinScoreMultiplier
+            ? GameResult.Success
+            : GameResult.Failure;
+
+        if (result == GameResult.Success)
+            PlayerData.Player.StagesOpened++;
+
+        OnResultCalculated?.Invoke(result);
+    }
 
     private void MaxScoreUpdate(EnemyType enemytype, ref GameObject go1, ref GameObject go2)
     {
@@ -51,18 +60,10 @@ public partial class Scorer : Singleton<Scorer>
     private void Player_OnEnemyHit(GameObject hit)
     {
         if (hit.tag.Equals("AirTarget") || hit.tag.Equals("WaterTarget") || hit.tag.Equals("RelaxCoin"))
-        {
             score += CalculateTargetScore(hit.transform.position.y, Spawner.Instance.SpawnDelay, Spawner.Instance.GameDifficulty);
-        }
     }
 
-    private float CalculateTargetScore(float height, float SpawnDelay, float GameDifficulty)
-    {
-        return Mathf.Abs(height) * (1f + (1f / SpawnDelay)) * GameDifficulty;
-    }
+    private float CalculateTargetScore(float height, float SpawnDelay, float GameDifficulty) => Mathf.Abs(height) * (1f + (1f / SpawnDelay)) * GameDifficulty;
 
-    private float CalculateObstacleScore(float size, float SpawnDelay, float GameDifficulty)
-    {
-        return size * (1f + (1f / SpawnDelay)) * GameDifficulty;
-    }
+    private float CalculateObstacleScore(float size, float SpawnDelay, float GameDifficulty) => size * (1f + (1f / SpawnDelay)) * GameDifficulty;
 }
