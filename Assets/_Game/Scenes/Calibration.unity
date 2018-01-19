@@ -624,7 +624,7 @@ MonoBehaviour:
     randomPitch: 0
     loop: 1
     playOnAwake: 1
-  - name: Failed
+  - name: Failure
     clip: {fileID: 8300000, guid: c63556e2bf1b7d24784c11e343691536, type: 3}
     volume: 0.7
     pitch: 1
