@@ -297,7 +297,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a31848f844442f248af8d4137926b387, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LocalizationFileName: localizationData_english.json
 --- !u!114 &352003894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -522,7 +521,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Persistent: 0
-  loadingScreen: {fileID: 0}
+  loadingScreen: {fileID: 1809721913}
 --- !u!4 &595595725
 Transform:
   m_ObjectHideFlags: 0
@@ -670,7 +669,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a31848f844442f248af8d4137926b387, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LocalizationFileName: localizationData_english.json
 --- !u!1 &960662803
 GameObject:
   m_ObjectHideFlags: 0
@@ -921,7 +919,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a31848f844442f248af8d4137926b387, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LocalizationFileName: localizationData_brazilian.json
 --- !u!114 &1065739068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1218,7 +1215,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a31848f844442f248af8d4137926b387, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LocalizationFileName: localizationData_brazilian.json
+--- !u!114 &1809721913 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114429642048961474, guid: c4538a95531bc684e81245e6428d017b,
+    type: 2}
+  m_PrefabInternal: {fileID: 1172409990}
+  m_Script: {fileID: 11500000, guid: afd7604c028b90f408f1332d8fd5aa8a, type: 3}
 --- !u!1 &1921685849
 GameObject:
   m_ObjectHideFlags: 0
