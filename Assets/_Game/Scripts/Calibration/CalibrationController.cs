@@ -16,7 +16,7 @@ public enum CalibrationSteps
 }
 
 //ToDo - Implement StateMachine
-//ToDo - UI should inherit GenericUI
+//ToDo - UI should inherit BasicUI
 
 public class CalibrationController : MonoBehaviour
 {
@@ -161,6 +161,7 @@ public class CalibrationController : MonoBehaviour
                         }
 
                     case 4:
+                        AudioManager.Instance.PlaySound("Success");
                         dudeMsg = "Muito bem! Agora, vamos continuar com os outros exercícios.";
                         DudeShowMessage(dudeMsg);
                         SetNextStep();
@@ -532,9 +533,9 @@ public class CalibrationController : MonoBehaviour
 
     private void DudeWarnUnknownFlow()
     {
-        AudioManager.Instance.PlaySound("Failure");
         var dudeMsg = "Não consegui medir sua respiração. Vamos tentar novamente?";
         DudeShowMessage(dudeMsg);
+        AudioManager.Instance.PlaySound("Failure");
         SetStep(stepNum);
     }
 
