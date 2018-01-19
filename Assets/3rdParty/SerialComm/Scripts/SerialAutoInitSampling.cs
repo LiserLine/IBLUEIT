@@ -17,9 +17,11 @@ public class SerialAutoInitSampling : MonoBehaviour
 
         if(serialController == null)
             throw new Exception("Serial Controller not found in scene!");
+
+        serialController.OnSerialConnected += AutoSample;
     }
 
-    private void Start() => StartCoroutine(InitSampleDelayedCoroutine());
+    private void AutoSample() => StartCoroutine(InitSampleDelayedCoroutine());
 
     private IEnumerator InitSampleDelayedCoroutine()
     {

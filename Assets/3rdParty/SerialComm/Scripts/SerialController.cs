@@ -93,6 +93,7 @@ public partial class SerialController : Singleton<SerialController>
 
         serialThread = new SerialThread(portName, baudRate, reconnectionDelay,
             maxUnreadMessages);
+
         thread = new Thread(serialThread.RunForever);
         thread.Start();
 
@@ -140,7 +141,7 @@ public partial class SerialController : Singleton<SerialController>
     private string AutoConnect()
     {
         var ports = GetPortNames();
-        
+
         if (ports.Length < 1)
             throw new Exception("No compatible serial device found.");
 
@@ -209,32 +210,36 @@ public partial class SerialController : Singleton<SerialController>
     // ------------------------------------------------------------------------
     private void Update()
     {
-        if (!IsConnected)
-            return;
-
         // Read the next message from the queue
-        var message = serialThread.ReadSerialMessage();
+        var message = serialThread?.ReadSerialMessage();
         if (message == null)
             return;
 
         // Check if the message is plain data or a connect/disconnect event.
-        if (ReferenceEquals(message, SERIAL_DEVICE_CONNECTED))
+        if (string.Equals(message, SERIAL_DEVICE_CONNECTED))
+        {
+            isConnected = true;
             OnSerialConnected?.Invoke();
-        else if (ReferenceEquals(message, SERIAL_DEVICE_DISCONNECTED))
+        }
+        else if (string.Equals(message, SERIAL_DEVICE_DISCONNECTED))
+        {
+            isConnected = false;
             OnSerialDisconnected?.Invoke();
+        }
         else
+        {
+            if (!IsConnected)
+                return;
+
             OnSerialMessageReceived?.Invoke(message);
+        }
     }
 
     // ------------------------------------------------------------------------
     // Returns a new unread message from the serial device. You only need to
     // call this if you preferrred to not provide a message listener.
     // ------------------------------------------------------------------------
-    public string ReadSerialMessage()
-    {
-        // Read the next message from the queue
-        return serialThread.ReadSerialMessage();
-    }
+    public string ReadSerialMessage() => serialThread.ReadSerialMessage();
 
     // ------------------------------------------------------------------------
     // Puts a message in the outgoing queue. The thread object will send the
