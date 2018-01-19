@@ -10,10 +10,13 @@ public class ErrorHandler : MonoBehaviour
 
     private void Awake()
     {
-        Application.logMessageReceived += OnLogMessageReceived;
         windowRect = new Rect(0, 0, Screen.width, Screen.height);
         labelRect = new Rect(Screen.width * 0.05f, Screen.height * 0.05f, Screen.width * 0.95f, Screen.height * 0.95f);
     }
+
+    private void OnEnable() => Application.logMessageReceived += OnLogMessageReceived;
+
+    private void OnDisable() => Application.logMessageReceived -= OnLogMessageReceived;
 
     private void OnLogMessageReceived(string message, string stackTrace, LogType type)
     {
@@ -57,7 +60,10 @@ public class ErrorHandler : MonoBehaviour
 
     public static void FlushData()
     {
+#if UNITY_EDITOR
+#else
         ScreenCapture.CaptureScreenshot($"ibit_error_{DateTime.Now:yyyyMMdd-HHmmss}.png");
         Application.Quit();
+#endif
     }
 }
