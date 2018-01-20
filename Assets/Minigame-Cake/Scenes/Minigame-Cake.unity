@@ -1457,7 +1457,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1719879428}
         m_MethodName: LoadScene
         m_Mode: 3
         m_Arguments:
@@ -2768,7 +2768,7 @@ Prefab:
     - target: {fileID: 224435435365577722, guid: c4538a95531bc684e81245e6428d017b,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c4538a95531bc684e81245e6428d017b, type: 2}
