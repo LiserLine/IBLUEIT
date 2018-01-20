@@ -46,7 +46,6 @@ public class CalibrationController : MonoBehaviour
         stopwatch = new Stopwatch();
         respiratorySamples = new Dictionary<long, float>();
         firstTimePlaying = !PlayerData.Player.CalibrationDone;
-        PlayerData.Player.CalibrationDone = false;
         firstTimeText.text = "Primeiro, precisamos calibrar a sua respiração. Vamos lá?";
         enterButton.SetActive(true);
         SerialController.Instance.OnSerialMessageReceived += OnSerialMessageReceived;
