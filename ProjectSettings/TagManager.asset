@@ -4,10 +4,12 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - SerialController
-  - SceneController
-  - SpawnedObstacle
-  - SpawnedTarget
+  - AirObstacle
+  - AirTarget
+  - WaterObstacle
+  - WaterTarget
+  - BonusTarget
+  - RelaxCoin
   layers:
   - Default
   - TransparentFX
@@ -19,7 +21,7 @@ TagManager:
   - 
   - Player
   - Enemy
-  - 
+  - Scorer
   - 
   - 
   - 

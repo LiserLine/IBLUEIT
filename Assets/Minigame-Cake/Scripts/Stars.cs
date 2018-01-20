@@ -1,35 +1,37 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class Stars : MonoBehaviour {
-    
-    //Conta quantas estrelas o jogador alcançou.
+public class Stars : MonoBehaviour
+{
+
+    /// <summary>
+    /// //Conta quantas estrelas o jogador alcançou.
+    /// </summary>
     public int score;
 
-    //Ajusta os sprites de estrela vazia.
+    /// <summary>
+    /// Ajusta os sprites de estrela vazia.
+    /// </summary>
     public Sprite[] star = new Sprite[3];
-	public Sprite starOn;
+    public Sprite starOn;
 
     [SerializeField]
     public ScoreMenu scoreMenu;
 
-    //Ajusta a velocidade de preenchimento.
+    /// <summary>
+    /// Ajusta a velocidade de preenchimento.
+    /// </summary>
     [SerializeField]
     private float lerpSpeed;
 
-    //Quantidade de preenchimento.
-
-    //Define a imagem de preenchimento.
+    /// <summary>
+    /// //Define a imagem de preenchimento.
+    /// </summary>
     [SerializeField]
     private Image[] content = new Image[3];
 
-    public void FillStars(int index)
-    {
-        content[index].fillAmount = 1;
+    public void FillStars(int index) => content[index].fillAmount = 1;
 
-    }
     public void UnfillStars()
     {
         content[0].fillAmount = 0;
@@ -39,15 +41,11 @@ public class Stars : MonoBehaviour {
 
     public void FillStarsFinal(int starQty)
     {
-        for (int i = 0; i < starQty; i++)
+        for (var i = 0; i < starQty; i++)
         {
             content[i].fillAmount = 1;
         }
-
     }
 
-    public void OnFinish()
-    {
-        scoreMenu.ToggleScoreMenu();
-    }
+    public void OnFinish() => scoreMenu.ToggleScoreMenu();
 }

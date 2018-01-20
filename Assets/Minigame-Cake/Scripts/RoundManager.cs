@@ -32,16 +32,19 @@ public class RoundManager : MonoBehaviour
                         displayHowTo.text = "Pressione [Enter] e assopre \n o mais forte que conseguir dentro do tempo.";
                         break;
                     case 2:
+
+                        SerialController.Instance.InitSampling();
+
                         displayHowTo.text = "";
 
-                        while (Player.sensorValue <= GameConstants.PitacoThreshold && jogou)
+                        while (Player.sensorValue <= GameMaster.PitacoThreshold && jogou)
                             yield return null;
 
                         StopCountdown();
                         paraTempo = true;
                         //saiu do 0
 
-                        while (Player.sensorValue > GameConstants.PitacoThreshold && jogou)
+                        while (Player.sensorValue > GameMaster.PitacoThreshold && jogou)
                         {
                             //Debug.Log($"Player.sensorValue > GameConstants.PitacoThreshold {Player.sensorValue > GameConstants.PitacoThreshold}");
 
@@ -65,7 +68,7 @@ public class RoundManager : MonoBehaviour
 
                     case 4:
                         displayHowTo.text = "";
-                        while (Player.sensorValue <= GameConstants.PitacoThreshold && jogou)
+                        while (Player.sensorValue <= GameMaster.PitacoThreshold && jogou)
                         {
                             yield return null;
                         }
@@ -73,7 +76,7 @@ public class RoundManager : MonoBehaviour
                         paraTempo = true;
                         //saiu do 0
 
-                        while (Player.sensorValue > GameConstants.PitacoThreshold && jogou)
+                        while (Player.sensorValue > GameMaster.PitacoThreshold && jogou)
                         {
                             //Debug.Log($"Player.sensorValue > GameConstants.PitacoThreshold {Player.sensorValue > GameConstants.PitacoThreshold}");
 
@@ -97,14 +100,14 @@ public class RoundManager : MonoBehaviour
                     case 6:
                         displayHowTo.text = "";
 
-                        while (Player.sensorValue <= GameConstants.PitacoThreshold && jogou)
+                        while (Player.sensorValue <= GameMaster.PitacoThreshold && jogou)
                             yield return null;
 
                         StopCountdown();
                         paraTempo = true;
                         //saiu do 0
 
-                        while (Player.sensorValue > GameConstants.PitacoThreshold && jogou)
+                        while (Player.sensorValue > GameMaster.PitacoThreshold && jogou)
                         {
                             //Debug.Log($"Player.sensorValue > GameConstants.PitacoThreshold {Player.sensorValue > GameConstants.PitacoThreshold}");
 
@@ -130,7 +133,7 @@ public class RoundManager : MonoBehaviour
 
     public void FlowAction(float flowValue)
     {
-        var picoJogador = GameManager.Instance.Player.RespiratoryInfo.ExpiratoryPeakFlow;
+        var picoJogador = PlayerData.Player.RespiratoryInfo.ExpiratoryPeakFlow;
         var percentage = flowValue / picoJogador;
         //Debug.Log(percentage);
         if (percentage > 0.25f)
@@ -190,15 +193,13 @@ public class RoundManager : MonoBehaviour
 
     public void StopCountdown()
     {
-
         timer = 10;
         displayTimer.text = "";
-
     }
 
     #endregion;
 
-    void Start()
+    private void Start()
     {
         passo = 0;
         ppasso = false;
@@ -210,7 +211,7 @@ public class RoundManager : MonoBehaviour
 
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         //print(passo);
         if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))

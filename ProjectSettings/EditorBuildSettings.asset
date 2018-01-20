@@ -6,14 +6,17 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/LocalizationScene.unity
-    guid: 5e74f0c6f89598e4e97597e78a042c81
+    path: Assets/_Game/Scenes/Main.unity
+    guid: da8b9306542bb774eacb85b49c2fcade
   - enabled: 1
-    path: Assets/Scenes/MainScene.unity
-    guid: 3f3be25d3ec91574ab24e5a20fc7f28b
+    path: Assets/_Game/Scenes/Plataform.unity
+    guid: acbc6c158c4ade74eaac2c5772ba926d
   - enabled: 1
-    path: Assets/Scenes/PlataformScene.unity
-    guid: 0253faebb3010e546971d811f647be4b
-  - enabled: 1
-    path: Assets/Scenes/CalibrationScene.unity
+    path: Assets/_Game/Scenes/Calibration.unity
     guid: 9b6702d68c29bae4db07053c861c291b
+  - enabled: 1
+    path: Assets/Minigame-Cake/Scenes/Minigame-Cake.unity
+    guid: ac1cce6bc03242e4fa7abd7eeca54c07
+  - enabled: 1
+    path: Assets/_Game/Scenes/Localization.unity
+    guid: 25a216bf04b7d2a40b54a0305cfac560

@@ -37,8 +37,8 @@
             "Value": "(nome)"
         },
         {
-            "Key": "LabelDisfunctions",
-            "Value": "Disfunções:"
+            "Key": "LabelConditions",
+            "Value": "Condições:"
         },
         {
             "Key": "ToggleNormalLabel",
@@ -99,6 +99,14 @@
         {
             "Key": "txtSessions",
             "Value": "Sessões"
+        },
+        {
+            "Key": "LabelBDay",
+            "Value": "Data aniversário:"
+        },
+        {
+            "Key": "LabelRegister",
+            "Value": "Cadastrar"
         }
     ]
 }
