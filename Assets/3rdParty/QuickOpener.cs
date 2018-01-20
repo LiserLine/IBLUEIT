@@ -35,6 +35,7 @@
  *       -- Class creation, removed many other components from a free asset. [1]
 //----------------------------------------------------------------------*/
 
+#if UNITY_EDITOR
 using UnityEditor;
 using System.IO;
 using UnityEngine;
@@ -73,7 +74,7 @@ public class QuickOpener // [1]
 #if UNITY_EDITOR_OSX
             string path = GetAssetStorePackagesPathOnMac();
 #elif UNITY_EDITOR_WIN
-            string path = GetAssetStorePackagesPathOnWindows();
+        string path = GetAssetStorePackagesPathOnWindows();
 #endif
 
         Reveal(path);
@@ -95,9 +96,9 @@ public class QuickOpener // [1]
 			string UnityFolder = Path.Combine(logsFolder, "Unity");
 			Reveal(UnityFolder);
 #elif UNITY_EDITOR_WIN
-            string rootFolderPath = System.Environment.ExpandEnvironmentVariables("%localappdata%");
-            string unityFolder = Path.Combine(rootFolderPath, "Unity");
-            Reveal(Path.Combine(unityFolder, "Editor"));
+        string rootFolderPath = System.Environment.ExpandEnvironmentVariables("%localappdata%");
+        string unityFolder = Path.Combine(rootFolderPath, "Unity");
+        Reveal(Path.Combine(unityFolder, "Editor"));
 #endif
     }
 
@@ -127,3 +128,4 @@ public class QuickOpener // [1]
         EditorUtility.RevealInFinder(folderPath);
     }
 }
+#endif
