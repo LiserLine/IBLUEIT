@@ -17,9 +17,9 @@ public class PopulateSavesList : MonoBehaviour
             children.ForEach(Destroy);
         }
 
-        var obstructiveTranslation = LocalizationManager.Instance?.GetLocalizedValue("txtObstructive");
-        var restrictiveTranslation = LocalizationManager.Instance?.GetLocalizedValue("txtRestrictive");
-        var normalTranslation = LocalizationManager.Instance?.GetLocalizedValue("txtNormal");
+        var obstructiveTranslation = "Obstrutivo"; //LocalizationManager.Instance?.GetLocalizedValue("txtObstructive");
+        var restrictiveTranslation = "Restritivo"; //LocalizationManager.Instance?.GetLocalizedValue("txtRestrictive");
+        var normalTranslation = "Normal"; //LocalizationManager.Instance?.GetLocalizedValue("txtNormal");
 
         foreach (var plr in PlayerDb.Instance.PlayerList)
         {
