@@ -8,4 +8,6 @@
         Hide();
         FindObjectOfType<PlayerMenuUI>().Show();
     }
+
+    public void QuitGame() => GameMaster.Instance.QuitGame();
 }
