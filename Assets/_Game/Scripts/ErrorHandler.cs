@@ -34,7 +34,7 @@ public class ErrorHandler : MonoBehaviour
         hasError = true;
 
         SysMessage.Error("The game will be closed because of an unexpected program error. Please report this error to the developer.\n\n" +
-                         $"A screenshot will be saved at\"{Environment.CurrentDirectory}\".\n\n{errorMsg}",
+                         $"A screenshot will be saved at\"{Environment.CurrentDirectory}\".\n\n{errorMsg}\n\n{stack}",
             "[Error Handler] An unexpected error has occured!!!");
 
         FlushData();
