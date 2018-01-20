@@ -39,6 +39,7 @@ public class CalibrationController : MonoBehaviour
     private Stopwatch stopwatch;
     private Dictionary<long, float> respiratorySamples;
     private CalibrationSteps runningStep;
+    private bool calibrationDone;
 
     private void Start()
     {
@@ -62,7 +63,7 @@ public class CalibrationController : MonoBehaviour
 
     private IEnumerator ScreenSteps()
     {
-        while (!PlayerData.Player.CalibrationDone)
+        while (!calibrationDone)
         {
             if (executeStep)
             {
@@ -449,6 +450,7 @@ public class CalibrationController : MonoBehaviour
 
                     case 22:
                         PlayerData.Player.CalibrationDone = true;
+                        calibrationDone = true;
                         PlayerData.Player.RespiratoryInfo = respiratoryInfoTemp;
                         PlayerDb.Instance.Save();
 
