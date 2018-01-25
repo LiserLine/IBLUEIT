@@ -33,6 +33,7 @@ public class StageManager : Singleton<StageManager>
         SerialController.Instance.OnSerialDisconnected += PauseOnDisconnect;
         Player.Instance.OnPlayerDeath += EndStage;
         Spawner.Instance.OnRelaxTimeStart += Spawner_OnRelaxTimeStart;
+        Time.timeScale = 1f;
     }
 
     private void Spawner_OnRelaxTimeStart()
@@ -51,7 +52,7 @@ public class StageManager : Singleton<StageManager>
             else
                 return;
         }
-
+        
         isRunning = true;
         OnStageStart?.Invoke();
     }
