@@ -40,7 +40,7 @@ public partial class Spawner : Singleton<Spawner>
     [SerializeField]
     private float gameDifficulty = 50f;
 
-    private readonly float[] gameDifficulties = { 30f, 40f, 50f, 60f, 70f, 80f, 90f, 100f };
+    private readonly float[] gameDifficulties = { 20f, 30f, 40f, 50f, 60f, 70f, 80f, 90f, 100f };
 
     [BoxGroup("Stage Settings")]
     [Slider(1f, 5f)]
