@@ -24,7 +24,7 @@ public partial class Spawner
     public delegate void RelaxTimeStartHandler();
     public event RelaxTimeStartHandler OnRelaxTimeStart;
 
-    private const float minDistanceBetweenSpawns = 3.5f;
+    private const float minDistanceBetweenSpawns = 2.5f;
 
     [Button("Spawn Objects")]
     private void Spawn()
@@ -69,10 +69,7 @@ public partial class Spawner
             first.transform.Translate(-relativeDistance + minDistanceBetweenSpawns, 0f, 0f);
     }
 
-    private void UpdateSpeed(ref GameObject go)
-    {
-        go.GetComponent<MoveObject>().speed = objectSpeed;
-    }
+    private void UpdateSpeed(ref GameObject go) => go.GetComponent<MoveObject>().speed = objectSpeed;
 
     #region Targets
 
