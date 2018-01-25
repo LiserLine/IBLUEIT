@@ -16,7 +16,7 @@ public class TimerUI : MonoBehaviour
     private void FixedUpdate()
     {
         if (StageManager.Instance.Timer / StageManager.Instance.PlaySessionTime > 1f)
-            return;
+            fillSprite.color = Color.cyan;
 
         fillSprite.fillAmount = StageManager.Instance.Timer / StageManager.Instance.PlaySessionTime;
         timerText.text = Mathf.Round(StageManager.Instance.Timer).ToString();
