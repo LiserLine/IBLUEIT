@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,6 +7,9 @@ public class PopulateStageList : MonoBehaviour
 {
     [SerializeField]
     private GameObject buttonPrefab;
+
+    [SerializeField]
+    private Scrollbar scrollbar;
 
     private bool populated;
 
@@ -35,6 +39,14 @@ public class PopulateStageList : MonoBehaviour
                 btnPrefab.GetComponent<Button>().interactable = false;
         }
 
+        StartCoroutine(Grip());
+
         populated = true;
+    }
+
+    private IEnumerator Grip()
+    {
+        yield return null;
+        scrollbar.value = 1;
     }
 }
