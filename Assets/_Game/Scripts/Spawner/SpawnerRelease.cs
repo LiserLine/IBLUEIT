@@ -53,7 +53,7 @@ public partial class Spawner
         }
     }
 
-    private void DistanciateSpawns(ref GameObject first)
+    private void DistanciateSpawns(ref GameObject next)
     {
         if (objectsOnScene.Count < 1)
             return;
@@ -61,12 +61,12 @@ public partial class Spawner
         var lastObj = objectsOnScene.Last();
         var lastPos = lastObj.transform.position.x + lastObj.transform.localScale.x / 2f;
 
-        var relativeDistance = first.transform.position.x - lastPos;
+        var relativeDistance = next.transform.position.x - lastPos;
 
         if (relativeDistance > 0 && relativeDistance < minDistanceBetweenSpawns)
-            first.transform.Translate(minDistanceBetweenSpawns - relativeDistance, 0f, 0f);
+            next.transform.Translate(minDistanceBetweenSpawns - relativeDistance, 0f, 0f);
         else if (relativeDistance < minDistanceBetweenSpawns && relativeDistance < 0)
-            first.transform.Translate(-relativeDistance + minDistanceBetweenSpawns, 0f, 0f);
+            next.transform.Translate(-relativeDistance + minDistanceBetweenSpawns, 0f, 0f);
     }
 
     private void UpdateSpeed(ref GameObject go) => go.GetComponent<MoveObject>().speed = objectSpeed;
@@ -209,18 +209,33 @@ public partial class Spawner
         var objects = new GameObject[11 + 4 * disfunction];
         int i;
 
+
+        var refPos = objectsOnScene.Last().transform.position;
+        refPos.y = 0;
+
         for (i = 0; i < 4; i++)
-            objects[i] = Instantiate(relaxInsPrefab, transform.position, transform.rotation, transform);
+        {
+            objects[i] = Instantiate(relaxInsPrefab, refPos, transform.rotation, transform);
+
+            if (i == 0)
+            {
+                DistanciateSpawns(ref objects[0]);
+                refPos = objects[0].transform.position;
+                refPos.y = 0;
+            }
+
+            ObjectsOnScene.Add(objects[i]);
+        }
 
         for (; i < 11; i++)
-            objects[i] = Instantiate(relaxZeroPrefab, transform.position, transform.rotation, transform);
+            objects[i] = Instantiate(relaxZeroPrefab, refPos, transform.rotation, transform);
 
         for (; i < objects.Length; i++)
-            objects[i] = Instantiate(relaxExpPrefab, transform.position, transform.rotation, transform);
+            objects[i] = Instantiate(relaxExpPrefab, refPos, transform.rotation, transform);
 
         for (i = 0; i < objects.Length; i++)
         {
-            objects[i].GetComponent<MoveObject>().speed = objectSpeed;
+            UpdateSpeed(ref objects[i]);
             objects[i].transform.Translate(i / 2f, 0f, 0f);
         }
 
