@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using Color = UnityEngine.Color;
 
 public class ResultScreenUI : BasicUI<ResultScreenUI>
 {
@@ -13,12 +14,14 @@ public class ResultScreenUI : BasicUI<ResultScreenUI>
         if (result == GameResult.Success)
         {
             finalResult.text = "GoGoGo!";
+            finalResult.color = Color.cyan;
             motivationText.text = "Muito bem! Você passou de fase. Continue assim!";
             AudioManager.Instance.PlaySound("StageClear");
         }
         else
         {
             finalResult.text = "YOU BLEW IT";
+            finalResult.color = Color.red;
             motivationText.text = "Você não conseguiu pontos suficientes. Não desista!";
             AudioManager.Instance.PlaySound("PlayerDamage");
         }
