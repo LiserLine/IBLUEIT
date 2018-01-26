@@ -38,7 +38,14 @@ public partial class Scorer : Singleton<Scorer>
             : GameResult.Failure;
 
         if (result == GameResult.Success)
+        {
             PlayerData.Player.StagesOpened++;
+        }
+        else
+        {
+            if(score < maxScore * 0.3f)
+                PlayerData.Player.StagesOpened--;
+        }
 
         OnResultCalculated?.Invoke(result);
     }
