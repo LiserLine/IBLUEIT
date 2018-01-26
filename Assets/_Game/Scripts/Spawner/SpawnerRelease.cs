@@ -58,15 +58,17 @@ public partial class Spawner
         if (objectsOnScene.Count < 1)
             return;
 
+        var dist = minDistanceBetweenSpawns + (1f + (1f / (float)PlayerData.Player.Disfunction));
+
         var lastObj = objectsOnScene.Last();
         var lastPos = lastObj.transform.position.x + lastObj.transform.localScale.x / 2f;
 
         var relativeDistance = next.transform.position.x - lastPos;
 
-        if (relativeDistance > 0 && relativeDistance < minDistanceBetweenSpawns)
-            next.transform.Translate(minDistanceBetweenSpawns - relativeDistance, 0f, 0f);
-        else if (relativeDistance < minDistanceBetweenSpawns && relativeDistance < 0)
-            next.transform.Translate(-relativeDistance + minDistanceBetweenSpawns, 0f, 0f);
+        if (relativeDistance > 0 && relativeDistance < dist)
+            next.transform.Translate(dist - relativeDistance, 0f, 0f);
+        else if (relativeDistance < dist && relativeDistance < 0)
+            next.transform.Translate(-relativeDistance + dist, 0f, 0f);
     }
 
     private void UpdateSpeed(ref GameObject go) => go.GetComponent<MoveObject>().speed = objectSpeed;
