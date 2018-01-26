@@ -24,7 +24,7 @@ public partial class Spawner
     public delegate void RelaxTimeStartHandler();
     public event RelaxTimeStartHandler OnRelaxTimeStart;
 
-    private const float minDistanceBetweenSpawns = 2.5f;
+    private const float minDistanceBetweenSpawns = 3f;
 
     [Button("Spawn Objects")]
     private void Spawn()
