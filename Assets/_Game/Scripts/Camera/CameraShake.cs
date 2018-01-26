@@ -47,6 +47,9 @@ public class CameraShake : MonoBehaviour
     
     private void Shake(GameObject go)
     {
+        if (Player.Instance.HeartPoins == 0)
+            return;
+
         if (go.tag.Contains("Obstacle"))
             shakeCam = true;
     }
