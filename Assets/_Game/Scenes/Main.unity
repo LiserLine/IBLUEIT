@@ -6050,6 +6050,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonPrefab: {fileID: 1754209486899276, guid: 345eb266f42fda34299dc56ef9bc4ee6,
     type: 2}
+  scrollbar: {fileID: 1196789503}
 --- !u!114 &1103843350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9851,6 +9852,11 @@ Prefab:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 114370396941397342, guid: 0e15757e75d1fba47b3b451052327148,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114193972478195888, guid: 0e15757e75d1fba47b3b451052327148,
         type: 2}
       propertyPath: m_Enabled
       value: 1
