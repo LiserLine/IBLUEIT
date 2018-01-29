@@ -14,10 +14,12 @@ public class ErrorHandler : MonoBehaviour
         labelRect = new Rect(Screen.width * 0.05f, Screen.height * 0.05f, Screen.width * 0.95f, Screen.height * 0.95f);
     }
 
+#if UNITY_EDITOR
+#else
     private void OnEnable() => Application.logMessageReceived += OnLogMessageReceived;
-
     private void OnDisable() => Application.logMessageReceived -= OnLogMessageReceived;
-
+#endif
+    
     private void OnLogMessageReceived(string message, string stackTrace, LogType type)
     {
         if (hasError || !this.isActiveAndEnabled)
@@ -37,7 +39,7 @@ public class ErrorHandler : MonoBehaviour
                          $"A screenshot will be saved at\"{Environment.CurrentDirectory}\".\n\n{errorMsg}\n\n{stack}",
             "[Error Handler] An unexpected error has occured!!!");
 
-        FlushData();
+        Dump();
     }
 
     private void OnGUI()
@@ -53,17 +55,11 @@ public class ErrorHandler : MonoBehaviour
     }
 
     private void WindowFunction(int windowId)
-    {
-        //if (GUI.Button(new Rect(Screen.width * 0.45f, Screen.height * 0.9f, 100, 30), "OK"))
-        //    FlushData();
-    }
+    { }
 
-    public static void FlushData()
+    private static void Dump()
     {
-#if UNITY_EDITOR
-#else
         ScreenCapture.CaptureScreenshot($"ibit_error_{DateTime.Now:yyyyMMdd-HHmmss}.png");
         Application.Quit();
-#endif
     }
 }
