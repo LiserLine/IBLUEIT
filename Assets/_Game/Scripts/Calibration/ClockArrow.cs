@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 //ToDo - Use an animation for this
-public class ClockArrowSpin : MonoBehaviour
+public class ClockArrow : MonoBehaviour
 {
     public bool SpinClock { get; set; }
 

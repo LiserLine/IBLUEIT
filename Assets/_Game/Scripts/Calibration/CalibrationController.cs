@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
+using NaughtyAttributes;
 
 public enum CalibrationSteps
 {
@@ -15,39 +16,45 @@ public enum CalibrationSteps
     ExpiratoryFlow
 }
 
-//ToDo - Implement StateMachine
+//ToDo - Implement StateMachine ?
 //ToDo - UI should inherit BasicUI
 
 public class CalibrationController : MonoBehaviour
 {
+    [BoxGroup("UI")]
     [SerializeField]
-    private Text firstTimeText, balloonText;
+    private Text welcomeText, balloonText, stepCountValue;
 
+    [BoxGroup("UI")]
     [SerializeField]
-    private GameObject enterButton, enterButtonSmall, firstTimePanel, tutoDude, tutoClock, textBalloon;
+    private GameObject enterButton, enterButtonSmall, welcomePanel, textBalloon;
 
+    [BoxGroup("Calibration")]
     [SerializeField]
-    private ClockArrowSpin clockArrowSpin;
+    private GameObject dude, clock;
 
-    private bool executeStep, sceneOpen, firstTimePlaying, acceptingValues;
-    private int stepNum = 2;
-    private int exerciseCounter;
+    [BoxGroup("Calibration")]
+    [SerializeField]
+    private ClockArrow clockArrow;
+
+    private bool executeStep, infoPanelOpen, acceptingValues;
+    private int stepCount = 1;
+    private int exerciseCount;
     private const int flowTimeThreshold = 1000; // In Miliseconds
     private const int respiratoryFrequencyThreshold = 700; //In Milliseconds //ToDo - Test this variable before implementing in CSV
-    private float flowMeter;
-    private RespiratoryInfo respiratoryInfoTemp;
-    private Stopwatch stopwatch;
-    private Dictionary<long, float> respiratorySamples;
-    private CalibrationSteps runningStep;
+    private float tempFlowMeter;
+    private RespiratoryInfo tempRespiratoryInfo;
+    private Stopwatch watch;
+    private Dictionary<long, float> samples;
+    private CalibrationSteps stepRunning;
     private bool calibrationDone;
 
     private void Start()
     {
-        respiratoryInfoTemp = new RespiratoryInfo();
-        stopwatch = new Stopwatch();
-        respiratorySamples = new Dictionary<long, float>();
-        firstTimePlaying = !PlayerData.Player.CalibrationDone;
-        firstTimeText.text = "Primeiro, precisamos calibrar a sua respiração. Vamos lá?";
+        tempRespiratoryInfo = new RespiratoryInfo();
+        watch = new Stopwatch();
+        samples = new Dictionary<long, float>();
+        welcomeText.text = "Primeiro, precisamos calibrar a sua respiração. Vamos lá?";
         enterButton.SetActive(true);
         SerialController.Instance.OnSerialMessageReceived += OnSerialMessageReceived;
         StartCoroutine(ScreenSteps());
@@ -68,7 +75,7 @@ public class CalibrationController : MonoBehaviour
             if (executeStep)
             {
                 // Clear screen
-                firstTimeText.text = "";
+                welcomeText.text = "";
                 enterButton.SetActive(false);
                 DudeClearMessage();
 
@@ -77,33 +84,32 @@ public class CalibrationController : MonoBehaviour
 
                 // Open Scene Animation
                 // Opens on step 3 or greater
-                if (stepNum >= 2 && !sceneOpen)
+                if (stepCount >= 2 && !infoPanelOpen)
                 {
                     // Fade black screen and wait 1s 
-                    firstTimePanel.GetComponent<Image>().CrossFadeAlpha(0, 1, false);
+                    welcomePanel.GetComponent<Image>().CrossFadeAlpha(0, 1, false);
                     yield return new WaitForSeconds(1);
-                    firstTimePanel.SetActive(false);
+                    welcomePanel.SetActive(false);
                     Destroy(enterButton);
 
                     // Enable dude and clock
-                    tutoClock.SetActive(true);
-                    tutoDude.SetActive(true);
+                    clock.SetActive(true);
+                    dude.SetActive(true);
                     textBalloon.SetActive(true);
 
                     enterButton = enterButtonSmall; // Should it be handled this way? I tried to scale in many other ways but no success
 
-                    sceneOpen = true;
+                    infoPanelOpen = true;
                 }
-
-                string dudeMsg;
-                switch (stepNum)
+                
+                switch (stepCount)
                 {
                     //#region Inviting steps
 
-                    //case 1:
-                    //    firstTimeText.text = "Primeiro, precisamos calibrar a sua respiração. Vamos lá?";
-                    //    SetNextStep();
-                    //    break;
+                    case 1:
+                        welcomeText.text = "Neste jogo, você deve respirar somente pela boca. Não precisa morder o PITACO.";
+                        SetNextStep();
+                        break;
 
                     //#endregion
 
@@ -113,9 +119,8 @@ public class CalibrationController : MonoBehaviour
                         SerialController.Instance.Recalibrate();
                         ResetExerciseCounter();
                         ResetFlowMeter();
-                        runningStep = CalibrationSteps.RespiratoryFrequency;
-                        dudeMsg = "Este relógio medirá sua respiração. Quando ficar verde, respire normal e tranquilamente no PITACO por 30 segundos.";
-                        DudeShowMessage(dudeMsg);
+                        stepRunning = CalibrationSteps.RespiratoryFrequency;
+                        DudeShowMessage("Este relógio medirá sua respiração. Aguarde ele ficar verde e respire tranquilamente no PITACO por 30 segundos.");
                         SetNextStep();
                         break;
 
@@ -135,22 +140,22 @@ public class CalibrationController : MonoBehaviour
                         EnableClockFlow();
 
                         // Wait for player input to be greather than threshold
-                        stopwatch.Restart();
+                        watch.Restart();
 
-                        while (stopwatch.ElapsedMilliseconds < 30 * 1000)
+                        while (watch.ElapsedMilliseconds < 30 * 1000)
                             yield return null;
 
-                        stopwatch.Stop();
+                        watch.Stop();
 
-                        flowMeter = Utils.CalculateMeanFlow(respiratorySamples.ToList());
+                        tempFlowMeter = Utils.CalculateMeanFlow(samples.ToList());
 
-                        Debug.Log($"RespirationFrequency: {flowMeter}");
+                        Debug.Log($"RespirationFrequency: {tempFlowMeter}");
 
                         DisableClockFlow();
 
-                        if (flowMeter > respiratoryFrequencyThreshold)
+                        if (tempFlowMeter > respiratoryFrequencyThreshold)
                         {
-                            respiratoryInfoTemp.RespirationFrequency = flowMeter;
+                            tempRespiratoryInfo.RespirationFrequency = tempFlowMeter;
                             SetNextStep(true);
                             continue;
                         }
@@ -162,8 +167,7 @@ public class CalibrationController : MonoBehaviour
 
                     case 4:
                         AudioManager.Instance.PlaySound("Success");
-                        dudeMsg = "Muito bem! Agora, vamos continuar com os outros exercícios.";
-                        DudeShowMessage(dudeMsg);
+                        DudeShowMessage("Muito bem! Agora, vamos continuar com os outros exercícios.");
                         SetNextStep();
                         break;
 
@@ -174,9 +178,8 @@ public class CalibrationController : MonoBehaviour
                     case 5:
                         SerialController.Instance.Recalibrate();
                         PrepareNextExercise();
-                        runningStep = CalibrationSteps.InspiratoryPeak;
-                        dudeMsg = "Agora mediremos sua força. Quando o relógio ficar verde, INSPIRE bem forte.";
-                        DudeShowMessage(dudeMsg);
+                        stepRunning = CalibrationSteps.InspiratoryPeak;
+                        DudeShowMessage("Agora mediremos sua força. Quando o relógio ficar verde, INSPIRE bem forte.");
                         SetNextStep();
                         break;
 
@@ -196,15 +199,15 @@ public class CalibrationController : MonoBehaviour
                         yield return new WaitForSeconds(7);
                         DisableClockFlow();
 
-                        var insCheck = flowMeter;
+                        var insCheck = tempFlowMeter;
                         ResetFlowMeter();
 
                         if (insCheck < -GameMaster.PitacoThreshold)
                         {
-                            exerciseCounter++;
+                            exerciseCount++;
 
-                            if (exerciseCounter == 2)
-                                SetStep(stepNum + 2, true);
+                            if (exerciseCount == 2)
+                                SetStep(stepCount + 2, true);
                             else
                                 SetNextStep(true);
 
@@ -233,7 +236,7 @@ public class CalibrationController : MonoBehaviour
                         SerialController.Instance.Recalibrate();
                         dudeMsg = "Agora faremos ao contrário. Quando o relógio ficar verde, ASSOPRE bem forte.";
                         PrepareNextExercise();
-                        runningStep = CalibrationSteps.ExpiratoryPeak;
+                        stepRunning = CalibrationSteps.ExpiratoryPeak;
                         DudeShowMessage(dudeMsg);
                         SetNextStep();
                         break;
@@ -259,15 +262,15 @@ public class CalibrationController : MonoBehaviour
                         DisableClockFlow();
 
                         // Check for player input
-                        var expCheck = flowMeter;
+                        var expCheck = tempFlowMeter;
                         ResetFlowMeter();
 
                         if (expCheck > GameMaster.PitacoThreshold)
                         {
-                            exerciseCounter++;
+                            exerciseCount++;
 
-                            if (exerciseCounter == 2)
-                                SetStep(stepNum + 2, true);
+                            if (exerciseCount == 2)
+                                SetStep(stepCount + 2, true);
                             else
                                 SetNextStep(true);
 
@@ -294,7 +297,7 @@ public class CalibrationController : MonoBehaviour
                     case 13:
                         SerialController.Instance.Recalibrate();
                         PrepareNextExercise();
-                        runningStep = CalibrationSteps.ExpiratoryFlow;
+                        stepRunning = CalibrationSteps.ExpiratoryFlow;
                         dudeMsg = "Agora vamos medir o tempo. Quando o relógio ficar verde, relaxe e ASSOPRE o máximo de tempo possível.";
                         DudeShowMessage(dudeMsg);
                         SetNextStep();
@@ -315,34 +318,34 @@ public class CalibrationController : MonoBehaviour
                         balloonText.text = "(expire o máximo de tempo possível e aguarde)";
                         EnableClockFlow();
 
-                        stopwatch.Reset();
+                        watch.Reset();
 
                         // Wait for player input to be greather than threshold
-                        while (flowMeter <= GameMaster.PitacoThreshold)
+                        while (tempFlowMeter <= GameMaster.PitacoThreshold)
                             yield return null;
 
-                        stopwatch.Start();
+                        watch.Start();
 
-                        while (flowMeter > GameMaster.PitacoThreshold * 0.6f)
+                        while (tempFlowMeter > GameMaster.PitacoThreshold * 0.6f)
                             yield return null;
 
                         DisableClockFlow();
 
-                        stopwatch.Stop();
+                        watch.Stop();
 
-                        Debug.Log($"Expiration Time: {stopwatch.ElapsedMilliseconds} ms ({stopwatch.ElapsedMilliseconds / 1000} secs)");
+                        Debug.Log($"Expiration Time: {watch.ElapsedMilliseconds} ms ({watch.ElapsedMilliseconds / 1000} secs)");
 
                         // Check for player input
                         ResetFlowMeter();
-                        if (stopwatch.ElapsedMilliseconds > flowTimeThreshold)
+                        if (watch.ElapsedMilliseconds > flowTimeThreshold)
                         {
-                            if (stopwatch.ElapsedMilliseconds > respiratoryInfoTemp.ExpiratoryFlowTime)
-                                respiratoryInfoTemp.ExpiratoryFlowTime = stopwatch.ElapsedMilliseconds;
+                            if (watch.ElapsedMilliseconds > tempRespiratoryInfo.ExpiratoryFlowTime)
+                                tempRespiratoryInfo.ExpiratoryFlowTime = watch.ElapsedMilliseconds;
 
-                            exerciseCounter++;
+                            exerciseCount++;
 
-                            if (exerciseCounter == 2)
-                                SetStep(stepNum + 2, true);
+                            if (exerciseCount == 2)
+                                SetStep(stepCount + 2, true);
                             else
                                 SetNextStep(true);
 
@@ -369,7 +372,7 @@ public class CalibrationController : MonoBehaviour
                     case 17:
                         SerialController.Instance.Recalibrate();
                         PrepareNextExercise();
-                        runningStep = CalibrationSteps.InspiratoryFlow;
+                        stepRunning = CalibrationSteps.InspiratoryFlow;
                         dudeMsg = "Agora, quando o relógio ficar verde, INSPIRE o máximo de tempo possível.";
                         DudeShowMessage(dudeMsg);
                         SetNextStep();
@@ -391,33 +394,33 @@ public class CalibrationController : MonoBehaviour
                         EnableClockFlow();
 
                         // Wait for player input to be greather than threshold
-                        stopwatch.Reset();
+                        watch.Reset();
 
-                        while (flowMeter >= -GameMaster.PitacoThreshold)
+                        while (tempFlowMeter >= -GameMaster.PitacoThreshold)
                             yield return null;
 
-                        stopwatch.Start();
+                        watch.Start();
 
-                        while (flowMeter < -GameMaster.PitacoThreshold * 0.25f)  // Inspirating is weaker than expirating
+                        while (tempFlowMeter < -GameMaster.PitacoThreshold * 0.25f)  // Inspirating is weaker than expirating
                             yield return null;
 
-                        stopwatch.Stop();
+                        watch.Stop();
 
                         DisableClockFlow();
 
-                        Debug.Log($"Inspiration Time: {stopwatch.ElapsedMilliseconds} ms ({stopwatch.ElapsedMilliseconds / 1000} secs)");
+                        Debug.Log($"Inspiration Time: {watch.ElapsedMilliseconds} ms ({watch.ElapsedMilliseconds / 1000} secs)");
 
                         // Check for player input
                         ResetFlowMeter();
-                        if (stopwatch.ElapsedMilliseconds > flowTimeThreshold)
+                        if (watch.ElapsedMilliseconds > flowTimeThreshold)
                         {
-                            if (stopwatch.ElapsedMilliseconds > respiratoryInfoTemp.InspiratoryFlowTime)
-                                respiratoryInfoTemp.InspiratoryFlowTime = stopwatch.ElapsedMilliseconds;
+                            if (watch.ElapsedMilliseconds > tempRespiratoryInfo.InspiratoryFlowTime)
+                                tempRespiratoryInfo.InspiratoryFlowTime = watch.ElapsedMilliseconds;
 
-                            exerciseCounter++;
+                            exerciseCount++;
 
-                            if (exerciseCounter == 2)
-                                SetStep(stepNum + 2, true);
+                            if (exerciseCount == 2)
+                                SetStep(stepCount + 2, true);
                             else
                                 SetNextStep(true);
 
@@ -451,14 +454,14 @@ public class CalibrationController : MonoBehaviour
                     case 22:
                         PlayerData.Player.CalibrationDone = true;
                         calibrationDone = true;
-                        PlayerData.Player.RespiratoryInfo = respiratoryInfoTemp;
+                        PlayerData.Player.RespiratoryInfo = tempRespiratoryInfo;
                         PlayerDb.Instance.Save();
 
-                        tutoClock.SetActive(false);
-                        tutoDude.SetActive(false);
+                        clock.SetActive(false);
+                        dude.SetActive(false);
                         textBalloon.SetActive(false);
 
-                        firstTimePanel.SetActive(true); //ToDo - try to crossfade alpha from 0 to max
+                        welcomePanel.SetActive(true); //ToDo - try to crossfade alpha from 0 to max
 
                         SceneLoader.Instance.LoadScene(0); //ToDo - ternario para quando implementar minigames
                         break;
@@ -478,8 +481,6 @@ public class CalibrationController : MonoBehaviour
         }
     }
 
-    #region Step Controllers
-
     /// <summary>
     /// Method to execute next step of calibration.
     /// Some buttons use this to execute the next step.
@@ -493,7 +494,7 @@ public class CalibrationController : MonoBehaviour
     /// <param name="jumpToStep">Flag to execute the step automatically</param>
     private void SetStep(int step, bool jumpToStep = false)
     {
-        stepNum = step;
+        stepCount = step;
         executeStep = jumpToStep;
     }
 
@@ -503,18 +504,14 @@ public class CalibrationController : MonoBehaviour
     /// <param name="jumpToStep">Flag to execute the step automatically</param>
     private void SetNextStep(bool jumpToStep = false)
     {
-        stepNum++;
+        stepCount++;
         executeStep = jumpToStep;
     }
-
-    #endregion
-
-    #region Dude Messages
 
     private void DudeShowMessage(string msg)
     {
         balloonText.text = msg;
-        tutoDude.GetComponent<Animator>().SetBool("Talking", true);
+        dude.GetComponent<Animator>().SetBool("Talking", true);
     }
 
     private void DudeCongratulate()
@@ -522,14 +519,20 @@ public class CalibrationController : MonoBehaviour
         var dudeMsg = "Muito bem!";
         DudeShowMessage(dudeMsg);
         AudioManager.Instance.PlaySound("Success");
-        SetStep(exerciseCounter == 3 ? stepNum + 2 : stepNum + 1);
+        SetStep(exerciseCount == 3 ? stepCount + 2 : stepCount + 1);
+
+        if (SerialController.Instance.IsConnected)
+            SerialController.Instance.Recalibrate();
     }
 
     private void DudeAskAgain()
     {
         var dudeMsg = "Mais uma vez!";
         DudeShowMessage(dudeMsg);
-        SetStep(stepNum - 2);
+        SetStep(stepCount - 2);
+
+        if (SerialController.Instance.IsConnected)
+            SerialController.Instance.Recalibrate();
     }
 
     private void DudeWarnUnknownFlow()
@@ -537,7 +540,7 @@ public class CalibrationController : MonoBehaviour
         var dudeMsg = "Não consegui medir sua respiração. Vamos tentar novamente?";
         DudeShowMessage(dudeMsg);
         AudioManager.Instance.PlaySound("Failure");
-        SetStep(stepNum);
+        SetStep(stepCount);
     }
 
     private void DudeWarnPitacoDisconnected()
@@ -551,40 +554,26 @@ public class CalibrationController : MonoBehaviour
     private void DudeClearMessage()
     {
         balloonText.text = "";
-        tutoDude.GetComponent<Animator>().SetBool("Talking", false);
+        dude.GetComponent<Animator>().SetBool("Talking", false);
     }
-
-    #endregion
-
-    #region TutoClock Controller
-
+    
     private void EnableClockFlow()
     {
-        tutoClock.GetComponent<SpriteRenderer>().color = Color.green;
-        clockArrowSpin.SpinClock = true;
+        clock.GetComponent<SpriteRenderer>().color = Color.green;
+        clockArrow.SpinClock = true;
         acceptingValues = true;
     }
 
     private void DisableClockFlow()
     {
-        tutoClock.GetComponent<SpriteRenderer>().color = Color.white;
-        clockArrowSpin.SpinClock = false;
+        clock.GetComponent<SpriteRenderer>().color = Color.white;
+        clockArrow.SpinClock = false;
         acceptingValues = false;
     }
 
-    #endregion
+    private void ResetExerciseCounter() => exerciseCount = 0;
 
-    #region Resetters
-
-    private void ResetExerciseCounter()
-    {
-        exerciseCounter = 0;
-    }
-
-    private void ResetFlowMeter()
-    {
-        flowMeter = 0f;
-    }
+    private void ResetFlowMeter() => tempFlowMeter = 0f;
 
     private void PrepareNextExercise()
     {
@@ -595,8 +584,6 @@ public class CalibrationController : MonoBehaviour
             SerialController.Instance.Recalibrate();
     }
 
-    #endregion
-
     private void OnSerialMessageReceived(string arrived)
     {
         if (!acceptingValues || arrived.Length < 1)
@@ -604,42 +591,42 @@ public class CalibrationController : MonoBehaviour
 
         var tmp = Utils.ParseFloat(arrived);
 
-        switch (runningStep)
+        switch (stepRunning)
         {
             case CalibrationSteps.ExpiratoryPeak:
-                if (tmp > flowMeter)
+                if (tmp > tempFlowMeter)
                 {
-                    flowMeter = tmp;
+                    tempFlowMeter = tmp;
 
-                    if (flowMeter > respiratoryInfoTemp.ExpiratoryPeakFlow)
+                    if (tempFlowMeter > tempRespiratoryInfo.ExpiratoryPeakFlow)
                     {
-                        respiratoryInfoTemp.ExpiratoryPeakFlow = flowMeter;
-                        Debug.Log($"ExpiratoryPeakFlow: {flowMeter}");
+                        tempRespiratoryInfo.ExpiratoryPeakFlow = tempFlowMeter;
+                        Debug.Log($"ExpiratoryPeakFlow: {tempFlowMeter}");
                     }
                 }
                 break;
 
             case CalibrationSteps.InspiratoryPeak:
-                if (tmp < flowMeter)
+                if (tmp < tempFlowMeter)
                 {
-                    flowMeter = tmp;
+                    tempFlowMeter = tmp;
 
-                    if (flowMeter < respiratoryInfoTemp.InspiratoryPeakFlow)
+                    if (tempFlowMeter < tempRespiratoryInfo.InspiratoryPeakFlow)
                     {
-                        respiratoryInfoTemp.InspiratoryPeakFlow = flowMeter;
-                        Debug.Log($"InspiratoryPeakFlow: {flowMeter}");
+                        tempRespiratoryInfo.InspiratoryPeakFlow = tempFlowMeter;
+                        Debug.Log($"InspiratoryPeakFlow: {tempFlowMeter}");
                     }
                 }
                 break;
 
             case CalibrationSteps.ExpiratoryFlow:
             case CalibrationSteps.InspiratoryFlow:
-                flowMeter = tmp;
+                tempFlowMeter = tmp;
                 break;
 
             case CalibrationSteps.RespiratoryFrequency:
-                if (stopwatch.IsRunning)
-                    respiratorySamples.Add(stopwatch.ElapsedMilliseconds, tmp);
+                if (watch.IsRunning)
+                    samples.Add(watch.ElapsedMilliseconds, tmp);
                 break;
         }
     }
