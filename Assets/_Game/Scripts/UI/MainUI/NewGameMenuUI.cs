@@ -44,14 +44,14 @@ public class NewGameMenuUI : BasicUI<NewGameMenuUI>
 
         var observations = GameObject.Find("Observations").GetComponent<InputField>().text;
 
-        var plr = new PlayerData
+        var plr = new Pacient
         {
             Name = playerName,
             Birthday = birthday,
             Disfunction = disfunction,
             Id = PlayerDb.Instance.PlayerList.Count + 1,
             Observations = observations,
-            RespiratoryInfo = new RespiratoryInfo(),
+            RespiratoryData = new RespiratoryData(),
             CalibrationDone = false,
             StagesOpened = 1
         };
@@ -67,7 +67,7 @@ public class NewGameMenuUI : BasicUI<NewGameMenuUI>
         }
 
         PlayerDb.Instance.CreatePlayer(plr);
-        PlayerData.Player = plr;
+        Pacient.Loaded = plr;
 
         SysMessage.Info("Jogador criado com sucesso!");
 

@@ -2,7 +2,7 @@
 {
     private void Start()
     {
-        if (PlayerData.Player == null)
+        if (Pacient.Loaded == null)
             return;
 
         Hide();

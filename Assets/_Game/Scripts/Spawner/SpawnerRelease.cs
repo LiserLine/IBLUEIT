@@ -58,7 +58,7 @@ public partial class Spawner
         if (objectsOnScene.Count < 1)
             return;
 
-        var dist = minDistanceBetweenSpawns + (1f + (1f / (float)PlayerData.Player.Disfunction));
+        var dist = minDistanceBetweenSpawns + (1f + (1f / (float)Pacient.Loaded.Disfunction));
 
         var lastObj = objectsOnScene.Last();
         var lastPos = lastObj.transform.position.x + lastObj.transform.localScale.x / 2f;
@@ -171,11 +171,11 @@ public partial class Spawner
             transform.rotation,
             transform);
 
-        var scaleFromPlayer = PlayerData.Player.RespiratoryInfo.ExpiratoryFlowTime / 1000f;
+        var scaleFromPlayer = Pacient.Loaded.RespiratoryData.ExpiratoryFlowTime / 1000f;
 
         var scale = scaleFromPlayer
                     * (1f + insSizeAccumulator / 100f)
-                    * (float)PlayerData.Player.Disfunction
+                    * (float)Pacient.Loaded.Disfunction
                     * gameDifficulty / 100f;
 
         scale = Mathf.Clamp(scale, scaleFromPlayer * 0.7f, scale);
@@ -193,7 +193,7 @@ public partial class Spawner
             transform.rotation,
             transform);
 
-        var scale = PlayerData.Player.RespiratoryInfo.ExpiratoryFlowTime / 1000f
+        var scale = Pacient.Loaded.RespiratoryData.ExpiratoryFlowTime / 1000f
                     * (1f + expSizeAccumulator / 100f);
 
         spawned.transform.localScale = new Vector3(scale, scale, 1);
@@ -207,7 +207,7 @@ public partial class Spawner
     [Button("Spawn Relax Time")]
     private void SpawnRelaxTime()
     {
-        var disfunction = (int)PlayerData.Player.Disfunction;
+        var disfunction = (int)Pacient.Loaded.Disfunction;
         var objects = new GameObject[11 + 4 * disfunction];
         int i;
 

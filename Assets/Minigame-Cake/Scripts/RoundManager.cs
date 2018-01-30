@@ -133,7 +133,7 @@ public class RoundManager : MonoBehaviour
 
     public void FlowAction(float flowValue)
     {
-        var picoJogador = PlayerData.Player.RespiratoryInfo.ExpiratoryPeakFlow;
+        var picoJogador = Pacient.Loaded.RespiratoryData.ExpiratoryPeakFlow;
         var percentage = flowValue / picoJogador;
         //Debug.Log(percentage);
         if (percentage > 0.25f)

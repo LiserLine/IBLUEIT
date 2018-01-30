@@ -28,7 +28,7 @@ public class PopulateSavesList : MonoBehaviour
             btnPrefab.transform.localScale = Vector3.one;
 
             var plrComponent = btnPrefab.AddComponent<PlayerDataHolder>();
-            plrComponent.PlayerData = plr;
+            plrComponent.Pacient = plr;
 
             var buttonText = btnPrefab.GetComponentInChildren<Text>();
 

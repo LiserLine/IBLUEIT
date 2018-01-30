@@ -43,7 +43,7 @@ public class CalibrationController : MonoBehaviour
     private const int flowTimeThreshold = 1000; // In Miliseconds
     private const int respiratoryFrequencyThreshold = 700; //In Milliseconds //ToDo - Test this variable before implementing in CSV
     private float tempFlowMeter;
-    private RespiratoryInfo tempRespiratoryInfo;
+    private RespiratoryData tempRespiratoryInfo;
     private Stopwatch watch;
     private Dictionary<long, float> samples;
     private CalibrationSteps stepRunning;
@@ -51,7 +51,7 @@ public class CalibrationController : MonoBehaviour
 
     private void Start()
     {
-        tempRespiratoryInfo = new RespiratoryInfo();
+        tempRespiratoryInfo = new RespiratoryData();
         watch = new Stopwatch();
         samples = new Dictionary<long, float>();
         welcomeText.text = "Primeiro, precisamos calibrar a sua respiração. Vamos lá?";
@@ -448,9 +448,9 @@ public class CalibrationController : MonoBehaviour
                         break;
 
                     case 22:
-                        PlayerData.Player.CalibrationDone = true;
+                        Pacient.Loaded.CalibrationDone = true;
                         calibrationDone = true;
-                        PlayerData.Player.RespiratoryInfo = tempRespiratoryInfo;
+                        Pacient.Loaded.RespiratoryData = tempRespiratoryInfo;
                         PlayerDb.Instance.Save();
 
                         clock.SetActive(false);

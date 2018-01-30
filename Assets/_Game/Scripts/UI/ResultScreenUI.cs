@@ -32,7 +32,7 @@ public class ResultScreenUI : BasicUI<ResultScreenUI>
             //$"• Nível Altura: {Spawner.Instance.InspiratoryHeightLevel}\n" +
             //$"• Nível Profundidade: {Spawner.Instance.ExpiratoryHeightLevel}\n" +
             //$"• Nível Tamanho: {Spawner.Instance.ExpiratorySizeLevel}\n" +
-            $"• Jogador: {PlayerData.Player.Name} ({PlayerData.Player.Id})";
+            $"• Jogador: {Pacient.Loaded.Name} ({Pacient.Loaded.Id})";
 
         base.Show();
 

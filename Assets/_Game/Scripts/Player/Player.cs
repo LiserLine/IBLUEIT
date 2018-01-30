@@ -27,8 +27,8 @@ public partial class Player : Singleton<Player>
 
     private void SaveRecords()
     {
-        PlayerData.Player.SessionsDone++;
-        PlayerData.Player.TotalScore += Scorer.Instance.Score;
+        Pacient.Loaded.PlaySessionsDone++;
+        Pacient.Loaded.TotalScore += Scorer.Instance.Score;
         PlayerDb.Instance.Save();
     }
 }

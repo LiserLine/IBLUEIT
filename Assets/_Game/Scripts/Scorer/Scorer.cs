@@ -39,12 +39,12 @@ public partial class Scorer : Singleton<Scorer>
 
         if (result == GameResult.Success)
         {
-            PlayerData.Player.StagesOpened++;
+            Pacient.Loaded.StagesOpened++;
         }
         else
         {
             if(score < maxScore * 0.3f)
-                PlayerData.Player.StagesOpened--;
+                Pacient.Loaded.StagesOpened--;
         }
 
         OnResultCalculated?.Invoke(result);

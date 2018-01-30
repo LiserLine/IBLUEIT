@@ -7,5 +7,5 @@ public class UIButtonOnCalibration : MonoBehaviour
 
     private void Awake() => button = GetComponent<Button>();
 
-    private void FixedUpdate() => button.interactable = PlayerData.Player != null && PlayerData.Player.CalibrationDone;
+    private void FixedUpdate() => button.interactable = Pacient.Loaded != null && Pacient.Loaded.CalibrationDone;
 }

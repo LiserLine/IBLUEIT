@@ -1,4 +1,4 @@
-﻿public class RespiratoryInfo
+﻿public class RespiratoryData    
 {
     private float _ipf, _epf, _ift, _eft, _rf;
 

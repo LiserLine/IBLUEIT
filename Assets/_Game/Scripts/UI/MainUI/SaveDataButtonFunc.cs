@@ -4,8 +4,8 @@ public class SaveDataButtonFunc : MonoBehaviour
 {
     public void LoadPlayerSave()
     {
-        var player = GetComponent<PlayerDataHolder>().PlayerData;
-        PlayerData.Player = player;
+        var player = GetComponent<PlayerDataHolder>().Pacient;
+        Pacient.Loaded = player;
         Debug.Log($"{player.Name} save loaded.");
         FindObjectOfType<LoadGameMenuUI>().Hide();
         FindObjectOfType<PlayerMenuUI>().Show();
@@ -14,5 +14,5 @@ public class SaveDataButtonFunc : MonoBehaviour
 
 public class PlayerDataHolder : MonoBehaviour
 {
-    public PlayerData PlayerData;
+    public Pacient Pacient;
 }

@@ -1,8 +1,8 @@
 ﻿using System;
 
-public class PlayerData
+public class Pacient
 {
-    public static PlayerData Player;
+    public static Pacient Loaded;
 
     public int Id { get; set; }
 
@@ -10,7 +10,7 @@ public class PlayerData
 
     public DateTime Birthday { get; set; }
 
-    public RespiratoryInfo RespiratoryInfo { get; set; }
+    public RespiratoryData RespiratoryData { get; set; }
 
     public string Observations { get; set; }
 
@@ -20,26 +20,26 @@ public class PlayerData
 
     public float TotalScore { get; set; }
 
-    public int SessionsDone { get; set; }
+    public int PlaySessionsDone { get; set; }
 
     public bool CalibrationDone { get; set; }
 
-    static PlayerData()
+    static Pacient()
     {
 
 #if UNITY_EDITOR
-        if (Player == null)
-            Player = new PlayerData
+        if (Loaded == null)
+            Loaded = new Pacient
             {
                 Id = -1,
                 Birthday = DateTime.Now,
                 CalibrationDone = true,
                 Disfunction = DisfunctionType.Normal,
                 Name = "NetRunner",
-                SessionsDone = 0,
+                PlaySessionsDone = 0,
                 StagesOpened = 1,
                 TotalScore = 0,
-                RespiratoryInfo = new RespiratoryInfo
+                RespiratoryData = new RespiratoryData
                 {
                     RespirationFrequency = 3100,
                     ExpiratoryPeakFlow = 1300,
