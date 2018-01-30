@@ -234,10 +234,9 @@ public class CalibrationController : MonoBehaviour
 
                     case 9:
                         SerialController.Instance.Recalibrate();
-                        dudeMsg = "Agora faremos ao contrário. Quando o relógio ficar verde, ASSOPRE bem forte.";
                         PrepareNextExercise();
                         stepRunning = CalibrationSteps.ExpiratoryPeak;
-                        DudeShowMessage(dudeMsg);
+                        DudeShowMessage("Agora faremos ao contrário. Quando o relógio ficar verde, ASSOPRE bem forte.");
                         SetNextStep();
                         break;
 
@@ -298,8 +297,7 @@ public class CalibrationController : MonoBehaviour
                         SerialController.Instance.Recalibrate();
                         PrepareNextExercise();
                         stepRunning = CalibrationSteps.ExpiratoryFlow;
-                        dudeMsg = "Agora vamos medir o tempo. Quando o relógio ficar verde, relaxe e ASSOPRE o máximo de tempo possível.";
-                        DudeShowMessage(dudeMsg);
+                        DudeShowMessage("Agora vamos medir o tempo. Quando o relógio ficar verde, relaxe e ASSOPRE o máximo de tempo possível.");
                         SetNextStep();
                         break;
 
@@ -373,8 +371,7 @@ public class CalibrationController : MonoBehaviour
                         SerialController.Instance.Recalibrate();
                         PrepareNextExercise();
                         stepRunning = CalibrationSteps.InspiratoryFlow;
-                        dudeMsg = "Agora, quando o relógio ficar verde, INSPIRE o máximo de tempo possível.";
-                        DudeShowMessage(dudeMsg);
+                        DudeShowMessage("Agora, quando o relógio ficar verde, INSPIRE o máximo de tempo possível.");
                         SetNextStep();
                         break;
 
@@ -446,8 +443,7 @@ public class CalibrationController : MonoBehaviour
 
                     case 21:
                         AudioManager.Instance.PlaySound("Claps");
-                        dudeMsg = "Ótimo, agora você está pronto para começar a jogar! Bom jogo!";
-                        DudeShowMessage(dudeMsg);
+                        DudeShowMessage("Ótimo, agora você está pronto para começar a jogar! Bom jogo!");
                         SetNextStep();
                         break;
 
