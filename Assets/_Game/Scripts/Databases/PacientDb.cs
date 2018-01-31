@@ -5,11 +5,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-public class PlayerDb
+public class PacientDb
 {
-    public static PlayerDb Instance = new PlayerDb();
+    public static PacientDb Instance = new PacientDb();
 
-    private readonly List<Pacient> _playerList = new List<Pacient>();
+    private readonly List<Pacient> pacientList = new List<Pacient>();
     private const string filePath = @"savedata/pacients/_list.csv";
 
     public List<Pacient> PlayerList
@@ -19,18 +19,18 @@ public class PlayerDb
             if (!IsLoaded)
                 Load();
 
-            return _playerList;
+            return pacientList;
         }
     }
 
     public bool IsLoaded { get; private set; }
 
-    public PlayerDb()
+    public PacientDb()
     {
         if (Instance == null)
             Instance = this;
         else
-            throw new Exception("PlayerDb already instanciated.");
+            throw new Exception("PacientDb already instanciated.");
 
         if (File.Exists(filePath))
             Load();
@@ -40,10 +40,11 @@ public class PlayerDb
 
     public void Load()
     {
-        _playerList.Clear();
+        pacientList.Clear();
 
         var csvData = Utils.ReadAllText(filePath);
         var grid = CsvParser2.Parse(csvData);
+
         for (var i = 1; i < grid.Length; i++)
         {
             if (string.IsNullOrEmpty(grid[i][0]))
@@ -70,7 +71,7 @@ public class PlayerDb
                 CalibrationDone = bool.Parse(grid[i][13])
             };
 
-            _playerList.Add(plr);
+            pacientList.Add(plr);
         }
         
         IsLoaded = true;
@@ -85,7 +86,7 @@ public class PlayerDb
         var sb = new StringBuilder();
         sb.AppendLine(items.Aggregate((a, b) => a + ";" + b));
 
-        for (var i = 0; i < _playerList.Count; i++)
+        for (var i = 0; i < pacientList.Count; i++)
         {
             var data = GetAt(i);
             var rawInfo = data.RespiratoryData.GetRawInfo();
@@ -101,15 +102,15 @@ public class PlayerDb
 
     public void CreatePlayer(Pacient plr)
     {
-        _playerList.Add(plr);
+        pacientList.Add(plr);
         Save();
     }
 
-    public Pacient GetAt(int i) => _playerList.Count <= i ? null : _playerList[i];
+    public Pacient GetAt(int i) => pacientList.Count <= i ? null : pacientList[i];
 
-    public Pacient GetPlayer(uint id) => _playerList.Find(x => x.Id == id);
+    public Pacient GetPlayer(uint id) => pacientList.Find(x => x.Id == id);
 
-    public Pacient GetPlayer(string name) => _playerList.Find(x => x.Name == name);
+    public Pacient GetPlayer(string name) => pacientList.Find(x => x.Name == name);
 
-    public List<Pacient> ContainsName(string find) => _playerList.FindAll(x => x.Name.Contains(find));
+    public List<Pacient> ContainsName(string find) => pacientList.FindAll(x => x.Name.Contains(find));
 }

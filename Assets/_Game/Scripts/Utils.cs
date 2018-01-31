@@ -31,17 +31,17 @@ public class Utils
                $"- Is64BitOperatingSystem: {Environment.Is64BitOperatingSystem}";
     }
 
-    public static float CalculateMeanFlow(List<KeyValuePair<long, float>> respiratorySamples)
+    public static float CalculateMeanFlow(List<KeyValuePair<long, float>> samples)
     {
         long startTime = 0, firstCurveTime = 0, secondCurveTime = 0, sumTimes = 0;
         float quantCycles = 0;
 
-        for (var i = 1; i < respiratorySamples.Count; i++)
+        for (var i = 1; i < samples.Count; i++)
         {
-            var actualTime = respiratorySamples[i].Key;
-            var actualValue = respiratorySamples[i].Value;
+            var actualTime = samples[i].Key;
+            var actualValue = samples[i].Value;
 
-            var lastTime = respiratorySamples[i - 1].Key;
+            var lastTime = samples[i - 1].Key;
 
             if (actualValue < -GameMaster.PitacoThreshold || actualValue > GameMaster.PitacoThreshold)
             {

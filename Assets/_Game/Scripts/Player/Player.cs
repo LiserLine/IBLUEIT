@@ -29,6 +29,6 @@ public partial class Player : Singleton<Player>
     {
         Pacient.Loaded.PlaySessionsDone++;
         Pacient.Loaded.TotalScore += Scorer.Instance.Score;
-        PlayerDb.Instance.Save();
+        PacientDb.Instance.Save();
     }
 }

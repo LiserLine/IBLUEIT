@@ -21,7 +21,7 @@ public class PopulateSavesList : MonoBehaviour
         var restrictiveTranslation = "Restritivo"; //LocalizationManager.Instance?.GetLocalizedValue("txtRestrictive");
         var normalTranslation = "Normal"; //LocalizationManager.Instance?.GetLocalizedValue("txtNormal");
 
-        foreach (var plr in PlayerDb.Instance.PlayerList)
+        foreach (var plr in PacientDb.Instance.PlayerList)
         {
             var btnPrefab = Instantiate(ButtonPrefab);
             btnPrefab.transform.SetParent(this.transform);

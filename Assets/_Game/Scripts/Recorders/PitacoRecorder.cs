@@ -26,17 +26,17 @@ public class PitacoRecorder : Recorder<PitacoRecorder>
     protected override void StopRecord()
     {
         base.StopRecord();
-        FlushData();
+        Flush();
     }
 
-    private void FlushData()
+    private void Flush()
     {
         if (sb.Length < 0)
             return;
 
         var path = @"savedata/pacients/" + Pacient.Loaded.Id + @"/" + $"{recordStart:yyyyMMdd-HHmmss}_" + FileName + ".csv";
 
-        sb.Insert(0, "time;value" + Environment.NewLine);
+        sb.Insert(0, "time;value\n");
 
         Utils.WriteAllText(path, sb.ToString());
     }

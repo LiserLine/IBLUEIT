@@ -49,14 +49,14 @@ public class NewGameMenuUI : BasicUI<NewGameMenuUI>
             Name = playerName,
             Birthday = birthday,
             Disfunction = disfunction,
-            Id = PlayerDb.Instance.PlayerList.Count + 1,
+            Id = PacientDb.Instance.PlayerList.Count + 1,
             Observations = observations,
             RespiratoryData = new RespiratoryData(),
             CalibrationDone = false,
             StagesOpened = 1
         };
 
-        var tmpPlr = PlayerDb.Instance.GetPlayer(playerName);
+        var tmpPlr = PacientDb.Instance.GetPlayer(playerName);
 
         if (plr.Name.Equals(tmpPlr?.Name)
             && plr.Birthday.Equals(tmpPlr?.Birthday)
@@ -66,7 +66,7 @@ public class NewGameMenuUI : BasicUI<NewGameMenuUI>
             return;
         }
 
-        PlayerDb.Instance.CreatePlayer(plr);
+        PacientDb.Instance.CreatePlayer(plr);
         Pacient.Loaded = plr;
 
         SysMessage.Info("Jogador criado com sucesso!");
