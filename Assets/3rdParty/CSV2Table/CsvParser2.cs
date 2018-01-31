@@ -201,10 +201,12 @@ public class CsvParser2
             context.MaxColumnsToRead = MaxColumnsToRead;
 
         ParserState currentState = ParserState.LineStartState;
+
         string next;
+
         while ((next = reader.ReadLine()) != null)
         {
-            foreach (char ch in next)
+            foreach (var ch in next)
             {
                 switch (ch)
                 {
@@ -221,16 +223,20 @@ public class CsvParser2
             }
             currentState = currentState.EndOfLine(context);
         }
-        List<string[]> allLines = context.GetAllLines();
+
+        var allLines = context.GetAllLines();
+
         if (TrimTrailingEmptyLines && allLines.Count > 0)
         {
-            bool isEmpty = true;
-            for (int i = allLines.Count - 1; i >= 0; i--)
+            var isEmpty = true;
+
+            for (var i = allLines.Count - 1; i >= 0; i--)
             {
                 // ReSharper disable RedundantAssignment
                 isEmpty = true;
+
                 // ReSharper restore RedundantAssignment
-                for (int j = 0; j < allLines[i].Length; j++)
+                for (var j = 0; j < allLines[i].Length; j++)
                 {
                     if (!String.IsNullOrEmpty(allLines[i][j]))
                     {
@@ -238,24 +244,28 @@ public class CsvParser2
                         break;
                     }
                 }
+
                 if (!isEmpty)
                 {
                     if (i < allLines.Count - 1)
                         allLines.RemoveRange(i + 1, allLines.Count - i - 1);
+
                     break;
                 }
             }
+
             if (isEmpty)
                 allLines.RemoveRange(0, allLines.Count);
         }
+
         return allLines.ToArray();
     }
 
     public static string[][] Parse(string input)
     {
-        CsvParser parser = new CsvParser();
+        var parser = new CsvParser();
 
-        using (StringReader reader = new StringReader(input))
+        using (var reader = new StringReader(input))
         {
             return parser.Parse(reader);
         }
