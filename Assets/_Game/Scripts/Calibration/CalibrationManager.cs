@@ -139,9 +139,7 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
                             continue;
                         }
 
-#if UNITY_EDITOR
                         SerialController.Instance.InitSampling();
-#endif
 
                         yield return new WaitForSeconds(1);
                         balloonText.text = "(relaxe e RESPIRE NORMALMENTE por 30 segundos)";
@@ -309,7 +307,7 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
                     case 13:
                         PrepareNextExercise();
                         currentExercise = CalibrationExercise.ExpiratoryFlow;
-                        DudeTalk("Agora vamos medir o tempo. Aguarde o relógio ficar verde, relaxe e ASSOPRE o MÁXIMO de TEMPO possível.");
+                        DudeTalk("Agora vamos medir o tempo. Aguarde o relógio ficar verde, ASSOPRE e mantenha o relógio girando o MÁXIMO de TEMPO possível.");
                         SetNextStep();
                         break;
 
@@ -328,7 +326,7 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
                         yield return new WaitForSeconds(0.5f);
 
                         AirFlowStart(false);
-                        balloonText.text = "(ASSOPRE o MÁXIMO de TEMPO possível e aguarde o próximo passo)";
+                        balloonText.text = "(ASSOPRE e mantenha o relógio girando o MÁXIMO de TEMPO possível)";
 
                         // Wait for player input to be greather than threshold
                         while (flowMeter <= GameMaster.PitacoThreshold)
@@ -336,7 +334,7 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
 
                         flowWatch.Restart();
 
-                        while (flowMeter > GameMaster.PitacoThreshold * 0.25f)
+                        while (flowMeter > GameMaster.PitacoThreshold * 0.3f)
                             yield return null;
 
                         AirFlowStop();
@@ -382,7 +380,7 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
                     case 17:
                         PrepareNextExercise();
                         currentExercise = CalibrationExercise.InspiratoryFlow;
-                        DudeTalk("Agora, quando o relógio ficar verde, INSPIRE o MÁXIMO de TEMPO possível.");
+                        DudeTalk("Agora, quando o relógio ficar verde, INSPIRE e mantenha o relógio girando o MÁXIMO de TEMPO possível");
                         SetNextStep();
                         break;
 
@@ -401,14 +399,14 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
                         yield return new WaitForSeconds(0.5f);
 
                         AirFlowStart(false);
-                        balloonText.text = "(INSPIRE o MÁXIMO de TEMPO possível e aguarde o próxomo passo)";
+                        balloonText.text = "(INSPIRE e mantenha o relógio girando o MÁXIMO de TEMPO possível)";
 
                         while (flowMeter >= -GameMaster.PitacoThreshold)
                             yield return null;
 
                         flowWatch.Restart();
 
-                        while (flowMeter < -GameMaster.PitacoThreshold * 0.25)
+                        while (flowMeter < -GameMaster.PitacoThreshold * 0.3f)
                             yield return null;
                         
                         AirFlowStop();

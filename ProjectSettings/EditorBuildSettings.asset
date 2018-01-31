@@ -17,6 +17,3 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Minigame-Cake/Scenes/Minigame-Cake.unity
     guid: ac1cce6bc03242e4fa7abd7eeca54c07
-  - enabled: 1
-    path: Assets/_Game/Scenes/Localization.unity
-    guid: 25a216bf04b7d2a40b54a0305cfac560

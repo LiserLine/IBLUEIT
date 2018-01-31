@@ -17,7 +17,7 @@ public class ClockArrow : MonoBehaviour
 
         var snsrVal = Utils.ParseFloat(msg);
 
-        snsrVal = snsrVal < -GameMaster.PitacoThreshold* 0.25f || snsrVal > GameMaster.PitacoThreshold * 0.25f ? snsrVal : 0f;
+        snsrVal = snsrVal < -GameMaster.PitacoThreshold* 0.3f || snsrVal > GameMaster.PitacoThreshold * 0.3f ? snsrVal : 0f;
 
         this.transform.Rotate(Vector3.back, snsrVal);
     }
