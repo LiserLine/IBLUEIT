@@ -37,7 +37,7 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
     [SerializeField]
     private GameObject dude, clock;
 
-    private int currentStep = 5; //default: 1
+    private int currentStep = 1; //default: 1
 
     private const int flowTimeThreshold = 2500; // In Miliseconds
     private const int respiratoryFrequencyThreshold = 1500; //In Milliseconds //ToDo - Test this variable before implementing in CSV

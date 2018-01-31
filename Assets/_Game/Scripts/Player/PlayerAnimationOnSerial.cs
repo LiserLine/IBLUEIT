@@ -10,7 +10,6 @@ public partial class Player
         var sensorValue = Utils.ParseFloat(msg);
 
         sensorValue = sensorValue < -GameMaster.PitacoThreshold || sensorValue > GameMaster.PitacoThreshold * 0.6f ? sensorValue : 0f;
-        Debug.Log(sensorValue);
 
         this.animator.Play(sensorValue < 0 ? "Dolphin-Jump" : "Dolphin-Move");
     }
