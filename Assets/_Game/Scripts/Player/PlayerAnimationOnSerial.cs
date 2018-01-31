@@ -1,4 +1,6 @@
-﻿public partial class Player
+﻿using UnityEngine;
+
+public partial class Player
 {
     private void AnimationOnSerial(string msg)
     {
@@ -7,7 +9,8 @@
 
         var sensorValue = Utils.ParseFloat(msg);
 
-        sensorValue = sensorValue < -GameMaster.PitacoThreshold || sensorValue > GameMaster.PitacoThreshold ? sensorValue : 0f;
+        sensorValue = sensorValue < -GameMaster.PitacoThreshold || sensorValue > GameMaster.PitacoThreshold * 0.6f ? sensorValue : 0f;
+        Debug.Log(sensorValue);
 
         this.animator.Play(sensorValue < 0 ? "Dolphin-Jump" : "Dolphin-Move");
     }

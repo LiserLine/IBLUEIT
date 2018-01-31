@@ -41,11 +41,11 @@ public class Pacient
                 TotalScore = 0,
                 RespiratoryData = new RespiratoryData
                 {
-                    RespirationFrequency = 3100,
-                    ExpiratoryPeakFlow = 1300,
-                    InspiratoryPeakFlow = -260,
-                    ExpiratoryFlowTime = 8200,
-                    InspiratoryFlowTime = 7600
+                    RespirationFrequency = 3000,
+                    ExpiratoryPeakFlow = 600,
+                    InspiratoryPeakFlow = -200,
+                    ExpiratoryFlowTime = 6000,
+                    InspiratoryFlowTime = 6000
                 }
             };
 #endif
