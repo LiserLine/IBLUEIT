@@ -9,6 +9,6 @@ public partial class Debugger
     [ContextMenu("Load Selected Scene")]
     private void LoadScene()
     {
-        SceneManager.LoadScene(sceneToLoad);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(sceneToLoad);
     }
 }

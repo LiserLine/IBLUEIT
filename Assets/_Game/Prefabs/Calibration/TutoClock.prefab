@@ -26,7 +26,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1575473898497518
 GameObject:
   m_ObjectHideFlags: 0
@@ -37,7 +37,7 @@ GameObject:
   - component: {fileID: 4293662634401190}
   - component: {fileID: 212295806933139844}
   m_Layer: 0
-  m_Name: TutorialClockArrow
+  m_Name: Arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

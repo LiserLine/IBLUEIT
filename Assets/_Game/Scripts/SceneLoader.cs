@@ -20,7 +20,7 @@ public class SceneLoader : Singleton<SceneLoader>
     {
         loadingScreen.Show();
 
-        var operation = SceneManager.LoadSceneAsync(sceneIndex);
+        var operation = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneIndex);
         while (!operation.isDone)
         {
             var progress = Mathf.Clamp01(operation.progress / 0.9f);
