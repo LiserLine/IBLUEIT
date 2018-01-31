@@ -170,6 +170,4 @@ public partial class Spawner : Singleton<Spawner>
 
         objectsOnScene.Clear();
     }
-
-    private void OnDestroy() => StageToLoad = 0;
 }
