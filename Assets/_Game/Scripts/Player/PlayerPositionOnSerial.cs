@@ -11,7 +11,7 @@ public partial class Player
 
         sensorValue = sensorValue < -GameMaster.PitacoThreshold || sensorValue > GameMaster.PitacoThreshold ? sensorValue : 0f;
 
-        var peak = sensorValue > 0 ? Pacient.Loaded.RespiratoryData.ExpiratoryPeakFlow : -Pacient.Loaded.RespiratoryData.InspiratoryPeakFlow;
+        var peak = sensorValue > 0 ? Pacient.Loaded.RespiratoryData.ExpiratoryPeakFlow * 0.7f : -Pacient.Loaded.RespiratoryData.InspiratoryPeakFlow;
 
         var nextPosition = sensorValue * CameraLimits.Boundary / peak;
 
