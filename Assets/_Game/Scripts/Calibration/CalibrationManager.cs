@@ -39,7 +39,7 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
 
     private int currentStep = 1; //default: 1
 
-    private const int flowTimeThreshold = 2500; // In Miliseconds
+    private const int flowTimeThreshold = 500; // In Miliseconds
     private const int respiratoryFrequencyThreshold = 1500; //In Milliseconds //ToDo - Test this variable before implementing in CSV
 
     private bool runNextStep, balloonPanelOpen, acceptingValues, calibrationDone;
@@ -200,10 +200,10 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
                         yield return new WaitForSeconds(0.5f);
 
                         AirFlowStart();
-                        StartCoroutine(DisplayCountdown(7));
+                        StartCoroutine(DisplayCountdown(10));
                         balloonText.text = "(INSPIRE bem FORTE no PITACO e aguarde o próximo passo)";
 
-                        yield return new WaitForSeconds(7);
+                        yield return new WaitForSeconds(10);
 
                         AirFlowStop();
                         
@@ -263,11 +263,11 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
                         yield return new WaitForSeconds(0.5f);
 
                         AirFlowStart();
-                        StartCoroutine(DisplayCountdown(7));
+                        StartCoroutine(DisplayCountdown(10));
                         balloonText.text = "(ASSOPRE bem FORTE no PITACO e aguarde o próximo passo)";
 
                         // Wait for player input
-                        yield return new WaitForSeconds(7);
+                        yield return new WaitForSeconds(10);
 
                         AirFlowStop();
 
