@@ -1,6 +1,5 @@
 ﻿/* Original source: https://gist.github.com/ftvs/5822103 */
 
-using NaughtyAttributes;
 using UnityEngine;
 
 public class CameraShake : MonoBehaviour

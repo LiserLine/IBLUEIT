@@ -9,15 +9,15 @@ public class PlataformOnTheFly : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Space))
         {
-            if (GameMaster.Instance.GameIsPaused)
-            {
-                FindObjectOfType<PauseMenuUI>().Hide();
-                GameMaster.Instance.UnPauseGame();
-            }
-            else
+            if (!GameMaster.Instance.GameIsPaused)
             {
                 FindObjectOfType<PauseMenuUI>().Show();
                 GameMaster.Instance.PauseGame();
+            }
+            else
+            {
+                FindObjectOfType<PauseMenuUI>().Hide();
+                GameMaster.Instance.UnPauseGame();
             }
         }
     }

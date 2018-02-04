@@ -35,7 +35,7 @@ public class NewGameMenuUI : BasicUI<NewGameMenuUI>
 
         if (normal == obstructive == restrictive == false)
         {
-            SysMessage.Warning("Disfunção Indefinida!");
+            SysMessage.Warning("Condição Indefinida!");
             return;
         }
 
