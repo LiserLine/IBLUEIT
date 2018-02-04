@@ -3984,7 +3984,7 @@ MonoBehaviour:
     loop: 0
     playOnAwake: 0
   - name: TargetGet
-    clip: {fileID: 8300000, guid: 335db78fc7175224eb7ed01ed0361657, type: 3}
+    clip: {fileID: 8300000, guid: 246f81d94fa80994b9de1005c6d57401, type: 3}
     volume: 0.2
     pitch: 1
     randomVolume: 0
@@ -4196,8 +4196,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86e9f6249f73674488fc119d08164615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeDuration: 0.5
-  shakeAmount: 0.1
+  shakeDuration: 0.75
+  shakeAmount: 0.2
   decreaseFactor: 1
 --- !u!1 &1772985456
 GameObject:

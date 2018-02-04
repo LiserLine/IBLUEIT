@@ -9414,7 +9414,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 604bbe793263e5745a74586841681cdb, type: 3}
-    m_FontSize: 45
+    m_FontSize: 40
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -9425,9 +9425,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Carregar
-
-'
+  m_Text: Carregar Perfil
 --- !u!222 &1572562563
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10679,9 +10677,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Novo
-
-'
+  m_Text: Novo Perfil
 --- !u!222 &1924053151
 CanvasRenderer:
   m_ObjectHideFlags: 0
