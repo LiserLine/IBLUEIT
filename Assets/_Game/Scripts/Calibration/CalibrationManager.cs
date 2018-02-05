@@ -31,7 +31,7 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
 
     [BoxGroup("UI")]
     [SerializeField]
-    private GameObject enterButton, enterButtonSmall, welcomePanel, balloonPanel;
+    private GameObject enterButton, enterButtonSmall, welcomePanel, balloonPanel, resultPanel;
 
     [BoxGroup("Calibration")]
     [SerializeField]
@@ -458,7 +458,7 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
 
                     case 22:
                         calibrationDone = true;
-                        Pacient.Loaded.CalibrationDone = calibrationDone;
+                        Pacient.Loaded.CalibrationDone = calibrationDone;   
                         Pacient.Loaded.RespiratoryData = tempRespiratoryInfo;
                         PacientDb.Instance.Save();
                         OnCalibrationEnd?.Invoke();
@@ -467,8 +467,7 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
                         dude.SetActive(false);
                         balloonPanel.SetActive(false);
                         //welcomePanel.SetActive(true); //ToDo - try to crossfade alpha from 0 to max
-
-                        SceneLoader.Instance.LoadScene(0); //ToDo - ternario para quando implementar minigames
+                        resultPanel.SetActive(true);
                         break;
 
                     #endregion

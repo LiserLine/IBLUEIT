@@ -28,6 +28,10 @@ public partial class Spawner
     private void LoadCsv(int id)
     {
         var stageListPath = Utils.ReadAllText(Application.streamingAssetsPath + @"/GameSettings/StageList.csv");
+
+        if (stageListPath.Split('\t').Length > 0)
+            stageListPath = stageListPath.Replace('\t', ';');
+
         var grid = CsvParser2.Parse(stageListPath);
 
         spawnObjects = (EnemyType)Enum.Parse(typeof(EnemyType), grid[id][1]);
