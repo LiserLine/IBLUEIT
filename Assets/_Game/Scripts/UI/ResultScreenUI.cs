@@ -28,7 +28,7 @@ public class ResultScreenUI : BasicUI<ResultScreenUI>
 
         resultInfo.text =
             $"• Score: {Mathf.Round(Scorer.Instance.Score)} / {Mathf.Round(Scorer.Instance.MaxScore)} ({Mathf.Round(Scorer.Instance.Score / Scorer.Instance.MaxScore * 100f)}%)\n" +
-            $"• Fase: {Spawner.StageToLoad}\n" +
+            $"• Nível: {Spawner.StageToLoad}\n" +
             //$"• Nível Altura: {Spawner.Instance.InspiratoryHeightLevel}\n" +
             //$"• Nível Profundidade: {Spawner.Instance.ExpiratoryHeightLevel}\n" +
             //$"• Nível Tamanho: {Spawner.Instance.ExpiratorySizeLevel}\n" +

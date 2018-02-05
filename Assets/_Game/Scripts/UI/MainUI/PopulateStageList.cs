@@ -33,7 +33,7 @@ public class PopulateStageList : MonoBehaviour
             var holder = btnPrefab.AddComponent<StageHolder>();
             holder.StageToLoad = i + 1;
 
-            btnPrefab.GetComponentInChildren<Text>().text = $"Fase {holder.StageToLoad}";
+            btnPrefab.GetComponentInChildren<Text>().text = $"Nível {holder.StageToLoad}";
 
             if (Pacient.Loaded.StagesOpened < i + 1)
                 btnPrefab.GetComponent<Button>().interactable = false;
