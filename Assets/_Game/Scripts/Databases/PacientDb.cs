@@ -10,7 +10,7 @@ public class PacientDb
     public static PacientDb Instance = new PacientDb();
 
     private readonly List<Pacient> pacientList = new List<Pacient>();
-    private const string filePath = @"savedata/pacients/_list.csv";
+    private const string filePath = @"savedata/pacients/_pacientList.csv";
 
     public List<Pacient> PlayerList
     {
@@ -63,7 +63,7 @@ public class PacientDb
                     ExpiratoryPeakFlow = Utils.ParseFloat(grid[i][6]),
                     InspiratoryFlowTime = Utils.ParseFloat(grid[i][7]),
                     ExpiratoryFlowTime = Utils.ParseFloat(grid[i][8]),
-                    RespirationFrequency = Utils.ParseFloat(grid[i][9]),
+                    RespiratoryFrequency = Utils.ParseFloat(grid[i][9]),
                 },
                 StagesOpened = int.Parse(grid[i][10]),
                 TotalScore = Utils.ParseFloat(grid[i][11]),
@@ -80,7 +80,7 @@ public class PacientDb
     public void Save()
     {
         var items = new[] { "Id", "Name", "Birthday", "Observations", "Disfunction",
-            "InspiratoryPeakFlow", "ExpiratoryPeakFlow", "InspiratoryFlowTime", "ExpiratoryFlowTime", "RespirationFrequency",
+            "InspiratoryPeakFlow", "ExpiratoryPeakFlow", "InspiratoryFlowTime", "ExpiratoryFlowTime", "RespiratoryFrequency",
             "StagesOpened", "TotalScore", "PlaySessionsDone", "CalibrationDone" };
 
         var sb = new StringBuilder();

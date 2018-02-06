@@ -3,7 +3,7 @@
 public partial class GameMaster : Singleton<GameMaster>
 {
     public static float PitacoThreshold { get; private set; } = 7.5f;
-    public static float Mercy { get; private set; } = 0.4f;
+    public static float Resistance { get; private set; } = 0.3f;
     public static float PlataformMinScoreMultiplier { get; private set; } = 0.7f;
 
     private bool isLoaded;
@@ -15,18 +15,18 @@ public partial class GameMaster : Singleton<GameMaster>
         if (isLoaded)
             return;
 
-        LoadConstants();
+        LoadGlobals();
 
         isLoaded = true;
     }
 
-    private void LoadConstants()
+    private void LoadGlobals()
     {
         var data = Utils.ReadAllText(Application.streamingAssetsPath + @"/GameSettings/Constants.csv");
         var grid = CsvParser2.Parse(data);
 
         PitacoThreshold = Utils.ParseFloat(grid[1][0]);
-        Mercy = Utils.ParseFloat(grid[1][1]);
+        Resistance = Utils.ParseFloat(grid[1][1]);
         PlataformMinScoreMultiplier = Mathf.Clamp(Utils.ParseFloat(grid[1][2]), 0.5f, 1f);
     }
 

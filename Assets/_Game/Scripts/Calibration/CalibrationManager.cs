@@ -158,7 +158,7 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
 
                         if (flowMeter > respiratoryFrequencyThreshold)
                         {
-                            tempRespiratoryInfo.RespirationFrequency = flowMeter;
+                            tempRespiratoryInfo.RespiratoryFrequency = flowMeter;
                             SetNextStep(true);
                             continue;
                         }

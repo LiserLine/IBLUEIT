@@ -4,13 +4,13 @@
 
     public float InspiratoryPeakFlow
     {
-        get { return _ipf * GameMaster.Mercy; }
+        get { return _ipf * GameMaster.Resistance; }
         set { _ipf = value; }
     }
 
     public float ExpiratoryPeakFlow
     {
-        get { return _epf * GameMaster.Mercy; }
+        get { return _epf * GameMaster.Resistance; }
         set { _epf = value; }
     }
 
@@ -19,7 +19,7 @@
     /// </summary>
     public float InspiratoryFlowTime
     {
-        get { return _ift * GameMaster.Mercy; }
+        get { return _ift * GameMaster.Resistance; }
         set { _ift = value; }
     }
 
@@ -28,16 +28,16 @@
     /// </summary>
     public float ExpiratoryFlowTime
     {
-        get { return _eft * GameMaster.Mercy; }
+        get { return _eft * GameMaster.Resistance; }
         set { _eft = value; }
     }
 
     /// <summary>
     /// Respiration Frequency (mean time of one cycle, in milliseconds)
     /// </summary>
-    public float RespirationFrequency
+    public float RespiratoryFrequency
     {
-        get { return _rf / GameMaster.Mercy; }
+        get { return _rf / GameMaster.Resistance; }
         set { _rf = value; }
     }
 

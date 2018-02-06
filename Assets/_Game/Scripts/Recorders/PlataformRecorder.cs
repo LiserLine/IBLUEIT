@@ -50,12 +50,12 @@ public class PlataformRecorder : Recorder<PlataformRecorder>
     private const string ObjectsCsvKeys = "time;tag;instanceId;posX;posY";
 
     private const string PlataformCsvKeys = "StageId;Start;Stop;InsHeightLevel;ExpHeightLevel;ExpSizeLevel;" +
-                                            "Score;MaxScore;Mercy;PitacoThreshold;PlataformMinScoreMultiplier";
+                                            "Score;MaxScore;Resistance;PitacoThreshold;PlataformMinScoreMultiplier";
 
     private string GetPlataformData() =>
         $"{Spawner.StageToLoad};{recordStart:s};{recordStop:s};{Spawner.Instance.InspiratoryHeightLevel};" +
         $"{Spawner.Instance.ExpiratoryHeightLevel};{Spawner.Instance.ExpiratorySizeLevel};{Scorer.Instance.Score};" +
-        $"{Scorer.Instance.MaxScore};{GameMaster.Mercy};{GameMaster.PitacoThreshold};{GameMaster.PlataformMinScoreMultiplier}";
+        $"{Scorer.Instance.MaxScore};{GameMaster.Resistance};{GameMaster.PitacoThreshold};{GameMaster.PlataformMinScoreMultiplier}";
 
     private void UpdatePlataformHistory()
     {
