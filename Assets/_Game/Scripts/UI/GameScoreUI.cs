@@ -6,5 +6,5 @@ public class GameScoreUI : MonoBehaviour
     [SerializeField]
     private Text scoreText;
 
-    private void FixedUpdate() => scoreText.text = Mathf.Round(Scorer.Instance.Score).ToString();
+    private void Update() => scoreText.text = Mathf.Round(Scorer.Instance.Score).ToString();
 }

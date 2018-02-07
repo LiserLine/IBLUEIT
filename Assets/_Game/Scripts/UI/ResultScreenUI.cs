@@ -26,14 +26,12 @@ public class ResultScreenUI : BasicUI<ResultScreenUI>
             AudioManager.Instance.PlaySound("PlayerDamage");
         }
 
-        var playerScore = Mathf.Round(Scorer.Instance.Score);
-        var stageScore = Mathf.Round(Scorer.Instance.MaxScore);
-
-        var scorePercentage = Mathf.Round(playerScore / stageScore) * 100f;
-        scorePercentage = scorePercentage > 100f ? 100f : scorePercentage;
+        var score = Scorer.Instance.Score;
+        var maxScore = Scorer.Instance.MaxScore;
+        score = Mathf.Clamp(score, 0f, maxScore);
 
         resultInfo.text =
-            $"• Score: {playerScore} / {stageScore} ({scorePercentage}%)\n" +
+            $"• Score: {score:####} / {maxScore:####} ({((score / maxScore) * 100f):####}%)\n" +
             $"• Nível: {Spawner.StageToLoad}\n" +
             //$"• Nível Altura: {Spawner.Instance.InspiratoryHeightLevel}\n" +
             //$"• Nível Profundidade: {Spawner.Instance.ExpiratoryHeightLevel}\n" +
