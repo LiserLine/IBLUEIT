@@ -10,7 +10,7 @@ public class Destroyer : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Spawner.Instance.ObjectsOnScene.Remove(collision.gameObject);
+        Spawner.Instance.SpawnedObjects.Remove(collision.gameObject);
         Destroy(collision.gameObject);
     }
 }

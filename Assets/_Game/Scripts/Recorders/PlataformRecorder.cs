@@ -20,7 +20,7 @@ public class PlataformRecorder : Recorder<PlataformRecorder>
 
         sb.AppendLine($"{Time.time:F};{Player.Instance.tag};{Player.Instance.GetInstanceID()};{Player.Instance.transform.position.x:F};{Player.Instance.transform.position.y:F}");
 
-        foreach (var o in Spawner.Instance.ObjectsOnScene)
+        foreach (var o in Spawner.Instance.SpawnedObjects)
         {
             if (o != null)
                 sb.AppendLine($"{Time.time:F};{o.tag};{o.GetInstanceID()};{o.transform.position.x:F};{o.transform.position.y:F}");

@@ -21,46 +21,34 @@ public partial class Spawner
     public delegate void ObjectReleasedHandler(EnemyType type, ref GameObject obj1, ref GameObject obj2);
     public event ObjectReleasedHandler OnObjectReleased;
 
-    public delegate void RelaxTimeStartHandler();
-    public event RelaxTimeStartHandler OnRelaxTimeStart;
-
     private const float minDistanceBetweenSpawns = 3f;
 
     [Button("Spawn Objects")]
     private void Spawn()
     {
-        if (isRelaxTime && !isRelaxTimeDone)
+        switch (spawnObjects)
         {
-            SpawnRelaxTime();
-            isRelaxTime = false;
-            isRelaxTimeDone = true;
-        }
-        else
-        {
-            switch (spawnObjects)
-            {
-                case EnemyType.Targets:
-                    ReleaseTargets();
-                    break;
-                case EnemyType.Obstacles:
-                    ReleaseObstacles();
-                    break;
-                default:
-                    if (Random.Range(0, 2) == 0) ReleaseTargets();
-                    else ReleaseObstacles();
-                    break;
-            }
+            case EnemyType.Targets:
+                ReleaseTargets();
+                break;
+            case EnemyType.Obstacles:
+                ReleaseObstacles();
+                break;
+            default:
+                if (Random.Range(0, 2) == 0) ReleaseTargets();
+                else ReleaseObstacles();
+                break;
         }
     }
 
     private void DistanciateSpawns(ref GameObject next)
     {
-        if (objectsOnScene.Count < 1)
+        if (spawnedObjects.Count < 1)
             return;
 
         var dist = minDistanceBetweenSpawns + (1f + (1f / (float)Pacient.Loaded.Disfunction));
 
-        var lastObj = objectsOnScene.Last();
+        var lastObj = spawnedObjects.Last();
         var lastPos = lastObj.transform.position.x + lastObj.transform.localScale.x / 2f;
 
         var relativeDistance = next.transform.position.x - lastPos;
@@ -88,16 +76,14 @@ public partial class Spawner
         UpdateSpeed(ref airObj);
         UpdateSpeed(ref waterObj);
 
-        objectsOnScene.Add(airObj);
-        objectsOnScene.Add(waterObj);
+        spawnedObjects.Add(airObj);
+        spawnedObjects.Add(waterObj);
 
         OnObjectReleased?.Invoke(EnemyType.Targets, ref airObj, ref waterObj);
     }
 
-    private void DistanciateTargets(ref GameObject first, ref GameObject second)
-    {
-        second.transform.Translate(first.transform.position.x + 2f - second.transform.position.x, 0f, 0f);
-    }
+    private void DistanciateTargets(ref GameObject first, ref GameObject second) =>
+        second.transform.Translate(first.transform.position.x + (Pacient.Loaded.RespiratoryData.RespiratoryFrequency / 2000f) - second.transform.position.x, 0f, 0f);
 
     private void InstanciateTargetAir(out GameObject spawned)
     {
@@ -148,8 +134,8 @@ public partial class Spawner
         UpdateSpeed(ref airObj);
         UpdateSpeed(ref waterObj);
 
-        objectsOnScene.Add(waterObj);
-        objectsOnScene.Add(airObj);
+        spawnedObjects.Add(waterObj);
+        spawnedObjects.Add(airObj);
 
         OnObjectReleased?.Invoke(EnemyType.Obstacles, ref waterObj, ref airObj);
     }
@@ -205,14 +191,16 @@ public partial class Spawner
     #region Relax Time
 
     [Button("Spawn Relax Time")]
-    private void SpawnRelaxTime()
+    private void ReleaseRelaxTime()
     {
+        if (!isRelaxTime || isRelaxTimeDone)
+            return;
+
         var disfunction = (int)Pacient.Loaded.Disfunction;
         var objects = new GameObject[11 + 4 * disfunction];
         int i;
 
-
-        var refPos = objectsOnScene.Last().transform.position;
+        var refPos = spawnedObjects.Last().transform.position;
         refPos.y = 0;
 
         for (i = 0; i < 4; i++)
@@ -226,7 +214,7 @@ public partial class Spawner
                 refPos.y = 0;
             }
 
-            ObjectsOnScene.Add(objects[i]);
+            SpawnedObjects.Add(objects[i]);
         }
 
         for (; i < 11; i++)
@@ -250,9 +238,9 @@ public partial class Spawner
         }
 
         foreach (var go in objects)
-            objectsOnScene.Add(go);
+            spawnedObjects.Add(go);
 
-        OnRelaxTimeStart?.Invoke();
+        isRelaxTimeDone = true;
     }
 
     #endregion

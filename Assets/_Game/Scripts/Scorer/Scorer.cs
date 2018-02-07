@@ -45,6 +45,9 @@ public partial class Scorer : Singleton<Scorer>
         {
             if(score < maxScore * 0.3f)
                 Pacient.Loaded.StagesOpened--;
+
+            if (Pacient.Loaded.StagesOpened == 0)
+                Pacient.Loaded.StagesOpened = 1;
         }
 
         OnResultCalculated?.Invoke(result);

@@ -21,22 +21,20 @@ public class PopulateStageList : MonoBehaviour
             children.ForEach(Destroy);
         }
 
-        var stageListPath = Utils.ReadAllText(Application.streamingAssetsPath + @"/GameSettings/StageList.csv");
+        var stageListPath = Utils.ReadCsv(Application.streamingAssetsPath + @"/GameSettings/StageList.csv");
         var grid = CsvParser2.Parse(stageListPath);
 
-        for (var i = 0; i < grid.Length; i++)
+        for (var i = 1; i < grid.Length; i++)
         {
             var btnPrefab = Instantiate(buttonPrefab);
             btnPrefab.transform.SetParent(this.transform);
             btnPrefab.transform.localScale = Vector3.one;
 
             var holder = btnPrefab.AddComponent<StageHolder>();
-            holder.StageToLoad = i + 1;
+            holder.StageToLoad = i;
 
             btnPrefab.GetComponentInChildren<Text>().text = $"Nível {holder.StageToLoad}";
-
-            if (Pacient.Loaded.StagesOpened < i + 1)
-                btnPrefab.GetComponent<Button>().interactable = false;
+            btnPrefab.GetComponent<Button>().interactable = Pacient.Loaded.StagesOpened >= i;
         }
 
         StartCoroutine(Grip());

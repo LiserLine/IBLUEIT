@@ -32,14 +32,7 @@ public class StageManager : Singleton<StageManager>
         SerialController.Instance.OnSerialConnected += StartStage;
         SerialController.Instance.OnSerialDisconnected += PauseOnDisconnect;
         Player.Instance.OnPlayerDeath += EndStage;
-        Spawner.Instance.OnRelaxTimeStart += Spawner_OnRelaxTimeStart;
         Time.timeScale = 1f;
-    }
-
-    private void Spawner_OnRelaxTimeStart()
-    {
-        timer -= 20f;
-        timer = Mathf.Clamp(timer, 0f, PlaySessionTime);
     }
 
     [Button("Start Stage")]
@@ -89,8 +82,8 @@ public class StageManager : Singleton<StageManager>
 
         if (timer > playSessionTime)
             TimeUp();
-
-        if (isTimedUp && Spawner.Instance.ObjectsOnScene.Count == 0)
+        
+        if (isTimedUp && Spawner.Instance.ObjectsOnScene == 0)
             EndStage();
     }
 }

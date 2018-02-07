@@ -14,7 +14,8 @@ public partial class Spawner : Singleton<Spawner>
     public EnemyType SpawnObjects => spawnObjects;
     public float SpawnDelay => spawnDelay;
     public float GameDifficulty => gameDifficulty;
-    public List<GameObject> ObjectsOnScene => objectsOnScene;
+    public List<GameObject> SpawnedObjects => spawnedObjects;
+    public int ObjectsOnScene => this.transform.childCount;
     public int RelaxTrigger => relaxBonusTrigger;
 
     /// <summary>
@@ -24,7 +25,7 @@ public partial class Spawner : Singleton<Spawner>
 
     private float timer;
     private bool spawnEnabled;
-    private List<GameObject> objectsOnScene;
+    private List<GameObject> spawnedObjects;
 
     [BoxGroup("Stage Settings")]
     [SerializeField]
@@ -107,8 +108,8 @@ public partial class Spawner : Singleton<Spawner>
     {
         base.Awake();
 
-        objectsOnScene?.Clear();
-        objectsOnScene = new List<GameObject>();
+        spawnedObjects?.Clear();
+        spawnedObjects = new List<GameObject>();
 
         if (StageToLoad > 0)
             LoadCsv(StageToLoad);
@@ -119,6 +120,7 @@ public partial class Spawner : Singleton<Spawner>
     private void SubscribeEvents()
     {
         StageManager.Instance.OnStageStart += EnableSpawn;
+        StageManager.Instance.OnStageTimeUp += ReleaseRelaxTime;
         StageManager.Instance.OnStageTimeUp += DisableSpawn;
         StageManager.Instance.OnStageEnd += Clean;
         Player.Instance.OnPlayerDeath += DisableSpawn;
@@ -162,12 +164,12 @@ public partial class Spawner : Singleton<Spawner>
 
     private void Clean()
     {
-        if (objectsOnScene.Count < 1)
+        if (spawnedObjects.Count < 1)
             return;
 
-        foreach (var go in objectsOnScene)
+        foreach (var go in spawnedObjects)
             Destroy(go);
 
-        objectsOnScene.Clear();
+        spawnedObjects.Clear();
     }
 }
