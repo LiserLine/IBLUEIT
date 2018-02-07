@@ -22,7 +22,7 @@ public partial class GameMaster : Singleton<GameMaster>
 
     private void LoadGlobals()
     {
-        var data = Utils.ReadAllText(Application.streamingAssetsPath + @"/GameSettings/Constants.csv");
+        var data = Utils.ReadCsv(Application.streamingAssetsPath + @"/GameSettings/Constants.csv");
         var grid = CsvParser2.Parse(data);
 
         PitacoThreshold = Utils.ParseFloat(grid[1][0]);

@@ -22,6 +22,16 @@ public class Utils
 
     public static string ReadAllText(string filepath) => File.ReadAllText(filepath, Encoding.UTF8);
 
+    public static string ReadCsv(string filepath)
+    {
+        var text = ReadAllText(filepath);
+
+        if (text.Split('\t').Length > 0)
+            text = text.Replace('\t', ';');
+
+        return text;
+    }
+
     public static string MachineSpecs()
     {
         return "System Information:\n\n" +

@@ -42,7 +42,7 @@ public class PacientDb
     {
         pacientList.Clear();
 
-        var csvData = Utils.ReadAllText(filePath);
+        var csvData = Utils.ReadCsv(filePath);
         var grid = CsvParser2.Parse(csvData);
 
         for (var i = 1; i < grid.Length; i++)
