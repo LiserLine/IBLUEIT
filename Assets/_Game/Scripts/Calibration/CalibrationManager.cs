@@ -39,8 +39,8 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
 
     private int currentStep = 1; //default: 1
 
-    private const int flowTimeThreshold = 500; // In Miliseconds
-    private const int respiratoryFrequencyThreshold = 1500; //In Milliseconds //ToDo - Test this variable before implementing in CSV
+    private const int flowTimeThreshold = 1000; // In Miliseconds
+    private const int respiratoryFrequencyThreshold = 500; //In Milliseconds //ToDo - Test this variable before implementing in CSV
 
     private bool runNextStep, balloonPanelOpen, acceptingValues, calibrationDone;
 
