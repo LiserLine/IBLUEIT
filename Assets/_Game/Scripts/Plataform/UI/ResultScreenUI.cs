@@ -34,6 +34,8 @@ public class ResultScreenUI : MonoBehaviour
         var maxScore = scorer.MaxScore;
         score = Mathf.Clamp(score, 0f, maxScore);
 
+        GameObject.Find("Canvas").transform.Find("PauseButton").GetComponent<Button>().interactable = false;
+
         resultInfo.text =
             $"• Score: {score:####} / {maxScore:####} ({((score / maxScore) * 100f):####}%)\n" +
             $"• Fase: {(int)Stage.Loaded.SpawnObject}\n" +
