@@ -5,7 +5,7 @@ public class ClockArrow : MonoBehaviour
 {
     public bool SpinClock { get; set; }
 
-    private void Start() => SerialController.Instance.OnSerialMessageReceived += OnSerialMessageReceived;
+    private void Awake() => FindObjectOfType<SerialController>().OnSerialMessageReceived += OnSerialMessageReceived;
 
     private void OnSerialMessageReceived(string msg)
     {
@@ -15,9 +15,9 @@ public class ClockArrow : MonoBehaviour
         if (msg.Length < 1)
             return;
 
-        var snsrVal = Utils.ParseFloat(msg);
+        var snsrVal = Parsers.Float(msg);
 
-        snsrVal = snsrVal < -GameMaster.PitacoThreshold* 0.3f || snsrVal > GameMaster.PitacoThreshold * 0.3f ? snsrVal : 0f;
+        snsrVal = snsrVal < -GameManager.PitacoFlowThreshold * 0.3f || snsrVal > GameManager.PitacoFlowThreshold * 0.3f ? snsrVal : 0f;
 
         this.transform.Rotate(Vector3.back, snsrVal);
     }

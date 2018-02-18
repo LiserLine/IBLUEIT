@@ -16,7 +16,7 @@ public partial class CalibrationManager
 
     private void DudeCongratulate()
     {
-        AudioManager.Instance.PlaySound("Success");
+        SoundManager.Instance.PlaySound("Success");
         DudeTalk("Muito bem!");
         SetStep(currentExerciseCount == 3 ? currentStep + 2 : currentStep + 1);
     }
@@ -29,7 +29,7 @@ public partial class CalibrationManager
 
     private void DudeWarnUnknownFlow()
     {
-        AudioManager.Instance.PlaySound("Failure");
+        SoundManager.Instance.PlaySound("Failure");
         DudeTalk("Não consegui medir sua respiração. Vamos tentar novamente?");
         SetStep(currentStep);
     }

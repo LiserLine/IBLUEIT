@@ -7,7 +7,7 @@ public partial class CalibrationManager
         if (!acceptingValues || msg.Length < 1)
             return;
 
-        var tmp = Utils.ParseFloat(msg);
+        var tmp = Parsers.Float(msg);
 
         switch (currentExercise)
         {
@@ -16,10 +16,10 @@ public partial class CalibrationManager
                 {
                     flowMeter = tmp;
 
-                    if (flowMeter > tempRespiratoryInfo.ExpiratoryPeakFlow)
+                    if (flowMeter > newCapacities.ExpPeakFlow)
                     {
-                        tempRespiratoryInfo.ExpiratoryPeakFlow = flowMeter;
-                        Debug.Log($"ExpiratoryPeakFlow: {flowMeter}");
+                        newCapacities.ExpPeakFlow = flowMeter;
+                        Debug.Log($"ExpPeakFlow: {flowMeter}");
                     }
                 }
                 break;
@@ -29,10 +29,10 @@ public partial class CalibrationManager
                 {
                     flowMeter = tmp;
 
-                    if (flowMeter < tempRespiratoryInfo.InspiratoryPeakFlow)
+                    if (flowMeter < newCapacities.InsPeakFlow)
                     {
-                        tempRespiratoryInfo.InspiratoryPeakFlow = flowMeter;
-                        Debug.Log($"InspiratoryPeakFlow: {flowMeter}");
+                        newCapacities.InsPeakFlow = flowMeter;
+                        Debug.Log($"InsPeakFlow: {flowMeter}");
                     }
                 }
                 break;

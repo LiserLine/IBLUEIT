@@ -16,14 +16,15 @@ public enum CalibrationExercise
     ExpiratoryFlow
 }
 
-//ToDo - Implement StateMachine ?
-//ToDo - UI should inherit BasicUI
-//ToDo - Implement events ?
-
-public partial class CalibrationManager : Singleton<CalibrationManager>
+public enum CalibrationExerciseResult
 {
-    public delegate void CalibrationEndHandler();
-    public event CalibrationEndHandler OnCalibrationEnd;
+    Failure,
+    Success
+}
+
+public partial class CalibrationManager : MonoBehaviour
+{
+    private SerialController serialController;
 
     [BoxGroup("UI")]
     [SerializeField]
@@ -47,15 +48,16 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
     private int currentExerciseCount;
     private float flowMeter;
 
-    private RespiratoryData tempRespiratoryInfo;
+    private Capacities newCapacities;
     private Stopwatch flowWatch, timerWatch;
     private Dictionary<long, float> samples;
     private CalibrationExercise currentExercise;
 
-    protected override void Awake()
+    private void Awake()
     {
-        base.Awake();
-        tempRespiratoryInfo = new RespiratoryData();
+        serialController = FindObjectOfType<SerialController>();
+        serialController.OnSerialMessageReceived += OnSerialMessageReceived;
+        newCapacities = new Capacities();
         flowWatch = new Stopwatch();
         timerWatch = new Stopwatch();
         samples = new Dictionary<long, float>();
@@ -63,7 +65,6 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
 
     private void Start()
     {
-        SerialController.Instance.OnSerialMessageReceived += OnSerialMessageReceived;
         welcomeText.text = "Primeiro, precisamos calibrar a sua respiração. Vamos lá?";
         enterButton.SetActive(true);
         StartCoroutine(ControlStates());
@@ -113,8 +114,6 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
 
                 switch (currentStep)
                 {
-
-
                     case 1:
                         welcomeText.text = "Neste jogo, você deve respirar somente pela boca. Não precisa morder o PITACO.";
                         SetNextStep();
@@ -133,13 +132,14 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
                         break;
 
                     case 3:
-                        if (!SerialController.Instance.IsConnected)
+                        if (!serialController.IsConnected)
                         {
                             DudeWarnPitacoDisconnected();
                             continue;
                         }
 
-                        SerialController.Instance.InitSampling();
+                        serialController.StartSampling();
+                        samples.Clear();
 
                         yield return new WaitForSeconds(1);
                         balloonText.text = "(relaxe e RESPIRE NORMALMENTE por 30 segundos)";
@@ -152,24 +152,25 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
 
                         AirFlowStop();
 
-                        flowMeter = Utils.CalculateMeanFlow(samples.ToList());
+                        flowMeter = FlowMath.MeanFlow(samples.ToList());
                         Debug.Log($"Respiratory Frequency: {flowMeter}");
-                        this.gameObject.GetComponent<CalibrationRecorder>().Write(currentExercise, flowMeter);
 
                         if (flowMeter > respiratoryFrequencyThreshold)
                         {
-                            tempRespiratoryInfo.RespiratoryFrequency = flowMeter;
+                            FindObjectOfType<CalibrationLogger>().Write(CalibrationExerciseResult.Success, currentExercise, flowMeter);
+                            newCapacities.RespCycleDuration = flowMeter;
                             SetNextStep(true);
                             continue;
                         }
                         else
                         {
+                            FindObjectOfType<CalibrationLogger>().Write(CalibrationExerciseResult.Failure, currentExercise, flowMeter);
                             DudeWarnUnknownFlow();
                             break;
                         }
 
                     case 4:
-                        AudioManager.Instance.PlaySound("Success");
+                        SoundManager.Instance.PlaySound("Success");
                         DudeTalk("Muito bem! Agora, vamos continuar com os outros exercícios.");
                         SetNextStep();
                         break;
@@ -186,17 +187,16 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
                         break;
 
                     case 6:
-                        if (!SerialController.Instance.IsConnected)
+                        if (!serialController.IsConnected)
                         {
                             DudeWarnPitacoDisconnected();
                             continue;
                         }
 
 #if UNITY_EDITOR
-                        SerialController.Instance.InitSampling();
+                        serialController.StartSampling();
 #endif
                         exerciceCountText.text = $"Exercício: {currentExerciseCount + 1}/3";
-                        //StartCoroutine(DisplayCountdown(2));
                         yield return new WaitForSeconds(0.5f);
 
                         AirFlowStart();
@@ -206,13 +206,14 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
                         yield return new WaitForSeconds(10);
 
                         AirFlowStop();
-                        
-                        this.gameObject.GetComponent<CalibrationRecorder>().Write(currentExercise, flowMeter);
+
                         var insCheck = flowMeter;
                         ResetFlowMeter();
 
-                        if (insCheck < -GameMaster.PitacoThreshold)
+                        if (insCheck < -GameManager.PitacoFlowThreshold)
                         {
+                            FindObjectOfType<CalibrationLogger>().Write(CalibrationExerciseResult.Success, currentExercise, insCheck);
+
                             currentExerciseCount++;
 
                             if (currentExerciseCount == 2)
@@ -224,6 +225,7 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
                         }
                         else
                         {
+                            FindObjectOfType<CalibrationLogger>().Write(CalibrationExerciseResult.Failure, currentExercise, insCheck);
                             DudeWarnUnknownFlow();
                             break;
                         }
@@ -248,18 +250,17 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
                         break;
 
                     case 10:
-                        if (!SerialController.Instance.IsConnected)
+                        if (!serialController.IsConnected)
                         {
                             DudeWarnPitacoDisconnected();
                             continue;
                         }
 
 #if UNITY_EDITOR
-                        SerialController.Instance.InitSampling();
+                        serialController.StartSampling();
 #endif
 
                         exerciceCountText.text = $"Exercício: {currentExerciseCount + 1}/3";
-                        //StartCoroutine(DisplayCountdown(2));
                         yield return new WaitForSeconds(0.5f);
 
                         AirFlowStart();
@@ -271,12 +272,12 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
 
                         AirFlowStop();
 
-                        this.gameObject.GetComponent<CalibrationRecorder>().Write(currentExercise, flowMeter);
                         var expCheck = flowMeter;
                         ResetFlowMeter();
 
-                        if (expCheck > GameMaster.PitacoThreshold)
+                        if (expCheck > GameManager.PitacoFlowThreshold)
                         {
+                            FindObjectOfType<CalibrationLogger>().Write(CalibrationExerciseResult.Success, currentExercise, expCheck);
                             currentExerciseCount++;
 
                             if (currentExerciseCount == 2)
@@ -288,6 +289,7 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
                         }
                         else
                         {
+                            FindObjectOfType<CalibrationLogger>().Write(CalibrationExerciseResult.Failure, currentExercise, expCheck);
                             DudeWarnUnknownFlow();
                             break;
                         }
@@ -312,43 +314,43 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
                         break;
 
                     case 14:
-                        if (!SerialController.Instance.IsConnected)
+                        if (!serialController.IsConnected)
                         {
                             DudeWarnPitacoDisconnected();
                             continue;
                         }
 
 #if UNITY_EDITOR
-                        SerialController.Instance.InitSampling();
+                        serialController.StartSampling();
 #endif
                         exerciceCountText.text = $"Exercício: {currentExerciseCount + 1}/3";
-                        //StartCoroutine(DisplayCountdown(2));
                         yield return new WaitForSeconds(0.5f);
 
                         AirFlowStart(false);
                         balloonText.text = "(ASSOPRE e mantenha o relógio girando o MÁXIMO de TEMPO possível)";
 
                         // Wait for player input to be greather than threshold
-                        while (flowMeter <= GameMaster.PitacoThreshold)
+                        while (flowMeter <= GameManager.PitacoFlowThreshold)
                             yield return null;
 
                         flowWatch.Restart();
 
-                        while (flowMeter > GameMaster.PitacoThreshold * 0.3f)
+                        while (flowMeter > GameManager.PitacoFlowThreshold * 0.3f)
                             yield return null;
 
                         AirFlowStop();
 
                         Debug.Log($"Expiration Time: {flowWatch.ElapsedMilliseconds} ms ({flowWatch.ElapsedMilliseconds / 1000} secs)");
-                        this.gameObject.GetComponent<CalibrationRecorder>().Write(currentExercise, flowWatch.ElapsedMilliseconds);
 
                         ResetFlowMeter();
 
                         // Check for player input
                         if (flowWatch.ElapsedMilliseconds > flowTimeThreshold)
                         {
-                            if (flowWatch.ElapsedMilliseconds > tempRespiratoryInfo.ExpiratoryFlowTime)
-                                tempRespiratoryInfo.ExpiratoryFlowTime = flowWatch.ElapsedMilliseconds;
+                            FindObjectOfType<CalibrationLogger>().Write(CalibrationExerciseResult.Success, currentExercise, flowWatch.ElapsedMilliseconds);
+
+                            if (flowWatch.ElapsedMilliseconds > newCapacities.ExpFlowDuration)
+                                newCapacities.ExpFlowDuration = flowWatch.ElapsedMilliseconds;
 
                             currentExerciseCount++;
 
@@ -361,6 +363,7 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
                         }
                         else
                         {
+                            FindObjectOfType<CalibrationLogger>().Write(CalibrationExerciseResult.Failure, currentExercise, flowWatch.ElapsedMilliseconds);
                             DudeWarnUnknownFlow();
                             break;
                         }
@@ -385,42 +388,41 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
                         break;
 
                     case 18:
-                        if (!SerialController.Instance.IsConnected)
+                        if (!serialController.IsConnected)
                         {
                             DudeWarnPitacoDisconnected();
                             continue;
                         }
 
 #if UNITY_EDITOR
-                        SerialController.Instance.InitSampling();
+                        serialController.StartSampling();
 #endif
                         exerciceCountText.text = $"Exercício: {currentExerciseCount + 1}/3";
-                        //StartCoroutine(DisplayCountdown(2));
                         yield return new WaitForSeconds(0.5f);
 
                         AirFlowStart(false);
                         balloonText.text = "(INSPIRE e mantenha o relógio girando o MÁXIMO de TEMPO possível)";
 
-                        while (flowMeter >= -GameMaster.PitacoThreshold)
+                        while (flowMeter >= -GameManager.PitacoFlowThreshold)
                             yield return null;
 
                         flowWatch.Restart();
 
-                        while (flowMeter < -GameMaster.PitacoThreshold * 0.3f)
+                        while (flowMeter < -GameManager.PitacoFlowThreshold * 0.3f)
                             yield return null;
-                        
+
                         AirFlowStop();
 
                         Debug.Log($"Inspiration Time: {flowWatch.ElapsedMilliseconds} ms ({flowWatch.ElapsedMilliseconds / 1000} secs)");
-                        this.gameObject.GetComponent<CalibrationRecorder>().Write(currentExercise, flowWatch.ElapsedMilliseconds);
 
                         ResetFlowMeter();
 
                         // Check for player input
                         if (flowWatch.ElapsedMilliseconds > flowTimeThreshold)
                         {
-                            if (flowWatch.ElapsedMilliseconds > tempRespiratoryInfo.InspiratoryFlowTime)
-                                tempRespiratoryInfo.InspiratoryFlowTime = flowWatch.ElapsedMilliseconds;
+                            FindObjectOfType<CalibrationLogger>().Write(CalibrationExerciseResult.Success, currentExercise, flowWatch.ElapsedMilliseconds);
+                            if (flowWatch.ElapsedMilliseconds > newCapacities.InsFlowDuration)
+                                newCapacities.InsFlowDuration = flowWatch.ElapsedMilliseconds;
 
                             currentExerciseCount++;
 
@@ -433,6 +435,7 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
                         }
                         else
                         {
+                            FindObjectOfType<CalibrationLogger>().Write(CalibrationExerciseResult.Failure, currentExercise, flowWatch.ElapsedMilliseconds);
                             DudeWarnUnknownFlow();
                             break;
                         }
@@ -451,29 +454,28 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
 
                     case 21:
                         exerciceCountText.gameObject.SetActive(false);
-                        AudioManager.Instance.PlaySound("Claps");
+                        SoundManager.Instance.PlaySound("Claps");
                         DudeTalk("Ótimo, agora você está pronto para começar a jogar! Bom jogo!");
                         SetNextStep();
                         break;
 
                     case 22:
                         calibrationDone = true;
-                        Pacient.Loaded.CalibrationDone = calibrationDone;   
-                        Pacient.Loaded.RespiratoryData = tempRespiratoryInfo;
+                        Pacient.Loaded.CalibrationDone = calibrationDone;
+                        Pacient.Loaded.Capacities = newCapacities;
                         PacientDb.Instance.Save();
-                        OnCalibrationEnd?.Invoke();
+                        FindObjectOfType<CalibrationLogger>().StopLogging();
 
                         clock.SetActive(false);
                         dude.SetActive(false);
                         balloonPanel.SetActive(false);
-                        //welcomePanel.SetActive(true); //ToDo - try to crossfade alpha from 0 to max
                         resultPanel.SetActive(true);
                         break;
 
                     #endregion
 
-                    case 99: // Reload Scene
-                        SceneLoader.Instance.LoadScene(2);
+                    case 99: // Quit Scene
+                        FindObjectOfType<SceneLoader>().LoadScene(0);
                         break;
                 }
 
@@ -484,7 +486,7 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
             yield return null;
         }
     }
-    
+
     private IEnumerator DisplayCountdown(long timer)
     {
         timer *= 1000;
@@ -506,8 +508,8 @@ public partial class CalibrationManager : Singleton<CalibrationManager>
         ResetExerciseCounter();
         ResetFlowMeter();
 
-        if (SerialController.Instance.IsConnected)
-            SerialController.Instance.Recalibrate();
+        if (serialController.IsConnected)
+            serialController.Recalibrate();
     }
 
     private void AirFlowStart(bool restartWatch = true)
