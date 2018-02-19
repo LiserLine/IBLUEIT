@@ -1,10 +1,10 @@
-﻿using UnityEngine;
-using UnityEditor;
+﻿using UnityEditor;
+using UnityEngine;
 
 public class CSVView : EditorWindow
 {
-    TextAsset csv;
-    string[][] arr;
+    private TextAsset csv;
+    private string[][] arr;
 
     [MenuItem("Window/CSV View")]
     public static void ShowWindow()
@@ -13,7 +13,7 @@ public class CSVView : EditorWindow
         GetWindow(typeof(CSVView));
     }
 
-    void OnGUI()
+    private void OnGUI()
     {
         var newCsv = EditorGUILayout.ObjectField("CSV", csv, typeof(TextAsset), false) as TextAsset;
         if (newCsv != csv)

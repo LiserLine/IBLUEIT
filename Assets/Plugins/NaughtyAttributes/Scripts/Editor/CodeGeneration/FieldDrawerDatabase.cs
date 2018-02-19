@@ -13,7 +13,6 @@ namespace NaughtyAttributes.Editor
         {
             drawersByAttributeType = new Dictionary<Type, FieldDrawer>();
             drawersByAttributeType[typeof(ShowNonSerializedFieldAttribute)] = new ShowNonSerializedFieldFieldDrawer();
-
         }
 
         public static FieldDrawer GetDrawerForAttribute(Type attributeType)
@@ -30,4 +29,3 @@ namespace NaughtyAttributes.Editor
         }
     }
 }
-

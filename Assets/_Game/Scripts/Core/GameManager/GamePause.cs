@@ -3,9 +3,11 @@
 public partial class GameManager
 {
     public delegate void GamePauseHandler();
+
     public delegate void GameUnPauseHandler();
 
     public static event GamePauseHandler OnGamePause;
+
     public static event GameUnPauseHandler OnGameResume;
 
     public static bool GameIsPaused { get; private set; }

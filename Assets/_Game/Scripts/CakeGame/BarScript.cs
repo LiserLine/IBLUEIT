@@ -13,6 +13,7 @@ namespace _Game.Scripts.CakeGame
 
         [SerializeField]
         private float lerpSpeed;
+
         public float maxValue { get; set; }
 
         public float value

@@ -1,3 +1,9 @@
+using System;
+using System.Collections;
+using System.IO;
+using System.IO.Ports;
+using System.Threading;
+
 /**
  * SerialCommUnity (Serial Communication for Unity)
  * Author: Daniel Wilches <dwilches@gmail.com>
@@ -8,12 +14,6 @@
 
 using UnityEngine;
 
-using System;
-using System.IO;
-using System.IO.Ports;
-using System.Collections;
-using System.Threading;
-
 /**
  * This class contains methods that must be run from inside a thread and others
  * that must be invoked from Unity. Both types of methods are clearly marked in
@@ -21,11 +21,13 @@ using System.Threading;
  * open this file unless you are introducing incompatibilities for upcoming
  * versions.
  */
+
 public class SerialThread
 {
     // Parameters passed from SerialController, used for connecting to the
     // serial device as explained in the SerialController documentation.
     private string portName;
+
     private int baudRate;
     private int delayBeforeReconnecting;
     private int maxUnreadMessages;
@@ -51,7 +53,6 @@ public class SerialThread
     // invokes 'RequestStop()' this variable is set.
     private bool stopRequested;
 
-
     /**************************************************************************
      * Methods intended to be invoked from the Unity thread.
      *************************************************************************/
@@ -73,7 +74,6 @@ public class SerialThread
         inputQueue = Queue.Synchronized(new Queue());
         outputQueue = Queue.Synchronized(new Queue());
     }
-
 
     // ------------------------------------------------------------------------
     // Poll the internal message queue returning the next available message.
@@ -107,7 +107,6 @@ public class SerialThread
             stopRequested = true;
         }
     }
-
 
     /**************************************************************************
      * Methods intended to be invoked from the SerialComm thread (the one

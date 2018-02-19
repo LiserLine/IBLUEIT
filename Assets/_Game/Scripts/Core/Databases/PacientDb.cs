@@ -19,6 +19,7 @@ public class PacientDb
     }
 
     public List<Pacient> PacientList { get; }
+
     public List<Pacient> ContainsName(string find) => PacientList.FindAll(x => x.Name.Contains(find));
 
     public void CreatePacient(Pacient plr)
@@ -71,7 +72,7 @@ public class PacientDb
 
             PacientList.Add(plr);
         }
-        
+
         //Debug.Log($"{PacientList.Count} pacients loaded.");
     }
 

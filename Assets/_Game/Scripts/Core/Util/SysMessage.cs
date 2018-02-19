@@ -4,7 +4,7 @@ using System.Windows.Forms;
 public class SysMessage
 {
     public static DialogResult Show(string msg, string title = "") => MessageBox.Show(msg, title);
-    
+
     public static DialogResult Warning(string msg) =>
         MessageBox.Show(msg, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 

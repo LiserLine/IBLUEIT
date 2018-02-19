@@ -33,6 +33,7 @@ namespace _Game.Scripts.CakeGame
                         case 1:
                             displayHowTo.text = "Pressione [Enter] e assopre \n o mais forte que conseguir dentro do tempo.";
                             break;
+
                         case 2:
 
                             FindObjectOfType<SerialController>().StartSampling();
@@ -61,6 +62,7 @@ namespace _Game.Scripts.CakeGame
                             //voltou pro 0
 
                             break;
+
                         case 3:
                             displayHowTo.text = "Pressione [Enter] e assopre o mais forte que conseguir";
                             timer = 10;
@@ -93,12 +95,14 @@ namespace _Game.Scripts.CakeGame
                             displayHowTo.text = "Muito bem!\nPressione [Enter] para continuar.";
 
                             break;
+
                         case 5:
                             displayHowTo.text = "Pressione [Enter] e assopre o mais forte que conseguir";
                             timer = 10;
                             jogou = true;
                             paraTempo = false;
                             break;
+
                         case 6:
                             displayHowTo.text = "";
 
@@ -159,16 +163,18 @@ namespace _Game.Scripts.CakeGame
             flow.CurrentVal = percentage * 100;
         }
 
-        #endregion;
+        #endregion Calculatin Flow Percentage
 
         #region Cleaning Stats
+
         public void CleanScene()
         {
             candle.TurnOn();
             score.UnfillStars();
             flow.CurrentVal = 0;
         }
-        #endregion;
+
+        #endregion Cleaning Stats
 
         #region Step Controllers
 
@@ -188,7 +194,8 @@ namespace _Game.Scripts.CakeGame
             passo = step;
             ppasso = jumpToStep;
         }
-        #endregion
+
+        #endregion Step Controllers
 
         #region Countdown Timer
 
@@ -198,7 +205,7 @@ namespace _Game.Scripts.CakeGame
             displayTimer.text = "";
         }
 
-        #endregion;
+        #endregion Countdown Timer
 
         private void Start()
         {
@@ -209,7 +216,6 @@ namespace _Game.Scripts.CakeGame
             flow.Initialize();
             StartCoroutine(PlayGame());
         }
-
 
         // Update is called once per frame
         private void Update()

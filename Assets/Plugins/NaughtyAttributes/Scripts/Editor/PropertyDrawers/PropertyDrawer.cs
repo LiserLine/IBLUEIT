@@ -8,7 +8,6 @@ namespace NaughtyAttributes.Editor
 
         public virtual void ClearCache()
         {
-
         }
     }
 }

@@ -19,9 +19,11 @@ public class BGMPlayer : MonoBehaviour
             case SpawnObject.Targets:
                 SoundManager.Instance.PlaySound($"BGM_Day{Random.Range(1, numDay)}");
                 break;
+
             case SpawnObject.TargetsAndObstacles:
                 SoundManager.Instance.PlaySound($"BGM_Afternoon{Random.Range(1, numAfternoon)}");
                 break;
+
             case SpawnObject.Obstacles:
                 SoundManager.Instance.PlaySound($"BGM_Night{Random.Range(1, numNight)}");
                 break;

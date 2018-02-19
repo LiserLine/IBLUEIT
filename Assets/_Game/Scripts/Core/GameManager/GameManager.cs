@@ -9,7 +9,9 @@ public partial class GameManager : MonoBehaviour
     public static float PitacoFlowThreshold { get; private set; } = 7.5f;
 
 #if UNITY_EDITOR
+
     public void QuitGame() => Debug.Log("Quit Game pressed!");
+
 #else
     public void QuitGame() => System.Diagnostics.Process.GetCurrentProcess().Kill();
 #endif

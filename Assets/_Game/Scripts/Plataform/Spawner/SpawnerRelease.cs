@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using NaughtyAttributes;
+﻿using NaughtyAttributes;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -15,6 +15,7 @@ public partial class Spawner
     public bool RelaxTimeSpawned { get; private set; }
 
     public delegate void ObjectReleasedHandler(SpawnObject type, ref GameObject obj1, ref GameObject obj2);
+
     public event ObjectReleasedHandler OnObjectReleased;
 
     private void DistanciateSpawns(ref GameObject next)
@@ -32,7 +33,6 @@ public partial class Spawner
 
         if (relativeDistance > 0 && relativeDistance < dist)
             next.transform.Translate(dist - relativeDistance, 0f, 0f);
-
         else if (relativeDistance < dist && relativeDistance < 0)
             next.transform.Translate(-relativeDistance + dist, 0f, 0f);
     }
@@ -45,9 +45,11 @@ public partial class Spawner
             case SpawnObject.Targets:
                 ReleaseTargets();
                 break;
+
             case SpawnObject.Obstacles:
                 ReleaseObstacles();
                 break;
+
             default:
                 if (Random.Range(0, 2) == 0)
                     ReleaseTargets();
@@ -113,7 +115,8 @@ public partial class Spawner
 
         OnObjectReleased?.Invoke(SpawnObject.Targets, ref airObj, ref waterObj);
     }
-    #endregion
+
+    #endregion Targets
 
     #region Obstacles
 
@@ -181,7 +184,7 @@ public partial class Spawner
         OnObjectReleased?.Invoke(SpawnObject.Obstacles, ref waterObj, ref airObj);
     }
 
-    #endregion
+    #endregion Obstacles
 
     #region Relax Time
 
@@ -232,6 +235,5 @@ public partial class Spawner
         RelaxTimeSpawned = true;
     }
 
-    #endregion
-
+    #endregion Relax Time
 }

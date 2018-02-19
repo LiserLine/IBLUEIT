@@ -43,7 +43,7 @@ public class CameraShake : MonoBehaviour
             shakeCam = false;
         }
     }
-    
+
     private void Shake(GameObject go)
     {
         if (FindObjectOfType<Player>().HeartPoins == 0)

@@ -10,8 +10,8 @@ using System;
 using System.IO;
 using System.IO.Ports;
 using System.Linq;
-using UnityEngine;
 using System.Threading;
+using UnityEngine;
 
 /**
  * This class allows a Unity program to continually check for messages from a
@@ -27,6 +27,7 @@ using System.Threading;
  * on the integrity of the message. It's up to the one that makes sense of the
  * data.
  */
+
 public partial class SerialController : MonoBehaviour
 {
     public bool IsConnected => isConnected;
@@ -53,19 +54,24 @@ public partial class SerialController : MonoBehaviour
     // send these same strings from the serial device, upon reconstruction they
     // will have different reference ids.
     public const string SERIAL_DEVICE_CONNECTED = "__Connected__";
+
     public const string SERIAL_DEVICE_DISCONNECTED = "__Disconnected__";
 
     // Internal reference to the Thread and the object that runs in it.
     private Thread thread;
+
     private SerialThread serialThread;
 
     public delegate void SerialConnectedHandler();
+
     public event SerialConnectedHandler OnSerialConnected;
 
     public delegate void SerialDisconnectedHandler();
+
     public event SerialDisconnectedHandler OnSerialDisconnected;
 
     public delegate void SerialMessageReceivedHandler(string msg);
+
     public event SerialMessageReceivedHandler OnSerialMessageReceived;
 
     // ------------------------------------------------------------------------
@@ -257,6 +263,8 @@ public partial class SerialController : MonoBehaviour
     // the user can send some tear-down message to the hardware reliably.
     // ------------------------------------------------------------------------
     public delegate void TearDownFunction();
+
     private TearDownFunction userDefinedTearDownFunction;
+
     public void SetTearDownFunction(TearDownFunction userFunction) => this.userDefinedTearDownFunction = userFunction;
 }

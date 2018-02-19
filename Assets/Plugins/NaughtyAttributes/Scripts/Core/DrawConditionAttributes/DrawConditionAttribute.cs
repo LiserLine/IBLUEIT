@@ -1,9 +1,6 @@
-﻿using System;
-
-namespace NaughtyAttributes
+﻿namespace NaughtyAttributes
 {
     public class DrawConditionAttribute : NaughtyAttribute
     {
-
     }
 }

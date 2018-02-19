@@ -18,8 +18,11 @@ public class CsvParser
         public static readonly QuoteState QuoteState = new QuoteState();
 
         public abstract ParserState AnyChar(char ch, ParserContext context);
+
         public abstract ParserState Comma(ParserContext context);
+
         public abstract ParserState Quote(ParserContext context);
+
         public abstract ParserState EndOfLine(ParserContext context);
     }
 
@@ -180,7 +183,7 @@ public class CsvParser
         }
     }
 
-    #endregion
+    #endregion Nested types
 
     public string[][] Parse(TextReader reader)
     {
@@ -197,9 +200,11 @@ public class CsvParser
                     case CommaCharacter:
                         currentState = currentState.Comma(context);
                         break;
+
                     case QuoteCharacter:
                         currentState = currentState.Quote(context);
                         break;
+
                     default:
                         currentState = currentState.AnyChar(ch, context);
                         break;

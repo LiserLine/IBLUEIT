@@ -1,12 +1,11 @@
-﻿
-/*---------------- Creation Date: 18-Feb-17 -----------------//
+﻿/*---------------- Creation Date: 18-Feb-17 -----------------//
 //------------ Last Modification Date: 18-Feb-17 ------------//
 //----------- Luis Arzola: http://heisarzola.com ------------*/
 
 /*----------------------------- OVERVIEW -------------------------------//
  *   <<< NAME >>>
  *       -- Quick Folder Opener
- *       
+ *
  *   <<< DESCRIPTION >>>
  *       -- Provides several shorcuts for quickly opening several common-use folders.
  *
@@ -36,8 +35,9 @@
 //----------------------------------------------------------------------*/
 
 #if UNITY_EDITOR
-using UnityEditor;
+
 using System.IO;
+using UnityEditor;
 using UnityEngine;
 
 public class QuickOpener // [1]
@@ -92,7 +92,7 @@ public class QuickOpener // [1]
 #if UNITY_EDITOR_OSX
 			string rootFolderPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
 			string libraryPath = Path.Combine(rootFolderPath, "Library");
-			string logsFolder = Path.Combine(libraryPath, "Logs"); 
+			string logsFolder = Path.Combine(libraryPath, "Logs");
 			string UnityFolder = Path.Combine(logsFolder, "Unity");
 			Reveal(UnityFolder);
 #elif UNITY_EDITOR_WIN
@@ -128,4 +128,5 @@ public class QuickOpener // [1]
         EditorUtility.RevealInFinder(folderPath);
     }
 }
+
 #endif

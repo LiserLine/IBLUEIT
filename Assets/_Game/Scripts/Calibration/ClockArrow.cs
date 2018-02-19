@@ -1,24 +1,26 @@
 ﻿using UnityEngine;
 
-//ToDo - Use an animation for this
-public class ClockArrow : MonoBehaviour
+namespace _Game.Scripts.Calibration
 {
-    public bool SpinClock { get; set; }
-
-    private void Awake() => FindObjectOfType<SerialController>().OnSerialMessageReceived += OnSerialMessageReceived;
-
-    private void OnSerialMessageReceived(string msg)
+    public class ClockArrow : MonoBehaviour
     {
-        if (!SpinClock)
-            return;
+        public bool SpinClock { get; set; }
 
-        if (msg.Length < 1)
-            return;
+        private void Awake() => FindObjectOfType<SerialController>().OnSerialMessageReceived += OnSerialMessageReceived;
 
-        var snsrVal = Parsers.Float(msg);
+        private void OnSerialMessageReceived(string msg)
+        {
+            if (!SpinClock)
+                return;
 
-        snsrVal = snsrVal < -GameManager.PitacoFlowThreshold * 0.3f || snsrVal > GameManager.PitacoFlowThreshold * 0.3f ? snsrVal : 0f;
+            if (msg.Length < 1)
+                return;
 
-        this.transform.Rotate(Vector3.back, snsrVal);
+            var snsrVal = Parsers.Float(msg);
+
+            snsrVal = snsrVal < -GameManager.PitacoFlowThreshold * 0.3f || snsrVal > GameManager.PitacoFlowThreshold * 0.3f ? snsrVal : 0f;
+
+            this.transform.Rotate(Vector3.back, snsrVal);
+        }
     }
 }

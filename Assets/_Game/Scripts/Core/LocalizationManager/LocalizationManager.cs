@@ -1,8 +1,8 @@
 ﻿// Source: https://www.youtube.com/watch?v=5Kt9jbnqzKA&list=PLX2vGYjWbI0TWkV9aEYq93bOX2kwseqUT
 
 using System.Collections.Generic;
-using UnityEngine;
 using System.IO;
+using UnityEngine;
 
 public class LocalizationManager : MonoBehaviour
 {
@@ -73,6 +73,6 @@ public class LocalizationManager : MonoBehaviour
         IsReady = true;
     }
 
-    public string GetLocalizedValue(string key) => 
+    public string GetLocalizedValue(string key) =>
         !_localizedText.ContainsKey(key) ? key : _localizedText[key];
 }

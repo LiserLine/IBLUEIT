@@ -55,6 +55,7 @@ public class StageDb
     }
 
 #if UNITY_EDITOR
+
     public static Stage Load(int id)
     {
         var filePath = Application.streamingAssetsPath + @"/GameSettings/StageList.csv";
@@ -92,6 +93,7 @@ public class StageDb
             SpawnDuration = int.Parse(grid[id][13])
         };
     }
+
 #endif
 
     private StageDb()

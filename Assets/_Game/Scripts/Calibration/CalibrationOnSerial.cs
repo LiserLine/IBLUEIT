@@ -1,51 +1,54 @@
 ﻿using UnityEngine;
 
-public partial class CalibrationManager
+namespace _Game.Scripts.Calibration
 {
-    private void OnSerialMessageReceived(string msg)
+    public partial class CalibrationManager
     {
-        if (!acceptingValues || msg.Length < 1)
-            return;
-
-        var tmp = Parsers.Float(msg);
-
-        switch (currentExercise)
+        private void OnSerialMessageReceived(string msg)
         {
-            case CalibrationExercise.ExpiratoryPeak:
-                if (tmp > flowMeter)
-                {
-                    flowMeter = tmp;
+            if (!acceptingValues || msg.Length < 1)
+                return;
 
-                    if (flowMeter > newCapacities.ExpPeakFlow)
+            var tmp = Parsers.Float(msg);
+
+            switch (currentExercise)
+            {
+                case CalibrationExercise.ExpiratoryPeak:
+                    if (tmp > flowMeter)
                     {
-                        newCapacities.ExpPeakFlow = flowMeter;
-                        Debug.Log($"ExpPeakFlow: {flowMeter}");
+                        flowMeter = tmp;
+
+                        if (flowMeter > newCapacities.ExpPeakFlow)
+                        {
+                            newCapacities.ExpPeakFlow = flowMeter;
+                            Debug.Log($"ExpPeakFlow: {flowMeter}");
+                        }
                     }
-                }
-                break;
+                    break;
 
-            case CalibrationExercise.InspiratoryPeak:
-                if (tmp < flowMeter)
-                {
-                    flowMeter = tmp;
-
-                    if (flowMeter < newCapacities.InsPeakFlow)
+                case CalibrationExercise.InspiratoryPeak:
+                    if (tmp < flowMeter)
                     {
-                        newCapacities.InsPeakFlow = flowMeter;
-                        Debug.Log($"InsPeakFlow: {flowMeter}");
+                        flowMeter = tmp;
+
+                        if (flowMeter < newCapacities.InsPeakFlow)
+                        {
+                            newCapacities.InsPeakFlow = flowMeter;
+                            Debug.Log($"InsPeakFlow: {flowMeter}");
+                        }
                     }
-                }
-                break;
+                    break;
 
-            case CalibrationExercise.ExpiratoryFlow:
-            case CalibrationExercise.InspiratoryFlow:
-                flowMeter = tmp;
-                break;
+                case CalibrationExercise.ExpiratoryFlow:
+                case CalibrationExercise.InspiratoryFlow:
+                    flowMeter = tmp;
+                    break;
 
-            case CalibrationExercise.RespiratoryFrequency:
-                if (flowWatch.IsRunning)
-                    samples.Add(flowWatch.ElapsedMilliseconds, tmp);
-                break;
+                case CalibrationExercise.RespiratoryFrequency:
+                    if (flowWatch.IsRunning)
+                        samples.Add(flowWatch.ElapsedMilliseconds, tmp);
+                    break;
+            }
         }
     }
-}
+}   

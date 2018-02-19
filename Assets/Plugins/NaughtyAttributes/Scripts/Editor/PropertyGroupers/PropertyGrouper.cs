@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace NaughtyAttributes.Editor
+﻿namespace NaughtyAttributes.Editor
 {
     public abstract class PropertyGrouper
     {

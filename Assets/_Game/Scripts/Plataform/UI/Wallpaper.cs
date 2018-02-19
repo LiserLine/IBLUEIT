@@ -36,9 +36,11 @@ public class Wallpaper : MonoBehaviour
             case SpawnObject.Targets:
                 bgRenderer.material = day;
                 break;
+
             case SpawnObject.TargetsAndObstacles:
                 bgRenderer.material = afternoon;
                 break;
+
             case SpawnObject.Obstacles:
                 bgRenderer.material = night;
                 break;

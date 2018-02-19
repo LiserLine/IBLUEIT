@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using NaughtyAttributes;
+﻿using NaughtyAttributes;
+using System.Collections;
 using UnityEngine;
 
 public partial class Player
@@ -7,12 +7,14 @@ public partial class Player
     #region Events
 
     public delegate void PlayerDeathHandler();
+
     public event PlayerDeathHandler OnPlayerDeath;
 
     public delegate void EnemyHitHandler(GameObject go);
+
     public event EnemyHitHandler OnEnemyHit;
 
-    #endregion
+    #endregion Events
 
     [SerializeField]
     private Animator animator;

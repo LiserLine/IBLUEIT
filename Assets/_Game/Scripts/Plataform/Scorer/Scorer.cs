@@ -56,6 +56,7 @@ public partial class Scorer : MonoBehaviour
                 maxScore += CalculateTargetScore(go1.transform.position.y, Stage.Loaded.SpawnDelay, Stage.Loaded.GameDifficulty);
                 maxScore += CalculateTargetScore(go2.transform.position.y, Stage.Loaded.SpawnDelay, Stage.Loaded.GameDifficulty);
                 break;
+
             case SpawnObject.Obstacles:
                 maxScore += CalculateObstacleScore(go1.transform.localScale.x, Stage.Loaded.SpawnDelay, Stage.Loaded.GameDifficulty);
                 maxScore += CalculateObstacleScore(go2.transform.localScale.x, Stage.Loaded.SpawnDelay, Stage.Loaded.GameDifficulty);

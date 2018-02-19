@@ -11,7 +11,6 @@ public partial class Debugger : MonoBehaviour
 
     private void Awake()
     {
-
 #if !UNITY_EDITOR
         Destroy(this.gameObject);
         return;

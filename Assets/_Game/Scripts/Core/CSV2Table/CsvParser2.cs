@@ -19,8 +19,11 @@ public class CsvParser2
         public static readonly QuoteState QuoteState = new QuoteState();
 
         public abstract ParserState AnyChar(char ch, ParserContext context);
+
         public abstract ParserState Comma(ParserContext context);
+
         public abstract ParserState Quote(ParserContext context);
+
         public abstract ParserState EndOfLine(ParserContext context);
     }
 
@@ -189,7 +192,7 @@ public class CsvParser2
         }
     }
 
-    #endregion
+    #endregion Nested types
 
     public bool TrimTrailingEmptyLines { get; set; }
     public int MaxColumnsToRead { get; set; }
@@ -213,9 +216,11 @@ public class CsvParser2
                     case CommaCharacter:
                         currentState = currentState.Comma(context);
                         break;
+
                     case QuoteCharacter:
                         currentState = currentState.Quote(context);
                         break;
+
                     default:
                         currentState = currentState.AnyChar(ch, context);
                         break;

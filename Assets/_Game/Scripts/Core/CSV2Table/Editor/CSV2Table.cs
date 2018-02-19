@@ -1,13 +1,13 @@
-using UnityEngine;
-using UnityEditor;
 using System.IO;
+using UnityEditor;
+using UnityEngine;
 
 public class CSV2Table : EditorWindow
 {
-    TextAsset csv;
-    string[][] arr;
-    MonoScript script;
-    bool foldout = true;
+    private TextAsset csv;
+    private string[][] arr;
+    private MonoScript script;
+    private bool foldout = true;
 
     [MenuItem("Window/CSV to Table")]
     public static void ShowWindow()
@@ -15,7 +15,7 @@ public class CSV2Table : EditorWindow
         GetWindow(typeof(CSV2Table));
     }
 
-    void OnGUI()
+    private void OnGUI()
     {
         // CSV
         var newCsv = EditorGUILayout.ObjectField("CSV", csv, typeof(TextAsset), false) as TextAsset;

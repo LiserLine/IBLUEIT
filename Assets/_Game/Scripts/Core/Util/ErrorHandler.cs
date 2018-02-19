@@ -18,7 +18,7 @@ public class ErrorHandler : MonoBehaviour
     private void OnEnable() => Application.logMessageReceived += OnLogMessageReceived;
     private void OnDisable() => Application.logMessageReceived -= OnLogMessageReceived;
 #endif
-    
+
     private void OnLogMessageReceived(string message, string stackTrace, LogType type)
     {
         if (hasError || !this.isActiveAndEnabled)
@@ -59,6 +59,6 @@ public class ErrorHandler : MonoBehaviour
     private static void Dump()
     {
         ScreenCapture.CaptureScreenshot($"ibit_error_{DateTime.Now:yyyyMMdd-HHmmss}.png");
-        Application.Quit();
+       FindObjectOfType<GameManager>().QuitGame();
     }
 }

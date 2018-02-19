@@ -6,7 +6,7 @@ public partial class Target
     {
         if (!collision.gameObject.tag.Contains("Player"))
             return;
-        
+
         Destroy(this.gameObject);
     }
 }

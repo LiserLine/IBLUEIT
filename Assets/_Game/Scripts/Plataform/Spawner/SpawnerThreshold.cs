@@ -20,7 +20,7 @@ public partial class Spawner
     //public int WaterObstaclesHitSuccess { get; private set; }
     //public int WaterObstaclesHitFail { get; private set; }
 
-    #endregion
+    #endregion Performance
 
     private int airTargetsHit;
     private int airObstaclesHit;
@@ -71,6 +71,7 @@ public partial class Spawner
                     waterObstaclesHit = 0;
                 }
                 break;
+
             case "RelaxCoin":
                 relaxCoinHit++;
                 TargetsSucceeded++;

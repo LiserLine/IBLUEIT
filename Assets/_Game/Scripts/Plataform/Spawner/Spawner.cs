@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using NaughtyAttributes;
+﻿using NaughtyAttributes;
+using System.Linq;
 using UnityEngine;
 
 public enum SpawnObject
@@ -24,6 +24,7 @@ public partial class Spawner : MonoBehaviour
     private GameObject relaxInsPrefab, relaxExpPrefab, relaxZeroPrefab;
 
     private bool spawnEnabled;
+
     [BoxGroup("Targets")]
     [SerializeField]
     private GameObject[] targetsAir;

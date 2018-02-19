@@ -17,6 +17,7 @@ public class Pacient
     public bool CalibrationDone;
 
 #if UNITY_EDITOR
+
     static Pacient()
     {
         if (Loaded == null)
@@ -40,8 +41,8 @@ public class Pacient
                 }
             };
     }
-#endif
 
+#endif
 }
 
 public enum ConditionType

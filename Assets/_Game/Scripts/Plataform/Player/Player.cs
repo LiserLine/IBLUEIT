@@ -18,11 +18,8 @@ public partial class Player : MonoBehaviour
 
     private void Update()
     {
-
 #if UNITY_EDITOR
         Move();
 #endif
-
     }
-
 }

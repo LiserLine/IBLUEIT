@@ -6,29 +6,31 @@ public partial class StageManager : MonoBehaviour
     #region Events
 
     public delegate void StageStartHandler();
+
     public event StageStartHandler OnStageStart;
 
     public delegate void StageTimeUpHandler();
+
     public event StageTimeUpHandler OnStageTimeUp;
 
     public delegate void StageEndHandler();
+
     public event StageEndHandler OnStageEnd;
 
-    #endregion
+    #endregion Events
 
-    #region Properties 
+    #region Properties
 
     public float Watch { get; private set; }
     public bool IsRunning { get; private set; }
 
-    #endregion
+    #endregion Properties
 
     private bool isTimedUp;
     private Spawner spawner;
 
     private void Awake()
     {
-
 #if UNITY_EDITOR
         if (Stage.Loaded == null)
             Stage.Loaded = testStage;

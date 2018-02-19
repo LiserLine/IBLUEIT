@@ -13,7 +13,6 @@ namespace NaughtyAttributes.Editor
         {
             drawersByAttributeType = new Dictionary<Type, MethodDrawer>();
             drawersByAttributeType[typeof(ButtonAttribute)] = new ButtonMethodDrawer();
-
         }
 
         public static MethodDrawer GetDrawerForAttribute(Type attributeType)
@@ -30,4 +29,3 @@ namespace NaughtyAttributes.Editor
         }
     }
 }
-

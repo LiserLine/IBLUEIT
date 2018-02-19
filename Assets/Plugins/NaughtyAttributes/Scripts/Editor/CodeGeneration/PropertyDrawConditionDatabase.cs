@@ -13,8 +13,7 @@ namespace NaughtyAttributes.Editor
         {
             drawConditionsByAttributeType = new Dictionary<Type, PropertyDrawCondition>();
             drawConditionsByAttributeType[typeof(HideIfAttribute)] = new HideIfPropertyDrawCondition();
-drawConditionsByAttributeType[typeof(ShowIfAttribute)] = new ShowIfPropertyDrawCondition();
-
+            drawConditionsByAttributeType[typeof(ShowIfAttribute)] = new ShowIfPropertyDrawCondition();
         }
 
         public static PropertyDrawCondition GetDrawConditionForAttribute(Type attributeType)
@@ -31,4 +30,3 @@ drawConditionsByAttributeType[typeof(ShowIfAttribute)] = new ShowIfPropertyDrawC
         }
     }
 }
-

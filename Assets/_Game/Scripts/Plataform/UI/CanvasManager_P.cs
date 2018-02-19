@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class CanvasManager_P : MonoBehaviour
@@ -40,6 +39,5 @@ public class CanvasManager_P : MonoBehaviour
 #else
         Stage.Loaded = StageDb.Instance.GetStage(Stage.Loaded.Id + 1 > StageDb.Instance.StageList.Max(x => x.Id) ? 1 : Stage.Loaded.Id + 1);
 #endif
-
     }
 }
