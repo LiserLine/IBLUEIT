@@ -676,7 +676,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Enter \u2192"
+  m_Text: "Enter\n\u25BA"
 --- !u!222 &286734790
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1602,7 +1602,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Enter \u2192"
+  m_Text: "Enter\n\u25BA"
 --- !u!222 &1272249792
 CanvasRenderer:
   m_ObjectHideFlags: 0
