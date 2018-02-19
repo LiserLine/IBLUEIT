@@ -142,20 +142,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   testStage:
-    Id: 2
-    SpawnObject: 1
-    Level: 2
+    Id: 6
+    SpawnObject: 2
+    Level: 1
     SpawnDelay: 4
-    SpawnDuration: 40
-    GameDifficulty: 20
-    ObjectSpeedMultiplier: 1.4
+    SpawnDuration: 20
+    GameDifficulty: 40
+    ObjectSpeedMultiplier: 1.2
     HeightIncrement: 10
-    HeightLevelUpThreshold: 2
+    HeightLevelUpThreshold: 1
     HeightLevelDownThreshold: 1
-    SizeIncrement: 0
-    SizeLevelUpThreshold: 0
-    SizeLevelDownThreshold: 0
-    RelaxTimeThreshold: 2
+    SizeIncrement: 10
+    SizeLevelUpThreshold: 3
+    SizeLevelDownThreshold: 1
+    RelaxTimeThreshold: 3
 --- !u!4 &25974385
 Transform:
   m_ObjectHideFlags: 0
@@ -3604,7 +3604,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1772985456}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 18.5, y: 0, z: 0}
+  m_LocalPosition: {x: 15, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -3621,15 +3621,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1deb92e20a39d9e46b30ffae6cdd9f75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetsAir:
-  - {fileID: 1072828513018304, guid: ac53dd4aed6989848b40ba4277fdf961, type: 2}
-  - {fileID: 1967573256947412, guid: f10efd4354e3e2448b83ec9ed79b5409, type: 2}
-  - {fileID: 1907565229181380, guid: 811de7d33c427d84681cfbb1c4a4ef49, type: 2}
-  targetsWater:
-  - {fileID: 1724036100270406, guid: fb0d0551d86168242a70ed28da842126, type: 2}
-  - {fileID: 1774716689977566, guid: d1752f78c2f593942bc47468330258f6, type: 2}
-  - {fileID: 1979597902831624, guid: a670f0d87658b7d46ba729b539ff537f, type: 2}
-  - {fileID: 1582079116040042, guid: 85cb7fcf034d3e6408a4335337549ba3, type: 2}
   obstaclesAir:
   - {fileID: 1596007118193250, guid: 2245c0c7b8a839449b4f0651efd04e5f, type: 2}
   - {fileID: 1079772737705790, guid: 894cc6132a08acb4f8f7be48eb10dcf9, type: 2}
@@ -3644,6 +3635,15 @@ MonoBehaviour:
     type: 2}
   relaxZeroPrefab: {fileID: 1333510693921846, guid: 8d137fde9eced754eb5fa6ee9ac39d53,
     type: 2}
+  targetsAir:
+  - {fileID: 1072828513018304, guid: ac53dd4aed6989848b40ba4277fdf961, type: 2}
+  - {fileID: 1967573256947412, guid: f10efd4354e3e2448b83ec9ed79b5409, type: 2}
+  - {fileID: 1907565229181380, guid: 811de7d33c427d84681cfbb1c4a4ef49, type: 2}
+  targetsWater:
+  - {fileID: 1724036100270406, guid: fb0d0551d86168242a70ed28da842126, type: 2}
+  - {fileID: 1774716689977566, guid: d1752f78c2f593942bc47468330258f6, type: 2}
+  - {fileID: 1979597902831624, guid: a670f0d87658b7d46ba729b539ff537f, type: 2}
+  - {fileID: 1582079116040042, guid: 85cb7fcf034d3e6408a4335337549ba3, type: 2}
 --- !u!1 &1813356614
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,21 +12,20 @@ public partial class Spawner
     private float insSizeAcc;
     private bool spawnRelaxTime;
 
-    public bool RelaxTimeSpawned { get; private set; }
-
     public delegate void ObjectReleasedHandler(SpawnObject type, ref GameObject obj1, ref GameObject obj2);
 
     public event ObjectReleasedHandler OnObjectReleased;
 
+    public bool RelaxTimeSpawned { get; private set; }
+
     private void DistanciateSpawns(ref GameObject next)
     {
-        if (SpawnedObjects.Length < 1)
-            return;
+        //if (SpawnedObjects.Length < 1)
+        //    return;
 
-        //var dist = minDistanceBetweenSpawns + (1f + (1f / (float)Pacient.Loaded.Condition));
-        var dist = minDistanceBetweenSpawns + (1f / (float)Pacient.Loaded.Condition);
+        var dist = minDistanceBetweenSpawns + (1f + (1f / (float)Pacient.Loaded.Condition));
 
-        var lastObj = SpawnedObjects.Last();
+        var lastObj = SpawnedObjects.Length > 2 ? SpawnedObjects[SpawnedObjects.Length - 3] : this.transform;
         var lastPos = lastObj.position.x + lastObj.localScale.x / 2f;
 
         var relativeDistance = next.transform.position.x - lastPos;
@@ -172,8 +171,8 @@ public partial class Spawner
     {
         GameObject airObj, waterObj;
 
-        InstanciateObstacleAir(out airObj);
         InstanciateObstacleWater(out waterObj);
+        InstanciateObstacleAir(out airObj);
 
         DistanciateSpawns(ref waterObj);
         DistanciateObstacles(ref waterObj, ref airObj);
@@ -236,4 +235,5 @@ public partial class Spawner
     }
 
     #endregion Relax Time
+
 }
