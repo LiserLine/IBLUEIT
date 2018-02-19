@@ -37,7 +37,10 @@ public class PacientDb
     public void Load()
     {
         if (!File.Exists(filePath))
-            throw new FileNotFoundException($"Database file '{filePath}' not found!");
+        {
+            SysMessage.Warning("Dados vazios!");
+            return;
+        }
 
         PacientList.Clear();
 
