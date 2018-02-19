@@ -1,37 +1,39 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class BarScript : MonoBehaviour
+namespace _Game.Scripts.CakeGame
 {
-    [SerializeField]
-    private float fillAmount;
-
-    [SerializeField]
-    private float lerpSpeed;
-
-    [SerializeField]
-    private Image content;
-
-    public float maxValue { get; set; }
-
-    public float value
+    public class BarScript : MonoBehaviour
     {
-        set
+        [SerializeField]
+        private Image content;
+
+        [SerializeField]
+        private float fillAmount;
+
+        [SerializeField]
+        private float lerpSpeed;
+        public float maxValue { get; set; }
+
+        public float value
         {
-            fillAmount = Map(value, 0, maxValue, 0, 1);
+            set
+            {
+                fillAmount = Map(value, 0, maxValue, 0, 1);
+            }
         }
-    }
 
-    private void Update() => HandleBar();
-
-    private void HandleBar()
-    {
-        if (fillAmount != content.fillAmount)
+        private void HandleBar()
         {
-            content.fillAmount = Mathf.Lerp(content.fillAmount, fillAmount, lerpSpeed);
+            if (fillAmount != content.fillAmount)
+            {
+                content.fillAmount = Mathf.Lerp(content.fillAmount, fillAmount, lerpSpeed);
+            }
         }
-    }
 
-    private float Map(float val, float inMin, float inMax, float outMin, float outMax) =>
-        (val - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+        private float Map(float val, float inMin, float inMax, float outMin, float outMax) =>
+            (val - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+
+        private void Update() => HandleBar();
+    }
 }

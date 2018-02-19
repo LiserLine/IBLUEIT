@@ -2,247 +2,249 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RoundManager : MonoBehaviour
+namespace _Game.Scripts.CakeGame
 {
-    public Player_M1 Player;
-    public ScoreMenu finalScoreMenu;
-    public Stars score;
-    public Candles candle;
-    public Stat flow;
-    public int passo;
-    public bool partidaCompleta;
-    public bool ppasso;
-    public int[] finalScore = new int[3];
-    public Text displayHowTo, displayTimer;
-    public float timer = 10;
-    public bool jogou = true;
-    public bool paraTempo;
-
-    IEnumerator PlayGame()
+    public class RoundManager : MonoBehaviour
     {
-        while (!partidaCompleta)
+        public Candles candle;
+        public Text displayHowTo, displayTimer;
+        public int[] finalScore = new int[3];
+        public ScoreMenu finalScoreMenu;
+        public Stat flow;
+        public bool jogou = true;
+        public bool paraTempo;
+        public bool partidaCompleta;
+        public int passo;
+        public Player Player;
+        public bool ppasso;
+        public Stars score;
+        public float timer = 10;
+
+        private IEnumerator PlayGame()
         {
-            if (ppasso)
+            while (!partidaCompleta)
             {
-                CleanScene();
-
-                switch (passo)
+                if (ppasso)
                 {
-                    case 1:
-                        displayHowTo.text = "Pressione [Enter] e assopre \n o mais forte que conseguir dentro do tempo.";
-                        break;
-                    case 2:
+                    CleanScene();
 
-                        FindObjectOfType<SerialController>().StartSampling();
-                        
-                        displayHowTo.text = "";
+                    switch (passo)
+                    {
+                        case 1:
+                            displayHowTo.text = "Pressione [Enter] e assopre \n o mais forte que conseguir dentro do tempo.";
+                            break;
+                        case 2:
 
-                        while (Player.sensorValue <= GameManager.PitacoFlowThreshold && jogou)
-                            yield return null;
+                            FindObjectOfType<SerialController>().StartSampling();
 
-                        StopCountdown();
-                        paraTempo = true;
-                        //saiu do 0
+                            displayHowTo.text = "";
 
-                        while (Player.sensorValue > GameManager.PitacoFlowThreshold && jogou)
-                        {
-                            //Debug.Log($"Player.sensorValue > GameConstants.PitacoFlowThreshold {Player.sensorValue > GameConstants.PitacoFlowThreshold}");
+                            while (Player.sensorValue <= GameManager.PitacoFlowThreshold && jogou)
+                                yield return null;
 
-                            var picoAtual = Player.picoExpiratorio;
+                            StopCountdown();
+                            paraTempo = true;
+                            //saiu do 0
 
-                            FlowAction(picoAtual);
+                            while (Player.sensorValue > GameManager.PitacoFlowThreshold && jogou)
+                            {
+                                //Debug.Log($"Player.sensorValue > GameConstants.PitacoFlowThreshold {Player.sensorValue > GameConstants.PitacoFlowThreshold}");
 
-                            yield return null;
-                        }
+                                var picoAtual = Player.picoExpiratorio;
 
-                        displayHowTo.text = "Parabéns!\nPressione [Enter] para ir para a proxima rodada.";
-                        //voltou pro 0
+                                FlowAction(picoAtual);
 
-                        break;
-                    case 3:
-                        displayHowTo.text = "Pressione [Enter] e assopre o mais forte que conseguir";
-                        timer = 10;
-                        jogou = true;
-                        paraTempo = false;
-                        break;
+                                yield return null;
+                            }
 
-                    case 4:
-                        displayHowTo.text = "";
-                        while (Player.sensorValue <= GameManager.PitacoFlowThreshold && jogou)
-                        {
-                            yield return null;
-                        }
-                        StopCountdown();
-                        paraTempo = true;
-                        //saiu do 0
+                            displayHowTo.text = "Parabéns!\nPressione [Enter] para ir para a proxima rodada.";
+                            //voltou pro 0
 
-                        while (Player.sensorValue > GameManager.PitacoFlowThreshold && jogou)
-                        {
-                            //Debug.Log($"Player.sensorValue > GameConstants.PitacoFlowThreshold {Player.sensorValue > GameConstants.PitacoFlowThreshold}");
+                            break;
+                        case 3:
+                            displayHowTo.text = "Pressione [Enter] e assopre o mais forte que conseguir";
+                            timer = 10;
+                            jogou = true;
+                            paraTempo = false;
+                            break;
 
-                            var picoAtual = Player.picoExpiratorio;
+                        case 4:
+                            displayHowTo.text = "";
+                            while (Player.sensorValue <= GameManager.PitacoFlowThreshold && jogou)
+                            {
+                                yield return null;
+                            }
+                            StopCountdown();
+                            paraTempo = true;
+                            //saiu do 0
 
-                            FlowAction(picoAtual);
+                            while (Player.sensorValue > GameManager.PitacoFlowThreshold && jogou)
+                            {
+                                //Debug.Log($"Player.sensorValue > GameConstants.PitacoFlowThreshold {Player.sensorValue > GameConstants.PitacoFlowThreshold}");
 
-                            yield return null;
-                        }
+                                var picoAtual = Player.picoExpiratorio;
 
-                        //voltou pro 0
-                        displayHowTo.text = "Muito bem!\nPressione [Enter] para continuar.";
+                                FlowAction(picoAtual);
 
-                        break;
-                    case 5:
-                        displayHowTo.text = "Pressione [Enter] e assopre o mais forte que conseguir";
-                        timer = 10;
-                        jogou = true;
-                        paraTempo = false;
-                        break;
-                    case 6:
-                        displayHowTo.text = "";
+                                yield return null;
+                            }
 
-                        while (Player.sensorValue <= GameManager.PitacoFlowThreshold && jogou)
-                            yield return null;
+                            //voltou pro 0
+                            displayHowTo.text = "Muito bem!\nPressione [Enter] para continuar.";
 
-                        StopCountdown();
-                        paraTempo = true;
-                        //saiu do 0
+                            break;
+                        case 5:
+                            displayHowTo.text = "Pressione [Enter] e assopre o mais forte que conseguir";
+                            timer = 10;
+                            jogou = true;
+                            paraTempo = false;
+                            break;
+                        case 6:
+                            displayHowTo.text = "";
 
-                        while (Player.sensorValue > GameManager.PitacoFlowThreshold && jogou)
-                        {
-                            //Debug.Log($"Player.sensorValue > GameConstants.PitacoFlowThreshold {Player.sensorValue > GameConstants.PitacoFlowThreshold}");
+                            while (Player.sensorValue <= GameManager.PitacoFlowThreshold && jogou)
+                                yield return null;
 
-                            var picoAtual = Player.picoExpiratorio;
+                            StopCountdown();
+                            paraTempo = true;
+                            //saiu do 0
 
-                            FlowAction(picoAtual);
+                            while (Player.sensorValue > GameManager.PitacoFlowThreshold && jogou)
+                            {
+                                //Debug.Log($"Player.sensorValue > GameConstants.PitacoFlowThreshold {Player.sensorValue > GameConstants.PitacoFlowThreshold}");
 
-                            yield return null;
-                        }
+                                var picoAtual = Player.picoExpiratorio;
 
-                        //voltou pro 0
-                        displayHowTo.text = "Muito bem!\nPressione [Enter] para continuar.";
-                        break;
+                                FlowAction(picoAtual);
+
+                                yield return null;
+                            }
+
+                            //voltou pro 0
+                            displayHowTo.text = "Muito bem!\nPressione [Enter] para continuar.";
+                            break;
+                    }
+                    ppasso = false;
                 }
-                ppasso = false;
+
+                yield return null;
             }
-
-            yield return null;
         }
-    }
 
-    #region Calculatin Flow Percentage
+        #region Calculatin Flow Percentage
 
-    public void FlowAction(float flowValue)
-    {
-        var picoJogador = Pacient.Loaded.Capacities.ExpPeakFlow;
-        var percentage = flowValue / picoJogador;
-        //Debug.Log(percentage);
-        if (percentage > 0.25f)
+        public void FlowAction(float flowValue)
         {
-            candle.TurnOff(0);
-            score.FillStars(0);
-            finalScore[(passo / 2) - 1] = 1;
+            var picoJogador = Pacient.Loaded.Capacities.ExpPeakFlow;
+            var percentage = flowValue / picoJogador;
+            //Debug.Log(percentage);
+            if (percentage > 0.25f)
+            {
+                candle.TurnOff(0);
+                score.FillStars(0);
+                finalScore[(passo / 2) - 1] = 1;
+            }
+            if (percentage > 0.5f)
+            {
+                candle.TurnOff(1);
+                score.FillStars(1);
+                finalScore[(passo / 2) - 1] = 2;
+            }
+            if (percentage > 0.75f)
+            {
+                candle.TurnOff(2);
+                score.FillStars(2);
+                finalScore[(passo / 2) - 1] = 3;
+            }
+            flow.CurrentVal = percentage * 100;
         }
-        if (percentage > 0.5f)
+
+        #endregion;
+
+        #region Cleaning Stats
+        public void CleanScene()
         {
-            candle.TurnOff(1);
-            score.FillStars(1);
-            finalScore[(passo / 2) - 1] = 2;
+            candle.TurnOn();
+            score.UnfillStars();
+            flow.CurrentVal = 0;
         }
-        if (percentage > 0.75f)
-        {
-            candle.TurnOff(2);
-            score.FillStars(2);
-            finalScore[(passo / 2) - 1] = 3;
-        }
-        flow.CurrentVal = percentage * 100;
-    }
+        #endregion;
 
-    #endregion;
+        #region Step Controllers
 
-    #region Cleaning Stats
-    public void CleanScene()
-    {
-        candle.TurnOn();
-        score.UnfillStars();
-        flow.CurrentVal = 0;
-    }
-    #endregion;
-
-    #region Step Controllers
-
-    public void ExecuteNextStep()
-    {
-        ppasso = true;
-    }
-
-    private void SetStep(int step, bool jumpToStep = false)
-    {
-        passo = step;
-        ppasso = jumpToStep;
-    }
-
-    private void SetNextStep(bool jumpToStep = false)
-    {
-        passo++;
-        ppasso = jumpToStep;
-    }
-
-    #endregion
-
-    #region Countdown Timer
-
-    public void StopCountdown()
-    {
-        timer = 10;
-        displayTimer.text = "";
-    }
-
-    #endregion;
-
-    private void Start()
-    {
-        passo = 0;
-        ppasso = false;
-        partidaCompleta = false;
-        displayHowTo.text = "Aperte [ENTER] para começar.";
-        flow.Initialize();
-        StartCoroutine(PlayGame());
-    }
-
-
-    // Update is called once per frame
-    private void Update()
-    {
-        //print(passo);
-        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+        public void ExecuteNextStep()
         {
             ppasso = true;
+        }
+
+        private void SetNextStep(bool jumpToStep = false)
+        {
             passo++;
+            ppasso = jumpToStep;
         }
 
-        if (passo > 6)
+        private void SetStep(int step, bool jumpToStep = false)
         {
-            partidaCompleta = true;
-            passo = 6;
-            displayHowTo.text = "";
+            passo = step;
+            ppasso = jumpToStep;
+        }
+        #endregion
+
+        #region Countdown Timer
+
+        public void StopCountdown()
+        {
+            timer = 10;
+            displayTimer.text = "";
         }
 
-        if ((passo == 2 || passo == 4 || passo == 6) && paraTempo == false)
+        #endregion;
+
+        private void Start()
         {
-            timer -= Time.deltaTime;
-            displayTimer.text = timer.ToString("f0");
-            if (timer <= 0)
+            passo = 0;
+            ppasso = false;
+            partidaCompleta = false;
+            displayHowTo.text = "Aperte [ENTER] para começar.";
+            flow.Initialize();
+            StartCoroutine(PlayGame());
+        }
+
+
+        // Update is called once per frame
+        private void Update()
+        {
+            //print(passo);
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
             {
-                timer = 0;
-                jogou = false;
-                displayHowTo.text = "Ei! Você esqueceu de jogar!...\n[Enter] para continuar";
+                ppasso = true;
+                passo++;
             }
-        }
 
-        if (partidaCompleta)
-        {
-            finalScoreMenu.DisplayFinalScore(finalScore[0], finalScore[1], finalScore[2]);
-            finalScoreMenu.ToggleScoreMenu();
+            if (passo > 6)
+            {
+                partidaCompleta = true;
+                passo = 6;
+                displayHowTo.text = "";
+            }
+
+            if ((passo == 2 || passo == 4 || passo == 6) && paraTempo == false)
+            {
+                timer -= Time.deltaTime;
+                displayTimer.text = timer.ToString("f0");
+                if (timer <= 0)
+                {
+                    timer = 0;
+                    jogou = false;
+                    displayHowTo.text = "Ei! Você esqueceu de jogar!...\n[Enter] para continuar";
+                }
+            }
+
+            if (partidaCompleta)
+            {
+                finalScoreMenu.DisplayFinalScore(finalScore[0], finalScore[1], finalScore[2]);
+                finalScoreMenu.ToggleScoreMenu();
+            }
         }
     }
 }
