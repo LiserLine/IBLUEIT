@@ -28,7 +28,8 @@ public class PlataformLogger : Logger
     {
         if (scr.Result == GameResult.Success)
         {
-            Pacient.Loaded.UnlockedLevels++;
+            if (Stage.Loaded.Id == Pacient.Loaded.UnlockedLevels)
+                Pacient.Loaded.UnlockedLevels++;
         }
         else
         {
