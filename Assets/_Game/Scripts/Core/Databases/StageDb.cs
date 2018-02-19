@@ -7,6 +7,13 @@ public class StageDb
 {
     public static StageDb Instance = new StageDb();
 
+    private StageDb()
+    {
+        Instance = this;
+        StageList = new List<Stage>();
+        Load();
+    }
+
     public bool IsLoaded { get; private set; }
     public List<Stage> StageList { get; }
 
@@ -95,11 +102,4 @@ public class StageDb
     }
 
 #endif
-
-    private StageDb()
-    {
-        Instance = this;
-        StageList = new List<Stage>();
-        Load();
-    }
 }
