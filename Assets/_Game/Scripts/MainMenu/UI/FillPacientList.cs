@@ -27,7 +27,7 @@ public class FillPacientList : MonoBehaviour
         var restrictiveTranslation = "Restritivo";
         var normalTranslation = "Normal";
 
-        foreach (var pacient in PacientDb.Instance.PacientList)
+        foreach (var pacient in PacientDb.Instance.PacientList.OrderBy(p => p.Name))
         {
             var item = Instantiate(itemPrefab);
             item.transform.SetParent(this.transform);
