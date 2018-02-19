@@ -125,7 +125,7 @@ public partial class Spawner
         var secondPos = second.transform.position.x - second.transform.localScale.x / 2f;
 
         second.transform.Translate(firstPos +
-            Mathf.Clamp((Pacient.Loaded.Capacities.RespCycleDuration / 2000f), 2f, (Pacient.Loaded.Capacities.RespCycleDuration / 2000f)) -
+            Mathf.Clamp((Pacient.Loaded.Capacities.RespCycleDuration / 3000f), 2f, (Pacient.Loaded.Capacities.RespCycleDuration / 3000f)) -
             secondPos, 0f, 0f);
     }
 
