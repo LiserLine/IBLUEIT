@@ -452,6 +452,7 @@ namespace _Game.Scripts.Calibration
                             Pacient.Loaded.Capacities = newCapacities;
                             PacientDb.Instance.Save();
                             FindObjectOfType<CalibrationLogger>().StopLogging();
+                            FindObjectOfType<PitacoLogger>().StopLogging();
 
                             clock.SetActive(false);
                             dude.SetActive(false);
