@@ -4,7 +4,7 @@ public partial class GameManager : MonoBehaviour
 {
     private static bool isLoaded;
 
-    public static float CapacityMultiplier { get; private set; } = 0.5f;
+    public static float CapacityMultiplier { get; private set; } = 0.4f;
     public static float LevelUnlockScoreThreshold { get; private set; } = 0.7f;
     public static float PitacoFlowThreshold { get; private set; } = 7.5f;
 
