@@ -7,11 +7,8 @@ public class PitacoLogger : Logger
         base.Awake();
         sb.AppendLine("time;value");
         FindObjectOfType<SerialController>().OnSerialMessageReceived += OnSerialMessageReceived;
-
-        if(FindObjectOfType<StageManager>() != null)
-            FindObjectOfType<StageManager>().OnStageEnd += StopLogging;
     }
-
+    
     protected override void Flush()
     {
         if (sb.Length < 0)
@@ -23,7 +20,7 @@ public class PitacoLogger : Logger
 
     private void OnSerialMessageReceived(string msg)
     {
-        if (!isRecording || msg.Length < 1)
+        if (!isLogging || msg.Length < 1)
             return;
 
         sb.AppendLine($"{Time.time:F};{Parsers.Float(msg):F}");

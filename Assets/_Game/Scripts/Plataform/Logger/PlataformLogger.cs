@@ -82,7 +82,7 @@ public class PlataformLogger : Logger
 
     private void Update()
     {
-        if (!isRecording)
+        if (!isLogging)
             return;
 
         sb.AppendLine($"{Time.time};{plr.tag};{plr.GetInstanceID()};{plr.transform.position.x:F};{plr.transform.position.y:F}");

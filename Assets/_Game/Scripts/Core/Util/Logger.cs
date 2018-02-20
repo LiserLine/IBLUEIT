@@ -7,25 +7,25 @@ public abstract class Logger : MonoBehaviour
     [SerializeField]
     protected string FileName;
 
-    protected bool isRecording;
+    protected bool isLogging;
     protected DateTime recordStart, recordStop;
     protected StringBuilder sb;
 
     public virtual void StartLogging()
     {
-        if (isRecording)
+        if (isLogging)
             return;
 
         recordStart = DateTime.Now;
-        isRecording = true;
+        isLogging = true;
     }
 
     public virtual void StopLogging()
     {
-        if (!isRecording)
+        if (!isLogging)
             return;
 
-        isRecording = false;
+        isLogging = false;
         recordStop = DateTime.Now;
         Flush();
     }
@@ -35,4 +35,6 @@ public abstract class Logger : MonoBehaviour
     protected abstract void Flush();
 
     protected virtual void Start() => StartLogging();
+
+    protected virtual void OnDestroy() => StopLogging();
 }
