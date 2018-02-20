@@ -12,7 +12,7 @@ public abstract class Logger<T> : MonoBehaviour
     protected DateTime recordStart, recordStop;
     protected StringBuilder sb;
 
-    [Button]
+    [Button("Start Logging")]
     public virtual void StartLogging()
     {
         if (isLogging)
@@ -26,7 +26,7 @@ public abstract class Logger<T> : MonoBehaviour
         isLogging = true;
     }
 
-    [Button]
+    [Button("Stop Logging")]
     public virtual void StopLogging()
     {
         if (!isLogging)
