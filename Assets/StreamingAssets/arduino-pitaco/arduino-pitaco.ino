@@ -3,7 +3,7 @@
  * https://github.com/huenato/iblueit
  */
  
-#define SAMPLEQUANT 100
+#define SAMPLEQUANT 200
  
 bool isCalibrated = false;
 float calibrationValue = 0.0;
