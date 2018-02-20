@@ -2,7 +2,7 @@
 
 namespace _Game.Scripts.Calibration
 {
-    public class CalibrationLogger : Logger
+    public class CalibrationLogger : Logger<CalibrationLogger>
     {
         protected override void Awake()
         {

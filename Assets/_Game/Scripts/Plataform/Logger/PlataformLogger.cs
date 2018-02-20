@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using UnityEngine;
 
-public class PlataformLogger : Logger
+public class PlataformLogger : Logger<PlataformLogger>
 {
     private Player plr;
     private Scorer scr;

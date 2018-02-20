@@ -1,14 +1,17 @@
 ﻿using UnityEngine;
 
-public class PitacoLogger : Logger
+public class PitacoLogger : Logger<PitacoLogger>
 {
     protected override void Awake()
     {
         base.Awake();
         sb.AppendLine("time;value");
         FindObjectOfType<SerialController>().OnSerialMessageReceived += OnSerialMessageReceived;
+
+        if (FindObjectOfType<StageManager>() != null)
+            FindObjectOfType<StageManager>().OnStageEnd += StopLogging;
     }
-    
+
     protected override void Flush()
     {
         if (sb.Length < 0)
