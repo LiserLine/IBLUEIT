@@ -32,7 +32,7 @@ public abstract class Logger<T> : MonoBehaviour
         if (!isLogging)
             return;
 
-        Debug.Log($"{typeof(T)} stopped. Flusing...");
+        Debug.Log($"{typeof(T)} stopped. Flushing...");
 
         isLogging = false;
         recordStop = DateTime.Now;
