@@ -13,14 +13,20 @@ public abstract class Logger : MonoBehaviour
 
     public virtual void StartLogging()
     {
+        if (isRecording)
+            return;
+
         recordStart = DateTime.Now;
         isRecording = true;
     }
 
     public virtual void StopLogging()
     {
-        recordStop = DateTime.Now;
+        if (!isRecording)
+            return;
+
         isRecording = false;
+        recordStop = DateTime.Now;
         Flush();
     }
 
