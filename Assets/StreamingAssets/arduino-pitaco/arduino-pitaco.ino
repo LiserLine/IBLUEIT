@@ -3,6 +3,8 @@
  * https://github.com/huenato/iblueit
  */
  
+#define SAMPLEQUANT 100
+ 
 bool isCalibrated = false;
 float calibrationValue = 0.0;
 void Calibrate(int sampleQuantity)
@@ -62,7 +64,7 @@ void loop()
 		Calibrate(500);	
 	
 	if(isSampling && isCalibrated)
-		Serial.println(Sample(200));
+		Serial.println(Sample(SAMPLEQUANT));
 }
 
 /**
