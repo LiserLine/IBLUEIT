@@ -20,7 +20,7 @@ public abstract class Logger<T> : MonoBehaviour
 
         sb.Clear();
 
-        Debug.Log($"{typeof(T)} started. Logging...");
+        Debug.Log($"{typeof(T).Name} started. Logging...");
 
         recordStart = DateTime.Now;
         isLogging = true;
@@ -32,7 +32,7 @@ public abstract class Logger<T> : MonoBehaviour
         if (!isLogging)
             return;
 
-        Debug.Log($"{typeof(T)} stopped. Flushing...");
+        Debug.Log($"{typeof(T).Name} stopped. Flushing...");
 
         isLogging = false;
         recordStop = DateTime.Now;
