@@ -18,8 +18,6 @@ public abstract class Logger<T> : MonoBehaviour
         if (isLogging)
             return;
 
-        sb.Clear();
-
         Debug.Log($"{typeof(T).Name} started.");
 
         recordStart = DateTime.Now;
@@ -37,6 +35,8 @@ public abstract class Logger<T> : MonoBehaviour
         isLogging = false;
         recordStop = DateTime.Now;
         Flush();
+        
+        sb.Clear();
     }
 
     protected abstract void Awake();
