@@ -974,7 +974,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u2190"
+  m_Text: "\u25C4"
 --- !u!222 &169802901
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2254,7 +2254,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u2190"
+  m_Text: "\u25C4"
 --- !u!222 &407014749
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4653,7 +4653,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u2190"
+  m_Text: "\u25C4"
 --- !u!222 &812238526
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7273,7 +7273,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 425, y: -304}
+  m_AnchoredPosition: {x: 425, y: -279.66196}
   m_SizeDelta: {x: 840, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1178118398
@@ -8079,7 +8079,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u2190"
+  m_Text: "\u25C4"
 --- !u!222 &1217938994
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8364,7 +8364,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u2190"
+  m_Text: "\u25C4"
 --- !u!222 &1251240804
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10056,7 +10056,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u2190"
+  m_Text: "\u25C4"
 --- !u!222 &1521160036
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10544,7 +10544,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u2190"
+  m_Text: "\u25C4"
 --- !u!222 &1609902303
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10907,7 +10907,7 @@ GameObject:
   - component: {fileID: 1699374863}
   - component: {fileID: 1699374862}
   m_Layer: 5
-  m_Name: QuitGame Button
+  m_Name: Quit Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12830,7 +12830,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Pico de Fluxo Inspirat\xF3rio"
+  m_Text: "Tempo de Fluxo Inspirat\xF3rio"
 --- !u!222 &2028648996
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -13419,7 +13419,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1571074182}
   m_HandleRect: {fileID: 1571074181}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
