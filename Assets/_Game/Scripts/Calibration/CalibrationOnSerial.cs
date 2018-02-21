@@ -46,7 +46,7 @@ namespace _Game.Scripts.Calibration
 
                 case CalibrationExercise.RespiratoryFrequency:
                     if (flowWatch.IsRunning)
-                        samples.Add(flowWatch.ElapsedMilliseconds, tmp);
+                        capturedSamples.Add(flowWatch.ElapsedMilliseconds, tmp);
                     break;
             }
         }

@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UI;
@@ -37,7 +36,7 @@ namespace _Game.Scripts.Calibration
 
         private Capacities newCapacities;
         private Stopwatch flowWatch, timerWatch;
-        private Dictionary<long, float> samples;
+        private Dictionary<long, float> capturedSamples;
         private CalibrationExercise currentExercise;
 
         private void Awake()
@@ -47,12 +46,12 @@ namespace _Game.Scripts.Calibration
             newCapacities = new Capacities();
             flowWatch = new Stopwatch();
             timerWatch = new Stopwatch();
-            samples = new Dictionary<long, float>();
+            capturedSamples = new Dictionary<long, float>();
         }
 
         private void Start()
         {
-            welcomeText.text = "Primeiro, precisamos calibrar a sua respiração. Vamos lá?";
+            welcomeText.text = "Primeiro, precisamos calibrar a sua respiração. Vamos lá? Pressione ENTER quando o ícone (►) aparecer para avançar!";
             enterButton.SetActive(true);
             StartCoroutine(ControlStates());
         }
@@ -102,7 +101,7 @@ namespace _Game.Scripts.Calibration
                     switch (currentStep)
                     {
                         case 1:
-                            welcomeText.text = "Neste jogo, você deve respirar somente pela boca. Não precisa morder o PITACO.";
+                            welcomeText.text = "Neste jogo, você deve respirar somente pela boca. Não precisa morder o PITACO. Aperte o nariz quando fizer os exercícios.";
                             SetNextStep();
                             break;
 
@@ -126,20 +125,20 @@ namespace _Game.Scripts.Calibration
                             }
 
                             serialController.StartSampling();
-                            samples.Clear();
+                            capturedSamples.Clear();
 
                             yield return new WaitForSeconds(1);
                             balloonText.text = "(relaxe e RESPIRE NORMALMENTE por 30 segundos)";
 
                             AirFlowStart();
 
-                            StartCoroutine(DisplayCountdown(30));
-                            while (flowWatch.ElapsedMilliseconds < 30 * 1000)
+                            StartCoroutine(DisplayCountdown(33));
+                            while (flowWatch.ElapsedMilliseconds < 33 * 1000)
                                 yield return null;
 
                             AirFlowStop();
 
-                            flowMeter = FlowMath.MeanFlow(samples.ToList());
+                            flowMeter = FlowMath.MeanFlow(capturedSamples);
                             Debug.Log($"Respiratory Frequency: {flowMeter}");
 
                             if (flowMeter > respiratoryFrequencyThreshold)
@@ -169,7 +168,7 @@ namespace _Game.Scripts.Calibration
                         case 5:
                             currentExercise = CalibrationExercise.InspiratoryPeak;
                             PrepareNextExercise();
-                            DudeTalk("Agora mediremos sua força. Aguarde o relógio ficar verde e INSPIRE bem FORTE.");
+                            DudeTalk("Agora mediremos o pico de sua respiração. Aguarde o relógio ficar verde e INSPIRE bem FORTE.");
                             SetNextStep();
                             break;
 
@@ -179,7 +178,6 @@ namespace _Game.Scripts.Calibration
                                 DudeWarnPitacoDisconnected();
                                 continue;
                             }
-
 #if UNITY_EDITOR
                             serialController.StartSampling();
 #endif
@@ -188,7 +186,7 @@ namespace _Game.Scripts.Calibration
 
                             AirFlowStart();
                             StartCoroutine(DisplayCountdown(10));
-                            balloonText.text = "(INSPIRE bem FORTE no PITACO e aguarde o próximo passo)";
+                            balloonText.text = "(INSPIRE FORTE no PITACO e aguarde o próximo passo)";
 
                             yield return new WaitForSeconds(10);
 
@@ -232,7 +230,7 @@ namespace _Game.Scripts.Calibration
                         case 9:
                             PrepareNextExercise();
                             currentExercise = CalibrationExercise.ExpiratoryPeak;
-                            DudeTalk("Agora faremos ao contrário. Aguarde o relógio ficar verde e ASSOPRE bem FORTE.");
+                            DudeTalk("Agora o pico expiratório. Aguarde o relógio ficar verde e ASSOPRE bem FORTE.");
                             SetNextStep();
                             break;
 
@@ -252,7 +250,7 @@ namespace _Game.Scripts.Calibration
 
                             AirFlowStart();
                             StartCoroutine(DisplayCountdown(10));
-                            balloonText.text = "(ASSOPRE bem FORTE no PITACO e aguarde o próximo passo)";
+                            balloonText.text = "(ASSOPRE FORTE no PITACO e aguarde o próximo passo)";
 
                             // Wait for player input
                             yield return new WaitForSeconds(10);
@@ -296,7 +294,7 @@ namespace _Game.Scripts.Calibration
                         case 13:
                             PrepareNextExercise();
                             currentExercise = CalibrationExercise.ExpiratoryFlow;
-                            DudeTalk("Agora vamos medir o tempo. Aguarde o relógio ficar verde, ASSOPRE e mantenha o relógio girando o MÁXIMO de TEMPO possível.");
+                            DudeTalk("Agora vamos medir o tempo. Aguarde o relógio ficar verde e mantenha o relógio girando ASSOPRANDO!");
                             SetNextStep();
                             break;
 
@@ -314,7 +312,7 @@ namespace _Game.Scripts.Calibration
                             yield return new WaitForSeconds(0.5f);
 
                             AirFlowStart(false);
-                            balloonText.text = "(ASSOPRE e mantenha o relógio girando o MÁXIMO de TEMPO possível)";
+                            balloonText.text = "(ASSOPRE e mantenha o relógio girando)";
 
                             // Wait for player input to be greather than threshold
                             while (flowMeter <= GameManager.PitacoFlowThreshold)
@@ -370,7 +368,7 @@ namespace _Game.Scripts.Calibration
                         case 17:
                             PrepareNextExercise();
                             currentExercise = CalibrationExercise.InspiratoryFlow;
-                            DudeTalk("Agora, quando o relógio ficar verde, INSPIRE e mantenha o relógio girando o MÁXIMO de TEMPO possível");
+                            DudeTalk("Agora, quando o relógio ficar verde, INSPIRE e mantenha o relógio girando!");
                             SetNextStep();
                             break;
 
@@ -388,7 +386,7 @@ namespace _Game.Scripts.Calibration
                             yield return new WaitForSeconds(0.5f);
 
                             AirFlowStart(false);
-                            balloonText.text = "(INSPIRE e mantenha o relógio girando o MÁXIMO de TEMPO possível)";
+                            balloonText.text = "(INSPIRE para manter o relógio girando o MÁXIMO de TEMPO possível)";
 
                             while (flowMeter >= -GameManager.PitacoFlowThreshold)
                                 yield return null;
