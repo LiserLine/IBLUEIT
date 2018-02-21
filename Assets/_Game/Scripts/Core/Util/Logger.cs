@@ -10,7 +10,7 @@ public abstract class Logger<T> : MonoBehaviour
 
     protected bool isLogging;
     protected DateTime recordStart, recordStop;
-    protected StringBuilder sb;
+    protected StringBuilder sb = new StringBuilder();
 
     [Button("Start Logging")]
     public virtual void StartLogging()
@@ -39,9 +39,7 @@ public abstract class Logger<T> : MonoBehaviour
         Flush();
     }
 
-    protected virtual void Awake() => sb = new StringBuilder();
-
+    protected abstract void Awake();
     protected abstract void Flush();
-
     protected virtual void Start() => StartLogging();
 }

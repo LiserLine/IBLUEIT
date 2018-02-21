@@ -5,7 +5,6 @@ public class PitacoLogger : Logger<PitacoLogger>
 {
     protected override void Awake()
     {
-        base.Awake();
         sb.AppendLine("time;value");
         FindObjectOfType<SerialController>().OnSerialMessageReceived += OnSerialMessageReceived;
 

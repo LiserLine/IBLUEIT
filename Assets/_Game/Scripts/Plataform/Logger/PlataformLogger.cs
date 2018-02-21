@@ -9,7 +9,6 @@ public class PlataformLogger : Logger<PlataformLogger>
 
     protected override void Awake()
     {
-        base.Awake();
         sb.AppendLine("time;tag;instanceId;posX;posY");
         plr = FindObjectOfType<Player>();
         spwn = FindObjectOfType<Spawner>();

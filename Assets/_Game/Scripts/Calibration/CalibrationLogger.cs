@@ -4,11 +4,7 @@ namespace _Game.Scripts.Calibration
 {
     public class CalibrationLogger : Logger<CalibrationLogger>
     {
-        protected override void Awake()
-        {
-            base.Awake();
-            sb.AppendLine("time;result;exercise;value");
-        }
+        protected override void Awake() => sb.AppendLine("time;result;exercise;value");
 
         public void Write(CalibrationExerciseResult cr, CalibrationExercise ce, float value) => sb.AppendLine($"{DateTime.Now:s};{cr};{ce};{value}");
 

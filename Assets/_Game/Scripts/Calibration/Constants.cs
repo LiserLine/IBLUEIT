@@ -4,9 +4,9 @@
     {
         RespiratoryFrequency,
         InspiratoryPeak,
-        InspiratoryFlow,
+        InspiratoryDuration,
         ExpiratoryPeak,
-        ExpiratoryFlow
+        ExpiratoryDuration
     }
 
     public enum CalibrationExerciseResult

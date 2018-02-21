@@ -39,8 +39,8 @@ namespace _Game.Scripts.Calibration
                     }
                     break;
 
-                case CalibrationExercise.ExpiratoryFlow:
-                case CalibrationExercise.InspiratoryFlow:
+                case CalibrationExercise.ExpiratoryDuration:
+                case CalibrationExercise.InspiratoryDuration:
                     flowMeter = tmp;
                     break;
 

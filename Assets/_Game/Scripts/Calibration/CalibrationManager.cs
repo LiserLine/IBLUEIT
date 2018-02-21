@@ -293,7 +293,7 @@ namespace _Game.Scripts.Calibration
 
                         case 13:
                             PrepareNextExercise();
-                            currentExercise = CalibrationExercise.ExpiratoryFlow;
+                            currentExercise = CalibrationExercise.ExpiratoryDuration;
                             DudeTalk("Agora vamos medir o tempo. Aguarde o relógio ficar verde e mantenha o relógio girando ASSOPRANDO!");
                             SetNextStep();
                             break;
@@ -367,7 +367,7 @@ namespace _Game.Scripts.Calibration
 
                         case 17:
                             PrepareNextExercise();
-                            currentExercise = CalibrationExercise.InspiratoryFlow;
+                            currentExercise = CalibrationExercise.InspiratoryDuration;
                             DudeTalk("Agora, quando o relógio ficar verde, INSPIRE e mantenha o relógio girando!");
                             SetNextStep();
                             break;
