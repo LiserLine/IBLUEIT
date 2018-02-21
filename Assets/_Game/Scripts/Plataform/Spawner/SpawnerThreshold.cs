@@ -57,7 +57,7 @@ public partial class Spawner
                 ObstaclesFailed++;
                 if (airObstaclesHit <= -Stage.Loaded.SizeLevelDownThreshold)
                 {
-                    insSizeAcc -= Stage.Loaded.SizeIncrement;
+                    expSizeAcc -= Stage.Loaded.SizeIncrement;
                     airObstaclesHit = 0;
                 }
                 break;
@@ -67,7 +67,7 @@ public partial class Spawner
                 ObstaclesFailed++;
                 if (waterObstaclesHit <= -Stage.Loaded.SizeLevelDownThreshold)
                 {
-                    expSizeAcc -= Stage.Loaded.SizeIncrement;
+                    insSizeAcc -= Stage.Loaded.SizeIncrement;
                     waterObstaclesHit = 0;
                 }
                 break;
@@ -110,7 +110,7 @@ public partial class Spawner
                 ObstaclesSucceeded++;
                 if (airObstaclesHit >= Stage.Loaded.SizeLevelUpThreshold)
                 {
-                    insSizeAcc += Stage.Loaded.SizeIncrement;
+                    expSizeAcc += Stage.Loaded.SizeIncrement;
                     airObstaclesHit = 0;
                 }
                 break;
@@ -120,7 +120,7 @@ public partial class Spawner
                 ObstaclesSucceeded++;
                 if (waterObstaclesHit >= Stage.Loaded.SizeLevelUpThreshold)
                 {
-                    expSizeAcc += Stage.Loaded.SizeIncrement;
+                    insSizeAcc += Stage.Loaded.SizeIncrement;
                     waterObstaclesHit = 0;
                 }
                 break;

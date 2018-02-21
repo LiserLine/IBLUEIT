@@ -30,49 +30,143 @@ using UnityEngine;
 
 public partial class SerialController : MonoBehaviour
 {
-    public bool IsConnected => isConnected;
-
-    private bool isConnected;
-
-    [SerializeField]
-    [Tooltip("Baud rate that the serial device is using to transmit data.")]
-    private int baudRate = 115200;
-
-    [SerializeField]
-    [Tooltip("After an error in the serial communication, or an unsuccessful " +
-             "connect, how many milliseconds we should wait.")]
-    private int reconnectionDelay = 1000;
-
-    [SerializeField]
-    [Tooltip("Maximum number of unread data messages in the queue. " +
-             "New messages will be discarded.")]
-    private int maxUnreadMessages = 1;
-
     // Constants used to mark the start and end of a connection. There is no
     // way you can generate clashing messages from your serial device, as I
     // compare the references of these strings, no their contents. So if you
     // send these same strings from the serial device, upon reconstruction they
     // will have different reference ids.
     public const string SERIAL_DEVICE_CONNECTED = "__Connected__";
-
     public const string SERIAL_DEVICE_DISCONNECTED = "__Disconnected__";
+    [SerializeField]
+    [Tooltip("Baud rate that the serial device is using to transmit data.")]
+    private int baudRate = 115200;
+
+    [SerializeField]
+    [Tooltip("Maximum number of unread data messages in the queue. " +
+             "New messages will be discarded.")]
+    private int maxUnreadMessages = 1;
+
+    [SerializeField]
+    [Tooltip("After an error in the serial communication, or an unsuccessful " +
+             "connect, how many milliseconds we should wait.")]
+    private int reconnectionDelay = 1000;
+
+    private SerialThread serialThread;
 
     // Internal reference to the Thread and the object that runs in it.
     private Thread thread;
 
-    private SerialThread serialThread;
-
     public delegate void SerialConnectedHandler();
-
-    public event SerialConnectedHandler OnSerialConnected;
-
     public delegate void SerialDisconnectedHandler();
-
-    public event SerialDisconnectedHandler OnSerialDisconnected;
-
     public delegate void SerialMessageReceivedHandler(string msg);
 
+    // ------------------------------------------------------------------------
+    // Executes a user-defined function before Unity closes the COM port, so
+    // the user can send some tear-down message to the hardware reliably.
+    // ------------------------------------------------------------------------
+    public delegate void TearDownFunction();
+    private TearDownFunction userDefinedTearDownFunction;
+
+    public event SerialConnectedHandler OnSerialConnected;
+    public event SerialDisconnectedHandler OnSerialDisconnected;
     public event SerialMessageReceivedHandler OnSerialMessageReceived;
+
+    public bool IsConnected { get; private set; }
+
+    // ------------------------------------------------------------------------
+    // Returns a new unread message from the serial device. You only need to
+    // call this if you preferrred to not provide a message listener.
+    // ------------------------------------------------------------------------
+    public string ReadSerialMessage() => serialThread.ReadSerialMessage();
+
+    // ------------------------------------------------------------------------
+    // Puts a message in the outgoing queue. The thread object will send the
+    // message to the serial device when it considers it appropriate.
+    // ------------------------------------------------------------------------
+    public void SendSerialMessage(string message)
+    {
+        if (!IsConnected)
+            return;
+
+        serialThread.SendSerialMessage(message);
+    }
+
+    public void SetTearDownFunction(TearDownFunction userFunction) => this.userDefinedTearDownFunction = userFunction;
+
+    /// <summary>
+    /// Get Ports avaiable.
+    /// </summary>
+    /// <returns></returns>
+    private static string[] GetPortNames()
+    {
+        if (Application.platform == RuntimePlatform.OSXPlayer ||
+            Application.platform == RuntimePlatform.OSXEditor ||
+            Application.platform == RuntimePlatform.LinuxPlayer ||
+            Application.platform == RuntimePlatform.Android)
+        {
+            return Directory.GetFiles("/dev/").Where(port => port.StartsWith("/dev/tty.usb") || port.StartsWith("/dev/ttyUSB")).ToArray();
+        }
+
+        return SerialPort.GetPortNames(); //windows
+    }
+
+    /// <summary>
+    /// Autoconnects the first device that answers "echo". Adaptation for the game.
+    /// </summary>
+    /// <returns></returns>
+    private string AutoConnect()
+    {
+        var ports = GetPortNames();
+
+        if (ports.Length < 1)
+            SysMessage.Warning("PITACO não encontrado!"); //throw new Exception("Serial device not found!");
+
+        foreach (var port in ports)
+        {
+            var serialPort = new SerialPort(port, baudRate)
+            {
+                ReadTimeout = 1000,
+                WriteTimeout = 1000,
+                DtrEnable = true,
+                RtsEnable = true,
+                Handshake = Handshake.None
+            };
+
+            Debug.Log($"Connecting to {serialPort.PortName}:{serialPort.BaudRate}");
+
+            try
+            {
+                serialPort.Open();
+                Thread.Sleep(1500);
+                serialPort.Write("e");
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Failed to connect to serial. {e.GetType()}: {e.Message}");
+                serialPort.Close();
+                continue;
+            }
+
+            serialPort.Write("e");
+
+            var line = serialPort.ReadLine();
+
+            Debug.Log(line);
+
+            if (!line.Contains("echo"))
+            {
+                serialPort.Close();
+                continue;
+            }
+
+            serialPort.Close();
+            serialPort.Dispose();
+
+            return serialPort.PortName;
+        }
+
+        return null;
+    }
 
     // ------------------------------------------------------------------------
     // Invoked whenever the SerialController gameobject is activated.
@@ -80,12 +174,6 @@ public partial class SerialController : MonoBehaviour
     // and start reading from it.
     // ------------------------------------------------------------------------
     private void Awake() => Connect();
-
-    // ------------------------------------------------------------------------
-    // Invoked whenever the SerialController gameobject is deactivated.
-    // It stops and destroys the thread that was reading from the serial device.
-    // ------------------------------------------------------------------------
-    private void OnDestroy() => Disconnect();
 
     private void Connect()
     {
@@ -102,7 +190,7 @@ public partial class SerialController : MonoBehaviour
         thread = new Thread(serialThread.RunForever);
         thread.Start();
 
-        isConnected = true;
+        IsConnected = true;
 
         Debug.Log($"Connected to {portName}:{baudRate}");
     }
@@ -134,78 +222,12 @@ public partial class SerialController : MonoBehaviour
             thread = null;
         }
 
-        isConnected = false;
+        IsConnected = false;
 
         Debug.Log("Serial disconnected.");
     }
 
-    /// <summary>
-    /// Autoconnects the first device that answers "echo". Adaptation for the game.
-    /// </summary>
-    /// <returns></returns>
-    private string AutoConnect()
-    {
-        var ports = GetPortNames();
-
-        if (ports.Length < 1)
-            SysMessage.Warning("PITACO não encontrado!"); //throw new Exception("Serial device not found!");
-
-        foreach (var port in ports)
-        {
-            var serialPort = new SerialPort(port, baudRate)
-            {
-                ReadTimeout = 1000,
-                WriteTimeout = 1000,
-                DtrEnable = true,
-                RtsEnable = true,
-                Handshake = Handshake.None
-            };
-
-            Debug.Log($"Connecting to {serialPort.PortName}:{serialPort.BaudRate}");
-
-            try
-            {
-                serialPort.Open();
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"Failed to connect to serial. {e.GetType()}: {e.Message}");
-                serialPort.Close();
-                continue;
-            }
-
-            serialPort.Write("e");
-
-            if (!serialPort.ReadExisting().Contains("echo"))
-            {
-                serialPort.Close();
-                continue;
-            }
-
-            serialPort.Close();
-            serialPort.Dispose();
-            return serialPort.PortName;
-        }
-
-        return "COM3";
-    }
-
-    /// <summary>
-    /// Get Ports avaiable.
-    /// </summary>
-    /// <returns></returns>
-    private static string[] GetPortNames()
-    {
-        if (Application.platform == RuntimePlatform.OSXPlayer ||
-            Application.platform == RuntimePlatform.OSXEditor ||
-            Application.platform == RuntimePlatform.LinuxPlayer ||
-            Application.platform == RuntimePlatform.Android)
-        {
-            return Directory.GetFiles("/dev/").Where(port => port.StartsWith("/dev/tty.usb") || port.StartsWith("/dev/ttyUSB")).ToArray();
-        }
-
-        return SerialPort.GetPortNames(); //windows
-    }
+    private void OnDestroy() => Disconnect();
 
     // ------------------------------------------------------------------------
     // Polls messages from the queue that the SerialThread object keeps. Once a
@@ -223,12 +245,12 @@ public partial class SerialController : MonoBehaviour
         // Check if the message is plain data or a connect/disconnect event.
         if (string.Equals(message, SERIAL_DEVICE_CONNECTED))
         {
-            isConnected = true;
+            IsConnected = true;
             OnSerialConnected?.Invoke();
         }
         else if (string.Equals(message, SERIAL_DEVICE_DISCONNECTED))
         {
-            isConnected = false;
+            IsConnected = false;
             OnSerialDisconnected?.Invoke();
         }
         else
@@ -239,32 +261,4 @@ public partial class SerialController : MonoBehaviour
             OnSerialMessageReceived?.Invoke(message);
         }
     }
-
-    // ------------------------------------------------------------------------
-    // Returns a new unread message from the serial device. You only need to
-    // call this if you preferrred to not provide a message listener.
-    // ------------------------------------------------------------------------
-    public string ReadSerialMessage() => serialThread.ReadSerialMessage();
-
-    // ------------------------------------------------------------------------
-    // Puts a message in the outgoing queue. The thread object will send the
-    // message to the serial device when it considers it appropriate.
-    // ------------------------------------------------------------------------
-    public void SendSerialMessage(string message)
-    {
-        if (!IsConnected)
-            return;
-
-        serialThread.SendSerialMessage(message);
-    }
-
-    // ------------------------------------------------------------------------
-    // Executes a user-defined function before Unity closes the COM port, so
-    // the user can send some tear-down message to the hardware reliably.
-    // ------------------------------------------------------------------------
-    public delegate void TearDownFunction();
-
-    private TearDownFunction userDefinedTearDownFunction;
-
-    public void SetTearDownFunction(TearDownFunction userFunction) => this.userDefinedTearDownFunction = userFunction;
 }

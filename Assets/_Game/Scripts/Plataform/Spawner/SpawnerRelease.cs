@@ -6,10 +6,10 @@ using Random = UnityEngine.Random;
 public partial class Spawner
 {
     private const float minDistanceBetweenSpawns = 3f;
-    private float expHeightAcc;
-    private float expSizeAcc;
-    private float insHeightAcc;
-    private float insSizeAcc;
+    private float expHeightAcc = 1f;
+    private float expSizeAcc = 1f;
+    private float insHeightAcc = 1f;
+    private float insSizeAcc = 1f;
     private bool spawnRelaxTime;
 
     public delegate void ObjectReleasedHandler(SpawnObject type, ref GameObject obj1, ref GameObject obj2);
@@ -20,9 +20,6 @@ public partial class Spawner
 
     private void DistanciateSpawns(ref GameObject next)
     {
-        //if (SpawnedObjects.Length < 1)
-        //    return;
-
         var dist = minDistanceBetweenSpawns + (1f + (1f / (float)Pacient.Loaded.Condition));
 
         var lastObj = SpawnedObjects.Length > 2 ? SpawnedObjects[SpawnedObjects.Length - 3] : this.transform;
@@ -64,7 +61,7 @@ public partial class Spawner
 
     private void DistanciateTargets(ref GameObject first, ref GameObject second) =>
         second.transform.Translate(first.transform.position.x +
-            Mathf.Clamp((Pacient.Loaded.Capacities.RespCycleDuration / 2500f), 1f, (Pacient.Loaded.Capacities.RespCycleDuration / 2500f)) -
+            Mathf.Clamp(Pacient.Loaded.Capacities.RespCycleDuration / 2500f, 1f, Pacient.Loaded.Capacities.RespCycleDuration / 2500f) -
             second.transform.position.x, 0f, 0f);
 
     private void InstanciateTargetAir(out GameObject spawned)
@@ -75,8 +72,7 @@ public partial class Spawner
             transform.rotation,
             transform);
 
-        var posY = (1f + insHeightAcc / 100f) * CameraLimits.Boundary *
-                   Random.Range(0.2f, Stage.Loaded.GameDifficulty / 100f);
+        var posY = insHeightAcc * CameraLimits.Boundary * Random.Range(0.2f, Stage.Loaded.GameDifficulty);
 
         posY = Mathf.Clamp(posY, 0.2f * CameraLimits.Boundary, CameraLimits.Boundary);
 
@@ -91,8 +87,7 @@ public partial class Spawner
             transform.rotation,
             transform);
 
-        var posY = (1f + expHeightAcc / 100f) * CameraLimits.Boundary *
-                   Random.Range(0.2f, Stage.Loaded.GameDifficulty / 100f);
+        var posY = expHeightAcc * CameraLimits.Boundary * Random.Range(0.2f, Stage.Loaded.GameDifficulty);
 
         posY = Mathf.Clamp(-posY, -CameraLimits.Boundary, 0.2f * -CameraLimits.Boundary);
 
@@ -124,9 +119,9 @@ public partial class Spawner
         var firstPos = first.transform.position.x + first.transform.localScale.x / 2f;
         var secondPos = second.transform.position.x - second.transform.localScale.x / 2f;
 
-        second.transform.Translate(firstPos +
-            Mathf.Clamp((Pacient.Loaded.Capacities.RespCycleDuration / 3000f), 2f, (Pacient.Loaded.Capacities.RespCycleDuration / 3000f)) -
-            secondPos, 0f, 0f);
+        var limit = Pacient.Loaded.Capacities.RespCycleDuration / 3000f;
+
+        second.transform.Translate(firstPos + Mathf.Clamp(limit, 2.5f, limit) - secondPos, 0f, 0f);
     }
 
     private void InstanciateObstacleAir(out GameObject spawned)
@@ -138,14 +133,7 @@ public partial class Spawner
             transform.rotation,
             transform);
 
-        var scaleFromPlayer = Pacient.Loaded.Capacities.ExpFlowDuration / 1000f;
-
-        var scale = scaleFromPlayer
-                    * (1f + insSizeAcc / 100f)
-                    * (float)Pacient.Loaded.Condition
-                    * Stage.Loaded.GameDifficulty / 100f;
-
-        scale = Mathf.Clamp(scale, scaleFromPlayer * 0.7f, scale);
+        var scale = Pacient.Loaded.Capacities.ExpFlowDuration / 1000f * expSizeAcc * (float)Pacient.Loaded.Condition * Stage.Loaded.GameDifficulty;
 
         spawned.transform.localScale = new Vector3(scale, scale, 1);
         spawned.transform.Translate(0f, spawned.transform.localScale.y / 2, 0f);
@@ -160,8 +148,7 @@ public partial class Spawner
             transform.rotation,
             transform);
 
-        var scale = Pacient.Loaded.Capacities.ExpFlowDuration / 1000f
-                    * (1f + expSizeAcc / 100f);
+        var scale = Pacient.Loaded.Capacities.InsFlowDuration / 1000f * insSizeAcc;
 
         spawned.transform.localScale = new Vector3(scale, scale, 1);
         spawned.transform.Translate(0f, -spawned.transform.localScale.y / 2, 0f);
