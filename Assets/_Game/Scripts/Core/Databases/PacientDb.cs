@@ -67,20 +67,19 @@ public class PacientDb
                 UnlockedLevels = int.Parse(grid[i][10]),
                 AccumulatedScore = Parsers.Float(grid[i][11]),
                 PlaySessionsDone = int.Parse(grid[i][12]),
-                CalibrationDone = bool.Parse(grid[i][13])
+                CalibrationDone = bool.Parse(grid[i][13]),
+                HowToPlayDone = bool.Parse(grid[i][14])
             };
 
             PacientList.Add(plr);
         }
-
-        //Debug.Log($"{PacientList.Count} pacients loaded.");
     }
 
     public void Save()
     {
         var items = new[] { "Id", "Name", "Birthday", "Observations", "Condition",
             "InsPeakFlow", "ExpPeakFlow", "InsFlowDuration", "ExpFlowDuration", "RespCycleDuration",
-            "UnlockedLevels", "AccumulatedScore", "PlaySessionsDone", "CalibrationDone" };
+            "UnlockedLevels", "AccumulatedScore", "PlaySessionsDone", "CalibrationDone", "HowToPlayDone" };
 
         var sb = new StringBuilder();
         sb.AppendLine(items.Aggregate((a, b) => a + ";" + b));
@@ -92,7 +91,7 @@ public class PacientDb
             sb.AppendLine(
                 $"{pacient.Id};{pacient.Name};{pacient.Birthday:dd/MM/yyyy};{pacient.Observations};{pacient.Condition};" +
                 $"{pacient.Capacities.RawInsPeakFlow};{pacient.Capacities.RawExpPeakFlow};{pacient.Capacities.RawInsFlowDuration};{pacient.Capacities.RawExpFlowDuration};" +
-                $"{pacient.Capacities.RawRespCycleDuration};{pacient.UnlockedLevels};{pacient.AccumulatedScore};{pacient.PlaySessionsDone};{pacient.CalibrationDone};");
+                $"{pacient.Capacities.RawRespCycleDuration};{pacient.UnlockedLevels};{pacient.AccumulatedScore};{pacient.PlaySessionsDone};{pacient.CalibrationDone};{pacient.HowToPlayDone};");
         }
 
         FileReader.WriteAllText(filePath, sb.ToString());

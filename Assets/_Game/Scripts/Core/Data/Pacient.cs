@@ -15,6 +15,7 @@ public class Pacient
     public float AccumulatedScore;
     public int PlaySessionsDone;
     public bool CalibrationDone;
+    public bool HowToPlayDone;
 
 #if UNITY_EDITOR
 
@@ -26,6 +27,7 @@ public class Pacient
                 Id = -1,
                 Birthday = DateTime.Now,
                 CalibrationDone = true,
+                HowToPlayDone = false,
                 Condition = ConditionType.Normal,
                 Name = "NetRunner",
                 PlaySessionsDone = 0,
