@@ -27,7 +27,7 @@ public class Pacient
                 Id = -1,
                 Birthday = DateTime.Now,
                 CalibrationDone = true,
-                HowToPlayDone = false,
+                HowToPlayDone = true,
                 Condition = ConditionType.Normal,
                 Name = "NetRunner",
                 PlaySessionsDone = 0,
