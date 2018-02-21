@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 public class PitacoLogger : Logger<PitacoLogger>
 {
@@ -14,11 +15,13 @@ public class PitacoLogger : Logger<PitacoLogger>
 
     protected override void Flush()
     {
-        if (sb.Length < 0)
+        var textData = sb.ToString();
+
+        if (textData.Count(s => s == '\n') < 2)
             return;
 
         var path = @"savedata/pacients/" + Pacient.Loaded.Id + @"/" + $"{recordStart:yyyyMMdd-HHmmss}_" + FileName + ".csv";
-        FileReader.WriteAllText(path, sb.ToString());
+        FileReader.WriteAllText(path, textData);
     }
 
     private void OnSerialMessageReceived(string msg)
