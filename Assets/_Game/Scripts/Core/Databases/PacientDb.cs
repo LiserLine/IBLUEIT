@@ -37,10 +37,7 @@ public class PacientDb
     public void Load()
     {
         if (!File.Exists(filePath))
-        {
-            SysMessage.Warning("Dados vazios!");
             return;
-        }
 
         PacientList.Clear();
 
