@@ -142,20 +142,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   testStage:
-    Id: 2
-    SpawnObject: 1
-    Level: 2
-    SpawnDelay: 4
+    Id: 13
+    SpawnObject: 3
+    Level: 3
+    SpawnDelay: 5
     SpawnDuration: 40
-    GameDifficulty: 20
-    ObjectSpeedMultiplier: 1.4
-    HeightIncrement: 10
-    HeightLevelUpThreshold: 2
-    HeightLevelDownThreshold: 1
-    SizeIncrement: 0
-    SizeLevelUpThreshold: 0
-    SizeLevelDownThreshold: 0
-    RelaxTimeThreshold: 2
+    GameDifficulty: 80
+    ObjectSpeedMultiplier: 1.6
+    HeightIncrement: 0
+    HeightLevelUpThreshold: 0
+    HeightLevelDownThreshold: 0
+    SizeIncrement: 15
+    SizeLevelUpThreshold: 2
+    SizeLevelDownThreshold: 1
+    RelaxTimeThreshold: 0
 --- !u!4 &25974385
 Transform:
   m_ObjectHideFlags: 0
