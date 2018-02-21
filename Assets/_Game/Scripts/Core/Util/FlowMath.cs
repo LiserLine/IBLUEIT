@@ -1,9 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 public class FlowMath
 {
-    public static float MeanFlow(List<KeyValuePair<long, float>> samples)
+    /// <summary>
+    /// Calculates a mean of respiratory duration in Seconds per Cycle.
+    /// </summary>
+    /// <param name="data">Dictionary containing respiratory samples from PITACO.</param>
+    public static float MeanFlow(Dictionary<long, float> data)
     {
+        var samples = data.ToList();
+
         long startTime = 0, firstCurveTime = 0, secondCurveTime = 0, sumTimes = 0;
         float quantCycles = 0;
 
