@@ -1,15 +1,14 @@
 ﻿using NaughtyAttributes;
-using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public partial class Spawner
 {
     private const float minDistanceBetweenSpawns = 3f;
-    private float expHeightAcc = 1f;
-    private float expSizeAcc = 1f;
-    private float insHeightAcc = 1f;
-    private float insSizeAcc = 1f;
+    private float expHeightAcc;
+    private float expSizeAcc;
+    private float insHeightAcc;
+    private float insSizeAcc;
     private bool spawnRelaxTime;
 
     public delegate void ObjectReleasedHandler(SpawnObject type, ref GameObject obj1, ref GameObject obj2);
@@ -72,7 +71,7 @@ public partial class Spawner
             transform.rotation,
             transform);
 
-        var posY = insHeightAcc * CameraLimits.Boundary * Random.Range(0.2f, Stage.Loaded.GameDifficulty);
+        var posY = (1f + insHeightAcc) * CameraLimits.Boundary * Random.Range(0.2f, Stage.Loaded.GameDifficulty);
 
         posY = Mathf.Clamp(posY, 0.2f * CameraLimits.Boundary, CameraLimits.Boundary);
 
@@ -87,7 +86,7 @@ public partial class Spawner
             transform.rotation,
             transform);
 
-        var posY = expHeightAcc * CameraLimits.Boundary * Random.Range(0.2f, Stage.Loaded.GameDifficulty);
+        var posY = (1f + expHeightAcc) * CameraLimits.Boundary * Random.Range(0.2f, Stage.Loaded.GameDifficulty);
 
         posY = Mathf.Clamp(-posY, -CameraLimits.Boundary, 0.2f * -CameraLimits.Boundary);
 
@@ -121,7 +120,7 @@ public partial class Spawner
 
         var limit = Pacient.Loaded.Capacities.RespCycleDuration / 3000f;
 
-        second.transform.Translate(firstPos + Mathf.Clamp(limit, 2.5f, limit) - secondPos, 0f, 0f);
+        second.transform.Translate(firstPos + Mathf.Clamp(limit, 1f, 2.5f) - secondPos, 0f, 0f);
     }
 
     private void InstanciateObstacleAir(out GameObject spawned)
@@ -133,7 +132,9 @@ public partial class Spawner
             transform.rotation,
             transform);
 
-        var scale = Pacient.Loaded.Capacities.ExpFlowDuration / 1000f * expSizeAcc * (float)Pacient.Loaded.Condition * Stage.Loaded.GameDifficulty;
+        var scale = Pacient.Loaded.Capacities.ExpFlowDuration / 1000f * (1f + expSizeAcc) * Stage.Loaded.GameDifficulty;
+
+        scale = scale < 1f ? 1f : scale;
 
         spawned.transform.localScale = new Vector3(scale, scale, 1);
         spawned.transform.Translate(0f, spawned.transform.localScale.y / 2, 0f);
@@ -148,7 +149,9 @@ public partial class Spawner
             transform.rotation,
             transform);
 
-        var scale = Pacient.Loaded.Capacities.InsFlowDuration / 1000f * insSizeAcc;
+        var scale = Pacient.Loaded.Capacities.InsFlowDuration / 1000f * (1f + insSizeAcc) * Stage.Loaded.GameDifficulty;
+
+        scale = scale < 1f ? 1f : scale;
 
         spawned.transform.localScale = new Vector3(scale, scale, 1);
         spawned.transform.Translate(0f, -spawned.transform.localScale.y / 2, 0f);
@@ -183,8 +186,7 @@ public partial class Spawner
         var objects = new GameObject[11 + 4 * disfunction];
         int i;
 
-        Vector3 refPos;
-        refPos = ObjectsOnScene < 1 ? this.transform.position : SpawnedObjects.Last().position;
+        var refPos = this.transform.position;
         refPos.y = 0;
 
         for (i = 0; i < 4; i++)
@@ -214,9 +216,9 @@ public partial class Spawner
         for (i = 0; i < objects.Length; i++)
         {
             if (i < 4)
-                objects[i].transform.Translate(0f, 0.1f * CameraLimits.Boundary, 0f);
+                objects[i].transform.Translate(0f, 0.2f * CameraLimits.Boundary, 0f);
             else if (i > 10)
-                objects[i].transform.Translate(0f, 0.15f * -CameraLimits.Boundary, 0f);
+                objects[i].transform.Translate(0f, 0.2f * -CameraLimits.Boundary, 0f);
         }
 
         RelaxTimeSpawned = true;
