@@ -10,6 +10,12 @@ public class ResultScreenUI : MonoBehaviour
     [SerializeField]
     private Button nextStageButton;
 
+    [SerializeField]
+    private Button pauseButton;
+
+    [SerializeField]
+    private Text scoreValue, scoreRatio;
+
     private void OnEnable()
     {
         var scorer = FindObjectOfType<Scorer>();
@@ -34,7 +40,8 @@ public class ResultScreenUI : MonoBehaviour
         var maxScore = scorer.MaxScore;
         score = Mathf.Clamp(score, 0f, maxScore);
 
-        GameObject.Find("Canvas").transform.Find("PauseButton").GetComponent<Button>().interactable = false;
+        pauseButton.interactable = false;
+        scoreValue.text = scoreRatio.text = "";
 
         resultInfo.text =
             $"• Score: {score:####} / {maxScore:####} ({((score / maxScore) * 100f):####}%)\n" +

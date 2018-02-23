@@ -1645,6 +1645,9 @@ MonoBehaviour:
   motivationText: {fileID: 1978273151}
   resultInfo: {fileID: 1625377248}
   nextStageButton: {fileID: 1396947450}
+  pauseButton: {fileID: 1465862126}
+  scoreValue: {fileID: 728505374}
+  scoreRatio: {fileID: 945308320}
 --- !u!1 &921868975
 GameObject:
   m_ObjectHideFlags: 0
