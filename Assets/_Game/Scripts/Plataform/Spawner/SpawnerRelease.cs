@@ -191,12 +191,12 @@ public partial class Spawner
         {
             objects[i] = Instantiate(relaxInsPrefab, refPos, transform.rotation, transform);
 
-            if (i == 0)
-            {
-                DistanciateSpawns(ref objects[0]);
-                refPos = objects[0].transform.position;
-                refPos.y = 0;
-            }
+            if (i != 0)
+                continue;
+
+            DistanciateSpawns(ref objects[0]);
+            refPos = objects[0].transform.position;
+            refPos.y = 0;
         }
 
         for (; i < 11; i++)
