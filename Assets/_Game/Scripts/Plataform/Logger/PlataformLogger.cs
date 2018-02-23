@@ -35,7 +35,7 @@ public class PlataformLogger : Logger<PlataformLogger>
             if (scr.Score < scr.MaxScore * 0.3f)
                 Pacient.Loaded.UnlockedLevels--;
 
-            if (Pacient.Loaded.UnlockedLevels == 0)
+            if (Pacient.Loaded.UnlockedLevels <= 0)
                 Pacient.Loaded.UnlockedLevels = 1;
         }
 
@@ -43,10 +43,10 @@ public class PlataformLogger : Logger<PlataformLogger>
         Pacient.Loaded.AccumulatedScore += scr.Score;
         PacientDb.Instance?.Save();
 
-        var path = @"savedata/pacients/" + Pacient.Loaded.Id + @"/_PlataformHistory.csv";
+        var historyPath = @"savedata/pacients/" + Pacient.Loaded.Id + @"/_PlataformHistory.csv";
 
-        var data = $"{recordStart};{recordStop};{scr.Result};" +
-                   $"{Stage.Loaded.Id};{Stage.Loaded.SpawnObject};{Stage.Loaded.Level};{spwn.RelaxTimeSpawned};" +
+        var data = $"{recordStart};{recordStop};{FindObjectOfType<StageManager>().Duration};{scr.Result};" +
+                   $"{Stage.Loaded.Id};{(int)Stage.Loaded.SpawnObject};{Stage.Loaded.Level};{spwn.RelaxTimeSpawned};" +
                    $"{scr.Score};{scr.MaxScore};{scr.Score / scr.MaxScore};" +
                    $"{spwn.TargetsSucceeded + spwn.TargetsFailed};{spwn.TargetsSucceeded};{spwn.TargetsFailed};" +
                    $"{spwn.ObstaclesSucceeded + spwn.ObstaclesFailed};{spwn.ObstaclesSucceeded};{spwn.ObstaclesFailed};" +
@@ -54,13 +54,13 @@ public class PlataformLogger : Logger<PlataformLogger>
 
         sb.Clear();
 
-        if (!File.Exists(path))
+        if (!File.Exists(historyPath))
         {
             sb.AppendLine($"Pacient: {Pacient.Loaded.Id}");
             sb.AppendLine($"Name: {Pacient.Loaded.Name}");
             sb.AppendLine($"Condition: {Pacient.Loaded.Condition}");
             sb.AppendLine();
-            sb.AppendLine("playStart;playFinish;result;" +
+            sb.AppendLine("playStart;playFinish;duration;result;" +
                           "stageId;phase;level;relaxTimeSpawned;" +
                           "score;maxScore;scoreRatio;" +
                           "targetsSpawned;targetsSuccess;targetsFail;" +
@@ -68,12 +68,12 @@ public class PlataformLogger : Logger<PlataformLogger>
                           "playerHP;");
 
             sb.AppendLine(data);
-            FileReader.WriteAllText(path, sb.ToString());
+            FileReader.WriteAllText(historyPath, sb.ToString());
         }
         else
         {
             sb.AppendLine(data);
-            FileReader.AppendAllText(path, sb.ToString());
+            FileReader.AppendAllText(historyPath, sb.ToString());
         }
 
         GameObject.Find("Canvas").transform.Find("ResultScreen").gameObject.SetActive(true);
