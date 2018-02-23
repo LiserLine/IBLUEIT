@@ -44,9 +44,9 @@ public partial class Scorer : MonoBehaviour
         FindObjectOfType<Player>().OnEnemyHit += Player_OnEnemyHit;
     }
 
-    private float CalculateObstacleScore(float size, float spawnDelay, float gameDifficulty) => size * (1f + (1f / spawnDelay)) * gameDifficulty;
+    private float CalculateObstacleScore(float size, float spawnDelay, float gameDifficulty) => size * (1f + (1f / spawnDelay)) * gameDifficulty * 100f;
 
-    private float CalculateTargetScore(float height, float spawnDelay, float gameDifficulty) => Mathf.Abs(height) * (1f + (1f / spawnDelay)) * gameDifficulty;
+    private float CalculateTargetScore(float height, float spawnDelay, float gameDifficulty) => Mathf.Abs(height) * (1f + (1f / spawnDelay)) * gameDifficulty * 100f;
 
     private void MaxScoreUpdate(SpawnObject enemytype, ref GameObject go1, ref GameObject go2)
     {
