@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace _Game.Scripts.Calibration
+namespace Assets._Game.Scripts.Calibration
 {
     public class CalibrationLogger : Logger<CalibrationLogger>
     {

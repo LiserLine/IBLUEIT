@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace _Game.Scripts.Calibration
+namespace Assets._Game.Scripts.Calibration
 {
     public partial class CalibrationManager
     {
@@ -19,28 +19,21 @@ namespace _Game.Scripts.Calibration
         private void DudeCongratulate()
         {
             SoundManager.Instance.PlaySound("Success");
-            DudeTalk("Muito bem!");
-            SetStep(currentExerciseCount == 3 ? currentStep + 2 : currentStep + 1);
+            DudeTalk("Muito bem! Pressione (►) para continuar.");
         }
 
-        private void DudeAskAgain()
-        {
-            DudeTalk("Mais uma vez!");
-            SetStep(currentStep - 2);
-        }
+        //private void DudeAskAgain()
+        //{
+        //    DudeTalk("Mais uma vez! Pressione (►) para continuar.");
+        //    SetStep(currentStep - 2);
+        //}
 
         private void DudeWarnUnknownFlow()
         {
             SoundManager.Instance.PlaySound("Failure");
-            DudeTalk("Não consegui medir sua respiração. Vamos tentar novamente?");
-            SetStep(currentStep);
+            DudeTalk("Não consegui medir sua respiração. Vamos tentar novamente? Pressione (►) para continuar.");
         }
 
-        private void DudeWarnPitacoDisconnected()
-        {
-            enterButton.SetActive(true);
-            DudeTalk("O PITACO não está conectado. Conecte-o ao computador!");
-            SetStep(99);
-        }
+        private void DudeWarnPitacoDisconnected() => DudeTalk("O PITACO não está conectado. Conecte-o ao computador! Pressione (►) para continuar.");
     }
 }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace _Game.Scripts.Calibration.UI
+namespace Assets._Game.Scripts.Calibration.UI
 {
     public class DudeScreenPosition : MonoBehaviour
     {

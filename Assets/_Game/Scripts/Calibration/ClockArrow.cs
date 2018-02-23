@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace _Game.Scripts.Calibration
+namespace Assets._Game.Scripts.Calibration
 {
     public class ClockArrow : MonoBehaviour
     {

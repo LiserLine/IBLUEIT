@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
 
-namespace _Game.Scripts.Calibration
+namespace Assets._Game.Scripts.Calibration
 {
     public partial class CalibrationManager : MonoBehaviour
     {
@@ -51,7 +51,7 @@ namespace _Game.Scripts.Calibration
 
         private void Start()
         {
-            welcomeText.text = "Primeiro, precisamos calibrar a sua respiração. Vamos lá? Pressione ENTER quando o ícone (►) aparecer para avançar!";
+            welcomeText.text = "Aqui iremos calibrar o jogo com sua respiração. Para avançar, pressione ENTER quando o ícone (►) aparecer!";
             enterButton.SetActive(true);
             StartCoroutine(ControlStates());
         }
@@ -101,7 +101,7 @@ namespace _Game.Scripts.Calibration
                     switch (currentStep)
                     {
                         case 1:
-                            welcomeText.text = "Neste jogo, você deve respirar somente pela boca. Não precisa morder o PITACO. Aperte o nariz quando fizer os exercícios.";
+                            welcomeText.text = "Neste jogo, você deve respirar somente pela boca. Não precisa morder o PITACO.";
                             SetNextStep();
                             break;
 
@@ -113,14 +113,14 @@ namespace _Game.Scripts.Calibration
                             currentExercise = CalibrationExercise.RespiratoryFrequency;
                             ResetExerciseCounter();
                             ResetFlowMeter();
-                            DudeTalk("Este relógio medirá sua respiração. Aguarde ele ficar verde e RESPIRE TRANQUILAMENTE no PITACO por 30 segundos.");
+                            DudeTalk("Neste exercício, você deve RESPIRAR NORMALMENTE por 30 segundos. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
                             SetNextStep();
                             break;
 
                         case 3:
                             if (!serialController.IsConnected)
                             {
-                                DudeWarnPitacoDisconnected();
+                                SerialDisconnectedWarning();
                                 continue;
                             }
 
@@ -128,12 +128,12 @@ namespace _Game.Scripts.Calibration
                             capturedSamples.Clear();
 
                             yield return new WaitForSeconds(1);
-                            balloonText.text = "(relaxe e RESPIRE NORMALMENTE por 30 segundos)";
+                            balloonText.text = "(relaxe e RESPIRE NORMALMENTE)";
 
                             AirFlowStart();
 
-                            StartCoroutine(DisplayCountdown(33));
-                            while (flowWatch.ElapsedMilliseconds < 33 * 1000)
+                            StartCoroutine(DisplayCountdown(32));
+                            while (flowWatch.ElapsedMilliseconds < 32 * 1000)
                                 yield return null;
 
                             AirFlowStop();
@@ -151,7 +151,7 @@ namespace _Game.Scripts.Calibration
                             else
                             {
                                 FindObjectOfType<CalibrationLogger>().Write(CalibrationExerciseResult.Failure, currentExercise, flowMeter);
-                                DudeWarnUnknownFlow();
+                                DudeWarnUnknownFlow(); SetStep(currentStep);
                                 break;
                             }
 
@@ -168,14 +168,14 @@ namespace _Game.Scripts.Calibration
                         case 5:
                             currentExercise = CalibrationExercise.InspiratoryPeak;
                             PrepareNextExercise();
-                            DudeTalk("Agora mediremos o pico de sua respiração. Aguarde o relógio ficar verde e INSPIRE bem FORTE.");
+                            DudeTalk("Neste exercício, você deve INSPIRAR FORTE. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
                             SetNextStep();
                             break;
 
                         case 6:
                             if (!serialController.IsConnected)
                             {
-                                DudeWarnPitacoDisconnected();
+                                SerialDisconnectedWarning();
                                 continue;
                             }
 #if UNITY_EDITOR
@@ -186,7 +186,7 @@ namespace _Game.Scripts.Calibration
 
                             AirFlowStart();
                             StartCoroutine(DisplayCountdown(10));
-                            balloonText.text = "(INSPIRE FORTE no PITACO e aguarde o próximo passo)";
+                            balloonText.text = "(INSPIRE FORTE e aguarde o próximo passo)";
 
                             yield return new WaitForSeconds(10);
 
@@ -198,46 +198,38 @@ namespace _Game.Scripts.Calibration
                             if (insCheck < -GameManager.PitacoFlowThreshold)
                             {
                                 FindObjectOfType<CalibrationLogger>().Write(CalibrationExerciseResult.Success, currentExercise, insCheck);
-
                                 currentExerciseCount++;
-
-                                if (currentExerciseCount == 2)
-                                    SetStep(currentStep + 2, true);
-                                else
-                                    SetNextStep(true);
-
+                                SetNextStep(true);
                                 continue;
                             }
                             else
                             {
                                 FindObjectOfType<CalibrationLogger>().Write(CalibrationExerciseResult.Failure, currentExercise, insCheck);
                                 DudeWarnUnknownFlow();
+                                SetStep(currentStep);
                                 break;
                             }
 
                         case 7:
                             DudeCongratulate();
-                            break;
-
-                        case 8:
-                            DudeAskAgain();
+                            SetStep(currentExerciseCount == 3 ? currentStep + 1 : currentStep - 1);
                             break;
 
                         #endregion Inspiration Peak
 
                         #region Expiration Peak
 
-                        case 9:
+                        case 8:
                             PrepareNextExercise();
                             currentExercise = CalibrationExercise.ExpiratoryPeak;
-                            DudeTalk("Agora o pico expiratório. Aguarde o relógio ficar verde e ASSOPRE bem FORTE.");
+                            DudeTalk("Neste exercício, você deve ASSOPRAR FORTE. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
                             SetNextStep();
                             break;
 
-                        case 10:
+                        case 9:
                             if (!serialController.IsConnected)
                             {
-                                DudeWarnPitacoDisconnected();
+                                SerialDisconnectedWarning();
                                 continue;
                             }
 
@@ -250,7 +242,7 @@ namespace _Game.Scripts.Calibration
 
                             AirFlowStart();
                             StartCoroutine(DisplayCountdown(10));
-                            balloonText.text = "(ASSOPRE FORTE no PITACO e aguarde o próximo passo)";
+                            balloonText.text = "(ASSOPRE FORTE e aguarde o próximo passo)";
 
                             // Wait for player input
                             yield return new WaitForSeconds(10);
@@ -264,44 +256,37 @@ namespace _Game.Scripts.Calibration
                             {
                                 FindObjectOfType<CalibrationLogger>().Write(CalibrationExerciseResult.Success, currentExercise, expCheck);
                                 currentExerciseCount++;
-
-                                if (currentExerciseCount == 2)
-                                    SetStep(currentStep + 2, true);
-                                else
-                                    SetNextStep(true);
-
+                                SetNextStep(true);
                                 continue;
                             }
                             else
                             {
                                 FindObjectOfType<CalibrationLogger>().Write(CalibrationExerciseResult.Failure, currentExercise, expCheck);
                                 DudeWarnUnknownFlow();
+                                SetStep(currentStep);
                                 break;
                             }
 
-                        case 11:
+                        case 10:
                             DudeCongratulate();
-                            break;
-
-                        case 12:
-                            DudeAskAgain();
+                            SetStep(currentExerciseCount == 3 ? currentStep + 1 : currentStep - 1);
                             break;
 
                         #endregion Expiration Peak
 
                         #region Expiration Time
 
-                        case 13:
+                        case 11:
                             PrepareNextExercise();
                             currentExercise = CalibrationExercise.ExpiratoryDuration;
-                            DudeTalk("Agora vamos medir o tempo. Aguarde o relógio ficar verde e mantenha o relógio girando ASSOPRANDO!");
+                            DudeTalk("Neste exercício, ASSOPRE e mantenha o relógio girando! Ao apertar (►), o relógio ficará verde para você começar o exercício.");
                             SetNextStep();
                             break;
 
-                        case 14:
+                        case 12:
                             if (!serialController.IsConnected)
                             {
-                                DudeWarnPitacoDisconnected();
+                                SerialDisconnectedWarning();
                                 continue;
                             }
 
@@ -338,44 +323,38 @@ namespace _Game.Scripts.Calibration
                                     newCapacities.ExpFlowDuration = flowWatch.ElapsedMilliseconds;
 
                                 currentExerciseCount++;
-
-                                if (currentExerciseCount == 2)
-                                    SetStep(currentStep + 2, true);
-                                else
-                                    SetNextStep(true);
-
+                                SetNextStep(true);
                                 continue;
                             }
                             else
                             {
                                 FindObjectOfType<CalibrationLogger>().Write(CalibrationExerciseResult.Failure, currentExercise, flowWatch.ElapsedMilliseconds);
                                 DudeWarnUnknownFlow();
+                                SetStep(currentStep);
                                 break;
                             }
 
-                        case 15:
+                        case 13:
                             DudeCongratulate();
+                            SetStep(currentExerciseCount == 3 ? currentStep + 1 : currentStep - 1);
                             break;
 
-                        case 16:
-                            DudeAskAgain();
-                            break;
 
                         #endregion Expiration Time
 
                         #region Inspiration Time
 
-                        case 17:
+                        case 14:
                             PrepareNextExercise();
                             currentExercise = CalibrationExercise.InspiratoryDuration;
-                            DudeTalk("Agora, quando o relógio ficar verde, INSPIRE e mantenha o relógio girando!");
+                            DudeTalk("Neste exercício, INSPIRE e mantenha o relógio girando! Ao apertar (►), o relógio ficará verde para você começar o exercício.");
                             SetNextStep();
                             break;
 
-                        case 18:
+                        case 15:
                             if (!serialController.IsConnected)
                             {
-                                DudeWarnPitacoDisconnected();
+                                SerialDisconnectedWarning();
                                 continue;
                             }
 
@@ -386,7 +365,7 @@ namespace _Game.Scripts.Calibration
                             yield return new WaitForSeconds(0.5f);
 
                             AirFlowStart(false);
-                            balloonText.text = "(INSPIRE para manter o relógio girando o MÁXIMO de TEMPO possível)";
+                            balloonText.text = "(INSPIRE para manter o relógio girando)";
 
                             while (flowMeter >= -GameManager.PitacoFlowThreshold)
                                 yield return null;
@@ -410,41 +389,34 @@ namespace _Game.Scripts.Calibration
                                     newCapacities.InsFlowDuration = flowWatch.ElapsedMilliseconds;
 
                                 currentExerciseCount++;
-
-                                if (currentExerciseCount == 2)
-                                    SetStep(currentStep + 2, true);
-                                else
-                                    SetNextStep(true);
-
+                                SetNextStep(true);
                                 continue;
                             }
                             else
                             {
                                 FindObjectOfType<CalibrationLogger>().Write(CalibrationExerciseResult.Failure, currentExercise, flowWatch.ElapsedMilliseconds);
                                 DudeWarnUnknownFlow();
+                                SetStep(currentStep);
                                 break;
                             }
 
-                        case 19:
+                        case 16:
                             DudeCongratulate();
-                            break;
-
-                        case 20:
-                            DudeAskAgain();
+                            SetStep(currentExerciseCount == 3 ? currentStep + 1 : currentStep - 1);
                             break;
 
                         #endregion Inspiration Time
 
                         #region Ending Steps
 
-                        case 21:
+                        case 17:
                             exerciceCountText.gameObject.SetActive(false);
                             SoundManager.Instance.PlaySound("Claps");
                             DudeTalk("Ótimo, agora você está pronto para começar a jogar! Bom jogo!");
                             SetNextStep();
                             break;
 
-                        case 22:
+                        case 18:
                             calibrationDone = true;
                             Pacient.Loaded.CalibrationDone = calibrationDone;
                             Pacient.Loaded.Capacities = newCapacities;
@@ -515,5 +487,13 @@ namespace _Game.Scripts.Calibration
             clock.GetComponentInChildren<ClockArrow>().SpinClock = false;
             acceptingValues = false;
         }
+
+        private void SerialDisconnectedWarning()
+        {
+            enterButton.SetActive(true);
+            DudeWarnPitacoDisconnected();
+            SetStep(99);
+        }
+
     }
 }
