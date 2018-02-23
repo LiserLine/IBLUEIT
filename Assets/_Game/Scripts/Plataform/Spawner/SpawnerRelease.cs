@@ -5,10 +5,19 @@ using Random = UnityEngine.Random;
 public partial class Spawner
 {
     private const float minDistanceBetweenSpawns = 3f;
+
+    [ShowNonSerializedField]
     private float expHeightAcc;
+
+    [ShowNonSerializedField]
     private float expSizeAcc;
+
+    [ShowNonSerializedField]
     private float insHeightAcc;
+
+    [ShowNonSerializedField]
     private float insSizeAcc;
+
     private bool spawnRelaxTime;
 
     public delegate void ObjectReleasedHandler(SpawnObject type, ref GameObject obj1, ref GameObject obj2);
