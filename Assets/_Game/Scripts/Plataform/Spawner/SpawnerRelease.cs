@@ -61,7 +61,7 @@ public partial class Spawner
 
     private void DistanciateTargets(ref GameObject first, ref GameObject second) =>
         second.transform.Translate(first.transform.position.x +
-            Mathf.Clamp(Pacient.Loaded.Capacities.RespCycleDuration / 2500f, 1f, Pacient.Loaded.Capacities.RespCycleDuration / 2500f) -
+            Mathf.Clamp(Pacient.Loaded.Capacities.RespCycleDuration / 2500f, 1f, 2f) -
             second.transform.position.x, 0f, 0f);
 
     private void InstanciateTargetAir(out GameObject spawned)
