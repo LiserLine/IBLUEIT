@@ -7,6 +7,7 @@
  */
 
 using System;
+using System.Collections;
 using System.IO;
 using System.IO.Ports;
 using System.Linq;
@@ -37,6 +38,7 @@ public partial class SerialController : MonoBehaviour
     // will have different reference ids.
     public const string SERIAL_DEVICE_CONNECTED = "__Connected__";
     public const string SERIAL_DEVICE_DISCONNECTED = "__Disconnected__";
+
     [SerializeField]
     [Tooltip("Baud rate that the serial device is using to transmit data.")]
     private int baudRate = 115200;
@@ -119,7 +121,7 @@ public partial class SerialController : MonoBehaviour
         var ports = GetPortNames();
 
         if (ports.Length < 1)
-            SysMessage.Warning("PITACO não encontrado!"); //throw new Exception("Serial device not found!");
+            SysMessage.Warning("PITACO não encontrado!");
 
         foreach (var port in ports)
         {
@@ -139,19 +141,15 @@ public partial class SerialController : MonoBehaviour
                 serialPort.Open();
                 Thread.Sleep(1500);
                 serialPort.Write("e");
+
+                if (!serialPort.ReadLine().Contains("echo"))
+                    throw new TimeoutException("Device has not answered back.");
             }
             catch (Exception e)
             {
-                Debug.LogError($"Failed to connect to serial. {e.GetType()}: {e.Message}");
+                Debug.LogWarning($"Failed to connect to serial. {e.GetType()}: {e.Message}");
                 serialPort.Close();
-                continue;
-            }
-
-            serialPort.Write("e");
-            
-            if (!serialPort.ReadLine().Contains("echo"))
-            {
-                serialPort.Close();
+                serialPort.Dispose();
                 continue;
             }
 
@@ -164,11 +162,6 @@ public partial class SerialController : MonoBehaviour
         return null;
     }
 
-    // ------------------------------------------------------------------------
-    // Invoked whenever the SerialController gameobject is activated.
-    // It creates a new thread that tries to connect to the serial device
-    // and start reading from it.
-    // ------------------------------------------------------------------------
     private void Awake() => Connect();
 
     private void Connect()
@@ -225,12 +218,6 @@ public partial class SerialController : MonoBehaviour
 
     private void OnDestroy() => Disconnect();
 
-    // ------------------------------------------------------------------------
-    // Polls messages from the queue that the SerialThread object keeps. Once a
-    // message has been polled it is removed from the queue. There are some
-    // special messages that mark the start/end of the communication with the
-    // device.
-    // ------------------------------------------------------------------------
     private void Update()
     {
         // Read the next message from the queue
