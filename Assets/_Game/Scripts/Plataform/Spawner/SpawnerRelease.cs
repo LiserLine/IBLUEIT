@@ -183,7 +183,8 @@ public partial class Spawner
         var objects = new GameObject[11 + 4 * disfunction];
         int i;
 
-        var refPos = SpawnedObjects.Last().position;
+        Vector3 refPos;
+        refPos = ObjectsOnScene < 1 ? this.transform.position : SpawnedObjects.Last().position;
         refPos.y = 0;
 
         for (i = 0; i < 4; i++)
