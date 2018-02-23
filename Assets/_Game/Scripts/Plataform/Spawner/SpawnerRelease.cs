@@ -4,7 +4,7 @@ using Random = UnityEngine.Random;
 
 public partial class Spawner
 {
-    private const float minDistanceBetweenSpawns = 3f;
+    private float minDistanceBetweenSpawns = 3f;
 
     [ShowNonSerializedField]
     private float expHeightAcc;
@@ -195,7 +195,15 @@ public partial class Spawner
         var objects = new GameObject[11 + 4 * disfunction];
         int i;
 
-        var refPos = this.transform.position;
+        Vector3 refPos;
+        if (SpawnedObjects.Length > 2)
+        {
+            refPos = SpawnedObjects[SpawnedObjects.Length - 3].position;
+            minDistanceBetweenSpawns += 3f;
+        }
+        else
+            refPos = this.transform.position;
+
         refPos.y = 0;
 
         for (i = 0; i < 4; i++)
