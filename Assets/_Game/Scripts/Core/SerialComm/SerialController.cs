@@ -148,12 +148,8 @@ public partial class SerialController : MonoBehaviour
             }
 
             serialPort.Write("e");
-
-            var line = serialPort.ReadLine();
-
-            Debug.Log(line);
-
-            if (!line.Contains("echo"))
+            
+            if (!serialPort.ReadLine().Contains("echo"))
             {
                 serialPort.Close();
                 continue;
