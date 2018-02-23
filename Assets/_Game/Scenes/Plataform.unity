@@ -145,11 +145,11 @@ MonoBehaviour:
     Id: 1
     SpawnObject: 1
     Level: 1
-    SpawnDelay: 3
-    SpawnDuration: 30
+    SpawnDelay: 5
+    SpawnDuration: 50
     GameDifficulty: 0.2
     ObjectSpeedMultiplier: 1.8
-    HeightIncrement: 0.1
+    HeightIncrement: 0.2
     HeightLevelUpThreshold: 2
     HeightLevelDownThreshold: 1
     SizeIncrement: 0
