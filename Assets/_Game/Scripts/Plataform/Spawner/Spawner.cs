@@ -46,6 +46,9 @@ public partial class Spawner : MonoBehaviour
         stgMgr.OnStageTimeUp += DisableSpawn;
         stgMgr.OnStageEnd += Clean;
 
+        if (Stage.Loaded.SpawnObject == SpawnObject.Obstacles)
+            spawnRelaxTime = true;
+
         var plr = FindObjectOfType<Player>();
         plr.OnPlayerDeath += DisableSpawn;
         plr.OnEnemyHit += Player_OnEnemyHit;
