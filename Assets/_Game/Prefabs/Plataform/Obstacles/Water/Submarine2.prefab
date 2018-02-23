@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 50646732793569918}
   - component: {fileID: 114733770452058886}
   - component: {fileID: 114130038573396912}
-  - component: {fileID: 58155697473065552}
+  - component: {fileID: 61065076093673296}
   m_Layer: 9
   m_Name: Submarine2
   m_TagString: WaterObstacle
@@ -54,7 +54,7 @@ Transform:
   m_GameObject: {fileID: 1797995925654754}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.11, y: 0.11, z: 0.1}
+  m_LocalScale: {x: 0.1, y: 0.21, z: 1}
   m_Children: []
   m_Father: {fileID: 4370482301997442}
   m_RootOrder: 0
@@ -93,8 +93,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!58 &58155697473065552
-CircleCollider2D:
+--- !u!61 &61065076093673296
+BoxCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -105,9 +105,19 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -1.9826651}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Size: {x: 1, y: 4.96533}
+  m_EdgeRadius: 0
 --- !u!114 &114130038573396912
 MonoBehaviour:
   m_ObjectHideFlags: 1
