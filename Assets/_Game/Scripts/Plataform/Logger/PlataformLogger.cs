@@ -81,7 +81,7 @@ public class PlataformLogger : Logger<PlataformLogger>
 
     private void Update()
     {
-        if (!isLogging)
+        if (!isLogging || GameManager.GameIsPaused)
             return;
 
         sb.AppendLine($"{Time.time};{plr.tag};{plr.GetInstanceID()};{plr.transform.position.x:F};{plr.transform.position.y:F}");

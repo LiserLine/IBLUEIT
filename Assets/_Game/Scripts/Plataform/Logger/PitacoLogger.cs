@@ -25,7 +25,7 @@ public class PitacoLogger : Logger<PitacoLogger>
 
     private void OnSerialMessageReceived(string msg)
     {
-        if (!isLogging || msg.Length < 1)
+        if (!isLogging || msg.Length < 1 || GameManager.GameIsPaused)
             return;
 
         sb.AppendLine($"{Time.time:F};{Parsers.Float(msg):F}");
