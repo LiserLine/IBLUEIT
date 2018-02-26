@@ -1,19 +1,21 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class StageLoader : MonoBehaviour
+namespace Assets._Game.Scripts.MainMenu.UI
 {
-    public Stage stage;
-
-    private void OnEnable() => this.GetComponent<Button>().onClick.AddListener(OnStageSelected);
-
-    private void OnStageSelected()
+    public class StageLoader : MonoBehaviour
     {
-        if (!Pacient.Loaded.CalibrationDone)
+        public Stage stage;
+
+        private void OnEnable() => this.GetComponent<Button>().onClick.AddListener(OnStageSelected);
+
+        private void OnStageSelected()
         {
-            SysMessage.Warning("Calibração não foi feita!");
-            return;
-        }
+            if (!Pacient.Loaded.CalibrationDone)
+            {
+                SysMessage.Warning("Calibração não foi feita!");
+                return;
+            }
 
 #if !UNITY_EDITOR
         if (!FindObjectOfType<SerialController>().IsConnected)
@@ -23,8 +25,9 @@ public class StageLoader : MonoBehaviour
         }
 #endif
 
-        Stage.Loaded = stage;
-        FindObjectOfType<SceneLoader>().LoadScene(1);
-        Debug.Log($"Stage {stage.Id} loaded.");
+            Stage.Loaded = stage;
+            FindObjectOfType<SceneLoader>().LoadScene(1);
+            Debug.Log($"Stage {stage.Id} loaded.");
+        }
     }
 }

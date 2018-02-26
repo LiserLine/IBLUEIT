@@ -1,17 +1,20 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class PacientLoader : MonoBehaviour
+namespace Assets._Game.Scripts.MainMenu.UI
 {
-    public Pacient pacient;
-
-    private void OnEnable() => this.GetComponent<Button>().onClick.AddListener(OnPacientSelected);
-
-    private void OnPacientSelected()
+    public class PacientLoader : MonoBehaviour
     {
-        Pacient.Loaded = pacient;
-        GameObject.Find("Canvas").transform.Find("Player Menu").gameObject.SetActive(true);
-        GameObject.Find("Canvas").transform.Find("Load Menu").gameObject.SetActive(false);
-        Debug.Log($"{pacient.Name} loaded.");
+        public Pacient pacient;
+
+        private void OnEnable() => this.GetComponent<Button>().onClick.AddListener(OnPacientSelected);
+
+        private void OnPacientSelected()
+        {
+            Pacient.Loaded = pacient;
+            GameObject.Find("Canvas").transform.Find("Player Menu").gameObject.SetActive(true);
+            GameObject.Find("Canvas").transform.Find("Load Menu").gameObject.SetActive(false);
+            Debug.Log($"{pacient.Name} loaded.");
+        }
     }
 }

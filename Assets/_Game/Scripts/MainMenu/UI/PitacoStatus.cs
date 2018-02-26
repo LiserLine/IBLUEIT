@@ -1,22 +1,25 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class PitacoStatus : MonoBehaviour
+namespace Assets._Game.Scripts.MainMenu.UI
 {
-    [SerializeField]
-    private SerialController serialController;
-
-    [SerializeField]
-    private Sprite offline, online;
-
-    private void Awake()
+    public class PitacoStatus : MonoBehaviour
     {
-        if (serialController == null)
-            serialController = FindObjectOfType<SerialController>();
+        [SerializeField]
+        private SerialController serialController;
 
-        if (serialController == null)
-            Debug.LogWarning("Serial Controller instance not found!");
+        [SerializeField]
+        private Sprite offline, online;
+
+        private void Awake()
+        {
+            if (serialController == null)
+                serialController = FindObjectOfType<SerialController>();
+
+            if (serialController == null)
+                Debug.LogWarning("Serial Controller instance not found!");
+        }
+
+        private void FixedUpdate() => GetComponent<Image>().sprite = serialController.IsConnected ? online : offline;
     }
-
-    private void FixedUpdate() => GetComponent<Image>().sprite = serialController.IsConnected ? online : offline;
 }
