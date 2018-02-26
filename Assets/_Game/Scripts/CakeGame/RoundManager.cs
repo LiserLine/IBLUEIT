@@ -6,19 +6,44 @@ namespace Assets._Game.Scripts.CakeGame
 {
     public class RoundManager : MonoBehaviour
     {
-        public Candles candle;
-        public Text displayHowTo, displayTimer;
-        public int[] finalScore = new int[3];
-        public ScoreMenu finalScoreMenu;
-        public Stat flow;
-        public bool jogou = true;
-        public bool paraTempo;
-        public bool partidaCompleta;
-        public int passo;
-        public Player Player;
-        public bool ppasso;
-        public Stars score;
-        public float timer = 10;
+        [SerializeField]
+        private Candles candle;
+
+        [SerializeField]
+        private Text displayHowTo, displayTimer;
+
+        [SerializeField]
+        private ScoreMenu finalScoreMenu;
+
+        [SerializeField]
+        private Stat flow;
+
+        private int[] finalScore = new int[3];
+        
+        private bool jogou = true;
+
+        private bool paraTempo;
+
+        private bool partidaCompleta;
+
+        private int passo;
+
+        [SerializeField]
+        private Player player;
+
+        private bool ppasso;
+
+        [SerializeField]
+        private Stars score;
+
+        private float timer = 10;
+
+        private SerialController sc;
+
+        private void Awake()
+        {
+            sc = FindObjectOfType<SerialController>();
+        }
 
         private IEnumerator PlayGame()
         {
@@ -35,32 +60,25 @@ namespace Assets._Game.Scripts.CakeGame
                             break;
 
                         case 2:
-
-                            FindObjectOfType<SerialController>().StartSampling();
-
+                            sc.StartSampling();
                             displayHowTo.text = "";
 
-                            while (Player.sensorValue <= GameManager.PitacoFlowThreshold && jogou)
+                            while (player.sensorValue <= GameManager.PitacoFlowThreshold && jogou)
                                 yield return null;
 
                             StopCountdown();
                             paraTempo = true;
+                            
                             //saiu do 0
-
-                            while (Player.sensorValue > GameManager.PitacoFlowThreshold && jogou)
+                            while (player.sensorValue > GameManager.PitacoFlowThreshold && jogou)
                             {
-                                //Debug.Log($"Player.sensorValue > GameConstants.PitacoFlowThreshold {Player.sensorValue > GameConstants.PitacoFlowThreshold}");
-
-                                var picoAtual = Player.picoExpiratorio;
-
-                                FlowAction(picoAtual);
-
+                                FlowAction(player.picoExpiratorio);
                                 yield return null;
                             }
 
-                            displayHowTo.text = "Parabéns!\nPressione [Enter] para ir para a proxima rodada.";
                             //voltou pro 0
-
+                            displayHowTo.text = "Parabéns!\nPressione [Enter] para ir para a proxima rodada.";
+                            player.picoExpiratorio = 0;
                             break;
 
                         case 3:
@@ -72,28 +90,23 @@ namespace Assets._Game.Scripts.CakeGame
 
                         case 4:
                             displayHowTo.text = "";
-                            while (Player.sensorValue <= GameManager.PitacoFlowThreshold && jogou)
-                            {
+
+                            while (player.sensorValue <= GameManager.PitacoFlowThreshold && jogou)
                                 yield return null;
-                            }
+
                             StopCountdown();
                             paraTempo = true;
+
                             //saiu do 0
-
-                            while (Player.sensorValue > GameManager.PitacoFlowThreshold && jogou)
+                            while (player.sensorValue > GameManager.PitacoFlowThreshold && jogou)
                             {
-                                //Debug.Log($"Player.sensorValue > GameConstants.PitacoFlowThreshold {Player.sensorValue > GameConstants.PitacoFlowThreshold}");
-
-                                var picoAtual = Player.picoExpiratorio;
-
-                                FlowAction(picoAtual);
-
+                                FlowAction(player.picoExpiratorio);
                                 yield return null;
                             }
 
                             //voltou pro 0
                             displayHowTo.text = "Muito bem!\nPressione [Enter] para continuar.";
-
+                            player.picoExpiratorio = 0;
                             break;
 
                         case 5:
@@ -106,28 +119,26 @@ namespace Assets._Game.Scripts.CakeGame
                         case 6:
                             displayHowTo.text = "";
 
-                            while (Player.sensorValue <= GameManager.PitacoFlowThreshold && jogou)
+                            while (player.sensorValue <= GameManager.PitacoFlowThreshold && jogou)
                                 yield return null;
 
                             StopCountdown();
                             paraTempo = true;
+
                             //saiu do 0
-
-                            while (Player.sensorValue > GameManager.PitacoFlowThreshold && jogou)
+                            while (player.sensorValue > GameManager.PitacoFlowThreshold && jogou)
                             {
-                                //Debug.Log($"Player.sensorValue > GameConstants.PitacoFlowThreshold {Player.sensorValue > GameConstants.PitacoFlowThreshold}");
-
-                                var picoAtual = Player.picoExpiratorio;
-
-                                FlowAction(picoAtual);
-
+                                FlowAction(player.picoExpiratorio);
                                 yield return null;
                             }
 
                             //voltou pro 0
                             displayHowTo.text = "Muito bem!\nPressione [Enter] para continuar.";
+                            player.picoExpiratorio = 0;
+                            sc.StopSampling();
                             break;
                     }
+
                     ppasso = false;
                 }
 
@@ -141,7 +152,7 @@ namespace Assets._Game.Scripts.CakeGame
         {
             var picoJogador = Pacient.Loaded.Capacities.ExpPeakFlow;
             var percentage = flowValue / picoJogador;
-            //Debug.Log(percentage);
+
             if (percentage > 0.25f)
             {
                 candle.TurnOff(0);

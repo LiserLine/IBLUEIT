@@ -130,7 +130,7 @@ public partial class SerialController : MonoBehaviour
 
         foreach (var port in ports)
         {
-            var serialPort = new SerialPort(port, baudRate)
+            var sp = new SerialPort(port, baudRate)
             {
                 ReadTimeout = 1000,
                 WriteTimeout = 1000,
@@ -139,29 +139,29 @@ public partial class SerialController : MonoBehaviour
                 Handshake = Handshake.None
             };
 
-            Debug.Log($"Connecting to {serialPort.PortName}:{serialPort.BaudRate}");
+            //Debug.Log($"Connecting to {serialPort.PortName}:{serialPort.BaudRate}");
 
             try
             {
-                serialPort.Open();
+                sp.Open();
                 Thread.Sleep(1500);
-                serialPort.Write("e");
+                sp.Write("e");
 
-                if (!serialPort.ReadLine().Contains("echo"))
-                    throw new TimeoutException("Device has not answered back.");
+                if (!sp.ReadLine().Contains("echo"))
+                    throw new TimeoutException("No response from device.");
             }
             catch (Exception e)
             {
-                Debug.LogWarning($"Failed to connect to serial. {e.GetType()}: {e.Message}");
-                serialPort.Close();
-                serialPort.Dispose();
+                Debug.LogWarning($"Unable to connect {sp.PortName}:{sp.BaudRate}.\n{e.GetType()}: {e.Message}");
+                sp.Close();
+                sp.Dispose();
                 continue;
             }
 
-            serialPort.Close();
-            serialPort.Dispose();
+            sp.Close();
+            sp.Dispose();
 
-            return serialPort.PortName;
+            return sp.PortName;
         }
 
         return null;
