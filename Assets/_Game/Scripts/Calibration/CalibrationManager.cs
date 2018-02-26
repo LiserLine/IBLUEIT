@@ -26,8 +26,8 @@ namespace Assets._Game.Scripts.Calibration
 
         private int currentStep = 1; //default: 1
 
-        private const int flowTimeThreshold = 1000; // In Miliseconds
-        private const int respiratoryFrequencyThreshold = 500; //In Milliseconds //ToDo - Test this variable before implementing in CSV
+        private const int flowTimeThreshold = 1000; //ms
+        private const int respiratoryFrequencyThreshold = 500; //ms
 
         private bool runNextStep, balloonPanelOpen, acceptingValues, calibrationDone;
 
