@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets._Game.Scripts.MainMenu.UI
+namespace Ibit.MainMenu.UI
 {
     public class HowToPlayUI : MonoBehaviour
     {

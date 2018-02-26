@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 
-public class SettingsMenu : MonoBehaviour
+namespace Ibit.MainMenu.UI
 {
-    public void SetVolume(float value) => AudioListener.volume = value;
+    public class SettingsMenu : MonoBehaviour
+    {
+        public void SetVolume(float value) => AudioListener.volume = value;
+    }
 }

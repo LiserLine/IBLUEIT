@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets._Game.Scripts.MainMenu.UI.Canvas
+namespace Ibit.MainMenu.UI.Canvas
 {
     public partial class CanvasManager
     {

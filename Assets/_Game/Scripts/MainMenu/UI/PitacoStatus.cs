@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets._Game.Scripts.MainMenu.UI
+namespace Ibit.MainMenu.UI
 {
     public class PitacoStatus : MonoBehaviour
     {
