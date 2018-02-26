@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
 
-namespace Assets._Game.Scripts.Calibration
+namespace Ibit.Calibration
 {
     public partial class CalibrationManager : MonoBehaviour
     {

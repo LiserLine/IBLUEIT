@@ -1,4 +1,4 @@
-﻿namespace Assets._Game.Scripts.Calibration
+﻿namespace Ibit.Calibration
 {
     public enum CalibrationExercise
     {

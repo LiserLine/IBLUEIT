@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets._Game.Scripts.Calibration.UI
+namespace Ibit.Calibration.UI
 {
     public class CalibrationResultUI : MonoBehaviour
     {

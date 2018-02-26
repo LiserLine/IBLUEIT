@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets._Game.Scripts.CakeGame
+namespace Ibit.CakeGame
 {
     public class BarScript : MonoBehaviour
     {

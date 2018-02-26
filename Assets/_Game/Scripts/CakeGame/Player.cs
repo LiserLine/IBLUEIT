@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets._Game.Scripts.CakeGame
+namespace Ibit.CakeGame
 {
     public class Player : MonoBehaviour
     {

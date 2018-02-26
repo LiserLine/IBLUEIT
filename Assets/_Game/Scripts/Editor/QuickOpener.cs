@@ -44,25 +44,25 @@ public class QuickOpener // [1]
 {
     private const string _ASSET_STORE_FOLDER_NAME = "Asset Store-5.x";
 
-    [MenuItem("Tools/Quick Opener/Application.dataPath", false, 100)]
+    [MenuItem("Tools/Quick Opener/Game Data", false, 100)]
     private static void OpenDataPath()
     {
         Reveal(Application.dataPath);
     }
 
-    [MenuItem("Tools/Quick Opener/Application.persistentDataPath", false, 100)]
+    [MenuItem("Tools/Quick Opener/Persistent Data", false, 100)]
     private static void OpenPersistentDataPath()
     {
         Reveal(Application.persistentDataPath);
     }
 
-    [MenuItem("Tools/Quick Opener/Application.streamingAssetsPath", false, 100)]
+    [MenuItem("Tools/Quick Opener/Streaming Assets", false, 100)]
     private static void OpenStreamingAssets()
     {
         Reveal(Application.streamingAssetsPath);
     }
 
-    [MenuItem("Tools/Quick Opener/Application.temporaryCachePath", false, 100)]
+    [MenuItem("Tools/Quick Opener/Temporary Cache", false, 100)]
     private static void OpenCachePath()
     {
         Reveal(Application.temporaryCachePath);

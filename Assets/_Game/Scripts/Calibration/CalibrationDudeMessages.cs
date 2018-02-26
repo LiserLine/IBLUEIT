@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets._Game.Scripts.Calibration
+namespace Ibit.Calibration
 {
     public partial class CalibrationManager
     {

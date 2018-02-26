@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Assets._Game.Scripts.Calibration
+namespace Ibit.Calibration
 {
     public class CalibrationLogger : Logger<CalibrationLogger>
     {
