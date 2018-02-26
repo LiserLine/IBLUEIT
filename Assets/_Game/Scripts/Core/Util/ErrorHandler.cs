@@ -1,10 +1,9 @@
-﻿using System;
-using NaughtyAttributes;
+﻿using NaughtyAttributes;
+using System;
 using UnityEngine;
 
 public class ErrorHandler : MonoBehaviour
 {
-
 #if !UNITY_EDITOR
     private void OnEnable() => Application.logMessageReceived += OnLogMessageReceived;
     private void OnDisable() => Application.logMessageReceived -= OnLogMessageReceived;

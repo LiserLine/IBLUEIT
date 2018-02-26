@@ -24,11 +24,11 @@ public partial class StageManager : MonoBehaviour
     public float Watch { get; private set; }
     public bool IsRunning { get; private set; }
     public float Duration { get; private set; }
+
     #endregion Properties
 
     private bool isTimedUp;
     private Spawner spawner;
-    
 
     private void Awake()
     {
@@ -113,7 +113,7 @@ public partial class StageManager : MonoBehaviour
     {
         if (!IsRunning)
             return;
-        
+
         Duration += Time.deltaTime;
         Watch += Time.deltaTime;
 

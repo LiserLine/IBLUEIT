@@ -1,7 +1,7 @@
-﻿using System.Collections;
+﻿using NaughtyAttributes;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
@@ -339,7 +339,6 @@ namespace Assets._Game.Scripts.Calibration
                             SetStep(currentExerciseCount == 3 ? currentStep + 1 : currentStep - 1);
                             break;
 
-
                         #endregion Expiration Time
 
                         #region Inspiration Time
@@ -494,6 +493,5 @@ namespace Assets._Game.Scripts.Calibration
             DudeWarnPitacoDisconnected();
             SetStep(99);
         }
-
     }
 }

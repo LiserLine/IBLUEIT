@@ -51,4 +51,4 @@ namespace Assets._Game.Scripts.Calibration
             }
         }
     }
-}   
+}

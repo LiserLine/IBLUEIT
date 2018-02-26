@@ -1,6 +1,6 @@
-﻿using System;
+﻿using NaughtyAttributes;
+using System;
 using System.Text;
-using NaughtyAttributes;
 using UnityEngine;
 
 public abstract class Logger<T> : MonoBehaviour
@@ -35,11 +35,13 @@ public abstract class Logger<T> : MonoBehaviour
         isLogging = false;
         recordStop = DateTime.Now;
         Flush();
-        
+
         sb.Clear();
     }
 
     protected abstract void Awake();
+
     protected abstract void Flush();
+
     protected virtual void Start() => StartLogging();
 }

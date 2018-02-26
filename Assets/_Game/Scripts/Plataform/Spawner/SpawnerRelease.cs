@@ -242,5 +242,4 @@ public partial class Spawner
     }
 
     #endregion Relax Time
-
 }

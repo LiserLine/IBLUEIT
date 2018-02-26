@@ -7,7 +7,6 @@
  */
 
 using System;
-using System.Collections;
 using System.IO;
 using System.IO.Ports;
 using System.Linq;
@@ -37,6 +36,7 @@ public partial class SerialController : MonoBehaviour
     // send these same strings from the serial device, upon reconstruction they
     // will have different reference ids.
     public const string SERIAL_DEVICE_CONNECTED = "__Connected__";
+
     public const string SERIAL_DEVICE_DISCONNECTED = "__Disconnected__";
 
     [SerializeField]
@@ -59,7 +59,9 @@ public partial class SerialController : MonoBehaviour
     private Thread thread;
 
     public delegate void SerialConnectedHandler();
+
     public delegate void SerialDisconnectedHandler();
+
     public delegate void SerialMessageReceivedHandler(string msg);
 
     // ------------------------------------------------------------------------
@@ -67,10 +69,13 @@ public partial class SerialController : MonoBehaviour
     // the user can send some tear-down message to the hardware reliably.
     // ------------------------------------------------------------------------
     public delegate void TearDownFunction();
+
     private TearDownFunction userDefinedTearDownFunction;
 
     public event SerialConnectedHandler OnSerialConnected;
+
     public event SerialDisconnectedHandler OnSerialDisconnected;
+
     public event SerialMessageReceivedHandler OnSerialMessageReceived;
 
     public bool IsConnected { get; private set; }
