@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace _Game.Scripts.CakeGame
+namespace Assets._Game.Scripts.CakeGame
 {
     public class ScoreMenu : MonoBehaviour
     {

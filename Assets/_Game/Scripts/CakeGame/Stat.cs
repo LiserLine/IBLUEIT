@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace _Game.Scripts.CakeGame
+namespace Assets._Game.Scripts.CakeGame
 {
     [Serializable]
     public class Stat

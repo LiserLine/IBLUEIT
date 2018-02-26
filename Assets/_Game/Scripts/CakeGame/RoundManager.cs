@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace _Game.Scripts.CakeGame
+namespace Assets._Game.Scripts.CakeGame
 {
     public class RoundManager : MonoBehaviour
     {
