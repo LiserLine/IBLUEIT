@@ -1,4 +1,5 @@
 ﻿using Ibit.Core.Data;
+using Ibit.Core.Serial;
 using Ibit.Core.Util;
 using Ibit.Plataform.Data;
 using UnityEngine;
