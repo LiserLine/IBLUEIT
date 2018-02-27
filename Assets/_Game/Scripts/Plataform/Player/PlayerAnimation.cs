@@ -1,14 +1,20 @@
-﻿public partial class Player
+﻿using Ibit.Core.Game;
+using Ibit.Core.Util;
+
+namespace Ibit.Plataform
 {
-    private void Animate(string msg)
+    public partial class Player
     {
-        if (msg.Length < 1)
-            return;
+        private void Animate(string msg)
+        {
+            if (msg.Length < 1)
+                return;
 
-        var f = Parsers.Float(msg);
+            var f = Parsers.Float(msg);
 
-        f = f < -GameManager.PitacoFlowThreshold || f > GameManager.PitacoFlowThreshold ? f : 0f;
+            f = f < -GameManager.PitacoFlowThreshold || f > GameManager.PitacoFlowThreshold ? f : 0f;
 
-        this.animator.Play(f < 0 ? "Dolphin-Jump" : "Dolphin-Move");
+            this.animator.Play(f < 0 ? "Dolphin-Jump" : "Dolphin-Move");
+        }
     }
 }

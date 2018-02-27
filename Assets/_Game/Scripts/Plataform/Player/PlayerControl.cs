@@ -1,25 +1,32 @@
-﻿using UnityEngine;
+﻿using Ibit.Core.Data;
+using Ibit.Core.Game;
+using Ibit.Core.Util;
+using UnityEngine;
+using Ibit.Plataform.Camera;
 
-public partial class Player
+namespace Ibit.Plataform
 {
-    private void PositionOnSerial(string msg)
+    public partial class Player
     {
-        if (msg.Length < 1)
-            return;
+        private void PositionOnSerial(string msg)
+        {
+            if (msg.Length < 1)
+                return;
 
-        var sensorValue = Parsers.Float(msg);
+            var sensorValue = Parsers.Float(msg);
 
-        sensorValue = sensorValue < -GameManager.PitacoFlowThreshold || sensorValue > GameManager.PitacoFlowThreshold ? sensorValue : 0f;
+            sensorValue = sensorValue < -GameManager.PitacoFlowThreshold || sensorValue > GameManager.PitacoFlowThreshold ? sensorValue : 0f;
 
-        var peak = sensorValue > 0 ? Pacient.Loaded.Capacities.ExpPeakFlow * 0.5f : -Pacient.Loaded.Capacities.InsPeakFlow;
+            var peak = sensorValue > 0 ? Pacient.Loaded.Capacities.ExpPeakFlow * 0.5f : -Pacient.Loaded.Capacities.InsPeakFlow;
 
-        var nextPosition = sensorValue * CameraLimits.Boundary / peak;
+            var nextPosition = sensorValue * CameraLimits.Boundary / peak;
 
-        nextPosition = Mathf.Clamp(nextPosition, -CameraLimits.Boundary, CameraLimits.Boundary);
+            nextPosition = Mathf.Clamp(nextPosition, -CameraLimits.Boundary, CameraLimits.Boundary);
 
-        var from = this.transform.position;
-        var to = new Vector3(this.transform.position.x, -nextPosition, this.transform.position.z);
+            var from = this.transform.position;
+            var to = new Vector3(this.transform.position.x, -nextPosition, this.transform.position.z);
 
-        this.transform.position = Vector3.Lerp(from, to, Time.deltaTime * 10f);
+            this.transform.position = Vector3.Lerp(from, to, Time.deltaTime * 10f);
+        }
     }
 }

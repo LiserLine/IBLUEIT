@@ -2,6 +2,8 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using Ibit.Core.Data;
+using Ibit.Core.Database;
 
 namespace Ibit.MainMenu.UI
 {

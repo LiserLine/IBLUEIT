@@ -1,25 +1,28 @@
 ﻿using NaughtyAttributes;
 using UnityEngine;
 
-public partial class Player : MonoBehaviour
+namespace Ibit.Plataform
 {
-    public int HeartPoins => heartPoints;
-
-    [SerializeField]
-    [BoxGroup("Properties")]
-    private int heartPoints = 5;
-
-    private void Awake()
+    public partial class Player : MonoBehaviour
     {
-        var sc = FindObjectOfType<SerialController>();
-        sc.OnSerialMessageReceived += PositionOnSerial;
-        sc.OnSerialMessageReceived += Animate;
-    }
+        public int HeartPoins => heartPoints;
 
-    private void Update()
-    {
+        [SerializeField]
+        [BoxGroup("Properties")]
+        private int heartPoints = 5;
+
+        private void Awake()
+        {
+            var sc = FindObjectOfType<Ibit.Core.Serial.SerialController>();
+            sc.OnSerialMessageReceived += PositionOnSerial;
+            sc.OnSerialMessageReceived += Animate;
+        }
+
+        private void Update()
+        {
 #if UNITY_EDITOR
-        Move();
+            Move();
 #endif
+        }
     }
 }

@@ -1,4 +1,7 @@
 ﻿using UnityEngine;
 
-public partial class Target : MonoBehaviour
-{ }
+namespace Ibit.Plataform
+{
+    public partial class Target : MonoBehaviour
+    { }
+}

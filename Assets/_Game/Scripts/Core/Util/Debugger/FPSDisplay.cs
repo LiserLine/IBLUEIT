@@ -5,31 +5,34 @@
 
 using UnityEngine;
 
-public partial class Debugger
+namespace Ibit.Core.Util
 {
-    private float fpsTimer;
-    private readonly GUIStyle _style = new GUIStyle();
-    private Rect _rect;
-
-    private void AlignFpsDisplayBox()
+    public partial class Debugger
     {
-        int w = Screen.width, h = Screen.height;
-        _style.alignment = TextAnchor.UpperLeft;
-        _style.fontSize = h * 1 / 40;
-        _style.normal.textColor = new Color(0.0f, 0.0f, 0.5f, 1.0f);
-        _rect = new Rect(0, 0, w, h * 2 / 100);
-    }
+        private float fpsTimer;
+        private readonly GUIStyle _style = new GUIStyle();
+        private Rect _rect;
 
-    private void UpdateFpsDisplayTimer()
-    {
-        fpsTimer += (Time.deltaTime - fpsTimer) * 0.1f;
-    }
+        private void AlignFpsDisplayBox()
+        {
+            int w = Screen.width, h = Screen.height;
+            _style.alignment = TextAnchor.UpperLeft;
+            _style.fontSize = h * 1 / 40;
+            _style.normal.textColor = new Color(0.0f, 0.0f, 0.5f, 1.0f);
+            _rect = new Rect(0, 0, w, h * 2 / 100);
+        }
 
-    private void DisplayFramesPerSecond()
-    {
-        var msec = fpsTimer * 1000.0f;
-        var fps = 1.0f / fpsTimer;
-        var text = $"{msec:0.0} ms ({fps:0.} fps)";
-        GUI.Label(_rect, text, _style);
+        private void UpdateFpsDisplayTimer()
+        {
+            fpsTimer += (Time.deltaTime - fpsTimer) * 0.1f;
+        }
+
+        private void DisplayFramesPerSecond()
+        {
+            var msec = fpsTimer * 1000.0f;
+            var fps = 1.0f / fpsTimer;
+            var text = $"{msec:0.0} ms ({fps:0.} fps)";
+            GUI.Label(_rect, text, _style);
+        }
     }
 }

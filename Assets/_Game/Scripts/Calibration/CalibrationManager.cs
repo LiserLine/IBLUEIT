@@ -2,8 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Ibit.Core.Audio;
 using UnityEngine;
 using UnityEngine.UI;
+using Ibit.Core.Data;
+using Ibit.Core.Database;
+using Ibit.Core.Game;
+using Ibit.Core.Serial;
+using Ibit.Core.Util;
+using Ibit.Plataform.Logger;
 using Debug = UnityEngine.Debug;
 
 namespace Ibit.Calibration
@@ -41,7 +48,7 @@ namespace Ibit.Calibration
 
         private void Awake()
         {
-            serialController = FindObjectOfType<SerialController>();
+            serialController = FindObjectOfType<Ibit.Core.Serial.SerialController>();
             serialController.OnSerialMessageReceived += OnSerialMessageReceived;
             newCapacities = new Capacities();
             flowWatch = new Stopwatch();

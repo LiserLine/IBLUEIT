@@ -1,20 +1,23 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class LifeCounterUI : MonoBehaviour
+namespace Ibit.Plataform.UI
 {
-    [SerializeField]
-    private Image fillImage;
-
-    private float startHP;
-    private Player plr;
-
-    private void Awake()
+    public class LifeCounterUI : MonoBehaviour
     {
-        plr = FindObjectOfType<Player>();
-        startHP = plr.HeartPoins;
-        plr.OnEnemyHit += UpdateHeartPoints;
-    }
+        [SerializeField]
+        private Image fillImage;
 
-    private void UpdateHeartPoints(GameObject go) => fillImage.fillAmount = plr.HeartPoins / startHP;
+        private float startHP;
+        private Ibit.Plataform.Player plr;
+
+        private void Awake()
+        {
+            plr = FindObjectOfType<Ibit.Plataform.Player>();
+            startHP = plr.HeartPoins;
+            plr.OnEnemyHit += UpdateHeartPoints;
+        }
+
+        private void UpdateHeartPoints(GameObject go) => fillImage.fillAmount = plr.HeartPoins / startHP;
+    }
 }

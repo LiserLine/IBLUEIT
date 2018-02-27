@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Ibit.Core.Audio;
+using UnityEngine;
 
 namespace Ibit.Calibration
 {
@@ -21,12 +22,6 @@ namespace Ibit.Calibration
             SoundManager.Instance.PlaySound("Success");
             DudeTalk("Muito bem! Pressione (►) para continuar.");
         }
-
-        //private void DudeAskAgain()
-        //{
-        //    DudeTalk("Mais uma vez! Pressione (►) para continuar.");
-        //    SetStep(currentStep - 2);
-        //}
 
         private void DudeWarnUnknownFlow()
         {

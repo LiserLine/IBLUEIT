@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 
-public partial class Target
+namespace Ibit.Plataform
 {
-    private void OnCollisionEnter2D(Collision2D collision)
+    public partial class Target
     {
-        if (!collision.gameObject.tag.Contains("Player"))
-            return;
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (!collision.gameObject.tag.Contains("Player"))
+                return;
 
-        Destroy(this.gameObject);
+            Destroy(this.gameObject);
+        }
     }
 }

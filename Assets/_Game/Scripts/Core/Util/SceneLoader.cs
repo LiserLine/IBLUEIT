@@ -3,29 +3,32 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class SceneLoader : MonoBehaviour
+namespace Ibit.Core.Util
 {
-    [SerializeField]
-    private GameObject loadingScreen;
-
-    private IEnumerator LoadSceneAsync(int sceneIndex)
+    public class SceneLoader : MonoBehaviour
     {
-        var operation = SceneManager.LoadSceneAsync(sceneIndex);
-        while (!operation.isDone)
+        [SerializeField]
+        private GameObject loadingScreen;
+
+        private IEnumerator LoadSceneAsync(int sceneIndex)
         {
-            var progress = Mathf.Clamp01(operation.progress / 0.9f);
+            var operation = SceneManager.LoadSceneAsync(sceneIndex);
+            while (!operation.isDone)
+            {
+                var progress = Mathf.Clamp01(operation.progress / 0.9f);
 
-            loadingScreen.GetComponentInChildren<Slider>().value = progress;
+                loadingScreen.GetComponentInChildren<Slider>().value = progress;
 
-            Debug.Log($"LoadingScene - sceneIndex:{sceneIndex} progress:{progress}");
+                Debug.Log($"LoadingScene - sceneIndex:{sceneIndex} progress:{progress}");
 
-            yield return null;
+                yield return null;
+            }
         }
-    }
 
-    public void LoadScene(int sceneIndex)
-    {
-        Instantiate(loadingScreen);
-        StartCoroutine(LoadSceneAsync(sceneIndex));
+        public void LoadScene(int sceneIndex)
+        {
+            Instantiate(loadingScreen);
+            StartCoroutine(LoadSceneAsync(sceneIndex));
+        }
     }
 }

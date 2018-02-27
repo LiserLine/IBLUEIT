@@ -1,18 +1,23 @@
-﻿using UnityEngine;
+﻿using Ibit.Core.Game;
+using Ibit.Plataform.Manager.Score;
+using UnityEngine;
 using UnityEngine.UI;
 
-public class GameScoreRatioUI : MonoBehaviour
+namespace Ibit.Plataform.UI
 {
-    [SerializeField]
-    private Text value;
-
-    private Scorer scorer;
-
-    private void Awake() => scorer = FindObjectOfType<Scorer>();
-
-    private void FixedUpdate()
+    public class GameScoreRatioUI : MonoBehaviour
     {
-        value.text = $"{(scorer.Score / scorer.MaxScore * 100f):####}%";
-        value.color = scorer.Score >= scorer.MaxScore * GameManager.LevelUnlockScoreThreshold ? Color.blue : Color.red;
+        [SerializeField]
+        private Text value;
+
+        private Scorer scorer;
+
+        private void Awake() => scorer = FindObjectOfType<Scorer>();
+
+        private void FixedUpdate()
+        {
+            value.text = $"{(scorer.Score / scorer.MaxScore * 100f):####}%";
+            value.color = scorer.Score >= scorer.MaxScore * GameManager.LevelUnlockScoreThreshold ? Color.blue : Color.red;
+        }
     }
 }

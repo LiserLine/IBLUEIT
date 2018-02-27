@@ -1,4 +1,7 @@
-﻿public class Parsers
+﻿namespace Ibit.Core.Util
 {
-    public static float Float(string value) => float.Parse(value.Replace('.', ','));
+    public class Parsers
+    {
+        public static float Float(string value) => float.Parse(value.Replace('.', ','));
+    }
 }

@@ -42,7 +42,7 @@ using UnityEngine;
 
 public class QuickOpener // [1]
 {
-    private const string _ASSET_STORE_FOLDER_NAME = "Asset Store-5.x";
+    private const string ASSET_STORE_FOLDER_NAME = "Asset Store-5.x";
 
     [MenuItem("Tools/Quick Opener/Game Data", false, 100)]
     private static void OpenDataPath()
@@ -107,14 +107,14 @@ public class QuickOpener // [1]
         string rootFolderPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
         string libraryPath = Path.Combine(rootFolderPath, "Library");
         string unityFolder = Path.Combine(libraryPath, "Unity");
-        return Path.Combine(unityFolder, _ASSET_STORE_FOLDER_NAME);
+        return Path.Combine(unityFolder, ASSET_STORE_FOLDER_NAME);
     }
 
     private static string GetAssetStorePackagesPathOnWindows()
     {
         string rootFolderPath = System.Environment.ExpandEnvironmentVariables("%appdata%");
         string unityFolder = Path.Combine(rootFolderPath, "Unity");
-        return Path.Combine(unityFolder, _ASSET_STORE_FOLDER_NAME);
+        return Path.Combine(unityFolder, ASSET_STORE_FOLDER_NAME);
     }
 
     public static void Reveal(string folderPath)

@@ -1,13 +1,16 @@
 ﻿using UnityEngine;
 
-public class Background : MonoBehaviour
+namespace Ibit.Plataform.UI
 {
-    private void Start() => ResizeToCamera();
-
-    private void ResizeToCamera()
+    public class Background : MonoBehaviour
     {
-        var height = 2f * Camera.main.orthographicSize;
-        var width = height * Camera.main.aspect;
-        this.transform.localScale = new Vector3(width, height);
+        private void Start() => ResizeToCamera();
+
+        private void ResizeToCamera()
+        {
+            var height = 2f * UnityEngine.Camera.main.orthographicSize;
+            var width = height * UnityEngine.Camera.main.aspect;
+            this.transform.localScale = new Vector3(width, height);
+        }
     }
 }

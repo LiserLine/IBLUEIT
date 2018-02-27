@@ -1,11 +1,15 @@
-﻿using UnityEngine;
+﻿using Ibit.Plataform.Manager.Score;
+using UnityEngine;
 using UnityEngine.UI;
 
-public class GameScoreUI : MonoBehaviour
+namespace Ibit.Plataform.UI
 {
-    private Scorer scorer;
+    public class GameScoreUI : MonoBehaviour
+    {
+        private Scorer scorer;
 
-    private void Awake() => scorer = FindObjectOfType<Scorer>();
+        private void Awake() => scorer = FindObjectOfType<Scorer>();
 
-    private void Update() => GetComponent<Text>().text = $"{scorer.Score:####}";
+        private void Update() => GetComponent<Text>().text = $"{scorer.Score:####}";
+    }
 }

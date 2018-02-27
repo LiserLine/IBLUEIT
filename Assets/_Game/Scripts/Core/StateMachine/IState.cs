@@ -1,8 +1,11 @@
-﻿public interface IState
+﻿namespace Ibit.Core.StateMachine
 {
-    void Enter();
+    public interface IState
+    {
+        void Enter();
 
-    void Execute();
+        void Execute();
 
-    void Exit();
+        void Exit();
+    }
 }

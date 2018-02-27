@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 
-public partial class Debugger
+namespace Ibit.Core.Util
 {
-    private string _messageOutput;
-
-    private void DisplayLogMessages()
+    public partial class Debugger
     {
-        GUI.Label(new Rect(0, 20, Screen.width / 2f, 50f), _messageOutput);
+        private string _messageOutput;
+
+        private void DisplayLogMessages()
+        {
+            GUI.Label(new Rect(0, 20, Screen.width / 2f, 50f), _messageOutput);
+        }
     }
 }

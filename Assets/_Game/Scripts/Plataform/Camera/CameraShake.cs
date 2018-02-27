@@ -2,54 +2,57 @@
 
 using UnityEngine;
 
-public class CameraShake : MonoBehaviour
+namespace Ibit.Plataform.Camera
 {
-    // How long the object should shake for.
-    [SerializeField]
-    private float shakeDuration;
-
-    // Amplitude of the shake. A larger value shakes the camera harder.
-    [SerializeField]
-    private float shakeAmount = 0.7f;
-
-    [SerializeField]
-    private float decreaseFactor = 1.0f;
-
-    private Vector3 originalPos;
-    private bool shakeCam;
-    private float originalDuration;
-
-    private void Awake()
+    public class CameraShake : MonoBehaviour
     {
-        FindObjectOfType<Player>().OnEnemyHit += Shake;
-        originalPos = this.transform.localPosition;
-        originalDuration = shakeDuration;
-    }
+        // How long the object should shake for.
+        [SerializeField]
+        private float shakeDuration;
 
-    private void Update()
-    {
-        if (!shakeCam)
-            return;
+        // Amplitude of the shake. A larger value shakes the camera harder.
+        [SerializeField]
+        private float shakeAmount = 0.7f;
 
-        if (shakeDuration > 0)
+        [SerializeField]
+        private float decreaseFactor = 1.0f;
+
+        private Vector3 originalPos;
+        private bool shakeCam;
+        private float originalDuration;
+
+        private void Awake()
         {
-            this.transform.localPosition = originalPos + Random.insideUnitSphere * shakeAmount;
-            shakeDuration -= Time.deltaTime * decreaseFactor;
+            FindObjectOfType<Player>().OnEnemyHit += Shake;
+            originalPos = this.transform.localPosition;
+            originalDuration = shakeDuration;
         }
-        else
+
+        private void Update()
         {
-            shakeDuration = originalDuration;
-            this.transform.localPosition = originalPos;
-            shakeCam = false;
+            if (!shakeCam)
+                return;
+
+            if (shakeDuration > 0)
+            {
+                this.transform.localPosition = originalPos + Random.insideUnitSphere * shakeAmount;
+                shakeDuration -= Time.deltaTime * decreaseFactor;
+            }
+            else
+            {
+                shakeDuration = originalDuration;
+                this.transform.localPosition = originalPos;
+                shakeCam = false;
+            }
         }
-    }
 
-    private void Shake(GameObject go)
-    {
-        if (FindObjectOfType<Player>().HeartPoins == 0)
-            return;
+        private void Shake(GameObject go)
+        {
+            if (FindObjectOfType<Player>().HeartPoins == 0)
+                return;
 
-        if (go.tag.Contains("Obstacle"))
-            shakeCam = true;
+            if (go.tag.Contains("Obstacle"))
+                shakeCam = true;
+        }
     }
 }

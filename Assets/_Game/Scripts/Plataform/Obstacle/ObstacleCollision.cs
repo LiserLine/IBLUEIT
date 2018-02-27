@@ -1,17 +1,20 @@
 ﻿using UnityEngine;
 
-public partial class Obstacle
+namespace Ibit.Plataform
 {
-    private void OnCollisionEnter2D(Collision2D collision)
+    public partial class Obstacle
     {
-        if (collision.gameObject.tag.Contains("Player"))
+        private void OnCollisionEnter2D(Collision2D collision)
         {
-            TakeDamage();
+            if (collision.gameObject.tag.Contains("Player"))
+            {
+                TakeDamage();
+            }
         }
-    }
 
-    private void TakeDamage()
-    {
-        heartPoint--;
+        private void TakeDamage()
+        {
+            heartPoint--;
+        }
     }
 }

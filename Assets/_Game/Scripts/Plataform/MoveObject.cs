@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 
-public class MoveObject : MonoBehaviour
+namespace Ibit.Plataform
 {
-    public float Speed { get; set; } = 1;
+    public class MoveObject : MonoBehaviour
+    {
+        public float Speed { get; set; } = 1;
 
-    private void Update() => this.transform.Translate(new Vector3(-Time.deltaTime * Speed, 0f));
+        private void Update() => this.transform.Translate(new Vector3(-Time.deltaTime * Speed, 0f));
+    }
 }

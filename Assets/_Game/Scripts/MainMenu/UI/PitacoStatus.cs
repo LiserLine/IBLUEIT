@@ -6,7 +6,7 @@ namespace Ibit.MainMenu.UI
     public class PitacoStatus : MonoBehaviour
     {
         [SerializeField]
-        private SerialController serialController;
+        private Ibit.Core.Serial.SerialController serialController;
 
         [SerializeField]
         private Sprite offline, online;
@@ -14,7 +14,7 @@ namespace Ibit.MainMenu.UI
         private void Awake()
         {
             if (serialController == null)
-                serialController = FindObjectOfType<SerialController>();
+                serialController = FindObjectOfType<Ibit.Core.Serial.SerialController>();
 
             if (serialController == null)
                 Debug.LogWarning("Serial Controller instance not found!");

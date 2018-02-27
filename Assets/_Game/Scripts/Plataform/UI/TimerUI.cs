@@ -1,25 +1,30 @@
 ﻿using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
+using Ibit.Plataform.Data;
+using Ibit.Plataform.Manager.Stage;
 
-public class TimerUI : MonoBehaviour
+namespace Ibit.Plataform.UI
 {
-    [SerializeField]
-    private Text timerText;
-
-    [SerializeField]
-    private Image fillSprite;
-
-    private StageManager stgMgr;
-
-    private void Awake() => stgMgr = FindObjectOfType<StageManager>();
-
-    private void FixedUpdate()
+    public class TimerUI : MonoBehaviour
     {
-        if (fillSprite.fillAmount > 1f)
-            fillSprite.color = Color.cyan;
+        [SerializeField]
+        private Text timerText;
 
-        fillSprite.fillAmount = stgMgr.Watch / Stage.Loaded.SpawnDuration;
-        timerText.text = Mathf.Round(stgMgr.Watch).ToString(CultureInfo.InvariantCulture);
+        [SerializeField]
+        private Image fillSprite;
+
+        private StageManager stgMgr;
+
+        private void Awake() => stgMgr = FindObjectOfType<StageManager>();
+
+        private void FixedUpdate()
+        {
+            if (fillSprite.fillAmount > 1f)
+                fillSprite.color = Color.cyan;
+
+            fillSprite.fillAmount = stgMgr.Watch / Stage.Loaded.SpawnDuration;
+            timerText.text = Mathf.Round(stgMgr.Watch).ToString(CultureInfo.InvariantCulture);
+        }
     }
 }

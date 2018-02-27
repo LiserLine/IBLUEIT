@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 
-public class Destroyer : MonoBehaviour
+namespace Ibit.Plataform
 {
-    private void Awake()
+    public class Destroyer : MonoBehaviour
     {
-        var distance = Camera.main.orthographicSize * Camera.main.aspect;
-        this.gameObject.transform.Translate(-distance - 2f, 0f, 0f);
-    }
+        private void Awake()
+        {
+            var distance = UnityEngine.Camera.main.orthographicSize * UnityEngine.Camera.main.aspect;
+            this.gameObject.transform.Translate(-distance - 2f, 0f, 0f);
+        }
 
-    private void OnTriggerEnter2D(Collider2D collision) => Destroy(collision.gameObject);
+        private void OnTriggerEnter2D(Collider2D collision) => Destroy(collision.gameObject);
+    }
 }

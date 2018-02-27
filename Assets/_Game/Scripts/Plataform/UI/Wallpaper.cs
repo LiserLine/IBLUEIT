@@ -1,58 +1,63 @@
 ﻿using UnityEngine;
+using Ibit.Plataform.Data;
+using Ibit.Plataform.Manager.Spawn;
 
-public class Wallpaper : MonoBehaviour
+namespace Ibit.Plataform.UI
 {
-    private Vector2 _offset;
-    private MeshRenderer _mr;
-    private Renderer bgRenderer;
-
-    [SerializeField]
-    private bool scroll;
-
-    [SerializeField]
-    private float scrollSpeed = 0.1f;
-
-    [SerializeField]
-    private Material day;
-
-    [SerializeField]
-    private Material afternoon;
-
-    [SerializeField]
-    private Material night;
-
-    private void Awake()
+    public class Wallpaper : MonoBehaviour
     {
-        bgRenderer = this.GetComponent<Renderer>();
-        _mr = this.GetComponent<MeshRenderer>();
-    }
+        private Vector2 _offset;
+        private MeshRenderer _mr;
+        private Renderer bgRenderer;
 
-    private void Start() => SwitchBackground();
+        [SerializeField]
+        private bool scroll;
 
-    private void SwitchBackground()
-    {
-        switch (Stage.Loaded.SpawnObject)
+        [SerializeField]
+        private float scrollSpeed = 0.1f;
+
+        [SerializeField]
+        private Material day;
+
+        [SerializeField]
+        private Material afternoon;
+
+        [SerializeField]
+        private Material night;
+
+        private void Awake()
         {
-            case SpawnObject.Targets:
-                bgRenderer.material = day;
-                break;
-
-            case SpawnObject.TargetsAndObstacles:
-                bgRenderer.material = afternoon;
-                break;
-
-            case SpawnObject.Obstacles:
-                bgRenderer.material = night;
-                break;
+            bgRenderer = this.GetComponent<Renderer>();
+            _mr = this.GetComponent<MeshRenderer>();
         }
-    }
 
-    private void Update() => Scroll();
+        private void Start() => SwitchBackground();
 
-    private void Scroll()
-    {
-        _offset = _mr.material.mainTextureOffset;
-        _offset.x += Time.deltaTime / (1f / scrollSpeed);
-        _mr.material.mainTextureOffset = _offset;
+        private void SwitchBackground()
+        {
+            switch (Stage.Loaded.ObjectToSpawn)
+            {
+                case ObjectToSpawn.Targets:
+                    bgRenderer.material = day;
+                    break;
+
+                case ObjectToSpawn.TargetsAndObstacles:
+                    bgRenderer.material = afternoon;
+                    break;
+
+                case ObjectToSpawn.Obstacles:
+                    bgRenderer.material = night;
+                    break;
+            }
+        }
+
+        private void Update() => Scroll();
+
+        private void Scroll()
+        {
+            _offset = _mr.material.mainTextureOffset;
+            _offset.x += Time.deltaTime / (1f / scrollSpeed);
+            _mr.material.mainTextureOffset = _offset;
+        }
     }
 }

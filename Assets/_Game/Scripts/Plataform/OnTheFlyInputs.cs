@@ -1,18 +1,23 @@
-﻿using UnityEngine;
+﻿using Ibit.Core.Game;
+using UnityEngine;
+using Ibit.Plataform.UI;
 
-public class OnTheFlyInputs : MonoBehaviour
+namespace Ibit.Plataform
 {
-    private void Update()
+    public class OnTheFlyInputs : MonoBehaviour
     {
-        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Space))
+        private void Update()
         {
-            if (!GameManager.GameIsPaused)
-                FindObjectOfType<CanvasManager_P>().PauseGame();
-            else
-                FindObjectOfType<CanvasManager_P>().UnPauseGame();
-        }
+            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Space))
+            {
+                if (!GameManager.GameIsPaused)
+                    FindObjectOfType<CanvasManager>().PauseGame();
+                else
+                    FindObjectOfType<CanvasManager>().UnPauseGame();
+            }
 
-        if (Input.GetKeyDown(KeyCode.F2))
-            FindObjectOfType<SerialController>().Recalibrate();
+            if (Input.GetKeyDown(KeyCode.F2))
+                FindObjectOfType<Ibit.Core.Serial.SerialController>().Recalibrate();
+        }
     }
 }

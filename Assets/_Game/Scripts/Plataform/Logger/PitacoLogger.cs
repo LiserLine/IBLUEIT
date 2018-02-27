@@ -1,33 +1,41 @@
 ﻿using System.Linq;
+using Ibit.Core.Data;
+using Ibit.Core.Game;
+using Ibit.Core.Serial;
+using Ibit.Core.Util;
+using Ibit.Plataform.Manager.Stage;
 using UnityEngine;
 
-public class PitacoLogger : Logger<PitacoLogger>
+namespace Ibit.Plataform.Logger
 {
-    protected override void Awake()
+    public class PitacoLogger : Logger<PitacoLogger>
     {
-        sb.AppendLine("time;value");
-        FindObjectOfType<SerialController>().OnSerialMessageReceived += OnSerialMessageReceived;
+        protected override void Awake()
+        {
+            sb.AppendLine("time;value");
+            FindObjectOfType<SerialController>().OnSerialMessageReceived += OnSerialMessageReceived;
 
-        if (FindObjectOfType<StageManager>() != null)
-            FindObjectOfType<StageManager>().OnStageEnd += StopLogging;
-    }
+            if (FindObjectOfType<StageManager>() != null)
+                FindObjectOfType<StageManager>().OnStageEnd += StopLogging;
+        }
 
-    protected override void Flush()
-    {
-        var textData = sb.ToString();
+        protected override void Flush()
+        {
+            var textData = sb.ToString();
 
-        if (textData.Count(s => s == '\n') < 2)
-            return;
+            if (textData.Count(s => s == '\n') < 2)
+                return;
 
-        var path = @"savedata/pacients/" + Pacient.Loaded.Id + @"/" + $"{recordStart:yyyyMMdd-HHmmss}_" + FileName + ".csv";
-        FileReader.WriteAllText(path, textData);
-    }
+            var path = @"savedata/pacients/" + Pacient.Loaded.Id + @"/" + $"{recordStart:yyyyMMdd-HHmmss}_" + FileName + ".csv";
+            FileReader.WriteAllText(path, textData);
+        }
 
-    private void OnSerialMessageReceived(string msg)
-    {
-        if (!isLogging || msg.Length < 1 || GameManager.GameIsPaused)
-            return;
+        private void OnSerialMessageReceived(string msg)
+        {
+            if (!isLogging || msg.Length < 1 || GameManager.GameIsPaused)
+                return;
 
-        sb.AppendLine($"{Time.time:F};{Parsers.Float(msg):F}");
+            sb.AppendLine($"{Time.time:F};{Parsers.Float(msg):F}");
+        }
     }
 }

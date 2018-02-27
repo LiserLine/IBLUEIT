@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 
-public partial class Obstacle : MonoBehaviour
+namespace Ibit.Plataform
 {
-    public int HeartPoint => heartPoint;
+    public partial class Obstacle : MonoBehaviour
+    {
+        public int HeartPoint => heartPoint;
 
-    [SerializeField]
-    private int heartPoint = 1;
+        [SerializeField]
+        private int heartPoint = 1;
+    }
 }

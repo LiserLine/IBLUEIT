@@ -1,32 +1,36 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using Ibit.Plataform.Data;
 
-public class RelaxCoinUI : MonoBehaviour
+namespace Ibit.Plataform.UI
 {
-    [SerializeField]
-    private Image fillSprite;
-
-    private bool filled;
-    private float coinsHit;
-
-    private void Awake() => FindObjectOfType<Player>().OnEnemyHit += UpdateSprite;
-
-    private void UpdateSprite(GameObject go)
+    public class RelaxCoinUI : MonoBehaviour
     {
-        if (filled)
-            return;
+        [SerializeField]
+        private Image fillSprite;
 
-        if (!go.CompareTag("RelaxCoin"))
-            return;
+        private bool filled;
+        private float coinsHit;
 
-        coinsHit++;
+        private void Awake() => FindObjectOfType<Ibit.Plataform.Player>().OnEnemyHit += UpdateSprite;
 
-        fillSprite.fillAmount = coinsHit / Stage.Loaded.RelaxTimeThreshold;
+        private void UpdateSprite(GameObject go)
+        {
+            if (filled)
+                return;
 
-        if (fillSprite.fillAmount < 0.95f)
-            return;
+            if (!go.CompareTag("RelaxCoin"))
+                return;
 
-        filled = true;
-        fillSprite.fillAmount = 1f;
+            coinsHit++;
+
+            fillSprite.fillAmount = coinsHit / Stage.Loaded.RelaxTimeThreshold;
+
+            if (fillSprite.fillAmount < 0.95f)
+                return;
+
+            filled = true;
+            fillSprite.fillAmount = 1f;
+        }
     }
 }

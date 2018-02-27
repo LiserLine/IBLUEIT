@@ -1,34 +1,40 @@
 ﻿using System.Linq;
 using UnityEngine;
+using Ibit.Core.Audio;
+using Ibit.Plataform.Data;
+using Ibit.Plataform.Manager.Spawn;
 
-public class BGMPlayer : MonoBehaviour
+namespace Ibit.Plataform
 {
-    private int numDay, numAfternoon, numNight;
-
-    private void Awake()
+    public class BgmPlayer : MonoBehaviour
     {
-        numDay = SoundManager.Instance.Sounds.Count(x => x.name.Contains("BGM_Day"));
-        numAfternoon = SoundManager.Instance.Sounds.Count(x => x.name.Contains("BGM_Afternoon"));
-        numNight = SoundManager.Instance.Sounds.Count(x => x.name.Contains("BGM_Night"));
-    }
+        private int numDay, numAfternoon, numNight;
 
-    private void PlayBGM()
-    {
-        switch (Stage.Loaded.SpawnObject)
+        private void Awake()
         {
-            case SpawnObject.Targets:
-                SoundManager.Instance.PlaySound($"BGM_Day{Random.Range(1, numDay)}");
-                break;
-
-            case SpawnObject.TargetsAndObstacles:
-                SoundManager.Instance.PlaySound($"BGM_Afternoon{Random.Range(1, numAfternoon)}");
-                break;
-
-            case SpawnObject.Obstacles:
-                SoundManager.Instance.PlaySound($"BGM_Night{Random.Range(1, numNight)}");
-                break;
+            numDay = SoundManager.Instance.Sounds.Count(x => x.name.Contains("BGM_Day"));
+            numAfternoon = SoundManager.Instance.Sounds.Count(x => x.name.Contains("BGM_Afternoon"));
+            numNight = SoundManager.Instance.Sounds.Count(x => x.name.Contains("BGM_Night"));
         }
-    }
 
-    private void Start() => PlayBGM();
+        private void PlayBGM()
+        {
+            switch (Stage.Loaded.ObjectToSpawn)
+            {
+                case ObjectToSpawn.Targets:
+                    SoundManager.Instance.PlaySound($"BGM_Day{Random.Range(1, numDay)}");
+                    break;
+
+                case ObjectToSpawn.TargetsAndObstacles:
+                    SoundManager.Instance.PlaySound($"BGM_Afternoon{Random.Range(1, numAfternoon)}");
+                    break;
+
+                case ObjectToSpawn.Obstacles:
+                    SoundManager.Instance.PlaySound($"BGM_Night{Random.Range(1, numNight)}");
+                    break;
+            }
+        }
+
+        private void Start() => PlayBGM();
+    }
 }

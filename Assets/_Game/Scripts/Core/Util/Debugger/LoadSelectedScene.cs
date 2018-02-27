@@ -1,14 +1,17 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public partial class Debugger
+namespace Ibit.Core.Util
 {
-    [SerializeField]
-    private string sceneToLoad;
-
-    [ContextMenu("Load Selected Scene")]
-    private void LoadScene()
+    public partial class Debugger
     {
-        SceneManager.LoadScene(sceneToLoad);
+        [SerializeField]
+        private string sceneToLoad;
+
+        [ContextMenu("Load Selected Scene")]
+        private void LoadScene()
+        {
+            SceneManager.LoadScene(sceneToLoad);
+        }
     }
 }
