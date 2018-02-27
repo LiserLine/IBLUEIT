@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Ibit.Core.Game;
+using System.Collections.Generic;
 using System.Linq;
-using Ibit.Core.Game;
 
 namespace Ibit.Core.Util
 {

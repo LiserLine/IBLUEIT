@@ -1,12 +1,10 @@
-﻿using NaughtyAttributes;
-using UnityEngine;
-using Ibit.Core.Audio;
+﻿using Ibit.Core.Audio;
 using Ibit.Core.Game;
 using Ibit.Core.Serial;
-using Ibit.Core.Util;
-using Ibit.Plataform.UI;
 using Ibit.Plataform.Manager.Score;
 using Ibit.Plataform.Manager.Spawn;
+using NaughtyAttributes;
+using UnityEngine;
 
 namespace Ibit.Plataform.Manager.Stage
 {

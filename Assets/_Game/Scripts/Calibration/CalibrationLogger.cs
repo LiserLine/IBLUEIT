@@ -1,6 +1,6 @@
-﻿using System;
-using Ibit.Core.Data;
+﻿using Ibit.Core.Data;
 using Ibit.Core.Util;
+using System;
 
 namespace Ibit.Calibration
 {

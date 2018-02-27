@@ -1,8 +1,8 @@
 ﻿#if UNITY_EDITOR
 
+using Ibit.Core.Database;
 using NaughtyAttributes;
 using UnityEngine;
-using Ibit.Core.Database;
 
 namespace Ibit.Plataform.Manager.Stage
 {

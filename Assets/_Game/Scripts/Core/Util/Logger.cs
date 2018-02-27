@@ -1,6 +1,6 @@
-﻿using System;
+﻿using NaughtyAttributes;
+using System;
 using System.Text;
-using NaughtyAttributes;
 using UnityEngine;
 
 namespace Ibit.Core.Util

@@ -1,8 +1,8 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-using Ibit.Core.Data;
+﻿using Ibit.Core.Data;
 using Ibit.Core.Util;
 using Ibit.Plataform.Data;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace Ibit.MainMenu.UI
 {

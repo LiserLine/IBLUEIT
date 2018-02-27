@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using Ibit.Core.Data;
+﻿using Ibit.Core.Data;
 using Ibit.Core.Game;
 using Ibit.Core.Serial;
 using Ibit.Core.Util;
 using Ibit.Plataform.Manager.Stage;
+using System.Linq;
 using UnityEngine;
 
 namespace Ibit.Plataform.Logger

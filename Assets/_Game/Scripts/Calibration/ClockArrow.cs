@@ -1,7 +1,7 @@
 ﻿using Ibit.Core.Game;
-using UnityEngine;
-using Ibit.Core.Util;
 using Ibit.Core.Serial;
+using Ibit.Core.Util;
+using UnityEngine;
 
 namespace Ibit.Calibration
 {

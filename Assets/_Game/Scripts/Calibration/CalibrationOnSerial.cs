@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using Ibit.Core.Util;
+﻿using Ibit.Core.Util;
+using UnityEngine;
 
 namespace Ibit.Calibration
 {

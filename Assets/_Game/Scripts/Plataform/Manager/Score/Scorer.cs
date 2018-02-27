@@ -1,7 +1,7 @@
-﻿using NaughtyAttributes;
-using UnityEngine;
-using Ibit.Core.Game;
+﻿using Ibit.Core.Game;
 using Ibit.Plataform.Manager.Spawn;
+using NaughtyAttributes;
+using UnityEngine;
 
 namespace Ibit.Plataform.Manager.Score
 {

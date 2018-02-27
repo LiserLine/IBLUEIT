@@ -1,16 +1,16 @@
-﻿using NaughtyAttributes;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using Ibit.Core.Audio;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using Ibit.Core.Audio;
 using Ibit.Core.Data;
 using Ibit.Core.Database;
 using Ibit.Core.Game;
 using Ibit.Core.Serial;
 using Ibit.Core.Util;
 using Ibit.Plataform.Logger;
+using NaughtyAttributes;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using UnityEngine;
+using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
 
 namespace Ibit.Calibration

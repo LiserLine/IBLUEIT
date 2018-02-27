@@ -1,6 +1,6 @@
-﻿using System;
-using Ibit.Core.Game;
+﻿using Ibit.Core.Game;
 using NaughtyAttributes;
+using System;
 using UnityEngine;
 
 namespace Ibit.Core.Util

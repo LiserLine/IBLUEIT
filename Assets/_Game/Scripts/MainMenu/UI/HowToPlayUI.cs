@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using Ibit.Core.Data;
+﻿using Ibit.Core.Data;
+using UnityEngine;
 
 namespace Ibit.MainMenu.UI
 {

@@ -1,6 +1,6 @@
-﻿using UnityEngine;
-using Ibit.Plataform.Data;
+﻿using Ibit.Plataform.Data;
 using Ibit.Plataform.Manager.Spawn;
+using UnityEngine;
 
 namespace Ibit.Plataform.UI
 {

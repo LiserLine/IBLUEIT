@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Ibit.Core.Data;
+﻿using Ibit.Core.Data;
 using Ibit.Core.Database;
 using Ibit.Core.Game;
 using Ibit.Core.Util;
@@ -7,6 +6,7 @@ using Ibit.Plataform.Data;
 using Ibit.Plataform.Manager.Score;
 using Ibit.Plataform.Manager.Spawn;
 using Ibit.Plataform.Manager.Stage;
+using System.IO;
 using UnityEngine;
 
 namespace Ibit.Plataform.Logger

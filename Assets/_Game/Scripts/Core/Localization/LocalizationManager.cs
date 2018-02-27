@@ -1,9 +1,9 @@
 ﻿// Source: https://www.youtube.com/watch?v=5Kt9jbnqzKA&list=PLX2vGYjWbI0TWkV9aEYq93bOX2kwseqUT
 
+using Ibit.Core.Util;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using Ibit.Core.Util;
 
 namespace Ibit.Core.Localization
 {

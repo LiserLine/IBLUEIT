@@ -1,9 +1,9 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using Ibit.Core.Audio;
 using Ibit.Core.Data;
-using Ibit.Core.Audio;
 using Ibit.Plataform.Data;
 using Ibit.Plataform.Manager.Score;
+using UnityEngine;
+using UnityEngine.UI;
 using Color = UnityEngine.Color;
 
 namespace Ibit.Plataform.UI

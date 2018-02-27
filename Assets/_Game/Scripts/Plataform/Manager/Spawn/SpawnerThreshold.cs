@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using Ibit.Core.Data;
 
 namespace Ibit.Plataform.Manager.Spawn
 {
@@ -12,7 +11,7 @@ namespace Ibit.Plataform.Manager.Spawn
 
         public int ObstaclesSucceeded { get; private set; }
         public int ObstaclesFailed { get; private set; }
-        
+
         #endregion Performance
 
         private int airTargetsHit;

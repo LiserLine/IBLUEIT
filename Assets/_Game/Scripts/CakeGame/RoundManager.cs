@@ -1,8 +1,8 @@
-﻿using System.Collections;
+﻿using Ibit.Core.Data;
+using Ibit.Core.Game;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using Ibit.Core.Data;
-using Ibit.Core.Game;
 
 namespace Ibit.CakeGame
 {
@@ -21,7 +21,7 @@ namespace Ibit.CakeGame
         private Stat flow;
 
         private int[] finalScore = new int[3];
-        
+
         private bool jogou = true;
 
         private bool paraTempo;
@@ -70,7 +70,7 @@ namespace Ibit.CakeGame
 
                             StopCountdown();
                             paraTempo = true;
-                            
+
                             //saiu do 0
                             while (player.sensorValue > GameManager.PitacoFlowThreshold && jogou)
                             {

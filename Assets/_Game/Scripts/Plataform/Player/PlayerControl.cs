@@ -1,8 +1,8 @@
 ﻿using Ibit.Core.Data;
 using Ibit.Core.Game;
 using Ibit.Core.Util;
-using UnityEngine;
 using Ibit.Plataform.Camera;
+using UnityEngine;
 
 namespace Ibit.Plataform
 {

@@ -1,7 +1,7 @@
-﻿using System.Linq;
+﻿using Ibit.Plataform.Manager.Stage;
 using NaughtyAttributes;
+using System.Linq;
 using UnityEngine;
-using Ibit.Plataform.Manager.Stage;
 
 namespace Ibit.Plataform.Manager.Spawn
 {

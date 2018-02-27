@@ -1,4 +1,6 @@
-﻿/**
+﻿using Ibit.Core.Util;
+
+/**
  * SerialCommUnity (Serial Communication for Unity)
  * Author: Daniel Wilches <dwilches@gmail.com>
  *
@@ -11,7 +13,6 @@ using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Threading;
-using Ibit.Core.Util;
 using UnityEngine;
 
 /**

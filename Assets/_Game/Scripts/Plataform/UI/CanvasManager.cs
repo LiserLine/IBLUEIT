@@ -1,8 +1,8 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-using Ibit.Core.Database;
+﻿using Ibit.Core.Database;
 using Ibit.Core.Game;
 using Ibit.Plataform.Data;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace Ibit.Plataform.UI
 {

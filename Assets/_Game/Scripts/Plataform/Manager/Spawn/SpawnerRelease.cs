@@ -1,8 +1,7 @@
-﻿using Ibit.Plataform;
+﻿using Ibit.Core.Data;
+using Ibit.Plataform.Camera;
 using NaughtyAttributes;
 using UnityEngine;
-using Ibit.Core.Data;
-using Ibit.Plataform.Camera;
 using Random = UnityEngine.Random;
 
 namespace Ibit.Plataform.Manager.Spawn

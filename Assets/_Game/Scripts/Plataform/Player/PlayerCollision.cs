@@ -1,6 +1,6 @@
-﻿using System.Collections;
-using Ibit.Core.Audio;
+﻿using Ibit.Core.Audio;
 using NaughtyAttributes;
+using System.Collections;
 using UnityEngine;
 
 namespace Ibit.Plataform

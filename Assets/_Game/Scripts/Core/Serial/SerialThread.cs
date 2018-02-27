@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Ports;
 using System.Threading;
 using UnityEngine;
+
 /**
  * SerialCommUnity (Serial Communication for Unity)
  * Author: Daniel Wilches <dwilches@gmail.com>

@@ -1,8 +1,8 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using Ibit.Core.Audio;
 using Ibit.Core.Data;
-using Ibit.Core.Audio;
 using Ibit.Core.Util;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace Ibit.MainMenu.UI.Canvas
 {

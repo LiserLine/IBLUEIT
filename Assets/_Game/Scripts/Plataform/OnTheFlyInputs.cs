@@ -1,6 +1,6 @@
 ﻿using Ibit.Core.Game;
-using UnityEngine;
 using Ibit.Plataform.UI;
+using UnityEngine;
 
 namespace Ibit.Plataform
 {

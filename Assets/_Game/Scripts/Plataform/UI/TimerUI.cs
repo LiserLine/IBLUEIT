@@ -1,8 +1,8 @@
-﻿using System.Globalization;
+﻿using Ibit.Plataform.Data;
+using Ibit.Plataform.Manager.Stage;
+using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
-using Ibit.Plataform.Data;
-using Ibit.Plataform.Manager.Stage;
 
 namespace Ibit.Plataform.UI
 {

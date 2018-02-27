@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Ibit.Core.Data;
+using Ibit.Core.Database;
+using Ibit.Core.Util;
+using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using Ibit.Core.Data;
-using Ibit.Core.Database;
-using Ibit.Core.Util;
 
 namespace Ibit.MainMenu.UI.Canvas
 {
