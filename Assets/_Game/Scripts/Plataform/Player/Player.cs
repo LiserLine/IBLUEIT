@@ -1,4 +1,5 @@
-﻿using NaughtyAttributes;
+﻿using Ibit.Core.Serial;
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace Ibit.Plataform
@@ -13,7 +14,7 @@ namespace Ibit.Plataform
 
         private void Awake()
         {
-            var sc = FindObjectOfType<Ibit.Core.Serial.SerialController>();
+            var sc = FindObjectOfType<SerialController>();
             sc.OnSerialMessageReceived += PositionOnSerial;
             sc.OnSerialMessageReceived += Animate;
         }

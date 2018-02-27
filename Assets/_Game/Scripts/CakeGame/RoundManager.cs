@@ -1,6 +1,7 @@
 ﻿using Ibit.Core.Data;
 using Ibit.Core.Game;
 using System.Collections;
+using Ibit.Core.Serial;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -40,11 +41,11 @@ namespace Ibit.CakeGame
 
         private float timer = 10;
 
-        private Ibit.Core.Serial.SerialController sc;
+        private SerialController sc;
 
         private void Awake()
         {
-            sc = FindObjectOfType<Ibit.Core.Serial.SerialController>();
+            sc = FindObjectOfType<SerialController>();
         }
 
         private IEnumerator PlayGame()

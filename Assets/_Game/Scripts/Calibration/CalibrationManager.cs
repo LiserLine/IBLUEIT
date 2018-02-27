@@ -48,7 +48,7 @@ namespace Ibit.Calibration
 
         private void Awake()
         {
-            serialController = FindObjectOfType<Ibit.Core.Serial.SerialController>();
+            serialController = FindObjectOfType<SerialController>();
             serialController.OnSerialMessageReceived += OnSerialMessageReceived;
             newCapacities = new Capacities();
             flowWatch = new Stopwatch();

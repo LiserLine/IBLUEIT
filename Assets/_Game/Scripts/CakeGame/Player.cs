@@ -1,4 +1,5 @@
-﻿using Ibit.Core.Util;
+﻿using Ibit.Core.Serial;
+using Ibit.Core.Util;
 using UnityEngine;
 
 namespace Ibit.CakeGame
@@ -24,6 +25,6 @@ namespace Ibit.CakeGame
                 picoExpiratorio = sensorValue;
         }
 
-        private void Start() => FindObjectOfType<Ibit.Core.Serial.SerialController>().OnSerialMessageReceived += OnMessageReceived;
+        private void Start() => FindObjectOfType<SerialController>().OnSerialMessageReceived += OnMessageReceived;
     }
 }

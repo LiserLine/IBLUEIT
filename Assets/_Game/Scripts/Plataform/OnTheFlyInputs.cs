@@ -1,4 +1,5 @@
 ﻿using Ibit.Core.Game;
+using Ibit.Core.Serial;
 using Ibit.Plataform.UI;
 using UnityEngine;
 
@@ -17,7 +18,7 @@ namespace Ibit.Plataform
             }
 
             if (Input.GetKeyDown(KeyCode.F2))
-                FindObjectOfType<Ibit.Core.Serial.SerialController>().Recalibrate();
+                FindObjectOfType<SerialController>().Recalibrate();
         }
     }
 }
