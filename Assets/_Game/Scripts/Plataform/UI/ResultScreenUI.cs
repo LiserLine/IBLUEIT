@@ -49,6 +49,8 @@ namespace Ibit.Plataform.UI
             pauseButton.interactable = false;
             scoreValue.text = scoreRatio.text = "";
 
+            GameObject.Find("Canvas").transform.Find("HUD").transform.localScale = Vector3.zero;
+
             resultInfo.text =
                 $"• Score: {score:####} / {maxScore:####} ({((score / maxScore) * 100f):####}%)\n" +
                 $"• Fase: {(int)Stage.Loaded.ObjectToSpawn}\n" +
