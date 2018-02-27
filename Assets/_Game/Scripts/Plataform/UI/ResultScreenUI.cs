@@ -30,7 +30,7 @@ namespace Ibit.Plataform.UI
             {
                 finalResult.text = "GoGoGo!";
                 finalResult.color = Color.cyan;
-                motivationText.text = "Muito bem! Você passou de fase. Continue assim!";
+                motivationText.text = "Muito bem! Você passou de nível. Continue assim!";
                 SoundManager.Instance.PlaySound("StageClear");
             }
             else
