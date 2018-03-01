@@ -35,19 +35,23 @@ namespace Ibit.Plataform.Logger
 
         private void LogPlaySession()
         {
-            if (scr.Result == GameResult.Success)
+            if (Stage.Loaded.Id == Pacient.Loaded.UnlockedLevels)
             {
-                if (Stage.Loaded.Id == Pacient.Loaded.UnlockedLevels)
-                    Pacient.Loaded.UnlockedLevels++;
-            }
-            else
-            {
-                if (scr.Score < scr.MaxScore * 0.3f)
-                    Pacient.Loaded.UnlockedLevels--;
+                if (scr.Result == GameResult.Success)
+                {
 
-                if (Pacient.Loaded.UnlockedLevels <= 0)
-                    Pacient.Loaded.UnlockedLevels = 1;
+                    Pacient.Loaded.UnlockedLevels++;
+                }
+                else
+                {
+                    if (scr.Score < scr.MaxScore * 0.3f)
+                        Pacient.Loaded.UnlockedLevels--;
+
+                    if (Pacient.Loaded.UnlockedLevels <= 0)
+                        Pacient.Loaded.UnlockedLevels = 1;
+                }
             }
+                
 
             Pacient.Loaded.PlaySessionsDone++;
             Pacient.Loaded.AccumulatedScore += scr.Score;
