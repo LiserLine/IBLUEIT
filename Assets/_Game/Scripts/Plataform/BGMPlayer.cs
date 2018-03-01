@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Ibit.Plataform
 {
-    public class BgmPlayer : MonoBehaviour
+    public class BGMPlayer : MonoBehaviour
     {
         private int numDay, numAfternoon, numNight;
 
