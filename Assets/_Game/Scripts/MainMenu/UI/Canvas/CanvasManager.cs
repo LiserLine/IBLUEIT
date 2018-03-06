@@ -8,16 +8,6 @@ namespace Ibit.MainMenu.UI.Canvas
 {
     public partial class CanvasManager : MonoBehaviour
     {
-        private const string Credits = "I Blue It - 0.4" +
-                                       "\n\n[Masters Candidate - Renato Hartmann Grimes]" +
-                                       "\nEletrical Engineering Department" +
-                                       "\n\n[PhD. Marcelo da Silva Hounsell]" +
-                                       "\nComputer Science Department" +
-                                       "\n\n[Santa Catarina State University]" +
-                                       "\nCenter of Technological Sciences";
-
-        public void ShowCredits() => SysMessage.Info(Credits);
-
         public void ShowPlayerInfo()
         {
             SysMessage.Info($"Jogador: {Pacient.Loaded.Name}\n" +
