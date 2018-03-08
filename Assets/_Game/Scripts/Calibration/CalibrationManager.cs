@@ -286,7 +286,7 @@ namespace Ibit.Calibration
                         case 11:
                             PrepareNextExercise();
                             currentExercise = CalibrationExercise.ExpiratoryDuration;
-                            DudeTalk("Neste exercício, ASSOPRE e mantenha o relógio girando! Ao apertar (►), o relógio ficará verde para você começar o exercício.");
+                            DudeTalk("Neste exercício, ASSOPRE e mantenha o relógio girando o MÁXIMO QUE PUDER! Ao apertar (►), o relógio ficará verde para você começar o exercício.");
                             SetNextStep();
                             break;
 
@@ -304,7 +304,7 @@ namespace Ibit.Calibration
                             yield return new WaitForSeconds(0.5f);
 
                             AirFlowStart(false);
-                            balloonText.text = "(ASSOPRE e mantenha o relógio girando)";
+                            balloonText.text = "(ASSOPRE e mantenha o relógio girando o MÁXIMO QUE PUDER)";
 
                             // Wait for player input to be greather than threshold
                             while (flowMeter <= GameManager.PitacoFlowThreshold)
@@ -353,7 +353,7 @@ namespace Ibit.Calibration
                         case 14:
                             PrepareNextExercise();
                             currentExercise = CalibrationExercise.InspiratoryDuration;
-                            DudeTalk("Neste exercício, INSPIRE e mantenha o relógio girando! Ao apertar (►), o relógio ficará verde para você começar o exercício.");
+                            DudeTalk("Neste exercício, INSPIRE e mantenha o relógio girando o MÁXIMO QUE PUDER! Ao apertar (►), o relógio ficará verde para você começar o exercício.");
                             SetNextStep();
                             break;
 
@@ -371,7 +371,7 @@ namespace Ibit.Calibration
                             yield return new WaitForSeconds(0.5f);
 
                             AirFlowStart(false);
-                            balloonText.text = "(INSPIRE para manter o relógio girando)";
+                            balloonText.text = "(INSPIRE para manter o relógio girando o MÁXIMO QUE PUDER)";
 
                             while (flowMeter >= -GameManager.PitacoFlowThreshold)
                                 yield return null;
