@@ -1,5 +1,4 @@
 ﻿using Ibit.Core.Data;
-using Ibit.Plataform.Camera;
 using NaughtyAttributes;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -8,8 +7,8 @@ namespace Ibit.Plataform.Manager.Spawn
 {
     public partial class Spawner
     {
-        private float minDistanceBetweenSpawns = 3f;
-
+        private float minDistanceBetweenSpawns = 2.5f;
+        
         [ShowNonSerializedField]
         private float expHeightAcc;
 
@@ -25,7 +24,6 @@ namespace Ibit.Plataform.Manager.Spawn
         private bool spawnRelaxTime;
 
         public delegate void ObjectReleasedHandler(ObjectToSpawn type, ref GameObject obj1, ref GameObject obj2);
-
         public event ObjectReleasedHandler OnObjectReleased;
 
         public bool RelaxTimeSpawned { get; private set; }

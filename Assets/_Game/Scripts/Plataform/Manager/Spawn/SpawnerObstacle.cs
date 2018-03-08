@@ -12,7 +12,7 @@ namespace Ibit.Plataform.Manager.Spawn
 
             var limit = Pacient.Loaded.Capacities.RespCycleDuration / 3000f;
 
-            second.transform.Translate(firstPos + Mathf.Clamp(limit, 1f, 2.5f) - secondPos, 0f, 0f);
+            second.transform.Translate(firstPos + Mathf.Clamp(limit, 2.5f, 3.5f) - secondPos, 0f, 0f);
         }
 
         private void InstanciateObstacleAir(out GameObject spawned)
