@@ -47,7 +47,7 @@ namespace Ibit.Plataform.Manager.Spawn
             for (i = 0; i < objects.Length; i++)
             {
                 UpdateSpeed(ref objects[i]);
-                objects[i].transform.Translate(i / 1.75f, 0f, 0f);
+                objects[i].transform.Translate(i / 1.5f, 0f, 0f);
             }
 
             for (i = 0; i < objects.Length; i++)
