@@ -43,9 +43,8 @@ namespace com.pellegrinoprincipe
             CreateTheUI();
             ManageKeyPress();
         }
-
-        // hotkey to activate the window: CTRL (CMD on macOS) + SHIFT + s 
-        [MenuItem("Tools/Separators/Create Separator... #c", false, 0)]
+        
+        [MenuItem("Tools/Separators/Create Separator", false, 0)]
         public static void ShowWindow()
         {
             int startX = 500, startY = 200;
@@ -54,9 +53,7 @@ namespace com.pellegrinoprincipe
             window.position = new Rect(startX, startY, wWidth, wHeight);
             window.maxSize = window.minSize = new Vector2(wWidth, wHeight);
         }
-
-        // hotkey to update the separators: CTRL (CMD on macOS) + SHIFT + U 
-        [MenuItem("Tools/Separators/Update Separators #u", false, 1)]
+        [MenuItem("Tools/Separators/Update Separators", false, 1)]
         public static void UpdateSeparators()
         {
             if (Instance == null)
