@@ -4080,6 +4080,10 @@ MonoBehaviour:
   - {fileID: 1774716689977566, guid: d1752f78c2f593942bc47468330258f6, type: 2}
   - {fileID: 1979597902831624, guid: a670f0d87658b7d46ba729b539ff537f, type: 2}
   - {fileID: 1582079116040042, guid: 85cb7fcf034d3e6408a4335337549ba3, type: 2}
+  arrowUpPrefab: {fileID: 1394310071536932, guid: 1560a830baa881946bdd192e17d122bc,
+    type: 2}
+  arrowDownPrefab: {fileID: 1967461620418684, guid: 0fa275c1c03cbb649a9f720729db6cdf,
+    type: 2}
 --- !u!1 &1813356614
 GameObject:
   m_ObjectHideFlags: 0

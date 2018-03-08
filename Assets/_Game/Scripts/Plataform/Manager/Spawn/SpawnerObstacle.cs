@@ -5,6 +5,9 @@ namespace Ibit.Plataform.Manager.Spawn
 {
     public partial class Spawner
     {
+        [SerializeField]
+        private GameObject arrowUpPrefab, arrowDownPrefab;
+
         private void DistanciateObstacles(ref GameObject first, ref GameObject second)
         {
             var firstPos = first.transform.position.x + first.transform.localScale.x / 2f;
@@ -15,7 +18,7 @@ namespace Ibit.Plataform.Manager.Spawn
             second.transform.Translate(firstPos + Mathf.Clamp(limit, 2.5f, 3.5f) - secondPos, 0f, 0f);
         }
 
-        private void InstanciateObstacleAir(out GameObject spawned)
+        private void InstantiateObstacleAir(out GameObject spawned)
         {
             var index = Random.Range(0, obstaclesAir.Length);
 
@@ -24,15 +27,21 @@ namespace Ibit.Plataform.Manager.Spawn
                 transform.rotation,
                 transform);
 
+            if (Data.Stage.Loaded.Level < 3)
+            {
+                var arrow = Instantiate(arrowDownPrefab, spawned.transform);
+                arrow.transform.Translate(0f, spawned.transform.localScale.y / 2f - 2f, 0f);
+            }
+
             var scale = Pacient.Loaded.Capacities.ExpFlowDuration / 1000f * (1f + expSizeAcc) * Data.Stage.Loaded.GameDifficulty;
 
             scale = scale < 1f ? 1f : scale;
 
-            spawned.transform.localScale = new Vector3(scale, scale, 1);
-            spawned.transform.Translate(0f, spawned.transform.localScale.y / 2, 0f);
+            spawned.transform.localScale = new Vector3(scale, scale, 1f);
+            spawned.transform.Translate(0f, spawned.transform.localScale.y / 2f, 0f);
         }
 
-        private void InstanciateObstacleWater(out GameObject spawned)
+        private void InstantiateObstacleWater(out GameObject spawned)
         {
             var index = Random.Range(0, obstaclesWater.Length);
 
@@ -41,20 +50,26 @@ namespace Ibit.Plataform.Manager.Spawn
                 transform.rotation,
                 transform);
 
+            if (Data.Stage.Loaded.Level < 3)
+            {
+                var arrow = Instantiate(arrowUpPrefab, spawned.transform);
+                arrow.transform.Translate(0f, spawned.transform.localScale.y / 2f + 1f, 0f);
+            }
+
             var scale = Pacient.Loaded.Capacities.InsFlowDuration / 1000f * (1f + insSizeAcc) * Data.Stage.Loaded.GameDifficulty;
 
             scale = scale < 1f ? 1f : scale;
 
-            spawned.transform.localScale = new Vector3(scale, scale, 1);
-            spawned.transform.Translate(0f, -spawned.transform.localScale.y / 2, 0f);
+            spawned.transform.localScale = new Vector3(scale, scale, 1f);
+            spawned.transform.Translate(0f, -spawned.transform.localScale.y / 2f, 0f);
         }
 
         private void ReleaseObstacles()
         {
             GameObject airObj, waterObj;
 
-            InstanciateObstacleWater(out waterObj);
-            InstanciateObstacleAir(out airObj);
+            InstantiateObstacleWater(out waterObj);
+            InstantiateObstacleAir(out airObj);
 
             DistanciateSpawns(ref waterObj);
             DistanciateObstacles(ref waterObj, ref airObj);

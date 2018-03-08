@@ -11,7 +11,7 @@ namespace Ibit.Plataform.Manager.Spawn
                                        Mathf.Clamp(Pacient.Loaded.Capacities.RespCycleDuration / 2500f, 1f, 2f) -
                                        second.transform.position.x, 0f, 0f);
 
-        private void InstanciateTargetAir(out GameObject spawned)
+        private void InstantiateTargetAir(out GameObject spawned)
         {
             var index = Random.Range(0, targetsAir.Length);
             spawned = Instantiate(targetsAir[index],
@@ -26,7 +26,7 @@ namespace Ibit.Plataform.Manager.Spawn
             spawned.transform.Translate(0f, posY, 0f);
         }
 
-        private void InstanciateTargetWater(out GameObject spawned)
+        private void InstantiateTargetWater(out GameObject spawned)
         {
             var index = Random.Range(0, targetsWater.Length);
             spawned = Instantiate(targetsWater[index],
@@ -45,8 +45,8 @@ namespace Ibit.Plataform.Manager.Spawn
         {
             GameObject airObj, waterObj;
 
-            InstanciateTargetAir(out airObj);
-            InstanciateTargetWater(out waterObj);
+            InstantiateTargetAir(out airObj);
+            InstantiateTargetWater(out waterObj);
 
             DistanciateSpawns(ref airObj);
             DistanciateTargets(ref airObj, ref waterObj);
