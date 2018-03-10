@@ -155,7 +155,7 @@ namespace Ibit.CakeGame
                             //voltou pro 0
                             finalScoreMenu.pikeString[2] = player.picoExpiratorio.ToString();
                             TextPanel.SetActive(true);
-                            if (jogou) displayHowTo.text = "Parabéns!\nPressione [Enter] para ir para a proxima rodada.";
+                            if (jogou) displayHowTo.text = "Parabéns!\nPressione [Enter] para ver a sua pontuação.";
                             player.picoExpiratorio = 0;
                             sc.StopSampling();
                             break;
@@ -268,6 +268,7 @@ namespace Ibit.CakeGame
 
             if (partidaCompleta)
             {
+                TextPanel.SetActive(false);
                 finalScoreMenu.DisplayFinalScore(finalScore[0], finalScore[1], finalScore[2]);
                 finalScoreMenu.ToggleScoreMenu();
             }
