@@ -17,6 +17,8 @@ namespace Ibit.CakeGame
 
         public Sprite starOn;
 
+        
+
         [SerializeField]
         public ScoreMenu scoreMenu;
 
@@ -48,6 +50,7 @@ namespace Ibit.CakeGame
                 content[i].fillAmount = 1;
             }
         }
+        
 
         public void OnFinish() => scoreMenu.ToggleScoreMenu();
     }

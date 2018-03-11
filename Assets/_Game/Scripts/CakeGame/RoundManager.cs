@@ -1,7 +1,7 @@
 ﻿using Ibit.Core.Data;
 using Ibit.Core.Game;
-using System.Collections;
 using Ibit.Core.Serial;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,7 +19,9 @@ namespace Ibit.CakeGame
         private ScoreMenu finalScoreMenu;
 
         [SerializeField]
-        private Stat flow;
+        public GameObject TextPanel;
+
+        [SerializeField]
 
         private int[] finalScore = new int[3];
 
@@ -46,26 +48,37 @@ namespace Ibit.CakeGame
         private void Awake()
         {
             sc = FindObjectOfType<SerialController>();
+            
         }
 
         private IEnumerator PlayGame()
         {
+
             while (!partidaCompleta)
             {
                 if (ppasso)
                 {
                     CleanScene();
 
+                    while(!sc.IsConnected)
+                    {
+                        passo = -1;
+                        TextPanel.SetActive(true);
+                        displayHowTo.text = "Seu PITACO não está conectado! Conecte o dispositivo e volte ao menu principal.";
+                        yield return null;
+                    }
+                    //VERIFICAR SE É ISSO MESMO!!!
+
                     switch (passo)
                     {
                         case 1:
-                            displayHowTo.text = "Pressione [Enter] e assopre \n o mais forte que conseguir dentro do tempo.";
+                            displayHowTo.text = "Pressione [Enter] e assopre o mais forte que conseguir dentro do tempo.";
                             break;
 
                         case 2:
                             sc.StartSampling();
                             displayHowTo.text = "";
-
+                            TextPanel.SetActive(false);
                             while (player.sensorValue <= GameManager.PitacoFlowThreshold && jogou)
                                 yield return null;
 
@@ -80,7 +93,9 @@ namespace Ibit.CakeGame
                             }
 
                             //voltou pro 0
-                            displayHowTo.text = "Parabéns!\nPressione [Enter] para ir para a proxima rodada.";
+                            finalScoreMenu.pikeString[0] = player.picoExpiratorio.ToString();
+                            TextPanel.SetActive(true);
+                            if (jogou) displayHowTo.text = "Parabéns!\nPressione [Enter] para ir para a proxima rodada.";
                             player.picoExpiratorio = 0;
                             break;
 
@@ -93,7 +108,7 @@ namespace Ibit.CakeGame
 
                         case 4:
                             displayHowTo.text = "";
-
+                            TextPanel.SetActive(false);
                             while (player.sensorValue <= GameManager.PitacoFlowThreshold && jogou)
                                 yield return null;
 
@@ -108,7 +123,9 @@ namespace Ibit.CakeGame
                             }
 
                             //voltou pro 0
-                            displayHowTo.text = "Muito bem!\nPressione [Enter] para continuar.";
+                            finalScoreMenu.pikeString[1] = player.picoExpiratorio.ToString();
+                            TextPanel.SetActive(true);
+                            if (jogou) displayHowTo.text = "Parabéns!\nPressione [Enter] para ir para a proxima rodada.";
                             player.picoExpiratorio = 0;
                             break;
 
@@ -121,7 +138,7 @@ namespace Ibit.CakeGame
 
                         case 6:
                             displayHowTo.text = "";
-
+                            TextPanel.SetActive(false);
                             while (player.sensorValue <= GameManager.PitacoFlowThreshold && jogou)
                                 yield return null;
 
@@ -136,10 +153,14 @@ namespace Ibit.CakeGame
                             }
 
                             //voltou pro 0
-                            displayHowTo.text = "Muito bem!\nPressione [Enter] para continuar.";
+                            finalScoreMenu.pikeString[2] = player.picoExpiratorio.ToString();
+                            TextPanel.SetActive(true);
+                            if (jogou) displayHowTo.text = "Parabéns!\nPressione [Enter] para ver a sua pontuação.";
                             player.picoExpiratorio = 0;
                             sc.StopSampling();
                             break;
+
+
                     }
 
                     ppasso = false;
@@ -174,7 +195,6 @@ namespace Ibit.CakeGame
                 score.FillStars(2);
                 finalScore[(passo / 2) - 1] = 3;
             }
-            flow.CurrentVal = percentage * 100;
         }
 
         #endregion Calculatin Flow Percentage
@@ -185,7 +205,6 @@ namespace Ibit.CakeGame
         {
             candle.TurnOn();
             score.UnfillStars();
-            flow.CurrentVal = 0;
         }
 
         #endregion Cleaning Stats
@@ -195,20 +214,8 @@ namespace Ibit.CakeGame
         public void ExecuteNextStep()
         {
             ppasso = true;
-        }
-
-        private void SetNextStep(bool jumpToStep = false)
-        {
             passo++;
-            ppasso = jumpToStep;
         }
-
-        private void SetStep(int step, bool jumpToStep = false)
-        {
-            passo = step;
-            ppasso = jumpToStep;
-        }
-
         #endregion Step Controllers
 
         #region Countdown Timer
@@ -226,8 +233,7 @@ namespace Ibit.CakeGame
             passo = 0;
             ppasso = false;
             partidaCompleta = false;
-            displayHowTo.text = "Aperte [ENTER] para começar.";
-            flow.Initialize();
+            displayHowTo.text = "Pressione [Enter] para começar.";
             StartCoroutine(PlayGame());
         }
 
@@ -251,7 +257,7 @@ namespace Ibit.CakeGame
             if ((passo == 2 || passo == 4 || passo == 6) && paraTempo == false)
             {
                 timer -= Time.deltaTime;
-                displayTimer.text = timer.ToString("f0");
+                displayTimer.text = "Timer: " + timer.ToString("f0");
                 if (timer <= 0)
                 {
                     timer = 0;
@@ -262,6 +268,7 @@ namespace Ibit.CakeGame
 
             if (partidaCompleta)
             {
+                TextPanel.SetActive(false);
                 finalScoreMenu.DisplayFinalScore(finalScore[0], finalScore[1], finalScore[2]);
                 finalScoreMenu.ToggleScoreMenu();
             }
