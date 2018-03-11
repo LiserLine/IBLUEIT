@@ -158,6 +158,7 @@ namespace Ibit.CakeGame
                             if (jogou) displayHowTo.text = "Parabéns!\nPressione [Enter] para ver a sua pontuação.";
                             player.picoExpiratorio = 0;
                             sc.StopSampling();
+							FindObjectOfType<PitacoLogger>().StopLogging();
                             break;
 
 
