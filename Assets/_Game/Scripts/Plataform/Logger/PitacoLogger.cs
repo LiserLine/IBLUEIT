@@ -2,7 +2,6 @@
 using Ibit.Core.Game;
 using Ibit.Core.Serial;
 using Ibit.Core.Util;
-using Ibit.Plataform.Manager.Stage;
 using System.Linq;
 using UnityEngine;
 
@@ -14,9 +13,6 @@ namespace Ibit.Plataform.Logger
         {
             sb.AppendLine("time;value");
             FindObjectOfType<SerialController>().OnSerialMessageReceived += OnSerialMessageReceived;
-
-            if (FindObjectOfType<StageManager>() != null)
-                FindObjectOfType<StageManager>().OnStageEnd += StopLogging;
         }
 
         protected override void Flush()

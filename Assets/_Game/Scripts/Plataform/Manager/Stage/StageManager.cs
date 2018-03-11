@@ -1,10 +1,9 @@
 ﻿using Ibit.Core.Audio;
 using Ibit.Core.Game;
 using Ibit.Core.Serial;
-using Ibit.Core.Util;
+using Ibit.Plataform.Logger;
 using Ibit.Plataform.Manager.Score;
 using Ibit.Plataform.Manager.Spawn;
-using Ibit.Plataform.UI;
 using NaughtyAttributes;
 using UnityEngine;
 
@@ -118,6 +117,7 @@ namespace Ibit.Plataform.Manager.Stage
             IsRunning = false;
             FindObjectOfType<Scorer>().CalculateResult(FindObjectOfType<Player>().HeartPoins < 1);
             FindObjectOfType<SerialController>().StopSampling();
+            FindObjectOfType<PitacoLogger>().StopLogging();
             OnStageEnd?.Invoke();
         }
 
