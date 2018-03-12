@@ -1,7 +1,7 @@
 ﻿using Ibit.Core.Audio;
 using Ibit.Core.Game;
 using Ibit.Core.Serial;
-using Ibit.Plataform.Logger;
+using Ibit.Core.Util;
 using Ibit.Plataform.Manager.Score;
 using Ibit.Plataform.Manager.Spawn;
 using NaughtyAttributes;

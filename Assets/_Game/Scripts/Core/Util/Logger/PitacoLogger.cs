@@ -1,11 +1,10 @@
 ﻿using Ibit.Core.Data;
 using Ibit.Core.Game;
 using Ibit.Core.Serial;
-using Ibit.Core.Util;
 using System.Linq;
 using UnityEngine;
 
-namespace Ibit.Plataform.Logger
+namespace Ibit.Core.Util
 {
     public class PitacoLogger : Logger<PitacoLogger>
     {
