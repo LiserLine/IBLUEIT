@@ -83,7 +83,9 @@ namespace Ibit.Core.Database
         {
             var items = new[] { "Id", "Name", "Birthday", "Observations", "Condition",
                 "InsPeakFlow", "ExpPeakFlow", "InsFlowDuration", "ExpFlowDuration", "RespCycleDuration",
-                "UnlockedLevels", "AccumulatedScore", "PlaySessionsDone", "CalibrationDone", "HowToPlayDone" };
+                "UnlockedLevels", "AccumulatedScore", "PlaySessionsDone", "CalibrationDone", "HowToPlayDone",
+                "InsPeakFlowVol", "ExpPeakFlowVol"
+            };
 
             var sb = new StringBuilder();
             sb.AppendLine(items.Aggregate((a, b) => a + ";" + b));
@@ -95,7 +97,8 @@ namespace Ibit.Core.Database
                 sb.AppendLine(
                     $"{pacient.Id};{pacient.Name};{pacient.Birthday:dd/MM/yyyy};{pacient.Observations};{pacient.Condition};" +
                     $"{pacient.Capacities.RawInsPeakFlow};{pacient.Capacities.RawExpPeakFlow};{pacient.Capacities.RawInsFlowDuration};{pacient.Capacities.RawExpFlowDuration};" +
-                    $"{pacient.Capacities.RawRespCycleDuration};{pacient.UnlockedLevels};{pacient.AccumulatedScore};{pacient.PlaySessionsDone};{pacient.CalibrationDone};{pacient.HowToPlayDone};");
+                    $"{pacient.Capacities.RawRespCycleDuration};{pacient.UnlockedLevels};{pacient.AccumulatedScore};{pacient.PlaySessionsDone};{pacient.CalibrationDone};{pacient.HowToPlayDone};" +
+                    $"{FlowMath.VolumetricFlowOfAirRate(pacient.Capacities.RawInsPeakFlow)};{FlowMath.VolumetricFlowOfAirRate(pacient.Capacities.RawExpPeakFlow)}");
             }
 
             FileReader.WriteAllText(filePath, sb.ToString());

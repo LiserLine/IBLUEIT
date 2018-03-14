@@ -4,7 +4,6 @@ using Ibit.Core.Database;
 using Ibit.Core.Game;
 using Ibit.Core.Serial;
 using Ibit.Core.Util;
-using Ibit.Plataform.Logger;
 using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
