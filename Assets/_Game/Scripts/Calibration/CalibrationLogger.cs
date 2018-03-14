@@ -8,7 +8,7 @@ namespace Ibit.Calibration
     {
         protected override void Awake() => sb.AppendLine("time;result;exercise;value");
 
-        public void Write(CalibrationExerciseResult cr, CalibrationExercise ce, float value) => sb.AppendLine($"{DateTime.Now:s};{cr};{ce};{value}");
+        public void Write(CalibrationExerciseResult cr, CalibrationExercise ce, float value) => sb.AppendLine($"{DateTime.Now:s};{cr};{ce};{FlowMath.ToLitresPerMinute(value)}");
 
         protected override void Flush()
         {

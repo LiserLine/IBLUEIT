@@ -12,8 +12,8 @@ namespace Ibit.Calibration.UI
 
         private void OnEnable()
         {
-            resultText.text = $"Pico Exp.: {FlowMath.VolumetricFlowOfAirRate(Pacient.Loaded.Capacities.RawExpPeakFlow)} L/min ({Pacient.Loaded.Capacities.RawExpPeakFlow} Pa)\n" +
-                              $"Pico Ins.: {FlowMath.VolumetricFlowOfAirRate(Pacient.Loaded.Capacities.RawInsPeakFlow)} L/min ({Pacient.Loaded.Capacities.RawInsPeakFlow} Pa)\n" +
+            resultText.text = $"Pico Exp.: {FlowMath.ToLitresPerMinute(Pacient.Loaded.Capacities.RawExpPeakFlow)} L/min ({Pacient.Loaded.Capacities.RawExpPeakFlow} Pa)\n" +
+                              $"Pico Ins.: {FlowMath.ToLitresPerMinute(Pacient.Loaded.Capacities.RawInsPeakFlow)} L/min ({Pacient.Loaded.Capacities.RawInsPeakFlow} Pa)\n" +
                               $"Tempo Exp.: {Pacient.Loaded.Capacities.RawExpFlowDuration / 1000f:F1} s\n" +
                               $"Tempo Ins.: {Pacient.Loaded.Capacities.RawInsFlowDuration / 1000f:F1} s\n" +
                               $"Freq. Resp. Média: {Pacient.Loaded.Capacities.RawRespCycleDuration / 1000f:F1} sec/cycle";

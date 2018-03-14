@@ -98,7 +98,7 @@ namespace Ibit.Core.Database
                     $"{pacient.Id};{pacient.Name};{pacient.Birthday:dd/MM/yyyy};{pacient.Observations};{pacient.Condition};" +
                     $"{pacient.Capacities.RawInsPeakFlow};{pacient.Capacities.RawExpPeakFlow};{pacient.Capacities.RawInsFlowDuration};{pacient.Capacities.RawExpFlowDuration};" +
                     $"{pacient.Capacities.RawRespCycleDuration};{pacient.UnlockedLevels};{pacient.AccumulatedScore};{pacient.PlaySessionsDone};{pacient.CalibrationDone};{pacient.HowToPlayDone};" +
-                    $"{FlowMath.VolumetricFlowOfAirRate(pacient.Capacities.RawInsPeakFlow)};{FlowMath.VolumetricFlowOfAirRate(pacient.Capacities.RawExpPeakFlow)}");
+                    $"{FlowMath.ToLitresPerMinute(pacient.Capacities.RawInsPeakFlow)};{FlowMath.ToLitresPerMinute(pacient.Capacities.RawExpPeakFlow)}");
             }
 
             FileReader.WriteAllText(filePath, sb.ToString());
