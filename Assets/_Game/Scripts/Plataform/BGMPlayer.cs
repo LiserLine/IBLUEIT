@@ -1,4 +1,6 @@
-﻿using Ibit.Core.Audio;
+﻿using System.Collections.Generic;
+using System.IO;
+using Ibit.Core.Audio;
 using Ibit.Plataform.Data;
 using Ibit.Plataform.Manager.Spawn;
 using System.Linq;
@@ -9,9 +11,12 @@ namespace Ibit.Plataform
     public class BGMPlayer : MonoBehaviour
     {
         private int numDay, numAfternoon, numNight;
+        private IEnumerable<string> musicsInStreamingAssets;
 
         private void Awake()
         {
+            musicsInStreamingAssets = Directory.GetFiles(Application.streamingAssetsPath + @"/Music").Where(filename => filename.EndsWith(".ogg"));
+
             numDay = SoundManager.Instance.Sounds.Count(x => x.name.Contains("BGM_Day"));
             numAfternoon = SoundManager.Instance.Sounds.Count(x => x.name.Contains("BGM_Afternoon"));
             numNight = SoundManager.Instance.Sounds.Count(x => x.name.Contains("BGM_Night"));
@@ -35,6 +40,35 @@ namespace Ibit.Plataform
             }
         }
 
-        private void Start() => PlayBGM();
+        private void PickRandomFromStreamingAssets()
+        {
+            var element = musicsInStreamingAssets.ElementAt(Random.Range(0, musicsInStreamingAssets.Count() - 1));
+            var www = new WWW("file://" + element);
+
+            var audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.playOnAwake = true;
+            audioSource.loop = true;
+            audioSource.clip = www.GetAudioClip(false, false);
+            audioSource.Play();
+        }
+
+        private void Start()
+        {
+            if (musicsInStreamingAssets.Any())
+            {
+                if (Random.Range(0, 1) == 0)
+                {
+                    PlayBGM();
+                }
+                else
+                {
+                    PickRandomFromStreamingAssets();
+                }
+            }
+            else
+            {
+                PlayBGM();
+            }
+        }
     }
 }
