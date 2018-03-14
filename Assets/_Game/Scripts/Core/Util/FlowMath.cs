@@ -66,7 +66,7 @@ namespace Ibit.Core.Util
         /// <summary>
         /// Converts m³/s to L/min
         /// </summary>
-        public const float ToLitersPerMinute = 60000;
+        public const float ToLitresPerMinute = 60000;
 
         /* Pitaco Measures */
         private const float tubeRadius = 0.016f;
@@ -76,7 +76,7 @@ namespace Ibit.Core.Util
         /// <summary>
         /// Returns the volumetric flow of air in Cubic Meter / Second
         /// </summary>
-        /// <param name="differentialPressure"></param>
+        /// <param name="differentialPressure">Pressure difference in Pascal (Pa)</param>
         /// <returns></returns>
         public static float Poiseulle(float differentialPressure) =>
             differentialPressure * Mathf.PI * Mathf.Pow(tubeRadius, 4) / (8 * airViscosity * tubeLenght);
@@ -86,6 +86,6 @@ namespace Ibit.Core.Util
         /// </summary>
         /// <param name="differentialPressure">Pressure difference in Pascal (Pa)</param>
         /// <returns></returns>
-        public static float VolumetricFlowOfAirRate(float differentialPressure) => Poiseulle(differentialPressure / 1000f) * ToLitersPerMinute;
+        public static float VolumetricFlowOfAirRate(float differentialPressure) => Poiseulle(differentialPressure / 1000f) * ToLitresPerMinute;
     }
 }

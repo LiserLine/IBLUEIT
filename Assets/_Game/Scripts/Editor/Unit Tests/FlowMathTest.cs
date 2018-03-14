@@ -8,7 +8,7 @@ public class FlowMathTest
     public void TestEquations()
     {
         var diffpress = 1500f;
-        Debug.Log("Volumetric Flow Rate: " + FlowMath.Poiseulle(diffpress / 1000f) * FlowMath.ToLitersPerMinute + " L/min");
+        Debug.Log("Volumetric Flow Rate: " + FlowMath.Poiseulle(diffpress / 1000f) * FlowMath.ToLitresPerMinute + " L/min");
         Debug.Log("Volumetric Flow Rate: " + FlowMath.VolumetricFlowOfAirRate(diffpress) + " L/min");
     }
 }
