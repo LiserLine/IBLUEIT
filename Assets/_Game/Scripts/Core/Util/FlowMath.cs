@@ -1,6 +1,7 @@
 ﻿using Ibit.Core.Game;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace Ibit.Core.Util
 {
@@ -60,5 +61,31 @@ namespace Ibit.Core.Util
 
             return sumTimes / quantCycles;
         }
+
+        
+        /// <summary>
+        /// Converts m³/s to L/min
+        /// </summary>
+        public const float ToLitersPerMinute = 60000;
+
+        /* Pitaco Measures */
+        private const float tubeRadius = 0.016f;
+        private const float tubeLenght = 0.2f;
+        private const float airViscosity = 18.2f * 0.000001f;
+
+        /// <summary>
+        /// Returns the volumetric flow of air in Cubic Meter / Second
+        /// </summary>
+        /// <param name="differentialPressure"></param>
+        /// <returns></returns>
+        public static float Poiseulle(float differentialPressure) =>
+            differentialPressure * Mathf.PI * Mathf.Pow(tubeRadius, 4) / (8 * airViscosity * tubeLenght);
+
+        /// <summary>
+        /// Returns the volumetric flow of air in Litres/Minute
+        /// </summary>
+        /// <param name="differentialPressure">Pressure difference in Pascal (Pa)</param>
+        /// <returns></returns>
+        public static float VolumetricFlowOfAirRate(float differentialPressure) => Poiseulle(differentialPressure / 1000f) * ToLitersPerMinute;
     }
 }
