@@ -426,7 +426,7 @@ MonoBehaviour:
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: 0
+    m_Top: 20
     m_Bottom: 0
   m_ChildAlignment: 3
   m_Spacing: -300
@@ -4225,7 +4225,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "N\xEDvel"
+  m_Text: Nivel
 --- !u!222 &1834666582
 CanvasRenderer:
   m_ObjectHideFlags: 0
