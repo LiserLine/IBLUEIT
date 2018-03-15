@@ -12,8 +12,8 @@ EditorBuildSettings:
     path: Assets/_Game/Scenes/Plataform.unity
     guid: da8eb59bafd36ec4381d25e0698b1efc
   - enabled: 1
-    path: Assets/_Game/Scenes/__Calibration_bkp.unity
-    guid: 9b6702d68c29bae4db07053c861c291b
+    path: Assets/_Game/Scenes/Calibration.unity
+    guid: 03f935f20867cdc459e52790af12d7d0
   - enabled: 1
     path: Assets/_Game/Scenes/Localization.unity
     guid: 78f30f0a19263f9418993e9cb2ca7e03

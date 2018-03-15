@@ -1,4 +1,6 @@
-﻿using Ibit.Core.Audio;
+﻿using System.Runtime.InteropServices;
+using Ibit.Calibration;
+using Ibit.Core.Audio;
 using Ibit.Core.Data;
 using Ibit.Core.Util;
 using UnityEngine;
@@ -41,5 +43,12 @@ namespace Ibit.MainMenu.UI.Canvas
         private void PlayClick() => SoundManager.Instance.PlaySound("BtnClickUI");
 
         private void Start() => AddClickSfxToButtons();
+
+        public void SetCalibrationToRespCycle() => CalibrationManager.CalibrationToLoad = CalibrationExercise.RespiratoryFrequency;
+        public void SetCalibrationToExpPeak() => CalibrationManager.CalibrationToLoad = CalibrationExercise.ExpiratoryPeak;
+        public void SetCalibrationToInsPeak() => CalibrationManager.CalibrationToLoad = CalibrationExercise.InspiratoryPeak;
+        public void SetCalibrationToExpDur() => CalibrationManager.CalibrationToLoad = CalibrationExercise.ExpiratoryDuration;
+        public void SetCalibrationToInsDur() => CalibrationManager.CalibrationToLoad = CalibrationExercise.InspiratoryDuration;
+
     }
 }

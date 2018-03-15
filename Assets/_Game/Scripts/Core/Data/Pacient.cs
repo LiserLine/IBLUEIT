@@ -18,9 +18,8 @@ namespace Ibit.Core.Data
         public int PlaySessionsDone;
         public bool CalibrationDone;
         public bool HowToPlayDone;
-
-#if UNITY_EDITOR
-
+        
+        #if UNITY_EDITOR
         static Pacient()
         {
             if (Loaded == null)
@@ -45,8 +44,16 @@ namespace Ibit.Core.Data
                     }
                 };
         }
+        #endif
 
-#endif
+        public bool IsCalibrationDone()
+        {
+            return this.Capacities.RawInsPeakFlow < 0
+                   && this.Capacities.RawInsFlowDuration > 0
+                   && this.Capacities.RawExpPeakFlow > 0
+                   && this.Capacities.RawExpFlowDuration > 0
+                   && this.Capacities.RawRespCycleDuration > 0;
+        }
     }
 
     public enum ConditionType

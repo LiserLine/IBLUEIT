@@ -14,14 +14,14 @@ namespace Ibit.Core.Util
             FindObjectOfType<SerialController>().OnSerialMessageReceived += OnSerialMessageReceived;
         }
 
-        protected override void Flush()
+        protected override void Save()
         {
             var textData = sb.ToString();
 
             if (textData.Count(s => s == '\n') < 2)
                 return;
 
-            var path = @"savedata/pacients/" + Pacient.Loaded.Id + @"/" + $"{recordStart:yyyyMMdd-HHmmss}_" + FileName + ".csv";
+            var path = @"savedata/pacients/" + Pacient.Loaded.Id + @"/" + $"{recordStart:yyyyMMdd-HHmmss}-" + FileName + ".csv";
             FileReader.WriteAllText(path, textData);
         }
 
@@ -32,5 +32,7 @@ namespace Ibit.Core.Util
 
             sb.AppendLine($"{Time.time:F};{Parsers.Float(msg):F}");
         }
+
+        //public void Pause(bool toggle) => isLogging = !toggle;
     }
 }

@@ -36,14 +36,14 @@ namespace Ibit.Core.Util
 
             isLogging = false;
             recordStop = DateTime.Now;
-            Flush();
+            Save();
 
             sb.Clear();
         }
 
         protected abstract void Awake();
 
-        protected abstract void Flush();
+        protected abstract void Save();
 
         protected virtual void Start() => StartLogging();
     }

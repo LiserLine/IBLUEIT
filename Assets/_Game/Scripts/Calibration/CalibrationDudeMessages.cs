@@ -7,14 +7,14 @@ namespace Ibit.Calibration
     {
         private void DudeTalk(string msg)
         {
-            balloonText.text = msg;
-            dude.GetComponent<Animator>().SetBool("Talking", true);
+            _dialogText.text = msg;
+            _dudeObject.GetComponent<Animator>().SetBool("Talking", true);
         }
 
         private void DudeClearMessage()
         {
-            balloonText.text = "";
-            dude.GetComponent<Animator>().SetBool("Talking", false);
+            _dialogText.text = "";
+            _dudeObject.GetComponent<Animator>().SetBool("Talking", false);
         }
 
         private void DudeCongratulate()
@@ -26,7 +26,7 @@ namespace Ibit.Calibration
         private void DudeWarnUnknownFlow()
         {
             SoundManager.Instance.PlaySound("Failure");
-            DudeTalk("Não consegui medir sua respiração. Vamos tentar novamente? Pressione (►) para continuar.");
+            DudeTalk("Não consegui medir seu exercício. Vamos tentar novamente? Pressione (►) para continuar.");
         }
 
         private void DudeWarnPitacoDisconnected() => DudeTalk("O PITACO não está conectado. Conecte-o ao computador! Pressione (►) para continuar.");

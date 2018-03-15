@@ -7,47 +7,41 @@ namespace Ibit.Calibration
     {
         private void OnSerialMessageReceived(string msg)
         {
-            if (!acceptingValues || msg.Length < 1)
+            if (!_acceptingValues || msg.Length < 1)
                 return;
 
             var tmp = Parsers.Float(msg);
 
-            switch (currentExercise)
+            switch (_currentExercise)
             {
                 case CalibrationExercise.ExpiratoryPeak:
-                    if (tmp > flowMeter)
+                    if (tmp > _flowMeter)
                     {
-                        flowMeter = tmp;
+                        _flowMeter = tmp;
 
-                        if (flowMeter > newCapacities.ExpPeakFlow)
-                        {
-                            newCapacities.ExpPeakFlow = flowMeter;
-                            Debug.Log($"ExpPeakFlow: {flowMeter}");
-                        }
+                        if (_flowMeter > _tmpCapacities.RawExpPeakFlow)
+                            _tmpCapacities.ExpPeakFlow = _flowMeter;
                     }
                     break;
 
                 case CalibrationExercise.InspiratoryPeak:
-                    if (tmp < flowMeter)
+                    if (tmp < _flowMeter)
                     {
-                        flowMeter = tmp;
+                        _flowMeter = tmp;
 
-                        if (flowMeter < newCapacities.InsPeakFlow)
-                        {
-                            newCapacities.InsPeakFlow = flowMeter;
-                            Debug.Log($"InsPeakFlow: {flowMeter}");
-                        }
+                        if (_flowMeter < _tmpCapacities.RawInsPeakFlow)
+                            _tmpCapacities.InsPeakFlow = _flowMeter;
                     }
                     break;
 
                 case CalibrationExercise.ExpiratoryDuration:
                 case CalibrationExercise.InspiratoryDuration:
-                    flowMeter = tmp;
+                    _flowMeter = tmp;
                     break;
 
                 case CalibrationExercise.RespiratoryFrequency:
-                    if (flowWatch.IsRunning)
-                        capturedSamples.Add(flowWatch.ElapsedMilliseconds, tmp);
+                    if (_flowWatch.IsRunning)
+                        _capturedSamples.Add(_flowWatch.ElapsedMilliseconds, tmp);
                     break;
             }
         }

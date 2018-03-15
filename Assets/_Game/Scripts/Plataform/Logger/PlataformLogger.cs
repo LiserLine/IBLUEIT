@@ -26,7 +26,7 @@ namespace Ibit.Plataform.Logger
             FindObjectOfType<StageManager>().OnStageEnd += StopLogging;
         }
 
-        protected override void Flush()
+        protected override void Save()
         {
             var path = @"savedata/pacients/" + Pacient.Loaded.Id + @"/" + $"{recordStart:yyyyMMdd-HHmmss}_" + FileName + ".csv";
             FileReader.WriteAllText(path, sb.ToString());
