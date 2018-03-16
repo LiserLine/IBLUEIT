@@ -7347,7 +7347,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Pico de Fluxo Expirat\xF3rio"
+  m_Text: "Tempo de Fluxo Expirat\xF3rio"
 --- !u!222 &1101107679
 CanvasRenderer:
   m_ObjectHideFlags: 0
