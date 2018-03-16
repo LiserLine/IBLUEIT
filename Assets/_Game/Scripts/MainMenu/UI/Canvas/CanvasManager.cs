@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using Ibit.Calibration;
+﻿using Ibit.Calibration;
 using Ibit.Core.Audio;
 using Ibit.Core.Data;
 using Ibit.Core.Util;
@@ -17,8 +16,9 @@ namespace Ibit.MainMenu.UI.Canvas
                             $"Partidas Jogadas: {Pacient.Loaded.PlaySessionsDone}\n" +
                             $"Pico Exp.: {FlowMath.ToLitresPerMinute(Pacient.Loaded.Capacities.RawExpPeakFlow)} L/min ({Pacient.Loaded.Capacities.RawExpPeakFlow} Pa)\n" +
                             $"Pico Ins.: {FlowMath.ToLitresPerMinute(Pacient.Loaded.Capacities.RawInsPeakFlow)} L/min ({Pacient.Loaded.Capacities.RawInsPeakFlow} Pa)\n" +
-                            $"Tempo Exp.: {Pacient.Loaded.Capacities.RawExpFlowDuration / 1000f:F1} s\n" +
                             $"Tempo Ins.: {Pacient.Loaded.Capacities.RawInsFlowDuration / 1000f:F1} s\n" +
+                            $"Tempo Exp.: {Pacient.Loaded.Capacities.RawExpFlowDuration / 1000f:F1} s\n" +
+                            $"Tins/Texp: {((Pacient.Loaded.Capacities.RawInsFlowDuration / 1000f) / (Pacient.Loaded.Capacities.RawExpFlowDuration / 1000f)):F1}\n" +
                             $"Freq. Resp. Média: {Pacient.Loaded.Capacities.RawRespCycleDuration / 1000f:F1} sec/cycle");
         }
 
@@ -49,6 +49,5 @@ namespace Ibit.MainMenu.UI.Canvas
         public void SetCalibrationToInsPeak() => CalibrationManager.CalibrationToLoad = CalibrationExercise.InspiratoryPeak;
         public void SetCalibrationToExpDur() => CalibrationManager.CalibrationToLoad = CalibrationExercise.ExpiratoryDuration;
         public void SetCalibrationToInsDur() => CalibrationManager.CalibrationToLoad = CalibrationExercise.InspiratoryDuration;
-
     }
 }
