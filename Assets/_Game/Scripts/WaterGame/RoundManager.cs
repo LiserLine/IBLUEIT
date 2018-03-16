@@ -1,0 +1,162 @@
+﻿using System.Collections;
+using NaughtyAttributes;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace Ibit.WaterGame
+{
+    public class RoundManager : MonoBehaviour
+    {
+        /*Events Declaration*/
+        public delegate void PlayerFlowDelegate(bool hasPlayed, int roundNumber);
+        public event PlayerFlowDelegate AuthorizePlayerFlowEvent;
+
+        public delegate void FinalScoreDelegate();
+        public event FinalScoreDelegate ShowFinalScoreEvent;
+
+        public delegate void CleanRoundDelegate();
+        public event CleanRoundDelegate CleanRoundEvent;
+
+        /*RoundManager Variables*/
+        [SerializeField]
+        private Text displayHowTo, displayTimer;
+
+        private bool playable, finished, toBackup;
+        private int state, backupState, _roundNumber;
+        private float countdownTimer;
+
+        private void Start()
+        {
+            state = 1; // Player start point on State Machine
+            finished = false; //To Verify if the player have finished the game
+            playable = true; //To keep player at state
+            toBackup = false; //Use old state value(Player haven't played->default state->continue to next state)
+            countdownTimer = 10; //Time the player has to play(Flow only)
+            _roundNumber = 0; //Defines in which round the the player is.
+            FindObjectOfType<Player>().EnablePlayEvent += NotPlayable;
+            StartCoroutine(PlayGame());//Starts the Gameplay State Machine
+        }
+
+        //Sending Event Area
+        protected virtual void EnablePlayerFlow(bool hasPlayed, int roundNumber)
+        {
+            AuthorizePlayerFlowEvent?.Invoke(hasPlayed, roundNumber);
+        }
+
+        protected virtual void CleanRound()
+        {
+            CleanRoundEvent?.Invoke();
+        }
+
+        protected virtual void ShowFinalScore()
+        {
+            ShowFinalScoreEvent?.Invoke();
+        }
+
+        private void NotPlayable()
+        {
+            playable = false;
+            if (toBackup)
+            {
+                state = backupState;
+                toBackup = false;
+            }
+            state++;
+        }
+
+        private void NotPlayedState()
+        {
+            playable = false;
+            backupState = state;
+            toBackup = true;
+            state = 99;// Player haven't played -> default state
+        }
+
+        //Start the Countdown Timer
+        private void StartCountdown()
+        {
+            countdownTimer -= Time.deltaTime;
+            displayTimer.text = countdownTimer.ToString("f0");
+        }
+
+        //Stop the Countdown Timer
+        private void ResetCountDown()
+        {
+            countdownTimer = 10;
+            displayTimer.text = "";
+        }
+
+        private void PlayerWakeUp()
+        {
+            displayHowTo.text = "Ei! Você esqueceu de jogar!...\n[Enter] para continuar";
+            //Se não jogou mandar sinal false para a permissão do jogador.
+            EnablePlayerFlow(false, _roundNumber);
+            ResetCountDown();
+            NotPlayedState();
+        }
+
+        #region Gameplay State Machine
+
+        //Incremental states(put them into the correct order)
+        IEnumerator PlayGame()
+        {
+            while (!finished)
+            {
+
+                switch (state)
+                {
+                    case 1://Introduction
+                        displayHowTo.text = "Bem-Vindo ao jogo do copo d'agua![ENTER]";
+                        while (playable) yield return null;
+                        playable = true;
+                        break;
+                    case 2:
+                    case 4:
+                    case 6://Pre-flow
+                        displayHowTo.text = "Pressione [Enter] e assopre \n o mais forte que conseguir dentro do tempo.";
+                        while (playable) yield return null;
+                        CleanRound();
+                        playable = true;
+                        break;
+                    case 3:
+                    case 5:
+                    case 7://Player's Flow
+                        displayHowTo.text = "";
+                        //Debug.Log("sending event to player");
+                        EnablePlayerFlow(true, _roundNumber);
+                        //Debug.Log("post event to player");
+                        _roundNumber++;
+                        while (playable)
+                        {
+                            StartCountdown();
+                            yield return null;
+                        }
+                        ResetCountDown();
+                        playable = true;
+                        break;
+                    case 8:
+                        displayHowTo.text = "[Enter] para visualizar sua pontuação.";
+                        break;
+                    case 9:
+                        ShowFinalScore();
+                        break;
+                    default:
+                        while (playable) yield return null;
+                        playable = true;
+                        break;
+                }
+                yield return null;
+            }
+        }
+
+        #endregion;
+
+        private void Update()
+        {
+            if (countdownTimer <= 0)
+            {
+                PlayerWakeUp();
+            }
+        }
+    }
+}
