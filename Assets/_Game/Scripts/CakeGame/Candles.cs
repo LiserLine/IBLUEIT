@@ -7,17 +7,21 @@ namespace Ibit.CakeGame
         public Sprite candleOff;
         public Sprite candleOn;
         public Sprite[] candlesOn = new Sprite[3];
+        public Animator[] candlesAnim;
 
         public void TurnOff(int index)
         {
-            gameObject.transform.GetChild(index).GetComponent<SpriteRenderer>().sprite = candleOff;
+            candlesAnim[index].SetBool("TurnOff", true);
         }
 
         public void TurnOn()
         {
-            gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = candleOn;
-            gameObject.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite = candleOn;
-            gameObject.transform.GetChild(2).GetComponent<SpriteRenderer>().sprite = candleOn;
+            candlesAnim[0].SetBool("TurnOff", false);
+            candlesAnim[1].SetBool("TurnOff", false);
+            candlesAnim[2].SetBool("TurnOff", false);
+            //gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = candleOn;
+            //gameObject.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite = candleOn;
+            //gameObject.transform.GetChild(2).GetComponent<SpriteRenderer>().sprite = candleOn;
         }
     }
 }

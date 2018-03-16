@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Ibit.Core.Util;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -15,9 +16,9 @@ namespace Ibit.CakeGame
             finalScore[0].FillStarsFinal(score1);
             finalScore[1].FillStarsFinal(score2);
             finalScore[2].FillStarsFinal(score3);
-            peakText[0].text = "Pico: " + pikeString[0];
-            peakText[1].text = "Pico: " + pikeString[1];
-            peakText[2].text = "Pico: " + pikeString[2];
+            peakText[0].text = "   Pico: " + FlowMath.ToLitresPerMinute(Parsers.Float(pikeString[0])) + " L/min";
+            peakText[1].text = "   Pico: " + FlowMath.ToLitresPerMinute(Parsers.Float(pikeString[1])) + " L/min";
+            peakText[2].text = "   Pico: " + FlowMath.ToLitresPerMinute(Parsers.Float(pikeString[2])) + " L/min";
         }
 
         public void Restart() => SceneManager.LoadScene(SceneManager.GetActiveScene().name);
