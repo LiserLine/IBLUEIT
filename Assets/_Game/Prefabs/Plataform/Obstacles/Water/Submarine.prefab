@@ -35,8 +35,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4755805358270764}
-  - component: {fileID: 58668762468894268}
   - component: {fileID: 50139944587801026}
+  - component: {fileID: 58668762468894268}
   - component: {fileID: 114206458803687086}
   - component: {fileID: 114818242479631586}
   m_Layer: 9
@@ -102,7 +102,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.18, y: 0}

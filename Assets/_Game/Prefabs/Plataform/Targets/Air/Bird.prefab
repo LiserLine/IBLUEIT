@@ -35,9 +35,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4996548754261954}
-  - component: {fileID: 114093560431948314}
-  - component: {fileID: 61912679688541012}
   - component: {fileID: 50442475366097672}
+  - component: {fileID: 61912679688541012}
+  - component: {fileID: 114093560431948314}
   - component: {fileID: 114998617023804720}
   m_Layer: 9
   m_Name: Bird
@@ -102,7 +102,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -129,7 +129,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff1e9000a19055b45b2ea0e537418ee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destroyTimer: 200
 --- !u!114 &114998617023804720
 MonoBehaviour:
   m_ObjectHideFlags: 1

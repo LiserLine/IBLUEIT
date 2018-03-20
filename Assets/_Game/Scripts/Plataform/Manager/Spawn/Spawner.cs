@@ -52,7 +52,7 @@ namespace Ibit.Plataform.Manager.Spawn
             if (Data.Stage.Loaded.ObjectToSpawn == ObjectToSpawn.Obstacles)
                 spawnRelaxTime = true;
 
-            var plr = FindObjectOfType<Ibit.Plataform.Player>();
+            var plr = FindObjectOfType<Player>();
             plr.OnPlayerDeath += DisableSpawn;
             plr.OnEnemyHit += Player_OnEnemyHit;
 
