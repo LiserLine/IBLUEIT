@@ -1732,7 +1732,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b981fb3703d74259826ee1cef5b7d057, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FileName: PlataformLogs
+  FileName: Plataform-Logs
 --- !u!114 &921868977
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1744,7 +1744,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60dd70acad3a04542b9872967c34ab27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FileName: PitacoBlueLogs
+  FileName: Plataform-Pitaco-Logs
 --- !u!4 &921868978
 Transform:
   m_ObjectHideFlags: 0

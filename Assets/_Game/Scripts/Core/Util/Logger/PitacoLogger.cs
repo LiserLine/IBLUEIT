@@ -21,7 +21,7 @@ namespace Ibit.Core.Util
             if (textData.Count(s => s == '\n') < 2)
                 return;
 
-            var path = @"savedata/pacients/" + Pacient.Loaded.Id + @"/" + $"{recordStart:yyyyMMdd-HHmmss}-" + FileName + ".csv";
+            var path = @"savedata/pacients/" + Pacient.Loaded.Id + @"/" + $"{recordStart:yyyyMMdd-HHmmss}_" + FileName + ".csv";
             FileReader.WriteAllText(path, textData);
         }
 
