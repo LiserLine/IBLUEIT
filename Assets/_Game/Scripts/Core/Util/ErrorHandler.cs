@@ -20,7 +20,7 @@ namespace Ibit.Core.Util
             if (type != LogType.Exception || type == LogType.Error)
                 return;
 
-            var errContent = $"{message}\r\n\r\n{stackTrace}";
+            var errContent = $"{message}\r\n\r\n{stackTrace}\r\n\r\n{MachineSpecs.Get()}";
 
             SysMessage.Error("The game will be closed because of an unexpected program error. Please report this error to the developer.\n\n" +
                              "An error file has been created!.\n\n" + errContent, "[Error Handler] An unexpected error has occured!!!");
