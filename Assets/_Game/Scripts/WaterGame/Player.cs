@@ -3,6 +3,7 @@ using Ibit.Core.Data;
 using Ibit.Core.Game;
 using Ibit.Core.Serial;
 using Ibit.Core.Util;
+using Ibit.Core.Audio;
 using UnityEngine;
 
 namespace Ibit.WaterGame
@@ -10,7 +11,7 @@ namespace Ibit.WaterGame
     public class Player : MonoBehaviour
     {
         /*Events Declaration*/
-        public delegate void HaveStarDelegate(int roundScore, int roundNumber);
+        public delegate void HaveStarDelegate(int roundScore, int roundNumber,float pikeValue);
         public event HaveStarDelegate HaveStarEvent;
 
         public delegate void EnablePlayDelegate();
@@ -40,16 +41,13 @@ namespace Ibit.WaterGame
         }
 
         //Sending HaveStar Event
-        protected virtual void OnHaveStar(int roundScore, int roundNumber)
+        protected virtual void OnHaveStar(int roundScore, int roundNumber, float pikeValue)
         {
-            HaveStarEvent?.Invoke(roundScore, roundNumber);
+            HaveStarEvent?.Invoke(roundScore, roundNumber,pikeValue);
         }
 
         //Authorize RoundManager
-        protected virtual void OnAuthorize()
-        {
-            EnablePlayEvent?.Invoke();
-        }
+        protected virtual void OnAuthorize() => EnablePlayEvent?.Invoke();
 
         //Flow values being received by the serial controller
         private void OnMessageReceived(string msg)
@@ -68,16 +66,19 @@ namespace Ibit.WaterGame
             //Se é pra jogar waitSignal = true. Senão waitSignal = false
             waitSignal = hasPlayed;
             _roundNumber = roundNumber;
-            Debug.Log(roundNumber);
             if (hasPlayed) lastCoroutine = StartCoroutine(Flow());
 
             if (!hasPlayed)
             {
                 StopCoroutine(lastCoroutine);
-                OnHaveStar(0, roundNumber);
+                OnHaveStar(0, roundNumber,0);
             }
         }
-
+        public void ExecuteNextStep()
+        {
+            Debug.Log("tetris");
+            OnAuthorize();
+        }
         private IEnumerator Flow()
         {
             var picoAtual = expiratoryPike;
@@ -85,18 +86,19 @@ namespace Ibit.WaterGame
             //While player does not blow.
             while (sensorValue <= GameManager.PitacoFlowThreshold)
             {
-                Debug.Log($"Player.sensorValue {sensorValue}");
+                //Debug.Log($"Player.sensorValue {sensorValue}");
                 yield return null;
             }
 
             //Player is blowing, take the highest value.
             while (sensorValue > GameManager.PitacoFlowThreshold)
             {
-                Debug.Log($"Player.sensorValue {sensorValue}");
+                //Debug.Log($"Player.sensorValue {sensorValue}");
                 picoAtual = expiratoryPike;
                 //calculate the percentage of the pike.
                 yield return null;
             }
+            SoundManager.Instance.PlaySound("Success");
 
             CalculateFlowPike(picoAtual);
             waitSignal = false;
@@ -114,15 +116,15 @@ namespace Ibit.WaterGame
 
             if (percentage > 0.75f)
             {
-                OnHaveStar(3, _roundNumber);
+                OnHaveStar(3, _roundNumber,pikeValue);
             }
             else if (percentage > 0.5f)
             {
-                OnHaveStar(2, _roundNumber);
+                OnHaveStar(2, _roundNumber, pikeValue);
             }
             else if (percentage > 0.25f)
             {
-                OnHaveStar(1, _roundNumber);
+                OnHaveStar(1, _roundNumber, pikeValue);
             }
         }
 
@@ -130,7 +132,7 @@ namespace Ibit.WaterGame
         {
             if (Input.GetKeyDown(KeyCode.KeypadEnter) && waitSignal == false)
             {
-                OnAuthorize();
+                ExecuteNextStep();
             }
         }
     }

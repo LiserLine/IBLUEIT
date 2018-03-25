@@ -30,10 +30,11 @@ namespace Ibit.WaterGame
         }
 
         //Stores the score of the round and change the stars sprites
-        public void ReceivedStars(int roundScore, int roundNumber)
+        public void ReceivedStars(int roundScore, int roundNumber,float pikeValue)
         {
             Debug.Log(roundNumber);
             totalScores[roundNumber] = roundScore;
+            FinalScore.pikeString[roundNumber].text += pikeValue.ToString();
             WaterBehaviour(roundScore);
 
             for (int i = 0; i < roundScore; i++)
@@ -76,12 +77,13 @@ namespace Ibit.WaterGame
         //Show the final score using the totalScores array.
         public void ShowFinalScore()
         {
+            FinalScore.ToggleFinalScore();
+
             for (int i = 0; i < totalScores.Length; i++)
             {
-                FinalScore.ChangeFinalRoundScore(totalScores[i], i);
+                if (totalScores[i] != 0)
+                    FinalScore.ChangeFinalRoundScore(totalScores[i], i);
             }
-
-            FinalScore.ToggleFinalScore();
         }
     }
 }
