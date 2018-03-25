@@ -11,14 +11,14 @@ namespace Ibit.WaterGame
     public class Player : MonoBehaviour
     {
         /*Events Declaration*/
-        public delegate void HaveStarDelegate(int roundScore, int roundNumber,float pikeValue);
+        public delegate void HaveStarDelegate(int roundScore, int roundNumber, float pikeValue);
         public event HaveStarDelegate HaveStarEvent;
 
         public delegate void EnablePlayDelegate();
         public event EnablePlayDelegate EnablePlayEvent;
 
         /*Player Variables*/
-        public float expiratoryPike;
+        public float inspiratoryPike;
         public float sensorValue;
         public bool flowStoped;
 
@@ -43,7 +43,7 @@ namespace Ibit.WaterGame
         //Sending HaveStar Event
         protected virtual void OnHaveStar(int roundScore, int roundNumber, float pikeValue)
         {
-            HaveStarEvent?.Invoke(roundScore, roundNumber,pikeValue);
+            HaveStarEvent?.Invoke(roundScore, roundNumber, pikeValue);
         }
 
         //Authorize RoundManager
@@ -57,8 +57,8 @@ namespace Ibit.WaterGame
 
             sensorValue = Parsers.Float(msg);
 
-            if (sensorValue > 0 && expiratoryPike < sensorValue)
-                expiratoryPike = sensorValue;
+            if (sensorValue > 0 && inspiratoryPike < sensorValue)
+                inspiratoryPike = sensorValue;
         }
 
         public void ReceivedMessage(bool hasPlayed, int roundNumber)
@@ -71,7 +71,7 @@ namespace Ibit.WaterGame
             if (!hasPlayed)
             {
                 StopCoroutine(lastCoroutine);
-                OnHaveStar(0, roundNumber,0);
+                OnHaveStar(0, roundNumber, 0);
             }
         }
         public void ExecuteNextStep()
@@ -81,23 +81,21 @@ namespace Ibit.WaterGame
         }
         private IEnumerator Flow()
         {
-            var picoAtual = expiratoryPike;
+            var picoAtual = inspiratoryPike;
 
             //While player does not blow.
-            while (sensorValue <= GameManager.PitacoFlowThreshold)
-            {
-                //Debug.Log($"Player.sensorValue {sensorValue}");
+            while (sensorValue <= GameManager.PitacoFlowThreshold * 2f)
                 yield return null;
-            }
 
             //Player is blowing, take the highest value.
             while (sensorValue > GameManager.PitacoFlowThreshold)
             {
                 //Debug.Log($"Player.sensorValue {sensorValue}");
-                picoAtual = expiratoryPike;
+                picoAtual = inspiratoryPike;
                 //calculate the percentage of the pike.
                 yield return null;
             }
+
             SoundManager.Instance.PlaySound("Success");
 
             CalculateFlowPike(picoAtual);
@@ -107,16 +105,15 @@ namespace Ibit.WaterGame
 
         private void CalculateFlowPike(float pikeValue)
         {
-            var playerPike = Pacient.Loaded.Capacities.ExpPeakFlow;
-            Debug.Log("Pico do Jogador: " + playerPike);
+            var playerPike = Pacient.Loaded.Capacities.InsPeakFlow;
 
-            var percentage = pikeValue / playerPike;
+            var percentage = Mathf.Abs(pikeValue / playerPike);
             Debug.Log("Valor do pico máximo: " + pikeValue);
             Debug.Log("Porcentagem: " + percentage);
 
             if (percentage > 0.75f)
             {
-                OnHaveStar(3, _roundNumber,pikeValue);
+                OnHaveStar(3, _roundNumber, pikeValue);
             }
             else if (percentage > 0.5f)
             {
@@ -126,11 +123,13 @@ namespace Ibit.WaterGame
             {
                 OnHaveStar(1, _roundNumber, pikeValue);
             }
+
+            inspiratoryPike = 0;
         }
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.KeypadEnter) && waitSignal == false)
+            if ((Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return)) && waitSignal == false)
             {
                 ExecuteNextStep();
             }

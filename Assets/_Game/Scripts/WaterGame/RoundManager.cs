@@ -124,15 +124,18 @@ namespace Ibit.WaterGame
                 {
                     case 1://Introduction
                         displayHowTo.text = "Bem-Vindo ao jogo do copo d'agua![ENTER]";
-                        while (playable) yield return null;
+                        while (playable)
+                            yield return null;
                         playable = true;
                         break;
                     case 2:
                     case 4:
                     case 6://Pre-flow
+                        sc.Recalibrate();
                         TextPanel.SetActive(true);
                         displayHowTo.text = "Pressione [Enter] e assopre \n o mais forte que conseguir dentro do tempo.";
-                        while (playable) yield return null;
+                        while (playable)
+                            yield return null;
                         CleanRound();
                         playable = true;
                         TextPanel.SetActive(false);
@@ -161,9 +164,10 @@ namespace Ibit.WaterGame
                         TextPanel.SetActive(false);
                         ShowFinalScore();
                         break;
-                    default:
+                    case 99:
                         TextPanel.SetActive(true);
-                        while (playable) yield return null;
+                        while (playable)
+                            yield return null;
                         playable = true;
                         break;
                 }
