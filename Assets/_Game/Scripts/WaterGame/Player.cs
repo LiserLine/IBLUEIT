@@ -85,7 +85,10 @@ namespace Ibit.WaterGame
 
             //While player does not blow.
             while (sensorValue <= GameManager.PitacoFlowThreshold * 2f)
+            {
+                Debug.Log("Sensor Value: " + sensorValue);
                 yield return null;
+            }
 
             //Player is blowing, take the highest value.
             while (sensorValue > GameManager.PitacoFlowThreshold)

@@ -123,6 +123,7 @@ namespace Ibit.WaterGame
                 switch (state)
                 {
                     case 1://Introduction
+                        sc.StartSamplingDelayed();
                         displayHowTo.text = "Bem-Vindo ao jogo do copo d'agua![ENTER]";
                         while (playable)
                             yield return null;
@@ -157,6 +158,7 @@ namespace Ibit.WaterGame
                         playable = true;
                         break;
                     case 8:
+                        sc.StopSampling();
                         TextPanel.SetActive(true);
                         displayHowTo.text = "[Enter] para visualizar sua pontuação.";
                         break;

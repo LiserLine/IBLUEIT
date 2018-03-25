@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Ibit.Core.Util;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Ibit.WaterGame
@@ -30,11 +31,11 @@ namespace Ibit.WaterGame
         }
 
         //Stores the score of the round and change the stars sprites
-        public void ReceivedStars(int roundScore, int roundNumber,float pikeValue)
+        public void ReceivedStars(int roundScore, int roundNumber, float pikeValue)
         {
             Debug.Log(roundNumber);
             totalScores[roundNumber] = roundScore;
-            FinalScore.pikeString[roundNumber].text += pikeValue.ToString();
+            FinalScore.pikeString[roundNumber].text += $"{FlowMath.ToLitresPerMinute(pikeValue)} L/min ({pikeValue} pa)";
             WaterBehaviour(roundScore);
 
             for (int i = 0; i < roundScore; i++)

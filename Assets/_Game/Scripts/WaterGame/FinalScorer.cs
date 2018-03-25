@@ -17,10 +17,9 @@ namespace Ibit.WaterGame
 
         public void ChangeFinalRoundScore(int starsQty, int roundNumber)
         {
-            Debug.Log(starsQty + " " + roundNumber);
-            starsFinal_UI[roundNumber].sprite = starsFilled[starsQty-1];
+            //Debug.Log(starsQty + " " + roundNumber);
+            starsFinal_UI[roundNumber].sprite = starsFilled[starsQty - 1];
         }
-
 
         public void ToggleFinalScore()
         {
