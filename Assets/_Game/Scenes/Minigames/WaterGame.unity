@@ -381,7 +381,7 @@ MonoBehaviour:
   displayHowTo: {fileID: 1110964594}
   displayTimer: {fileID: 1086783490}
   TextPanel: {fileID: 1515634469}
-  state: 8
+  state: 0
   backupState: 0
   _roundNumber: 0
 --- !u!4 &325680961
@@ -2153,7 +2153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74b815485a413444699c06456c1ca107, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inspiratoryPike: 0
+  maximumPeak: 0
   sensorValue: 0
   flowStoped: 0
   stop: 0

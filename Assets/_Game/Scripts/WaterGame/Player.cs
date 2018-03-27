@@ -18,7 +18,7 @@ namespace Ibit.WaterGame
         public event EnablePlayDelegate EnablePlayEvent;
 
         /*Player Variables*/
-        public float inspiratoryPike;
+        public float maximumPeak;
         public float sensorValue;
         public bool flowStoped;
 
@@ -56,9 +56,6 @@ namespace Ibit.WaterGame
                 return;
 
             sensorValue = Parsers.Float(msg);
-
-            if (sensorValue > 0 && inspiratoryPike < sensorValue)
-                inspiratoryPike = sensorValue;
         }
 
         public void ReceivedMessage(bool hasPlayed, int roundNumber)
@@ -66,7 +63,9 @@ namespace Ibit.WaterGame
             //Se é pra jogar waitSignal = true. Senão waitSignal = false
             waitSignal = hasPlayed;
             _roundNumber = roundNumber;
-            if (hasPlayed) lastCoroutine = StartCoroutine(Flow());
+
+            if (hasPlayed)
+                lastCoroutine = StartCoroutine(Flow());
 
             if (!hasPlayed)
             {
@@ -76,42 +75,46 @@ namespace Ibit.WaterGame
         }
         public void ExecuteNextStep()
         {
-            Debug.Log("tetris");
+            //Debug.Log("tetris");
             OnAuthorize();
         }
         private IEnumerator Flow()
         {
-            var picoAtual = inspiratoryPike;
-
             //While player does not blow.
-            while (sensorValue <= GameManager.PitacoFlowThreshold * 2f)
+            while (sensorValue >= -GameManager.PitacoFlowThreshold * 2f)
             {
-                Debug.Log("Sensor Value: " + sensorValue);
+                //Debug.Log($"Wait: {sensorValue}");
                 yield return null;
             }
 
             //Player is blowing, take the highest value.
-            while (sensorValue > GameManager.PitacoFlowThreshold)
+            while (sensorValue < -GameManager.PitacoFlowThreshold)
             {
-                //Debug.Log($"Player.sensorValue {sensorValue}");
-                picoAtual = inspiratoryPike;
+                //Debug.Log($"Blow: {sensorValue}");
+
+                if (sensorValue < maximumPeak)
+                {
+                    maximumPeak = sensorValue;
+                    Debug.Log("Novo pico máximo: " + maximumPeak);
+                }
+
                 //calculate the percentage of the pike.
                 yield return null;
             }
 
             SoundManager.Instance.PlaySound("Success");
 
-            CalculateFlowPike(picoAtual);
+            CalculateFlowPike(maximumPeak);
             waitSignal = false;
             OnAuthorize();
         }
 
         private void CalculateFlowPike(float pikeValue)
         {
-            var playerPike = Pacient.Loaded.Capacities.InsPeakFlow;
+            var playerPike = -Pacient.Loaded.Capacities.InsPeakFlow;
 
-            var percentage = Mathf.Abs(pikeValue / playerPike);
-            Debug.Log("Valor do pico máximo: " + pikeValue);
+            var percentage = -pikeValue / playerPike;
+            
             Debug.Log("Porcentagem: " + percentage);
 
             if (percentage > 0.75f)
@@ -127,7 +130,7 @@ namespace Ibit.WaterGame
                 OnHaveStar(1, _roundNumber, pikeValue);
             }
 
-            inspiratoryPike = 0;
+            maximumPeak = 0f;
         }
 
         private void Update()
