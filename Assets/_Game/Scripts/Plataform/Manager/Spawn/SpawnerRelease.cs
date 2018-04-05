@@ -8,23 +8,11 @@ namespace Ibit.Plataform.Manager.Spawn
     public partial class Spawner
     {
         private float minDistanceBetweenSpawns = 2.5f;
-        
-        [ShowNonSerializedField]
-        private float expHeightAcc;
-
-        [ShowNonSerializedField]
-        private float expSizeAcc;
-
-        [ShowNonSerializedField]
-        private float insHeightAcc;
-
-        [ShowNonSerializedField]
-        private float insSizeAcc;
-
-        private bool spawnRelaxTime;
 
         public delegate void ObjectReleasedHandler(ObjectToSpawn type, ref GameObject obj1, ref GameObject obj2);
         public event ObjectReleasedHandler OnObjectReleased;
+
+        private bool spawnRelaxTime;
 
         public bool RelaxTimeSpawned { get; private set; }
 

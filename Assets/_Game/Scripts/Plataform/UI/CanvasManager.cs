@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Ibit.Core.Database;
+﻿using Ibit.Core.Database;
 using Ibit.Core.Game;
 using Ibit.Plataform.Data;
 using UnityEngine;
@@ -26,12 +25,18 @@ namespace Ibit.Plataform.UI
 
         public void PauseGame()
         {
+            if (GameManager.GameIsPaused)
+                return;
+
             pauseMenu.SetActive(true);
             GameManager.PauseGame();
         }
 
         public void UnPauseGame()
         {
+            if (!GameManager.GameIsPaused)
+                return;
+
             pauseMenu.SetActive(false);
             GameManager.ResumeGame();
         }

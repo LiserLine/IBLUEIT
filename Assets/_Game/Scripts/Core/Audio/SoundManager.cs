@@ -12,6 +12,8 @@ namespace Ibit.Core.Audio
         [SerializeField]
         private Sound[] sounds;
 
+        private Sound bgm;
+
         private void Awake()
         {
             Instance = this;
@@ -33,6 +35,26 @@ namespace Ibit.Core.Audio
             Instance = null;
         }
 
-        public void PlaySound(string soundName) => sounds.First(sound => sound.name.Equals(soundName)).Play();
+        public void PlaySound(string soundName)
+        {
+            var sound = sounds.First(snd => snd.name.Equals(soundName));
+
+            if (soundName.Contains("BGM"))
+            {
+                bgm = sound;
+            }
+
+            sound.Play();
+        }
+
+        public void PlayAnotherBgm()
+        {
+            bgm?.Pause();
+
+            var playables = sounds.Where(sound => sound.name.Contains("BGM"));
+            var music = playables.ElementAt(Random.Range(0, playables.Count() - 1));
+            bgm = music;
+            bgm.Play();
+        }
     }
 }
