@@ -1,12 +1,15 @@
 ﻿using System.Collections;
-using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UI;
+using NaughtyAttributes;
+using Ibit.Core.Audio;
+using Ibit.Core.Serial;
 
 namespace Ibit.WaterGame
 {
     public class RoundManager : MonoBehaviour
     {
+
         /*Events Declaration*/
         public delegate void PlayerFlowDelegate(bool hasPlayed, int roundNumber);
         public event PlayerFlowDelegate AuthorizePlayerFlowEvent;
@@ -18,12 +21,18 @@ namespace Ibit.WaterGame
         public event CleanRoundDelegate CleanRoundEvent;
 
         /*RoundManager Variables*/
-        [SerializeField]
-        private Text displayHowTo, displayTimer;
+        [SerializeField] private Text displayHowTo, displayTimer;
+        [SerializeField] private GameObject TextPanel;
 
         private bool playable, finished, toBackup;
-        private int state, backupState, _roundNumber;
+        [SerializeField] private int state, backupState, _roundNumber;
         private float countdownTimer;
+        private SerialController sc;
+
+        private void Awake()
+        {
+            sc = FindObjectOfType<SerialController>();
+        }
 
         private void Start()
         {
@@ -76,21 +85,21 @@ namespace Ibit.WaterGame
         private void StartCountdown()
         {
             countdownTimer -= Time.deltaTime;
-            displayTimer.text = countdownTimer.ToString("f0");
+            displayTimer.text = "Timer: " + countdownTimer.ToString("f0");
         }
 
         //Stop the Countdown Timer
         private void ResetCountDown()
         {
             countdownTimer = 10;
-            displayTimer.text = "";
+            displayTimer.text = "Timer: 10";
         }
 
         private void PlayerWakeUp()
         {
-            displayHowTo.text = "Ei! Você esqueceu de jogar!...\n[Enter] para continuar";
+            displayHowTo.text = "Ei! Você esqueceu de jogar!...\n Aperte [Enter] para continuar";
             //Se não jogou mandar sinal false para a permissão do jogador.
-            EnablePlayerFlow(false, _roundNumber);
+            EnablePlayerFlow(false, _roundNumber-1);
             ResetCountDown();
             NotPlayedState();
         }
@@ -102,21 +111,35 @@ namespace Ibit.WaterGame
         {
             while (!finished)
             {
+                while (!sc.IsConnected)
+                {
+                    state = -1;
+                    TextPanel.SetActive(true);
+                    Debug.Log("banana");
+                    displayHowTo.text = "Seu PITACO não está conectado! Conecte o dispositivo e volte ao menu principal.";
+                    yield return null;
+                }
 
                 switch (state)
                 {
                     case 1://Introduction
+                        sc.StartSamplingDelayed();
                         displayHowTo.text = "Bem-Vindo ao jogo do copo d'agua![ENTER]";
-                        while (playable) yield return null;
+                        while (playable)
+                            yield return null;
                         playable = true;
                         break;
                     case 2:
                     case 4:
                     case 6://Pre-flow
+                        sc.Recalibrate();
+                        TextPanel.SetActive(true);
                         displayHowTo.text = "Pressione [Enter] e assopre \n o mais forte que conseguir dentro do tempo.";
-                        while (playable) yield return null;
+                        while (playable)
+                            yield return null;
                         CleanRound();
                         playable = true;
+                        TextPanel.SetActive(false);
                         break;
                     case 3:
                     case 5:
@@ -135,13 +158,18 @@ namespace Ibit.WaterGame
                         playable = true;
                         break;
                     case 8:
+                        sc.StopSampling();
+                        TextPanel.SetActive(true);
                         displayHowTo.text = "[Enter] para visualizar sua pontuação.";
                         break;
                     case 9:
+                        TextPanel.SetActive(false);
                         ShowFinalScore();
                         break;
-                    default:
-                        while (playable) yield return null;
+                    case 99:
+                        TextPanel.SetActive(true);
+                        while (playable)
+                            yield return null;
                         playable = true;
                         break;
                 }
@@ -155,6 +183,7 @@ namespace Ibit.WaterGame
         {
             if (countdownTimer <= 0)
             {
+                SoundManager.Instance.PlaySound("Failed");
                 PlayerWakeUp();
             }
         }

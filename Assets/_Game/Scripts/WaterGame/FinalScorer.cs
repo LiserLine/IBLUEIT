@@ -8,6 +8,7 @@ namespace Ibit.WaterGame
     {
         public Image[] starsFinal_UI = new Image[3];
         public Sprite[] starsFilled = new Sprite[3];
+        public Text[] pikeString = new Text[3];
 
         private void Start()
         {
@@ -16,6 +17,7 @@ namespace Ibit.WaterGame
 
         public void ChangeFinalRoundScore(int starsQty, int roundNumber)
         {
+            //Debug.Log(starsQty + " " + roundNumber);
             starsFinal_UI[roundNumber].sprite = starsFilled[starsQty - 1];
         }
 
