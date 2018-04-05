@@ -26,7 +26,7 @@ namespace Ibit.Plataform
             var from = this.transform.position;
             var to = new Vector3(this.transform.position.x, -nextPosition, this.transform.position.z);
 
-            this.transform.position = Vector3.Lerp(from, to, Time.deltaTime * 10f);
+            this.transform.position = Vector3.Lerp(from, to, Time.deltaTime * 9f);
         }
     }
-}
+ }
