@@ -15,17 +15,10 @@ namespace Ibit.Plataform.Manager.Spawn
 
         #endregion Performance
 
-        [ShowNonSerializedField]
-        private float expHeightAcc;
-
-        [ShowNonSerializedField]
-        private float expSizeAcc;
-
-        [ShowNonSerializedField]
-        private float insHeightAcc;
-
-        [ShowNonSerializedField]
-        private float insSizeAcc;
+        [ShowNonSerializedField] private float expHeightAcc;
+        [ShowNonSerializedField] private float expSizeAcc;
+        [ShowNonSerializedField] private float insHeightAcc;
+        [ShowNonSerializedField] private float insSizeAcc;
 
         private int airTargetsHit;
         private int airObstaclesHit;
@@ -140,7 +133,7 @@ namespace Ibit.Plataform.Manager.Spawn
         public void DecrementInsSizeAcc()
         {
             insSizeAcc -= Data.Stage.Loaded.SizeIncrement;
-            insSizeAcc = insSizeAcc < 0 ? 0f : insSizeAcc;
+            insSizeAcc = insSizeAcc < 0f ? 0f : insSizeAcc;
         }
 
         public void IncrementInsHeightAcc()
@@ -151,7 +144,7 @@ namespace Ibit.Plataform.Manager.Spawn
         public void DecrementInsHeightAcc()
         {
             insHeightAcc -= Data.Stage.Loaded.HeightIncrement;
-            insHeightAcc = insHeightAcc < 0 ? 0f : insHeightAcc;
+            insHeightAcc = insHeightAcc < 0f ? 0f : insHeightAcc;
         }
 
         public void IncrementExpSizeAcc()
@@ -162,7 +155,7 @@ namespace Ibit.Plataform.Manager.Spawn
         public void DecrementExpSizeAcc()
         {
             expSizeAcc -= Data.Stage.Loaded.SizeIncrement;
-            expSizeAcc = expSizeAcc < 0 ? 0f : expSizeAcc;
+            expSizeAcc = expSizeAcc < 0f ? 0f : expSizeAcc;
         }
 
         public void IncrementExpHeightAcc()
@@ -173,7 +166,7 @@ namespace Ibit.Plataform.Manager.Spawn
         public void DecrementExpHeightAcc()
         {
             expHeightAcc -= Data.Stage.Loaded.HeightIncrement;
-            expHeightAcc = expHeightAcc < 0 ? 0f : expHeightAcc;
+            expHeightAcc = expHeightAcc < 0f ? 0f : expHeightAcc;
         }
     }
 }

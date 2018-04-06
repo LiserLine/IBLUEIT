@@ -1,11 +1,28 @@
 ﻿using Ibit.Core.Data;
 using Ibit.Plataform.Camera;
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace Ibit.Plataform.Manager.Spawn
 {
     public partial class Spawner
     {
+        [BoxGroup("Relax Time")] [SerializeField] private GameObject relaxInsPrefab;
+        [BoxGroup("Relax Time")] [SerializeField] private GameObject relaxExpPrefab;
+        [BoxGroup("Relax Time")] [SerializeField] private GameObject relaxZeroPrefab;
+
+        private bool spawnRelaxTime;
+        public bool RelaxTimeSpawned { get; private set; }
+
+#if UNITY_EDITOR
+        [Button("Release Relax Time")]
+        private void DebugSpawnRelax()
+        {
+            spawnRelaxTime = true;
+            ReleaseRelaxTime();
+        }
+#endif
+
         private void ReleaseRelaxTime()
         {
             if (!spawnRelaxTime || RelaxTimeSpawned)

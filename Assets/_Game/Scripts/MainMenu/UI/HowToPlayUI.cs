@@ -6,13 +6,11 @@ namespace Ibit.MainMenu.UI
 {
     public class HowToPlayUI : MonoBehaviour
     {
-        [SerializeField]
-        private Image image;
-
-        [SerializeField]
-        private Sprite[] imageList;
-
-        private int iterator;
+        [SerializeField] private Sprite targetTutorial;
+        [SerializeField] private Sprite relaxTutorial;
+        [SerializeField] private Sprite obstacleTutorial;
+        [SerializeField] private Image imageHolder;
+        [SerializeField] private Button okButton;
 
         private void OnEnable()
         {
@@ -22,38 +20,54 @@ namespace Ibit.MainMenu.UI
             }
             else
             {
-                ShowPanel();
+                // Unlocked Obstacles Stages
+                if (Pacient.Loaded.UnlockedLevels == 6)
+                {
+                    imageHolder.sprite = obstacleTutorial;
+                    okButton.onClick.AddListener(PacientReady);
+                }
+                else
+                {
+                    // First Time Playing
+                    if (Pacient.Loaded.UnlockedLevels == 1)
+                    {
+                        ShowPanel();
+                    }
+                    else
+                    {
+                        HidePanel();
+                    }
+                }
             }
         }
 
         public void SwitchImage()
         {
-            if (iterator == imageList.Length - 1)
-                return;
-
-            iterator++;
-
-            if (iterator == imageList.Length - 1)
-                this.GetComponentInChildren<Button>().onClick.AddListener(PacientReady);
-
-            image.sprite = imageList[iterator];
+            imageHolder.sprite = relaxTutorial;
+            okButton.onClick.AddListener(ResetAndHidePanel);
         }
 
         private void PacientReady()
         {
             Pacient.Loaded.HowToPlayDone = true;
-            ResetPanel();
-        }
-
-        private void ResetPanel()
-        {
-            iterator = 0;
-            image.sprite = imageList[iterator];
-            this.GetComponentInChildren<Button>().onClick.RemoveListener(PacientReady);
             HidePanel();
         }
 
-        private void ShowPanel() => this.transform.localScale = Vector3.one;
-        private void HidePanel() => this.transform.localScale = Vector3.zero;
+        private void ShowPanel()
+        {
+            this.transform.localScale = Vector3.one;
+        }
+
+        private void HidePanel()
+        {
+            this.transform.localScale = Vector3.zero;
+        }
+
+        private void ResetAndHidePanel()
+        {
+            imageHolder.sprite = targetTutorial;
+            HidePanel();
+            okButton.onClick.RemoveListener(ResetAndHidePanel);
+        }
     }
 }

@@ -18,8 +18,8 @@ namespace Ibit.Core.Data
         public int PlaySessionsDone;
         public bool CalibrationDone;
         public bool HowToPlayDone;
-        
-        #if UNITY_EDITOR
+
+#if UNITY_EDITOR
         static Pacient()
         {
             if (Loaded == null)
@@ -44,7 +44,7 @@ namespace Ibit.Core.Data
                     }
                 };
         }
-        #endif
+#endif
 
         public bool IsCalibrationDone()
         {

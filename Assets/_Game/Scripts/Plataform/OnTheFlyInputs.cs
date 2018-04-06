@@ -21,7 +21,10 @@ namespace Ibit.Plataform
             {
                 if (FindObjectOfType<StageManager>().IsRunning)
                 {
-                    TogglePause();
+                    if (!GameManager.GameIsPaused)
+                        FindObjectOfType<CanvasManager>().PauseGame();
+                    else
+                        FindObjectOfType<CanvasManager>().UnPauseGame();
                 }
             }
 
@@ -77,14 +80,6 @@ namespace Ibit.Plataform
         private void ShowHelp()
         {
             _helpPanel.SetActive(!_helpPanel.activeSelf);
-        }
-
-        private void TogglePause()
-        {
-            if (!GameManager.GameIsPaused)
-                FindObjectOfType<CanvasManager>().PauseGame();
-            else
-                FindObjectOfType<CanvasManager>().UnPauseGame();
         }
 
         private void ToggleSound()

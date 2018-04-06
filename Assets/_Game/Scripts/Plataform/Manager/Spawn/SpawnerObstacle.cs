@@ -1,12 +1,13 @@
 ﻿using Ibit.Core.Data;
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace Ibit.Plataform.Manager.Spawn
 {
     public partial class Spawner
     {
-        [SerializeField]
-        private GameObject arrowUpPrefab, arrowDownPrefab;
+        [BoxGroup("Obstacles")] [SerializeField] private GameObject[] obstaclesAir;
+        [BoxGroup("Obstacles")] [SerializeField] private GameObject[] obstaclesWater;
 
         private void DistanciateObstacles(ref GameObject first, ref GameObject second)
         {
@@ -29,8 +30,7 @@ namespace Ibit.Plataform.Manager.Spawn
 
             if (Data.Stage.Loaded.Level < 3)
             {
-                var arrow = Instantiate(arrowDownPrefab, spawned.transform);
-                arrow.transform.Translate(0f, spawned.transform.localScale.y / 2f - 2f, 0f);
+                SpawnTutorialArrowWater(ref spawned);
             }
 
             var scale = Pacient.Loaded.Capacities.ExpFlowDuration / 1000f * (1f + expSizeAcc) * Data.Stage.Loaded.GameDifficulty;
@@ -52,8 +52,7 @@ namespace Ibit.Plataform.Manager.Spawn
 
             if (Data.Stage.Loaded.Level < 3)
             {
-                var arrow = Instantiate(arrowUpPrefab, spawned.transform);
-                arrow.transform.Translate(0f, spawned.transform.localScale.y / 2f + 1f, 0f);
+                SpawnTutorialArrowAir(ref spawned);
             }
 
             var scale = Pacient.Loaded.Capacities.InsFlowDuration / 1000f * (1f + insSizeAcc) * Data.Stage.Loaded.GameDifficulty;
@@ -64,6 +63,7 @@ namespace Ibit.Plataform.Manager.Spawn
             spawned.transform.Translate(0f, -spawned.transform.localScale.y / 2f, 0f);
         }
 
+        [Button("Release Obstacles")]
         private void ReleaseObstacles()
         {
             GameObject airObj, waterObj;
