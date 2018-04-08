@@ -1,4 +1,4 @@
-﻿using Ibit.Core.Game;
+﻿using Ibit.Core.Data;
 using Ibit.Core.Util;
 
 namespace Ibit.Plataform
