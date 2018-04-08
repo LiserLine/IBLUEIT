@@ -18,6 +18,10 @@ namespace Ibit.Core.Data
         public int PlaySessionsDone;
         public bool CalibrationDone;
         public bool HowToPlayDone;
+        public float Weight;
+        public float Height;
+        public float PitacoThreshold;
+        public string Ethnicity;
 
 #if UNITY_EDITOR
         static Pacient()
@@ -26,7 +30,6 @@ namespace Ibit.Core.Data
                 Loaded = new Pacient
                 {
                     Id = -1,
-                    Birthday = DateTime.Now,
                     CalibrationDone = true,
                     HowToPlayDone = true,
                     Condition = ConditionType.Normal,

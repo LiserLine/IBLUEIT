@@ -50,6 +50,50 @@ namespace Ibit.MainMenu.UI.Canvas
 
             var observations = GameObject.Find("Observations").GetComponent<InputField>().text;
 
+            var ethnicity = GameObject.Find("EthnicityLabel").GetComponent<Text>().text;
+
+            float weight;
+            try
+            {
+                weight = Parsers.Float(GameObject.Find("WeightText").GetComponent<Text>().text);
+
+                if (weight < 10)
+                    throw new Exception();
+            }
+            catch (Exception)
+            {
+                SysMessage.Warning("Peso inválido");
+                return;
+            }
+
+            float height;
+            try
+            {
+                height = Parsers.Float(GameObject.Find("HeightText").GetComponent<Text>().text);
+
+                if (height < 0.7f || height > 2.5f)
+                    throw new Exception();
+            }
+            catch (Exception)
+            {
+                SysMessage.Warning("Altura inválida");
+                return;
+            }
+
+            float threshold;
+            try
+            {
+                threshold = Parsers.Float(GameObject.Find("ThresholdText").GetComponent<Text>().text);
+
+                if (threshold < 0)
+                    throw new Exception();
+            }
+            catch (Exception)
+            {
+                SysMessage.Warning("Threshold inválido");
+                return;
+            }
+
             var plr = new Pacient
             {
                 Name = playerName,
@@ -59,7 +103,14 @@ namespace Ibit.MainMenu.UI.Canvas
                 Observations = observations,
                 Capacities = new Capacities(),
                 CalibrationDone = false,
-                UnlockedLevels = 1
+                UnlockedLevels = 1,
+                AccumulatedScore = 0,
+                Ethnicity = ethnicity,
+                Height = height,
+                HowToPlayDone = false,
+                PitacoThreshold = threshold,
+                PlaySessionsDone = 0,
+                Weight = weight
             };
 
             var tmpPlr = PacientDb.Instance.GetPacient(playerName);

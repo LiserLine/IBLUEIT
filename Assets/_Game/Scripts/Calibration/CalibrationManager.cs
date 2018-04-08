@@ -285,9 +285,12 @@ namespace Ibit.Calibration
                                     if (_flowWatch.ElapsedMilliseconds > FlowTimeThreshold)
                                     {
                                         _calibrationLogger.Write(CalibrationExerciseResult.Success, _currentExercise, _flowWatch.ElapsedMilliseconds);
+
                                         if (_flowWatch.ElapsedMilliseconds > _tmpCapacities.InsFlowDuration)
                                             _tmpCapacities.InsFlowDuration = _flowWatch.ElapsedMilliseconds;
+
                                         _currentExerciseCount++;
+
                                         ReadyNextStep(true);
                                         continue;
                                     }

@@ -72,7 +72,11 @@ namespace Ibit.Core.Database
                     AccumulatedScore = Parsers.Float(grid[i][11]),
                     PlaySessionsDone = int.Parse(grid[i][12]),
                     CalibrationDone = bool.Parse(grid[i][13]),
-                    HowToPlayDone = bool.Parse(grid[i][14])
+                    HowToPlayDone = bool.Parse(grid[i][14]),
+                    Ethnicity = grid[i][15],
+                    Height = Parsers.Float(grid[i][16]),
+                    Weight = Parsers.Float(grid[i][17]),
+                    PitacoThreshold = Parsers.Float(grid[i][18])
                 };
 
                 PacientList.Add(plr);
@@ -84,7 +88,7 @@ namespace Ibit.Core.Database
             var items = new[] { "Id", "Name", "Birthday", "Observations", "Condition",
                 "InsPeakFlow", "ExpPeakFlow", "InsFlowDuration", "ExpFlowDuration", "RespCycleDuration",
                 "UnlockedLevels", "AccumulatedScore", "PlaySessionsDone", "CalibrationDone", "HowToPlayDone",
-                "InsPeakFlowVol", "ExpPeakFlowVol"
+                "Ethnicity", "Height", "Weight", "PitacoThreshold"
             };
 
             var sb = new StringBuilder();
@@ -98,7 +102,8 @@ namespace Ibit.Core.Database
                     $"{pacient.Id};{pacient.Name};{pacient.Birthday:dd/MM/yyyy};{pacient.Observations};{pacient.Condition};" +
                     $"{pacient.Capacities.RawInsPeakFlow};{pacient.Capacities.RawExpPeakFlow};{pacient.Capacities.RawInsFlowDuration};{pacient.Capacities.RawExpFlowDuration};" +
                     $"{pacient.Capacities.RawRespCycleDuration};{pacient.UnlockedLevels};{pacient.AccumulatedScore};{pacient.PlaySessionsDone};{pacient.CalibrationDone};{pacient.HowToPlayDone};" +
-                    $"{FlowMath.ToLitresPerMinute(pacient.Capacities.RawInsPeakFlow)};{FlowMath.ToLitresPerMinute(pacient.Capacities.RawExpPeakFlow)}");
+                    $"{pacient.Ethnicity};{pacient.Height};{pacient.Weight};{pacient.PitacoThreshold}"
+                    );
             }
 
             FileReader.WriteAllText(filePath, sb.ToString());
