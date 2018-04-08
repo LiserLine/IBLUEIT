@@ -37,6 +37,7 @@ namespace Ibit.Core.Data
                     PlaySessionsDone = 0,
                     UnlockedLevels = 15,
                     AccumulatedScore = 0,
+                    PitacoThreshold = 7.5f,
                     Capacities = new Capacities
                     {
                         RespCycleDuration = 3000,

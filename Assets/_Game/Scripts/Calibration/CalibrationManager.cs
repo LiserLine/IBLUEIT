@@ -201,7 +201,7 @@ namespace Ibit.Calibration
                                     var insCheck = _flowMeter;
                                     ResetFlowMeter();
 
-                                    if (insCheck < -GameManager.PitacoFlowThreshold)
+                                    if (insCheck < -Pacient.Loaded.PitacoThreshold)
                                     {
                                         _calibrationLogger.Write(CalibrationExerciseResult.Success, _currentExercise, insCheck);
                                         _currentExerciseCount++;
@@ -269,12 +269,12 @@ namespace Ibit.Calibration
                                     AirFlowEnable(false);
                                     _dialogText.text = "(INSPIRE para manter o relógio GIRANDO o MÁXIMO QUE PUDER)";
 
-                                    while (_flowMeter >= -GameManager.PitacoFlowThreshold)
+                                    while (_flowMeter >= -Pacient.Loaded.PitacoThreshold)
                                         yield return null;
 
                                     _flowWatch.Restart();
 
-                                    while (_flowMeter < -GameManager.PitacoFlowThreshold * 0.3f)
+                                    while (_flowMeter < -Pacient.Loaded.PitacoThreshold * 0.3f)
                                         yield return null;
 
                                     AirFlowDisable();
@@ -364,7 +364,7 @@ namespace Ibit.Calibration
                                     var expCheck = _flowMeter;
                                     ResetFlowMeter();
 
-                                    if (expCheck > GameManager.PitacoFlowThreshold)
+                                    if (expCheck > Pacient.Loaded.PitacoThreshold)
                                     {
                                         _calibrationLogger.Write(CalibrationExerciseResult.Success, _currentExercise, expCheck);
                                         _currentExerciseCount++;
@@ -433,12 +433,12 @@ namespace Ibit.Calibration
                                     _dialogText.text = "(ASSOPRE e mantenha o relógio girando o MÁXIMO QUE PUDER)";
 
                                     // Wait for player input to be greather than threshold
-                                    while (_flowMeter <= GameManager.PitacoFlowThreshold)
+                                    while (_flowMeter <= Pacient.Loaded.PitacoThreshold)
                                         yield return null;
 
                                     _flowWatch.Restart();
 
-                                    while (_flowMeter > GameManager.PitacoFlowThreshold * 0.3f)
+                                    while (_flowMeter > Pacient.Loaded.PitacoThreshold * 0.3f)
                                         yield return null;
 
                                     AirFlowDisable();

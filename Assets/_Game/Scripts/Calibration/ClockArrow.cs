@@ -21,7 +21,7 @@ namespace Ibit.Calibration
 
             var snsrVal = Parsers.Float(msg);
 
-            snsrVal = snsrVal < -GameManager.PitacoFlowThreshold * 0.3f || snsrVal > GameManager.PitacoFlowThreshold * 0.3f ? snsrVal : 0f;
+            snsrVal = snsrVal < -Pacient.Loaded.PitacoThreshold * 0.3f || snsrVal > Pacient.Loaded.PitacoThreshold * 0.3f ? snsrVal : 0f;
 
             this.transform.Rotate(Vector3.back, snsrVal);
         }

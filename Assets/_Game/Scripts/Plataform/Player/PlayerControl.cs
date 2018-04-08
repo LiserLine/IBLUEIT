@@ -15,7 +15,7 @@ namespace Ibit.Plataform
 
             var sensorValue = Parsers.Float(msg);
 
-            sensorValue = sensorValue < -GameManager.PitacoFlowThreshold || sensorValue > GameManager.PitacoFlowThreshold ? sensorValue : 0f;
+            sensorValue = sensorValue < -Pacient.Loaded.PitacoThreshold || sensorValue > Pacient.Loaded.PitacoThreshold ? sensorValue : 0f;
 
             var peak = sensorValue > 0 ? Pacient.Loaded.Capacities.ExpPeakFlow * 0.5f : -Pacient.Loaded.Capacities.InsPeakFlow;
 

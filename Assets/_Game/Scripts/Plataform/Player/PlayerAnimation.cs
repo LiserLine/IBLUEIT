@@ -12,7 +12,7 @@ namespace Ibit.Plataform
 
             var f = Parsers.Float(msg);
 
-            f = f < -GameManager.PitacoFlowThreshold || f > GameManager.PitacoFlowThreshold ? f : 0f;
+            f = f < -Pacient.Loaded.PitacoThreshold || f > Pacient.Loaded.PitacoThreshold ? f : 0f;
 
             this.animator.Play(f < 0 ? "Dolphin-Jump" : "Dolphin-Move");
         }

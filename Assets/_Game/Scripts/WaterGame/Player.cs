@@ -81,14 +81,14 @@ namespace Ibit.WaterGame
         private IEnumerator Flow()
         {
             //While player does not blow.
-            while (sensorValue >= -GameManager.PitacoFlowThreshold * 2f)
+            while (sensorValue >= -Pacient.Loaded.PitacoThreshold * 2f)
             {
                 //Debug.Log($"Wait: {sensorValue}");
                 yield return null;
             }
 
             //Player is blowing, take the highest value.
-            while (sensorValue < -GameManager.PitacoFlowThreshold)
+            while (sensorValue < -Pacient.Loaded.PitacoThreshold)
             {
                 //Debug.Log($"Blow: {sensorValue}");
 

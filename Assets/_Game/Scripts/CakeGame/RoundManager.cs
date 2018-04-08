@@ -62,14 +62,14 @@ namespace Ibit.CakeGame
 
                             TextPanel.SetActive(false);
 
-                            while (player.sensorValue <= GameManager.PitacoFlowThreshold * 2 && jogou)
+                            while (player.sensorValue <= Pacient.Loaded.PitacoThreshold * 2 && jogou)
                                 yield return null;
 
                             StopCountdown();
                             paraTempo = true;
 
                             //saiu do 0
-                            while (player.sensorValue > GameManager.PitacoFlowThreshold && jogou)
+                            while (player.sensorValue > Pacient.Loaded.PitacoThreshold && jogou)
                             {
                                 FlowAction(player.picoExpiratorio);
                                 yield return null;
@@ -95,14 +95,14 @@ namespace Ibit.CakeGame
                         case 4:
                             displayHowTo.text = "";
                             TextPanel.SetActive(false);
-                            while (player.sensorValue <= GameManager.PitacoFlowThreshold * 2 && jogou)
+                            while (player.sensorValue <= Pacient.Loaded.PitacoThreshold * 2 && jogou)
                                 yield return null;
 
                             StopCountdown();
                             paraTempo = true;
 
                             //saiu do 0
-                            while (player.sensorValue > GameManager.PitacoFlowThreshold && jogou)
+                            while (player.sensorValue > Pacient.Loaded.PitacoThreshold && jogou)
                             {
                                 FlowAction(player.picoExpiratorio);
                                 yield return null;
@@ -128,14 +128,14 @@ namespace Ibit.CakeGame
                         case 6:
                             displayHowTo.text = "";
                             TextPanel.SetActive(false);
-                            while (player.sensorValue <= GameManager.PitacoFlowThreshold * 2 && jogou)
+                            while (player.sensorValue <= Pacient.Loaded.PitacoThreshold * 2 && jogou)
                                 yield return null;
 
                             StopCountdown();
                             paraTempo = true;
 
                             //saiu do 0
-                            while (player.sensorValue > GameManager.PitacoFlowThreshold && jogou)
+                            while (player.sensorValue > Pacient.Loaded.PitacoThreshold && jogou)
                             {
                                 FlowAction(player.picoExpiratorio);
                                 yield return null;

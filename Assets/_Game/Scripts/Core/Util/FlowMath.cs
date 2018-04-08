@@ -25,7 +25,7 @@ namespace Ibit.Core.Util
 
                 var lastTime = samples[i - 1].Key;
 
-                if (actualValue < -GameManager.PitacoFlowThreshold || actualValue > GameManager.PitacoFlowThreshold)
+                if (actualValue < -Pacient.Loaded.PitacoThreshold || actualValue > Pacient.Loaded.PitacoThreshold)
                 {
                     if (startTime == 0)
                     {
