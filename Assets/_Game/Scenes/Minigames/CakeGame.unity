@@ -1464,7 +1464,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60dd70acad3a04542b9872967c34ab27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FileName: PITACO-Minigame1-LOG
+  FileName: Minigame1-Pitaco-Logs
 --- !u!4 &858747749
 Transform:
   m_ObjectHideFlags: 0

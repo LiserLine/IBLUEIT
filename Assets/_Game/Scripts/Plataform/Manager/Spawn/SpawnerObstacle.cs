@@ -16,7 +16,7 @@ namespace Ibit.Plataform.Manager.Spawn
 
             var limit = Pacient.Loaded.Capacities.RespCycleDuration / 3000f;
 
-            second.transform.Translate(firstPos + Mathf.Clamp(limit, 2.5f, 3.5f) - secondPos, 0f, 0f);
+            second.transform.Translate(firstPos + Mathf.Clamp(limit, 2.5f, 3f) - secondPos, 0f, 0f);
         }
 
         private void InstantiateObstacleAir(out GameObject spawned)
@@ -28,7 +28,7 @@ namespace Ibit.Plataform.Manager.Spawn
                 transform.rotation,
                 transform);
 
-            if (Data.Stage.Loaded.Level < 3)
+            if (Data.Stage.Loaded.Level == 1)
             {
                 SpawnTutorialArrowWater(ref spawned);
             }
@@ -50,7 +50,7 @@ namespace Ibit.Plataform.Manager.Spawn
                 transform.rotation,
                 transform);
 
-            if (Data.Stage.Loaded.Level < 3)
+            if (Data.Stage.Loaded.Level == 1)
             {
                 SpawnTutorialArrowAir(ref spawned);
             }

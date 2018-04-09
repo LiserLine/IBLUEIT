@@ -12,6 +12,8 @@ namespace Ibit.Plataform.Manager.Spawn
         [BoxGroup("Relax Time")] [SerializeField] private GameObject relaxZeroPrefab;
 
         private bool spawnRelaxTime;
+        private const float distanceFactor = 2f; //higher = closer
+
         public bool RelaxTimeSpawned { get; private set; }
 
 #if UNITY_EDITOR
@@ -36,7 +38,7 @@ namespace Ibit.Plataform.Manager.Spawn
             if (SpawnedObjects.Length > 2)
             {
                 refPos = SpawnedObjects[SpawnedObjects.Length - 3].position;
-                minDistanceBetweenSpawns += 3f;
+                minDistanceBetweenSpawns += 4f;
             }
             else
                 refPos = this.transform.position;
@@ -64,7 +66,7 @@ namespace Ibit.Plataform.Manager.Spawn
             for (i = 0; i < objects.Length; i++)
             {
                 UpdateSpeed(ref objects[i]);
-                objects[i].transform.Translate(i / 1.5f, 0f, 0f);
+                objects[i].transform.Translate(i / distanceFactor, 0f, 0f);
             }
 
             for (i = 0; i < objects.Length; i++)

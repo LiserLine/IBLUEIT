@@ -17,7 +17,7 @@ namespace Ibit.Plataform
 
             sensorValue = sensorValue < -Pacient.Loaded.PitacoThreshold || sensorValue > Pacient.Loaded.PitacoThreshold ? sensorValue : 0f;
 
-            var peak = sensorValue > 0 ? Pacient.Loaded.Capacities.ExpPeakFlow * 0.5f : -Pacient.Loaded.Capacities.InsPeakFlow;
+            var peak = sensorValue > 0 ? Pacient.Loaded.Capacities.ExpPeakFlow * 0.4f : -Pacient.Loaded.Capacities.InsPeakFlow;
 
             var nextPosition = sensorValue * CameraLimits.Boundary / peak;
 

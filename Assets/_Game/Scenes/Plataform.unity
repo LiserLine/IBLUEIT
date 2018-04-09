@@ -1575,7 +1575,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.78431374}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -4261,6 +4261,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1deb92e20a39d9e46b30ffae6cdd9f75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  arrowUpPrefab: {fileID: 1394310071536932, guid: 1560a830baa881946bdd192e17d122bc,
+    type: 2}
+  arrowDownPrefab: {fileID: 1967461620418684, guid: 0fa275c1c03cbb649a9f720729db6cdf,
+    type: 2}
   obstaclesAir:
   - {fileID: 1596007118193250, guid: 2245c0c7b8a839449b4f0651efd04e5f, type: 2}
   - {fileID: 1079772737705790, guid: 894cc6132a08acb4f8f7be48eb10dcf9, type: 2}
@@ -4284,10 +4288,6 @@ MonoBehaviour:
   - {fileID: 1774716689977566, guid: d1752f78c2f593942bc47468330258f6, type: 2}
   - {fileID: 1979597902831624, guid: a670f0d87658b7d46ba729b539ff537f, type: 2}
   - {fileID: 1582079116040042, guid: 85cb7fcf034d3e6408a4335337549ba3, type: 2}
-  arrowUpPrefab: {fileID: 1394310071536932, guid: 1560a830baa881946bdd192e17d122bc,
-    type: 2}
-  arrowDownPrefab: {fileID: 1967461620418684, guid: 0fa275c1c03cbb649a9f720729db6cdf,
-    type: 2}
 --- !u!1 &1813356614
 GameObject:
   m_ObjectHideFlags: 0

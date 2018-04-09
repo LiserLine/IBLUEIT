@@ -24,10 +24,10 @@ namespace Ibit.Plataform.Manager.Spawn
                 transform.rotation,
                 transform);
 
-            if (Data.Stage.Loaded.Level < 3)
-            {
-                SpawnTutorialArrowAir(ref spawned);
-            }
+            //if (Data.Stage.Loaded.Level == 1)
+            //{
+            //    SpawnTutorialArrowAir(ref spawned);
+            //}
 
             var posY = (1f + insHeightAcc) * CameraLimits.Boundary * Random.Range(0.2f, Data.Stage.Loaded.GameDifficulty);
 
@@ -45,10 +45,10 @@ namespace Ibit.Plataform.Manager.Spawn
                 transform.rotation,
                 transform);
 
-            if (Data.Stage.Loaded.Level < 3)
-            {
-                SpawnTutorialArrowWater(ref spawned);
-            }
+            //if (Data.Stage.Loaded.Level == 1)
+            //{
+            //    SpawnTutorialArrowWater(ref spawned);
+            //}
 
             var posY = (1f + expHeightAcc) * CameraLimits.Boundary * Random.Range(0.2f, Data.Stage.Loaded.GameDifficulty);
 
