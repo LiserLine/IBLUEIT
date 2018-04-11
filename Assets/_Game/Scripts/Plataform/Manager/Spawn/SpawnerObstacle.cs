@@ -16,25 +16,24 @@ namespace Ibit.Plataform.Manager.Spawn
             GameObject instance;
 
             if (stageObject.PositionYFactor > 0) //air
-                InstantiateObstacleAir(out instance, stageObject.DifficultyFactor);
+                InstantiateObstacleAir(out instance, stageObject.DifficultyFactor, stageObject.PositionXSpacing);
             else //water
-                InstantiateObstacleWater(out instance, stageObject.DifficultyFactor);
+                InstantiateObstacleWater(out instance, stageObject.DifficultyFactor, stageObject.PositionXSpacing);
 
             var obstacle = instance.AddComponent<Obstacle>();
             obstacle.Properties = stageObject;
 
             UpdateSpeed(ref instance);
-            DistantiateFromLastSpawned(ref instance, stageObject.PositionXSpacing);
 
             FindObjectOfType<Scorer>().UpdateMaxScore(stageObject.Type, ref instance, stageObject.DifficultyFactor);
         }
 
-        private void InstantiateObstacleAir(out GameObject o, float difficultyFactor)
+        private void InstantiateObstacleAir(out GameObject o, float difficultyFactor, float spacing)
         {
             var index = Random.Range(0, obstaclesAir.Length);
 
             o = Instantiate(obstaclesAir[index],
-                new Vector3(this.transform.position.x, 0f),
+                new Vector3(_lastSpawned.position.x + spacing, 0f),
                 this.transform.rotation,
                 this.transform);
 
@@ -51,12 +50,12 @@ namespace Ibit.Plataform.Manager.Spawn
             o.transform.Translate(0f, o.transform.localScale.y / 2f, 0f);
         }
 
-        private void InstantiateObstacleWater(out GameObject o, float difficultyFactor)
+        private void InstantiateObstacleWater(out GameObject o, float difficultyFactor, float spacing)
         {
             var index = Random.Range(0, obstaclesWater.Length);
 
             o = Instantiate(obstaclesWater[index],
-                new Vector3(this.transform.position.x, 0f),
+                new Vector3(_lastSpawned.position.x + spacing, 0f),
                 this.transform.rotation,
                 this.transform);
 

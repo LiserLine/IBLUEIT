@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 61147997365956048}
   - component: {fileID: 114502832353730976}
   m_Layer: 9
-  m_Name: StarFish
+  m_Name: Starfish
   m_TagString: WaterTarget
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

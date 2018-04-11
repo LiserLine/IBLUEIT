@@ -16,45 +16,44 @@ namespace Ibit.Plataform.Manager.Spawn
             GameObject instance;
 
             if (stageObject.PositionYFactor > 0) //air
-                InstantiateTargetAir(out instance, stageObject.DifficultyFactor);
+                InstantiateTargetAir(out instance, stageObject.DifficultyFactor, stageObject.PositionXSpacing);
             else //water
-                InstantiateTargetWater(out instance, stageObject.DifficultyFactor);
+                InstantiateTargetWater(out instance, stageObject.DifficultyFactor, stageObject.PositionXSpacing);
 
             var target = instance.AddComponent<Target>();
             target.Properties = stageObject;
 
             UpdateSpeed(ref instance);
-            DistantiateFromLastSpawned(ref instance, stageObject.PositionXSpacing);
 
             FindObjectOfType<Scorer>().UpdateMaxScore(stageObject.Type, ref instance, stageObject.DifficultyFactor);
         }
 
-        private void InstantiateTargetAir(out GameObject o, float difficultyFactor)
+        private void InstantiateTargetAir(out GameObject o, float difficultyFactor, float spacing)
         {
             var index = Random.Range(0, targetsAir.Length);
 
             o = Instantiate(targetsAir[index],
-                this.transform.position,
+                new Vector3(_lastSpawned.position.x + spacing, 0f),
                 this.transform.rotation,
                 this.transform);
 
-            var posY = (1f + insHeightAcc) * CameraLimits.Boundary * Random.Range(0.2f, difficultyFactor);
+            var posY = (1f + insHeightAcc) * CameraLimits.Boundary * difficultyFactor;
 
             posY = Mathf.Clamp(posY, 0.2f * CameraLimits.Boundary, CameraLimits.Boundary);
 
             o.transform.Translate(0f, posY, 0f);
         }
 
-        private void InstantiateTargetWater(out GameObject o, float difficultyFactor)
+        private void InstantiateTargetWater(out GameObject o, float difficultyFactor, float spacing)
         {
             var index = Random.Range(0, targetsWater.Length);
 
             o = Instantiate(targetsWater[index],
-                this.transform.position,
+                new Vector3(_lastSpawned.position.x + spacing, 0f),
                 this.transform.rotation,
                 this.transform);
 
-            var posY = (1f + expHeightAcc) * CameraLimits.Boundary * Random.Range(0.2f, difficultyFactor);
+            var posY = (1f + expHeightAcc) * CameraLimits.Boundary * difficultyFactor;
 
             posY = Mathf.Clamp(-posY, -CameraLimits.Boundary, 0.2f * -CameraLimits.Boundary);
 

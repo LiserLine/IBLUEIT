@@ -70,12 +70,6 @@ namespace Ibit.Plataform.Manager.Spawn
             }
         }
 
-        private void DistantiateFromLastSpawned(ref GameObject obj, float distance)
-        {
-            var lastPos = _lastSpawned.position.x + _lastSpawned.localScale.x / 2f;
-            obj.transform.position = new Vector3(lastPos + distance + (obj.transform.localScale.x / 2f), obj.transform.position.y, obj.transform.position.z);
-        }
-
         private void UpdateSpeed(ref GameObject obj)
         {
             obj.GetComponent<MoveObject>().Speed = StageInfo.Loaded.ObjectSpeedFactor;
