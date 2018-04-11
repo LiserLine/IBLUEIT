@@ -38,7 +38,6 @@ GameObject:
   - component: {fileID: 50139944587801026}
   - component: {fileID: 58668762468894268}
   - component: {fileID: 114206458803687086}
-  - component: {fileID: 114818242479631586}
   m_Layer: 9
   m_Name: Submarine
   m_TagString: WaterObstacle
@@ -119,18 +118,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff1e9000a19055b45b2ea0e537418ee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114818242479631586
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1698614461066178}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2902a13907468d74296f1f7997acb97b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  heartPoint: 1
 --- !u!212 &212017493627358732
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -15,7 +15,7 @@ namespace Ibit.Core.Game
         public static float PitacoFlowThreshold { get; private set; } = 7.5f;
 
 #if UNITY_EDITOR
-        public void QuitGame() => Debug.Log("Quit Game called!");
+        public void QuitGame() => Debug.Log("Quit Game!");
 #else
         public void QuitGame() => System.Diagnostics.Process.GetCurrentProcess().Kill();
 #endif
@@ -34,7 +34,7 @@ namespace Ibit.Core.Game
 
         private void LoadGlobals()
         {
-            var data = FileReader.ReadCsv(Application.streamingAssetsPath + @"/GameSettings/Constants.csv");
+            var data = FileManager.ReadCsv(Application.streamingAssetsPath + @"/Constants.csv");
             var grid = CsvParser2.Parse(data);
 
             PitacoFlowThreshold = Parsers.Float(grid[1][0]);

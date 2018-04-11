@@ -20,8 +20,8 @@ namespace Ibit.Plataform.UI
 
         private void OnEnable()
         {
-            stageLevel.text = Stage.Loaded.Level.ToString();
-            stagePhase.text = ((int)Stage.Loaded.ObjectToSpawn).ToString();
+            stageLevel.text = StageInfo.Loaded.Level.ToString();
+            stagePhase.text = StageInfo.Loaded.Phase.ToString();
         }
 
         public void PauseGame()
@@ -44,13 +44,15 @@ namespace Ibit.Plataform.UI
 
         public void SetNextStage()
         {
-#if UNITY_EDITOR
-            Stage.Loaded = StageDb.Instance == null
-                ? StageDb.Load(Stage.Loaded.Id + 1)
-                : StageDb.Instance.GetStage(Stage.Loaded.Id + 1);
-#else
-        Stage.Loaded = StageDb.Instance.GetStage(Stage.Loaded.Id + 1 > StageDb.Instance.StageList.Max(x => x.Id) ? 1 : Stage.Loaded.Id + 1);
-#endif
+            StageInfo.Loaded = StageDb.Instance.GetStage(StageInfo.Loaded.Id + 1 > StageDb.Instance.StageList.Max(x => x.Id) ? 1 : StageInfo.Loaded.Id + 1);
+
+            //#if UNITY_EDITOR
+            //            StageInfo.Loaded = StageDb.Instance == null
+            //                ? StageDb.Load(StageInfo.Loaded.Id + 1)
+            //                : StageDb.Instance.GetStage(StageInfo.Loaded.Id + 1);
+            //#else
+            //            StageInfo.Loaded = StageDb.Instance.GetStage(StageInfo.Loaded.Id + 1 > StageDb.Instance.StageList.Max(x => x.Id) ? 1 : StageInfo.Loaded.Id + 1);
+            //#endif
         }
     }
 }

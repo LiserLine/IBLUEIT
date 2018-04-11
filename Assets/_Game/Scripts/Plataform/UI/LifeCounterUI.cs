@@ -15,7 +15,7 @@ namespace Ibit.Plataform.UI
         {
             plr = FindObjectOfType<Ibit.Plataform.Player>();
             startHP = plr.HeartPoins;
-            plr.OnEnemyHit += UpdateHeartPoints;
+            plr.OnObjectHit += UpdateHeartPoints;
         }
 
         private void UpdateHeartPoints(GameObject go) => fillImage.fillAmount = plr.HeartPoins / startHP;

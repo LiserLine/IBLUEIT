@@ -53,8 +53,8 @@ namespace Ibit.Plataform.UI
 
             resultInfo.text =
                 $"• Score: {score:####} / {maxScore:####} ({((score / maxScore) * 100f):####}%)\n" +
-                $"• Fase: {(int)Stage.Loaded.ObjectToSpawn}\n" +
-                $"• Nível: {Stage.Loaded.Level}\n" +
+                $"• Fase: {StageInfo.Loaded.Phase}\n" +
+                $"• Nível: {StageInfo.Loaded.Level}\n" +
                 $"• Jogador: {Pacient.Loaded.Name}";
         }
     }

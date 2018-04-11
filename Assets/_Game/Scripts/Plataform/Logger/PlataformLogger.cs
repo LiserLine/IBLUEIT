@@ -29,13 +29,13 @@ namespace Ibit.Plataform.Logger
         protected override void Save()
         {
             var path = @"savedata/pacients/" + Pacient.Loaded.Id + @"/" + $"{recordStart:yyyyMMdd-HHmmss}_" + FileName + ".csv";
-            FileReader.WriteAllText(path, sb.ToString());
+            FileManager.WriteAllText(path, sb.ToString());
             LogPlaySession();
         }
 
         private void LogPlaySession()
         {
-            if (Stage.Loaded.Id == Pacient.Loaded.UnlockedLevels)
+            if (StageInfo.Loaded.Id == Pacient.Loaded.UnlockedLevels)
             {
                 if (scr.Result == GameResult.Success)
                 {
@@ -60,7 +60,7 @@ namespace Ibit.Plataform.Logger
             var historyPath = @"savedata/pacients/" + Pacient.Loaded.Id + @"/_PlataformHistory.csv";
 
             var data = $"{recordStart};{recordStop};{FindObjectOfType<StageManager>().Duration};{scr.Result};" +
-                       $"{Stage.Loaded.Id};{(int)Stage.Loaded.ObjectToSpawn};{Stage.Loaded.Level};{spwn.RelaxTimeSpawned};" +
+                       $"{StageInfo.Loaded.Id};{StageInfo.Loaded.Phase};{StageInfo.Loaded.Level};{spwn.RelaxTimeSpawned};" +
                        $"{scr.Score};{scr.MaxScore};{scr.Score / scr.MaxScore};" +
                        $"{spwn.TargetsSucceeded + spwn.TargetsFailed};{spwn.TargetsSucceeded};{spwn.TargetsFailed};" +
                        $"{spwn.ObstaclesSucceeded + spwn.ObstaclesFailed};{spwn.ObstaclesSucceeded};{spwn.ObstaclesFailed};" +
@@ -82,12 +82,12 @@ namespace Ibit.Plataform.Logger
                               "playerHP;");
 
                 sb.AppendLine(data);
-                FileReader.WriteAllText(historyPath, sb.ToString());
+                FileManager.WriteAllText(historyPath, sb.ToString());
             }
             else
             {
                 sb.AppendLine(data);
-                FileReader.AppendAllText(historyPath, sb.ToString());
+                FileManager.AppendAllText(historyPath, sb.ToString());
             }
 
             GameObject.Find("Canvas").transform.Find("ResultScreen").gameObject.SetActive(true);

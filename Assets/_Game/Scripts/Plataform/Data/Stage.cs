@@ -1,45 +1,44 @@
-﻿using Ibit.Plataform.Manager.Spawn;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Ibit.Plataform.Data
 {
     [Serializable]
-    public class Stage
+    public class StageInfo
     {
-        public static Stage Loaded;
+        public static StageInfo Loaded;
 
         [Header("Info")]
 
         public int Id;
-        public ObjectToSpawn ObjectToSpawn;
+        public int Phase;
         public int Level;
-
-        [Space(5)]
-        [Header("Stage Settings")]
-
-        public float SpawnDelay;
-        public int SpawnDuration;
-        public float GameDifficulty;
-        public float ObjectSpeedMultiplier;
+        public float ObjectSpeedFactor;
+        public int Loops;
 
         [Space(5)]
         [Header("Target Settings")]
 
         public float HeightIncrement;
-        public float HeightLevelUpThreshold;
-        public float HeightLevelDownThreshold;
+        public float HeightUpThreshold;
+        public float HeightDownThreshold;
 
         [Space(5)]
         [Header("Obstacle Settings")]
 
         public float SizeIncrement;
-        public float SizeLevelUpThreshold;
-        public float SizeLevelDownThreshold;
+        public float SizeUpThreshold;
+        public float SizeDownThreshold;
 
         [Space(5)]
-        [Header("Relax Settings")]
+        [Header("Stage Object List")]
 
-        public int RelaxTimeThreshold;
+        public List<StageObject> StageObjects;
+
+        public StageInfo()
+        {
+            StageObjects = new List<StageObject>();
+        }
     }
 }

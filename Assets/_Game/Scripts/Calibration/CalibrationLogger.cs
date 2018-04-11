@@ -7,7 +7,7 @@ using Ibit.Core.Game;
 
 namespace Ibit.Calibration
 {
-    public class CalibrationLogger
+    public class CalibrationLogger //MinigameLogger
     {
         private StringBuilder sb;
         private string path;
@@ -40,9 +40,9 @@ namespace Ibit.Calibration
                 return;
             
             if (!File.Exists(path))
-                FileReader.WriteAllText(path, sb.ToString());
+                FileManager.WriteAllText(path, sb.ToString());
             else
-                FileReader.AppendAllText(path, sb.ToString());
+                FileManager.AppendAllText(path, sb.ToString());
         }
     }
 }

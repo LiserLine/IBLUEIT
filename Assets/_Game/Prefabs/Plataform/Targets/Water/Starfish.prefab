@@ -38,9 +38,8 @@ GameObject:
   - component: {fileID: 50791752759136764}
   - component: {fileID: 61147997365956048}
   - component: {fileID: 114502832353730976}
-  - component: {fileID: 114042623080731422}
   m_Layer: 9
-  m_Name: Starfish
+  m_Name: StarFish
   m_TagString: WaterTarget
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118,17 +117,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &114042623080731422
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1979597902831624}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24dfadd2f0ff3914e8cd5acc9bf268c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114502832353730976
 MonoBehaviour:
   m_ObjectHideFlags: 1

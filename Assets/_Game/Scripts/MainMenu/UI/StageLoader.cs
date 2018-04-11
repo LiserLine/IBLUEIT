@@ -1,5 +1,4 @@
 ﻿using Ibit.Core.Data;
-using Ibit.Core.Serial;
 using Ibit.Core.Util;
 using Ibit.Plataform.Data;
 using UnityEngine;
@@ -9,7 +8,7 @@ namespace Ibit.MainMenu.UI
 {
     public class StageLoader : MonoBehaviour
     {
-        public Stage stage;
+        public StageInfo stage;
 
         private void OnEnable() => this.GetComponent<Button>().onClick.AddListener(OnStageSelected);
 
@@ -22,14 +21,16 @@ namespace Ibit.MainMenu.UI
             }
 
 #if !UNITY_EDITOR
-        if (!FindObjectOfType<SerialController>().IsConnected)
+
+        if (!FindObjectOfType<Ibit.Core.Serial.SerialController>().IsConnected)
         {
             SysMessage.Warning("Pitaco não está conectado! Conecte antes de jogar!");
             return;
         }
+
 #endif
 
-            Stage.Loaded = stage;
+            StageInfo.Loaded = stage;
             FindObjectOfType<SceneLoader>().LoadScene(1);
             Debug.Log($"Stage {stage.Id} loaded.");
         }

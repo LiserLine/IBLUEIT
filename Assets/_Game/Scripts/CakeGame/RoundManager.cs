@@ -6,6 +6,7 @@ using Ibit.Core.Audio;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using Ibit.Core;
 
 namespace Ibit.CakeGame
 {
@@ -195,6 +196,8 @@ namespace Ibit.CakeGame
                 score.FillStars(2);
                 finalScore[(passo / 2) - 1] = 3;
             }
+
+            FindObjectOfType<MinigameLogger>().Write(flowValue);
         }
 
         #endregion Calculatin Flow Percentage

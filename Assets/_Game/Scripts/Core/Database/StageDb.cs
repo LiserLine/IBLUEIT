@@ -1,6 +1,5 @@
 ﻿using Ibit.Core.Util;
 using Ibit.Plataform.Data;
-using Ibit.Plataform.Manager.Spawn;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,97 +14,76 @@ namespace Ibit.Core.Database
         private StageDb()
         {
             Instance = this;
-            StageList = new List<Stage>();
-            Load();
+            StageList = new List<StageInfo>();
+            //LoadStages();
         }
 
         public bool IsLoaded { get; private set; }
-        public List<Stage> StageList { get; }
+        public List<StageInfo> StageList { get; }
+        public StageInfo GetStage(int id) => StageList.Find(x => x.Id == id);
 
-        public Stage GetStage(int id) => StageList.Find(x => x.Id == id);
-
-        public void Load()
+        public void LoadStages()
         {
-            var filePath = Application.streamingAssetsPath + @"/GameSettings/StageList.csv";
+            var files = Directory.GetFiles(Application.streamingAssetsPath + @"/Stages/");
 
-            if (!File.Exists(filePath))
-                throw new FileNotFoundException($"Database file '{filePath}' not found!");
-
-            StageList.Clear();
-
-            var csvData = FileReader.ReadCsv(filePath);
-            var grid = CsvParser2.Parse(csvData);
-
-            for (var i = 1; i < grid.Length; i++)
-            {
-                if (string.IsNullOrEmpty(grid[i][0]))
-                    continue;
-
-                var stage = new Stage
-                {
-                    Id = int.Parse(grid[i][0]),
-                    ObjectToSpawn = (ObjectToSpawn)Enum.Parse(typeof(ObjectToSpawn), grid[i][1]),
-                    Level = int.Parse(grid[i][2]),
-                    SpawnDelay = Parsers.Float(grid[i][3]),
-                    GameDifficulty = Parsers.Float(grid[i][4]),
-                    ObjectSpeedMultiplier = Parsers.Float(grid[i][5]),
-                    HeightIncrement = Parsers.Float(grid[i][6]),
-                    HeightLevelUpThreshold = int.Parse(grid[i][7]),
-                    HeightLevelDownThreshold = int.Parse(grid[i][8]),
-                    SizeIncrement = Parsers.Float(grid[i][9]),
-                    SizeLevelUpThreshold = int.Parse(grid[i][10]),
-                    SizeLevelDownThreshold = int.Parse(grid[i][11]),
-                    RelaxTimeThreshold = int.Parse(grid[i][12]),
-                    SpawnDuration = int.Parse(grid[i][13])
-                };
-
-                StageList.Add(stage);
-            }
+            foreach (var file in files)
+                StageList.Add(Load(file));
 
             IsLoaded = true;
             Debug.Log($"{StageList.Count} stages loaded.");
         }
 
-#if UNITY_EDITOR
-
-        public static Stage Load(int id)
+        public static StageInfo Load(string filename)
         {
-            var filePath = Application.streamingAssetsPath + @"/GameSettings/StageList.csv";
+            var path = Application.streamingAssetsPath + @"/Stages/" + filename + ".csv";
 
-            if (id < 1)
-                throw new Exception("Id must be greater than 0");
+            if (!File.Exists(path))
+                throw new FileNotFoundException($"Stage file '{path}' not found!");
 
-            if (!File.Exists(filePath))
-                throw new FileNotFoundException($"Database file '{filePath}' not found!");
+            var data = FileManager.ReadAllLines(path);
 
-            var csvData = FileReader.ReadCsv(filePath);
-            var grid = CsvParser2.Parse(csvData);
+            var stageHeader = $"{data[0]}\n{data[1]}";
+            var grid = CsvParser2.Parse(stageHeader);
 
-            if (id > grid.Length - 1)
-                throw new Exception($"Id must be <= {grid.Length - 1}");
-
-            if (string.IsNullOrEmpty(grid[id][0]))
-                throw new Exception("There is no data to load!");
-
-            return new Stage
+            var stageInfo = new StageInfo
             {
-                Id = int.Parse(grid[id][0]),
-                ObjectToSpawn = (ObjectToSpawn)Enum.Parse(typeof(ObjectToSpawn), grid[id][1]),
-                Level = int.Parse(grid[id][2]),
-                SpawnDelay = Parsers.Float(grid[id][3]),
-                GameDifficulty = Parsers.Float(grid[id][4]),
-                ObjectSpeedMultiplier = Parsers.Float(grid[id][5]),
-                HeightIncrement = Parsers.Float(grid[id][6]),
-                HeightLevelUpThreshold = int.Parse(grid[id][7]),
-                HeightLevelDownThreshold = int.Parse(grid[id][8]),
-                SizeIncrement = Parsers.Float(grid[id][9]),
-                SizeLevelUpThreshold = int.Parse(grid[id][10]),
-                SizeLevelDownThreshold = int.Parse(grid[id][11]),
-                RelaxTimeThreshold = int.Parse(grid[id][12]),
-                SpawnDuration = int.Parse(grid[id][13])
+                //header
+                Id = int.Parse(grid[1][0]),
+                Phase = int.Parse(grid[1][1]),
+                Level = int.Parse(grid[1][2]),
+                ObjectSpeedFactor = Parsers.Float(grid[1][3]),
+                HeightIncrement = Parsers.Float(grid[1][4]),
+                HeightUpThreshold = int.Parse(grid[1][5]),
+                HeightDownThreshold = int.Parse(grid[1][6]),
+                SizeIncrement = Parsers.Float(grid[1][7]),
+                SizeUpThreshold = int.Parse(grid[1][8]),
+                SizeDownThreshold = int.Parse(grid[1][9]),
+                Loops = int.Parse(grid[1][10]),
             };
-        }
 
-#endif
+            var template = "ObjectType;DifficultyFactor;PositionYFactor;PositionXSpacing";
+
+            // Read each line from the file to get objects to spawn
+            for (int i = 2; i < data.Length; i++)
+            {
+                if (data[i].StartsWith("%") || string.IsNullOrEmpty(data[i]))
+                    continue;
+
+                var objDataGrid = CsvParser2.Parse($"{template}\n{data[i]}");
+
+                var obj = new StageObject
+                {
+                    Id = i,
+                    Type = (StageObjectType)Enum.Parse(typeof(StageObjectType), (objDataGrid[1][0])),
+                    DifficultyFactor = Parsers.Float(objDataGrid[1][1]),
+                    PositionYFactor = Parsers.Float(objDataGrid[1][2]),
+                    PositionXSpacing = Parsers.Float(objDataGrid[1][3]),
+                };
+
+                stageInfo.StageObjects.Add(obj);
+            }
+
+            return stageInfo;
+        }
     }
 }

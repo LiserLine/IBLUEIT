@@ -23,7 +23,7 @@ namespace Ibit.Plataform.Camera
 
         private void Awake()
         {
-            FindObjectOfType<Player>().OnEnemyHit += Shake;
+            FindObjectOfType<Player>().OnObjectHit += Shake;
             originalPos = this.transform.localPosition;
             originalDuration = shakeDuration;
         }
@@ -51,7 +51,7 @@ namespace Ibit.Plataform.Camera
             if (FindObjectOfType<Player>().HeartPoins == 0)
                 return;
 
-            if (go.tag.Contains("Obstacle"))
+            if (go.CompareTag("Obstacle"))
                 shakeCam = true;
         }
     }

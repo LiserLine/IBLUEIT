@@ -1,5 +1,4 @@
 ﻿using Ibit.Plataform.Data;
-using Ibit.Plataform.Manager.Spawn;
 using UnityEngine;
 
 namespace Ibit.Plataform.UI
@@ -35,17 +34,18 @@ namespace Ibit.Plataform.UI
 
         private void SwitchBackground()
         {
-            switch (Stage.Loaded.ObjectToSpawn)
+            switch (StageInfo.Loaded.Phase)
             {
-                case ObjectToSpawn.Targets:
+                default:
+                case 1:
                     bgRenderer.material = day;
                     break;
 
-                case ObjectToSpawn.TargetsAndObstacles:
+                case 2:
                     bgRenderer.material = afternoon;
                     break;
 
-                case ObjectToSpawn.Obstacles:
+                case 3:
                     bgRenderer.material = night;
                     break;
             }

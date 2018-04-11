@@ -50,7 +50,7 @@ namespace Ibit.Core.Localization.Editor
             if (string.IsNullOrEmpty(filePath))
                 return;
 
-            var dataAsJson = FileReader.ReadAllText(filePath);
+            var dataAsJson = FileManager.ReadAllText(filePath);
             LocalizationData = JsonUtility.FromJson<LocalizationData>(dataAsJson);
         }
 
@@ -62,7 +62,7 @@ namespace Ibit.Core.Localization.Editor
                 return;
 
             var dataAsJson = JsonUtility.ToJson(LocalizationData, true);
-            FileReader.WriteAllText(filePath, dataAsJson);
+            FileManager.WriteAllText(filePath, dataAsJson);
         }
 
         private void CreateNewData()

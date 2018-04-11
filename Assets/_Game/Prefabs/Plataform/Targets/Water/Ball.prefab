@@ -22,7 +22,6 @@ GameObject:
   - component: {fileID: 50005267028705636}
   - component: {fileID: 61683874985034940}
   - component: {fileID: 114337392193570214}
-  - component: {fileID: 114807236069680270}
   m_Layer: 9
   m_Name: Ball
   m_TagString: WaterTarget
@@ -127,17 +126,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff1e9000a19055b45b2ea0e537418ee6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &114807236069680270
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1724036100270406}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24dfadd2f0ff3914e8cd5acc9bf268c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!212 &212794717110820230

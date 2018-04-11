@@ -11,57 +11,28 @@ namespace Ibit.Plataform.Manager.Spawn
         [BoxGroup("Relax Time")] [SerializeField] private GameObject relaxExpPrefab;
         [BoxGroup("Relax Time")] [SerializeField] private GameObject relaxZeroPrefab;
 
-        private bool spawnRelaxTime;
-        private const float distanceFactor = 2f; //higher = closer
-
         public bool RelaxTimeSpawned { get; private set; }
 
-#if UNITY_EDITOR
-        [Button("Release Relax Time")]
-        private void DebugSpawnRelax()
-        {
-            spawnRelaxTime = true;
-            ReleaseRelaxTime();
-        }
-#endif
+        private const float distanceFactor = 2f; //higher = closer
 
-        private void ReleaseRelaxTime()
-        {
-            if (!spawnRelaxTime || RelaxTimeSpawned)
-                return;
+        private Vector3 _spawnPosition;
 
+        private void SpawnRelax(float distanceFromLast)
+        {
             var disfunction = (int)Pacient.Loaded.Condition;
             var objects = new GameObject[11 + 4 * disfunction];
             int i;
 
-            Vector3 refPos;
-            if (SpawnedObjects.Length > 2)
-            {
-                refPos = SpawnedObjects[SpawnedObjects.Length - 3].position;
-                minDistanceBetweenSpawns += 4f;
-            }
-            else
-                refPos = this.transform.position;
-
-            refPos.y = 0;
+            _spawnPosition = new Vector3(_lastSpawned.position.x + (_lastSpawned.localScale.x / 2f) + distanceFromLast, 0f, 0f);
 
             for (i = 0; i < 4; i++)
-            {
-                objects[i] = Instantiate(relaxInsPrefab, refPos, transform.rotation, transform);
-
-                if (i != 0)
-                    continue;
-
-                DistanciateSpawns(ref objects[0]);
-                refPos = objects[0].transform.position;
-                refPos.y = 0;
-            }
+                objects[i] = InstantiateRelaxObject(ref relaxInsPrefab, i);
 
             for (; i < 11; i++)
-                objects[i] = Instantiate(relaxZeroPrefab, refPos, transform.rotation, transform);
+                objects[i] = InstantiateRelaxObject(ref relaxZeroPrefab, i);
 
             for (; i < objects.Length; i++)
-                objects[i] = Instantiate(relaxExpPrefab, refPos, transform.rotation, transform);
+                objects[i] = InstantiateRelaxObject(ref relaxExpPrefab, i);
 
             for (i = 0; i < objects.Length; i++)
             {
@@ -78,6 +49,13 @@ namespace Ibit.Plataform.Manager.Spawn
             }
 
             RelaxTimeSpawned = true;
+        }
+
+        private GameObject InstantiateRelaxObject(ref GameObject prefab, int id)
+        {
+            var tmp = Instantiate(prefab, _spawnPosition, this.transform.rotation, this.transform);
+            tmp.AddComponent<Target>();
+            return tmp;
         }
     }
 }

@@ -2,6 +2,7 @@
 using Ibit.Core.Audio;
 using Ibit.Core.Game;
 using Ibit.Core.Serial;
+using Ibit.Plataform.Data;
 using Ibit.Plataform.Manager.Spawn;
 using Ibit.Plataform.Manager.Stage;
 using Ibit.Plataform.UI;
@@ -115,7 +116,7 @@ namespace Ibit.Plataform
 
         private void IncreaseSpeedFactor()
         {
-            Data.Stage.Loaded.ObjectSpeedMultiplier *= 1.05f;
+            StageInfo.Loaded.ObjectSpeedFactor *= 1.05f;
 
             foreach (var obj in FindObjectOfType<Spawner>().SpawnedObjects)
             {
@@ -125,7 +126,7 @@ namespace Ibit.Plataform
 
         private void DecreaseSpeedFactor()
         {
-            Data.Stage.Loaded.ObjectSpeedMultiplier *= 0.95f;
+            StageInfo.Loaded.ObjectSpeedFactor *= 0.95f;
 
             foreach (var obj in FindObjectOfType<Spawner>().SpawnedObjects)
             {

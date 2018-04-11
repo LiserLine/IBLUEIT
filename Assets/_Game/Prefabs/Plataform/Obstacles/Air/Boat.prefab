@@ -36,9 +36,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4829174256143348}
   - component: {fileID: 50764809976614862}
-  - component: {fileID: 114072041734416520}
-  - component: {fileID: 114679256219115294}
   - component: {fileID: 61162547896515772}
+  - component: {fileID: 114072041734416520}
   m_Layer: 9
   m_Name: Boat
   m_TagString: AirObstacle
@@ -129,18 +128,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff1e9000a19055b45b2ea0e537418ee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114679256219115294
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1596007118193250}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2902a13907468d74296f1f7997acb97b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  heartPoint: 1
 --- !u!212 &212167453767790058
 SpriteRenderer:
   m_ObjectHideFlags: 1

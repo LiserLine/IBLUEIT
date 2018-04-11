@@ -45,7 +45,7 @@ namespace Ibit.Core.Database
 
             PacientList.Clear();
 
-            var csvData = FileReader.ReadCsv(filePath);
+            var csvData = FileManager.ReadCsv(filePath);
             var grid = CsvParser2.Parse(csvData);
 
             for (var i = 1; i < grid.Length; i++)
@@ -106,7 +106,7 @@ namespace Ibit.Core.Database
                     );
             }
 
-            FileReader.WriteAllText(filePath, sb.ToString());
+            FileManager.WriteAllText(filePath, sb.ToString());
         }
     }
 }

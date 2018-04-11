@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Ibit.Core.Util
 {
-    public class FileReader
+    public class FileManager
     {
         public static void WriteAllText(string filepath, string contents)
         {
@@ -18,6 +18,8 @@ namespace Ibit.Core.Util
         }
 
         public static string ReadAllText(string filepath) => File.ReadAllText(filepath, Encoding.UTF8);
+
+        public static string[] ReadAllLines(string filepath) => File.ReadAllLines(filepath, Encoding.UTF8);
 
         public static void AppendAllText(string path, string contents) => File.AppendAllText(path, contents, Encoding.UTF8);
 

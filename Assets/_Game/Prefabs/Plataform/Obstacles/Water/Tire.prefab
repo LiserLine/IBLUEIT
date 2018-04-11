@@ -38,7 +38,6 @@ GameObject:
   - component: {fileID: 50132057880660540}
   - component: {fileID: 58916911762720630}
   - component: {fileID: 114498484114924798}
-  - component: {fileID: 114824326952970500}
   m_Layer: 9
   m_Name: Tire
   m_TagString: WaterObstacle
@@ -119,18 +118,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff1e9000a19055b45b2ea0e537418ee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114824326952970500
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1713550843387982}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2902a13907468d74296f1f7997acb97b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  heartPoint: 1
 --- !u!212 &212382376521408964
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -36,9 +36,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4370482301997442}
   - component: {fileID: 50646732793569918}
-  - component: {fileID: 114733770452058886}
-  - component: {fileID: 114130038573396912}
   - component: {fileID: 61065076093673296}
+  - component: {fileID: 114733770452058886}
   m_Layer: 9
   m_Name: Submarine2
   m_TagString: WaterObstacle
@@ -118,18 +117,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 4.96533}
   m_EdgeRadius: 0
---- !u!114 &114130038573396912
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1798566247012108}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2902a13907468d74296f1f7997acb97b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  heartPoint: 1
 --- !u!114 &114733770452058886
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -5,12 +5,15 @@ namespace Ibit.Plataform.Manager.Score
 {
     public partial class Scorer
     {
+        /// <summary>
+        /// Obstacle Scoring
+        /// </summary>
+        /// <param name="collision"></param>
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.gameObject.CompareTag("AirTarget") || collision.gameObject.CompareTag("WaterTarget") ||
-                collision.gameObject.CompareTag("RelaxCoin"))
+            if (collision.gameObject.CompareTag("AirTarget") || collision.gameObject.CompareTag("WaterTarget"))
             {
-                FindObjectOfType<Spawner>().Player_OnEnemyMiss(collision.gameObject.tag);
+                FindObjectOfType<Spawner>().PerformanceOnMiss(collision.gameObject.tag);
                 return;
             }
 
@@ -20,14 +23,18 @@ namespace Ibit.Plataform.Manager.Score
             if (collision.gameObject.GetComponent<Obstacle>().HeartPoint < 1)
                 return;
 
-            FindObjectOfType<Spawner>().Player_OnEnemyMiss(collision.gameObject.tag);
-            score += CalculateObstacleScore(collision.gameObject.transform.localScale.x, Data.Stage.Loaded.SpawnDelay, Data.Stage.Loaded.GameDifficulty);
+            FindObjectOfType<Spawner>().PerformanceOnMiss(collision.gameObject.tag);
+            score += CalculateObstacleScore(collision.gameObject.transform.localScale.x, collision.GetComponent<Obstacle>().Properties.DifficultyFactor);
         }
 
-        private void Player_OnEnemyHit(GameObject hit)
+        /// <summary>
+        /// Target Scoring
+        /// </summary>
+        /// <param name="hit"></param>
+        private void ScoreOnPlayerCollision(GameObject hit)
         {
-            if (hit.CompareTag("AirTarget") || hit.CompareTag("WaterTarget") || hit.CompareTag("RelaxCoin"))
-                score += CalculateTargetScore(hit.transform.position.y, Data.Stage.Loaded.SpawnDelay, Data.Stage.Loaded.GameDifficulty);
+            if (hit.CompareTag("AirTarget") || hit.CompareTag("WaterTarget"))
+                score += CalculateTargetScore(hit.transform.position.y, hit.GetComponent<Target>().Properties.DifficultyFactor);
         }
     }
 }

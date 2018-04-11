@@ -1,5 +1,5 @@
 ﻿using Ibit.Core.Game;
-using Ibit.Plataform.Manager.Spawn;
+using Ibit.Plataform.Data;
 using NaughtyAttributes;
 using UnityEngine;
 
@@ -44,26 +44,30 @@ namespace Ibit.Plataform.Manager.Score
         private void Awake()
         {
             score = 0;
-            FindObjectOfType<Spawner>().OnObjectReleased += MaxScoreUpdate;
-            FindObjectOfType<Player>().OnEnemyHit += Player_OnEnemyHit;
+            maxScore = 0;
+            FindObjectOfType<Player>().OnObjectHit += ScoreOnPlayerCollision;
         }
 
-        private float CalculateObstacleScore(float size, float spawnDelay, float gameDifficulty) => size * (1f + (1f / spawnDelay)) * gameDifficulty * 100f;
-
-        private float CalculateTargetScore(float height, float spawnDelay, float gameDifficulty) => Mathf.Abs(height) * (1f + (1f / spawnDelay)) * gameDifficulty * 100f;
-
-        private void MaxScoreUpdate(ObjectToSpawn enemytype, ref GameObject go1, ref GameObject go2)
+        private float CalculateObstacleScore(float size, float difficultyFactor)
         {
-            switch (enemytype)
+            return size * (1f + difficultyFactor) * 100f;
+        }
+
+        private float CalculateTargetScore(float height, float difficultyFactor)
+        {
+            return Mathf.Abs(height) * (1f + difficultyFactor) * 100f;
+        }
+
+        public void UpdateMaxScore(StageObjectType type, ref GameObject obj, float difficultyFactor)
+        {
+            switch (type)
             {
-                case ObjectToSpawn.Targets:
-                    maxScore += CalculateTargetScore(go1.transform.position.y, Data.Stage.Loaded.SpawnDelay, Data.Stage.Loaded.GameDifficulty);
-                    maxScore += CalculateTargetScore(go2.transform.position.y, Data.Stage.Loaded.SpawnDelay, Data.Stage.Loaded.GameDifficulty);
+                case StageObjectType.Target:
+                    maxScore += CalculateTargetScore(obj.transform.position.y, difficultyFactor);
                     break;
 
-                case ObjectToSpawn.Obstacles:
-                    maxScore += CalculateObstacleScore(go1.transform.localScale.x, Data.Stage.Loaded.SpawnDelay, Data.Stage.Loaded.GameDifficulty);
-                    maxScore += CalculateObstacleScore(go2.transform.localScale.x, Data.Stage.Loaded.SpawnDelay, Data.Stage.Loaded.GameDifficulty);
+                case StageObjectType.Obstacle:
+                    maxScore += CalculateObstacleScore(obj.transform.localScale.x, difficultyFactor);
                     break;
             }
         }

@@ -62,7 +62,7 @@ namespace Ibit.Core.Localization
 
         var jsonData = www.text;
 #else
-            var jsonData = FileReader.ReadAllText(filepath);
+            var jsonData = FileManager.ReadAllText(filepath);
 #endif
 
             var loadedData = JsonUtility.FromJson<LocalizationData>(jsonData);

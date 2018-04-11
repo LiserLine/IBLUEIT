@@ -22,7 +22,7 @@ namespace Ibit.Core.Util
                 return;
 
             var path = @"savedata/pacients/" + Pacient.Loaded.Id + @"/" + $"{recordStart:yyyyMMdd-HHmmss}_" + FileName + ".csv";
-            FileReader.WriteAllText(path, textData);
+            FileManager.WriteAllText(path, textData);
         }
 
         private void OnSerialMessageReceived(string msg)

@@ -1,5 +1,6 @@
 ﻿using Ibit.Core.Audio;
 using NaughtyAttributes;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -9,29 +10,20 @@ namespace Ibit.Plataform
     {
         #region Events
 
-        public delegate void PlayerDeathHandler();
-
-        public event PlayerDeathHandler OnPlayerDeath;
-
-        public delegate void EnemyHitHandler(GameObject go);
-
-        public event EnemyHitHandler OnEnemyHit;
+        public Action OnPlayerDeath;
+        public Action<GameObject> OnObjectHit;
 
         #endregion Events
 
-        [SerializeField]
-        private Animator animator;
-
-        [SerializeField]
-        [BoxGroup("Properties")]
-        private int invincibilityTime = 2;
+        [SerializeField] [BoxGroup("Animation Control")] private Animator animator;
+        [SerializeField] [BoxGroup("Properties")] private int invincibilityTime = 2;
 
         private bool isPlayerDead;
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
             HitResult(collision.gameObject);
-            OnEnemyHit?.Invoke(collision.gameObject);
+            OnObjectHit?.Invoke(collision.gameObject);
         }
 
         private void HitResult(GameObject hit)
@@ -46,11 +38,7 @@ namespace Ibit.Plataform
                 StartCoroutine(DisableCollisionForXSeconds(invincibilityTime));
                 SoundManager.Instance.PlaySound("PlayerDamage");
             }
-            else if (hit.CompareTag("RelaxCoin"))
-            {
-                SoundManager.Instance.PlaySound("BonusGet");
-            }
-            else if (hit.CompareTag("RelaxTarget"))
+            else if (hit.CompareTag("RelaxObject"))
             {
                 SoundManager.Instance.PlaySound("BonusTargetGet");
             }

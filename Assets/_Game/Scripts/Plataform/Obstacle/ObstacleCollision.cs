@@ -6,7 +6,7 @@ namespace Ibit.Plataform
     {
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.gameObject.tag.Contains("Player"))
+            if (collision.gameObject.CompareTag("Player"))
             {
                 TakeDamage();
             }

@@ -30,9 +30,9 @@ namespace Ibit.MainMenu.UI
                 var item = Instantiate(buttonPrefab);
                 item.transform.SetParent(this.transform);
                 item.transform.localScale = Vector3.one;
-                item.name = $"ITEM_F{(int)stage.ObjectToSpawn}_L{stage.Level}";
+                item.name = $"ITEM_F{stage.Phase}_L{stage.Level}";
                 item.AddComponent<StageLoader>().stage = stage;
-                item.GetComponentInChildren<Text>().text = $"Fase: {(int)stage.ObjectToSpawn} - Nível:{stage.Level}";
+                item.GetComponentInChildren<Text>().text = $"Fase: {stage.Phase} - Nível:{stage.Level}";
                 item.GetComponent<Button>().interactable = Pacient.Loaded.UnlockedLevels >= stage.Id;
             }
 

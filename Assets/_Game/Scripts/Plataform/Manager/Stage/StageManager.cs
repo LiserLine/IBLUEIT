@@ -1,11 +1,11 @@
-﻿using Ibit.Core.Audio;
-using Ibit.Core.Game;
+﻿using Ibit.Core.Game;
 using Ibit.Core.Serial;
 using Ibit.Core.Util;
+using Ibit.Plataform.Data;
 using Ibit.Plataform.Manager.Score;
 using Ibit.Plataform.Manager.Spawn;
-using Ibit.Plataform.UI;
 using NaughtyAttributes;
+using System;
 using UnityEngine;
 
 namespace Ibit.Plataform.Manager.Stage
@@ -14,41 +14,29 @@ namespace Ibit.Plataform.Manager.Stage
     {
         #region Events
 
-        public delegate void StageStartHandler();
-
-        public event StageStartHandler OnStageStart;
-
-        public delegate void StageTimeUpHandler();
-
-        public event StageTimeUpHandler OnStageTimeUp;
-
-        public delegate void StageEndHandler();
-
-        public event StageEndHandler OnStageEnd;
+        public Action OnStageStart;
+        public Action OnStageEnd;
 
         #endregion Events
 
         #region Properties
 
-        public float Watch { get; private set; }
         public bool IsRunning { get; private set; }
         public float Duration { get; private set; }
 
         #endregion Properties
 
-        private bool isTimedUp;
-        private Spawner spawner;
-
-        [SerializeField]
-        private Data.Stage testStage;
+        private Spawner spawner;        
 
         private void Awake()
         {
+
 #if UNITY_EDITOR
-            if (Data.Stage.Loaded == null)
-                Data.Stage.Loaded = testStage;
+
+            if (StageInfo.Loaded == null)
+                StageInfo.Loaded = testStage;
             else
-                testStage = Data.Stage.Loaded;
+                testStage = StageInfo.Loaded;
 #endif
 
             spawner = FindObjectOfType<Spawner>();
@@ -87,34 +75,19 @@ namespace Ibit.Plataform.Manager.Stage
         if (GameManager.GameIsPaused)
             return;
 
-        FindObjectOfType<CanvasManager>().PauseGame();
+        FindObjectOfType<Ibit.Plataform.UI.CanvasManager>().PauseGame();
         SysMessage.Warning("Pitaco foi desconectado.\nReconecte o controle.");
     }
 #endif
 
-        private void TimeUp()
-        {
-            isTimedUp = true;
-            SoundManager.Instance.PlaySound("PlataformTimeUp");
-            OnStageTimeUp?.Invoke();
-        }
-
         [Button("End Stage")]
         private void EndStage()
         {
-            if (!isTimedUp)
-            {
-                TimeUp();
-                return;
-            }
-
             GameOver();
         }
 
         private void GameOver()
         {
-            Watch = 0;
-            isTimedUp = true;
             IsRunning = false;
             FindObjectOfType<Scorer>().CalculateResult(FindObjectOfType<Player>().HeartPoins < 1);
             FindObjectOfType<SerialController>().StopSampling();
@@ -128,12 +101,8 @@ namespace Ibit.Plataform.Manager.Stage
                 return;
 
             Duration += Time.deltaTime;
-            Watch += Time.deltaTime;
 
-            if (Watch > Data.Stage.Loaded.SpawnDuration)
-                TimeUp();
-
-            if (isTimedUp && spawner.ObjectsOnScene <= 0)
+            if (spawner.ObjectsOnScene < 1)
                 EndStage();
         }
     }

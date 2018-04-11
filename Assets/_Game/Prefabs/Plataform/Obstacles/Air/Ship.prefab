@@ -19,10 +19,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4752501574704626}
-  - component: {fileID: 114694205252929296}
   - component: {fileID: 50361771034148672}
   - component: {fileID: 61920260234666252}
-  - component: {fileID: 114502592482978730}
+  - component: {fileID: 114694205252929296}
   m_Layer: 9
   m_Name: Ship
   m_TagString: AirObstacle
@@ -118,18 +117,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.7574283, y: 5.007582}
   m_EdgeRadius: 0
---- !u!114 &114502592482978730
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1122608744294820}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2902a13907468d74296f1f7997acb97b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  heartPoint: 1
 --- !u!114 &114694205252929296
 MonoBehaviour:
   m_ObjectHideFlags: 1

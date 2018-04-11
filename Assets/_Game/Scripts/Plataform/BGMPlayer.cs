@@ -2,7 +2,6 @@
 using System.IO;
 using Ibit.Core.Audio;
 using Ibit.Plataform.Data;
-using Ibit.Plataform.Manager.Spawn;
 using System.Linq;
 using UnityEngine;
 
@@ -24,18 +23,22 @@ namespace Ibit.Plataform
 
         private void PlayBGM()
         {
-            switch (Stage.Loaded.ObjectToSpawn)
+            switch (StageInfo.Loaded.Phase)
             {
-                case ObjectToSpawn.Targets:
+                case 1:
                     SoundManager.Instance.PlaySound($"BGM_Day{Random.Range(1, numDay)}");
                     break;
 
-                case ObjectToSpawn.TargetsAndObstacles:
+                case 2:
                     SoundManager.Instance.PlaySound($"BGM_Afternoon{Random.Range(1, numAfternoon)}");
                     break;
 
-                case ObjectToSpawn.Obstacles:
+                case 3:
                     SoundManager.Instance.PlaySound($"BGM_Night{Random.Range(1, numNight)}");
+                    break;
+
+                default:
+                    SoundManager.Instance.PlayAnotherBgm();
                     break;
             }
         }
