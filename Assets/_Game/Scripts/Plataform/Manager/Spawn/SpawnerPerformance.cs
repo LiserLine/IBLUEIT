@@ -1,5 +1,6 @@
 ﻿using Ibit.Plataform.Data;
 using NaughtyAttributes;
+using System;
 using UnityEngine;
 
 namespace Ibit.Plataform.Manager.Spawn
@@ -26,7 +27,10 @@ namespace Ibit.Plataform.Manager.Spawn
         private int waterTargetsHit;
         private int waterObstaclesHit;
 
-        private void PerformanceOnHit(GameObject hit)
+        public Action<float, float> OnUpdatedPerformanceTarget;
+        public Action<float, float> OnUpdatedPerformanceObstacle;
+
+        private void PerformanceOnPlayerHit(GameObject hit)
         {
             switch (hit.tag)
             {
@@ -35,7 +39,7 @@ namespace Ibit.Plataform.Manager.Spawn
                     TargetsSucceeded++;
                     if (airTargetsHit >= StageInfo.Loaded.HeightUpThreshold)
                     {
-                        IncrementInsHeightAcc();
+                        IncrementInsHeight();
                         airTargetsHit = 0;
                     }
                     break;
@@ -45,7 +49,7 @@ namespace Ibit.Plataform.Manager.Spawn
                     TargetsSucceeded++;
                     if (waterTargetsHit >= StageInfo.Loaded.HeightUpThreshold)
                     {
-                        IncrementExpHeightAcc();
+                        IncrementExpHeight();
                         waterTargetsHit = 0;
                     }
                     break;
@@ -55,7 +59,7 @@ namespace Ibit.Plataform.Manager.Spawn
                     ObstaclesFailed++;
                     if (airObstaclesHit <= -StageInfo.Loaded.SizeDownThreshold)
                     {
-                        DecrementExpSizeAcc();
+                        DecrementExpSize();
                         airObstaclesHit = 0;
                     }
                     break;
@@ -65,14 +69,14 @@ namespace Ibit.Plataform.Manager.Spawn
                     ObstaclesFailed++;
                     if (waterObstaclesHit <= -StageInfo.Loaded.SizeDownThreshold)
                     {
-                        DecrementInsSizeAcc();
+                        DecrementInsSize();
                         waterObstaclesHit = 0;
                     }
                     break;
             }
         }
 
-        public void PerformanceOnMiss(string objectTag)
+        public void PerformanceOnPlayerMiss(string objectTag)
         {
             switch (objectTag)
             {
@@ -81,7 +85,7 @@ namespace Ibit.Plataform.Manager.Spawn
                     TargetsFailed++;
                     if (airTargetsHit <= -StageInfo.Loaded.HeightDownThreshold)
                     {
-                        DecrementInsHeightAcc();
+                        DecrementInsHeight();
                         airTargetsHit = 0;
                     }
                     break;
@@ -91,7 +95,7 @@ namespace Ibit.Plataform.Manager.Spawn
                     TargetsFailed++;
                     if (waterTargetsHit <= -StageInfo.Loaded.HeightDownThreshold)
                     {
-                        DecrementExpHeightAcc();
+                        DecrementExpHeight();
                         waterTargetsHit = 0;
                     }
                     break;
@@ -101,7 +105,7 @@ namespace Ibit.Plataform.Manager.Spawn
                     ObstaclesSucceeded++;
                     if (airObstaclesHit >= StageInfo.Loaded.SizeUpThreshold)
                     {
-                        IncrementExpSizeAcc();
+                        IncrementExpSize();
                         airObstaclesHit = 0;
                     }
                     break;
@@ -111,55 +115,63 @@ namespace Ibit.Plataform.Manager.Spawn
                     ObstaclesSucceeded++;
                     if (waterObstaclesHit >= StageInfo.Loaded.SizeUpThreshold)
                     {
-                        IncrementInsSizeAcc();
+                        IncrementInsSize();
                         waterObstaclesHit = 0;
                     }
                     break;
             }
         }
 
-        public void IncrementInsSizeAcc()
-        {
-            insSizeAcc += StageInfo.Loaded.SizeIncrement;
-        }
-
-        public void DecrementInsSizeAcc()
-        {
-            insSizeAcc -= StageInfo.Loaded.SizeIncrement;
-            insSizeAcc = insSizeAcc < 0f ? 0f : insSizeAcc;
-        }
-
-        public void IncrementInsHeightAcc()
+        public void IncrementInsHeight()
         {
             insHeightAcc += StageInfo.Loaded.HeightIncrement;
+            OnUpdatedPerformanceTarget?.Invoke(insHeightAcc, expHeightAcc);
         }
 
-        public void DecrementInsHeightAcc()
+        public void DecrementInsHeight()
         {
             insHeightAcc -= StageInfo.Loaded.HeightIncrement;
             insHeightAcc = insHeightAcc < 0f ? 0f : insHeightAcc;
+            OnUpdatedPerformanceTarget?.Invoke(insHeightAcc, expHeightAcc);
         }
 
-        public void IncrementExpSizeAcc()
-        {
-            expSizeAcc += StageInfo.Loaded.SizeIncrement;
-        }
-
-        public void DecrementExpSizeAcc()
-        {
-            expSizeAcc -= StageInfo.Loaded.SizeIncrement;
-            expSizeAcc = expSizeAcc < 0f ? 0f : expSizeAcc;
-        }
-
-        public void IncrementExpHeightAcc()
+        public void IncrementExpHeight()
         {
             expHeightAcc += StageInfo.Loaded.HeightIncrement;
+            OnUpdatedPerformanceTarget?.Invoke(insHeightAcc, expHeightAcc);
         }
 
-        public void DecrementExpHeightAcc()
+        public void DecrementExpHeight()
         {
             expHeightAcc -= StageInfo.Loaded.HeightIncrement;
             expHeightAcc = expHeightAcc < 0f ? 0f : expHeightAcc;
+            OnUpdatedPerformanceTarget?.Invoke(insHeightAcc, expHeightAcc);
+        }
+
+        public void IncrementInsSize()
+        {
+            insSizeAcc += StageInfo.Loaded.SizeIncrement;
+            OnUpdatedPerformanceObstacle?.Invoke(insSizeAcc, expSizeAcc);
+        }
+
+        public void DecrementInsSize()
+        {
+            insSizeAcc -= StageInfo.Loaded.SizeIncrement;
+            insSizeAcc = insSizeAcc < 0f ? 0f : insSizeAcc;
+            OnUpdatedPerformanceObstacle?.Invoke(insSizeAcc, expSizeAcc);
+        }
+
+        public void IncrementExpSize()
+        {
+            expSizeAcc += StageInfo.Loaded.SizeIncrement;
+            OnUpdatedPerformanceObstacle?.Invoke(insSizeAcc, expSizeAcc);
+        }
+
+        public void DecrementExpSize()
+        {
+            expSizeAcc -= StageInfo.Loaded.SizeIncrement;
+            expSizeAcc = expSizeAcc < 0f ? 0f : expSizeAcc;
+            OnUpdatedPerformanceObstacle?.Invoke(insSizeAcc, expSizeAcc);
         }
     }
 }

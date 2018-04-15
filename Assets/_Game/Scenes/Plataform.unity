@@ -140,12 +140,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b766b22cd710b0d4988e736335e3bafa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filename: Demonstration
+  filename: Demonstration.csv
   testStage:
-    Id: 33
+    Id: 9999
     Phase: 4
-    Level: 99
-    ObjectSpeedFactor: 1.8
+    Level: 0
+    ObjectSpeedFactor: 2
     Loops: 1
     HeightIncrement: 0.2
     HeightUpThreshold: 2
@@ -154,51 +154,51 @@ MonoBehaviour:
     SizeUpThreshold: 2
     SizeDownThreshold: 1
     StageObjects:
-    - Id: 9
+    - Id: 25
       Type: 1
       DifficultyFactor: 0.2
       PositionYFactor: 1
-      PositionXSpacing: 2
-    - Id: 10
+      PositionXSpacing: 5
+    - Id: 26
       Type: 1
       DifficultyFactor: 0.4
       PositionYFactor: -1
       PositionXSpacing: 2
-    - Id: 13
+    - Id: 29
       Type: 2
-      DifficultyFactor: 0.6
+      DifficultyFactor: 0.4
       PositionYFactor: -1
       PositionXSpacing: 5
-    - Id: 14
+    - Id: 30
       Type: 2
       DifficultyFactor: 0.8
       PositionYFactor: 1
-      PositionXSpacing: 2
-    - Id: 17
+      PositionXSpacing: 3.5
+    - Id: 33
       Type: 3
       DifficultyFactor: 0
       PositionYFactor: 0
-      PositionXSpacing: 3
-    - Id: 20
+      PositionXSpacing: 5
+    - Id: 36
       Type: 1
       DifficultyFactor: 0.2
       PositionYFactor: 1
-      PositionXSpacing: 3
-    - Id: 21
+      PositionXSpacing: 5
+    - Id: 37
       Type: 1
       DifficultyFactor: 0.4
       PositionYFactor: 1
       PositionXSpacing: 1
-    - Id: 22
+    - Id: 38
       Type: 1
       DifficultyFactor: 0.6
       PositionYFactor: 1
       PositionXSpacing: 1
-    - Id: 23
+    - Id: 39
       Type: 2
-      DifficultyFactor: 0.6
-      PositionYFactor: -1
-      PositionXSpacing: 1
+      DifficultyFactor: 1
+      PositionYFactor: 1
+      PositionXSpacing: 3.5
 --- !u!4 &25974385
 Transform:
   m_ObjectHideFlags: 0

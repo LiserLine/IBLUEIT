@@ -30,7 +30,7 @@ namespace Ibit.Plataform.Manager.Spawn
             stgMgr.OnStageStart += Spawn;
             stgMgr.OnStageEnd += Clean;
 
-            FindObjectOfType<Player>().OnObjectHit += PerformanceOnHit;
+            FindObjectOfType<Player>().OnObjectHit += PerformanceOnPlayerHit;
         }
 
         [Button("Spawn")]

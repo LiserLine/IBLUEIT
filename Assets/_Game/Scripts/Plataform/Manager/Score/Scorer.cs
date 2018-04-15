@@ -48,26 +48,16 @@ namespace Ibit.Plataform.Manager.Score
             FindObjectOfType<Player>().OnObjectHit += ScoreOnPlayerCollision;
         }
 
-        private float CalculateObstacleScore(float size, float difficultyFactor)
-        {
-            return size * (1f + difficultyFactor) * 100f;
-        }
-
-        private float CalculateTargetScore(float height, float difficultyFactor)
-        {
-            return Mathf.Abs(height) * (1f + difficultyFactor) * 100f;
-        }
-
         public void UpdateMaxScore(StageObjectType type, ref GameObject obj, float difficultyFactor)
         {
             switch (type)
             {
                 case StageObjectType.Target:
-                    maxScore += CalculateTargetScore(obj.transform.position.y, difficultyFactor);
+                    maxScore += obj.GetComponent<Target>().Score;
                     break;
 
                 case StageObjectType.Obstacle:
-                    maxScore += CalculateObstacleScore(obj.transform.localScale.x, difficultyFactor);
+                    maxScore += obj.GetComponent<Obstacle>().Score;
                     break;
             }
         }

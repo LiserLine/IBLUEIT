@@ -13,7 +13,7 @@ namespace Ibit.Plataform.Manager.Score
         {
             if (collision.gameObject.CompareTag("AirTarget") || collision.gameObject.CompareTag("WaterTarget"))
             {
-                FindObjectOfType<Spawner>().PerformanceOnMiss(collision.gameObject.tag);
+                FindObjectOfType<Spawner>().PerformanceOnPlayerMiss(collision.gameObject.tag);
                 return;
             }
 
@@ -23,8 +23,8 @@ namespace Ibit.Plataform.Manager.Score
             if (collision.gameObject.GetComponent<Obstacle>().HeartPoint < 1)
                 return;
 
-            FindObjectOfType<Spawner>().PerformanceOnMiss(collision.gameObject.tag);
-            score += CalculateObstacleScore(collision.gameObject.transform.localScale.x, collision.GetComponent<Obstacle>().Properties.DifficultyFactor);
+            FindObjectOfType<Spawner>().PerformanceOnPlayerMiss(collision.gameObject.tag);
+            score += collision.gameObject.GetComponent<Obstacle>().Score;
         }
 
         /// <summary>
@@ -34,7 +34,9 @@ namespace Ibit.Plataform.Manager.Score
         private void ScoreOnPlayerCollision(GameObject hit)
         {
             if (hit.CompareTag("AirTarget") || hit.CompareTag("WaterTarget"))
-                score += CalculateTargetScore(hit.transform.position.y, hit.GetComponent<Target>().Properties.DifficultyFactor);
+            {
+                score += hit.GetComponent<Target>().Score;
+            }
         }
     }
 }

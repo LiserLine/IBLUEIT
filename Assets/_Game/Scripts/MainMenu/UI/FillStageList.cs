@@ -25,6 +25,8 @@ namespace Ibit.MainMenu.UI
                 children.ForEach(Destroy);
             }
 
+            StageDb.Instance.LoadStages();
+
             foreach (var stage in StageDb.Instance.StageList)
             {
                 var item = Instantiate(buttonPrefab);

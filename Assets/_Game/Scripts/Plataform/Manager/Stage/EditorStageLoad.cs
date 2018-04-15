@@ -21,7 +21,7 @@ namespace Ibit.Plataform.Manager.Stage
                 return;
             }
 
-            testStage = StageDb.Load(filename);
+            testStage = StageDb.LoadStageFromFile(filename);
 
             StageInfo.Loaded = testStage;
 

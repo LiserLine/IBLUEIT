@@ -3,6 +3,7 @@ using Ibit.Plataform.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace Ibit.Core.Database
@@ -11,36 +12,63 @@ namespace Ibit.Core.Database
     {
         public static StageDb Instance = new StageDb();
 
+        private static readonly string _stagesPath = Application.streamingAssetsPath + @"/Stages/";
+
         private StageDb()
         {
             Instance = this;
             StageList = new List<StageInfo>();
-            //LoadStages();
         }
 
-        public bool IsLoaded { get; private set; }
+        /// <summary>
+        /// A list with all the stages avaiable.
+        /// </summary>
         public List<StageInfo> StageList { get; }
+
+        /// <summary>
+        /// Gets stage data from stage list.
+        /// </summary>
+        /// <param name="id">Stage Id</param>
+        /// <returns></returns>
         public StageInfo GetStage(int id) => StageList.Find(x => x.Id == id);
 
+        /// <summary>
+        /// Load stages from csv files.
+        /// </summary>
         public void LoadStages()
         {
-            var files = Directory.GetFiles(Application.streamingAssetsPath + @"/Stages/");
+            StageList.Clear();
+
+            var files = Directory.GetFiles(_stagesPath);
 
             foreach (var file in files)
-                StageList.Add(Load(file));
+            {
+                var info = new FileInfo(file);
 
-            IsLoaded = true;
+                if (info.Name.Contains("Demo") || !info.Name.EndsWith(".csv"))
+                    continue;
+
+                StageList.Add(LoadStageFromFile(info.Name));
+            }
+
             Debug.Log($"{StageList.Count} stages loaded.");
         }
 
-        public static StageInfo Load(string filename)
+        /// <summary>
+        /// Loads stage from a csv file.
+        /// </summary>
+        /// <param name="filename">File to be loaded.</param>
+        /// <returns></returns>
+        public static StageInfo LoadStageFromFile(string filename)
         {
-            var path = Application.streamingAssetsPath + @"/Stages/" + filename + ".csv";
+            var path = _stagesPath + filename;
 
             if (!File.Exists(path))
                 throw new FileNotFoundException($"Stage file '{path}' not found!");
 
             var data = FileManager.ReadAllLines(path);
+
+            CleanData(ref data);
 
             var stageHeader = $"{data[0]}\n{data[1]}";
             var grid = CsvParser2.Parse(stageHeader);
@@ -84,6 +112,29 @@ namespace Ibit.Core.Database
             }
 
             return stageInfo;
+        }
+
+        /// <summary>
+        /// Regex Patterns to be cleaned on CleanData() call.
+        /// </summary>
+        private static readonly string[] _patternsToBeCleaned =
+        {
+            ";;"
+        };
+
+        /// <summary>
+        /// Cleans all excel unnecessary character / pattern in the file.
+        /// </summary>
+        /// <param name="data">Array data from the stage file.</param>
+        private static void CleanData(ref string[] data)
+        {
+            for (int i = 0; i < data.Length; i++)
+            {
+                foreach (var pattern in _patternsToBeCleaned)
+                {
+                    data[i] = Regex.Replace(data[i], pattern, "");
+                }
+            }
         }
     }
 }
