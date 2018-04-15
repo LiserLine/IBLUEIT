@@ -99,19 +99,19 @@ namespace Ibit.Plataform
         private void IncreaseGamingFactors()
         {
             var spwn = FindObjectOfType<Spawner>();
-            spwn.IncrementExpHeightAcc();
-            spwn.IncrementExpSizeAcc();
-            spwn.IncrementInsHeightAcc();
-            spwn.IncrementInsSizeAcc();
+            spwn.IncrementExpHeight();
+            spwn.IncrementExpSize();
+            spwn.IncrementInsHeight();
+            spwn.IncrementInsSize();
         }
 
         private void DecreaseGamingFactors()
         {
             var spwn = FindObjectOfType<Spawner>();
-            spwn.DecrementExpHeightAcc();
-            spwn.DecrementExpSizeAcc();
-            spwn.DecrementInsHeightAcc();
-            spwn.DecrementInsSizeAcc();
+            spwn.DecrementExpHeight();
+            spwn.DecrementExpSize();
+            spwn.DecrementInsHeight();
+            spwn.DecrementInsSize();
         }
 
         private void IncreaseSpeedFactor()
