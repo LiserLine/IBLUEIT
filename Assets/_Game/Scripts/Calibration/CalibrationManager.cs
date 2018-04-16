@@ -1,7 +1,6 @@
 ﻿using Ibit.Core.Audio;
 using Ibit.Core.Data;
 using Ibit.Core.Database;
-using Ibit.Core.Game;
 using Ibit.Core.Serial;
 using Ibit.Core.Util;
 using NaughtyAttributes;
@@ -173,7 +172,7 @@ namespace Ibit.Calibration
                             switch (_currentStep)
                             {
                                 case 1:
-                                    DudeTalk("Neste exercício, você deve INSPIRAR FORTE. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
+                                    DudeTalk("Neste exercício, você deve INSPIRAR FORTE. Serão 3 vezes. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
                                     ReadyNextStep();
                                     break;
 
@@ -249,7 +248,7 @@ namespace Ibit.Calibration
                             switch (_currentStep)
                             {
                                 case 1:
-                                    DudeTalk("Neste exercício, INSPIRE e mantenha o relógio GIRANDO o MÁXIMO QUE PUDER! Ao apertar (►), o relógio ficará verde para você começar o exercício.");
+                                    DudeTalk("Neste exercício, INSPIRE e MANTENHA o relógio GIRANDO o MÁXIMO QUE PUDER! Serão 3 vezes. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
                                     ReadyNextStep();
                                     break;
 
@@ -335,7 +334,7 @@ namespace Ibit.Calibration
                             switch (_currentStep)
                             {
                                 case 1:
-                                    DudeTalk("Neste exercício, você deve ASSOPRAR FORTE. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
+                                    DudeTalk("Neste exercício, você deve ASSOPRAR FORTE. Serão 3 vezes. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
                                     ReadyNextStep();
                                     break;
 
@@ -412,7 +411,7 @@ namespace Ibit.Calibration
                             switch (_currentStep)
                             {
                                 case 1:
-                                    DudeTalk("Neste exercício, ASSOPRE e mantenha o relógio girando o MÁXIMO QUE PUDER! Ao apertar (►), o relógio ficará verde para você começar o exercício.");
+                                    DudeTalk("Neste exercício, ASSOPRE e MANTENHA o relógio GIRANDO o MÁXIMO QUE PUDER! Serão 3 vezes. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
                                     ReadyNextStep();
                                     break;
 
