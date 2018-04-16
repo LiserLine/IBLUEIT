@@ -148,7 +148,7 @@ namespace Ibit.Calibration
 
                                 case 4:
                                     SoundManager.Instance.PlaySound("Success");
-                                    DudeTalk($"Sua média de frequência respiratória é de {_tmpCapacities.RawRespCycleDuration / 1000f} seg/ciclo." +
+                                    DudeTalk($"Sua média de frequência respiratória é de {(_tmpCapacities.RawRespCycleDuration / 1000f):F} seg/ciclo." +
                                              " Pressione (►) para continuar com os outros exercícios.");
                                     ReadyNextStep();
                                     break;
@@ -222,7 +222,7 @@ namespace Ibit.Calibration
 
                                 case 4:
                                     SoundManager.Instance.PlaySound("Success");
-                                    DudeTalk($"Seu pico inspiratório é de {FlowMath.ToLitresPerMinute(_tmpCapacities.RawInsPeakFlow)} L/min." +
+                                    DudeTalk($"Seu pico inspiratório é de {FlowMath.ToLitresPerMinute(_tmpCapacities.RawInsPeakFlow):F} L/min." +
                                              " Pressione (►) para continuar com os outros exercícios.");
                                     ReadyNextStep();
                                     break;
@@ -308,7 +308,7 @@ namespace Ibit.Calibration
 
                                 case 4:
                                     SoundManager.Instance.PlaySound("Success");
-                                    DudeTalk($"Seu tempo de inspiração é de {_tmpCapacities.RawInsFlowDuration / 1000f} segundos." +
+                                    DudeTalk($"Seu tempo de inspiração é de {(_tmpCapacities.RawInsFlowDuration / 1000f):F} segundos." +
                                              " Pressione (►) para continuar com os outros exercícios.");
                                     ReadyNextStep();
                                     break;
@@ -385,7 +385,7 @@ namespace Ibit.Calibration
 
                                 case 4:
                                     SoundManager.Instance.PlaySound("Success");
-                                    DudeTalk($"Seu pico expiratório é de {FlowMath.ToLitresPerMinute(_tmpCapacities.RawExpPeakFlow)} L/min." +
+                                    DudeTalk($"Seu pico expiratório é de {FlowMath.ToLitresPerMinute(_tmpCapacities.RawExpPeakFlow):F} L/min." +
                                              " Pressione (►) para continuar com os outros exercícios.");
                                     ReadyNextStep();
                                     break;
@@ -471,7 +471,7 @@ namespace Ibit.Calibration
 
                                 case 4:
                                     SoundManager.Instance.PlaySound("Success");
-                                    DudeTalk($"Seu tempo de fluxo expiratório é de {_tmpCapacities.RawExpFlowDuration / 1000f} segundos." +
+                                    DudeTalk($"Seu tempo de fluxo expiratório é de {(_tmpCapacities.RawExpFlowDuration / 1000f):F} segundos." +
                                              " Pressione (►) para continuar com os outros exercícios.");
                                     ReadyNextStep();
                                     break;
