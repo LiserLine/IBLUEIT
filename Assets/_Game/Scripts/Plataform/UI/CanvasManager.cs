@@ -39,7 +39,7 @@ namespace Ibit.Plataform.UI
                 return;
 
             pauseMenu.SetActive(false);
-            GameManager.ResumeGame();
+            GameManager.UnPauseGame();
         }
 
         public void SetNextStage()

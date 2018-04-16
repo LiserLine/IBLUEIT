@@ -59,7 +59,7 @@ namespace Ibit.Plataform.Manager.Stage
             if (IsRunning)
             {
                 if (GameManager.GameIsPaused)
-                    GameManager.ResumeGame();
+                    GameManager.UnPauseGame();
                 else
                     return;
             }

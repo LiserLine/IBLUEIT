@@ -27,12 +27,12 @@ namespace Ibit.Core.Game
             OnGamePause?.Invoke();
         }
 
-        public static void ResumeGame()
+        public static void UnPauseGame()
         {
             if (!GameIsPaused)
                 return;
 
-            SoundManager.Instance.PlaySound("GameUnPause");
+            SoundManager.Instance?.PlaySound("GameUnPause");
 
             Time.timeScale = 1f;
             GameIsPaused = false;
