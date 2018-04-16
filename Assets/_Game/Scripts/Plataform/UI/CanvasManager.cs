@@ -44,15 +44,8 @@ namespace Ibit.Plataform.UI
 
         public void SetNextStage()
         {
-            StageModel.Loaded = StageDb.Instance.GetStage(StageModel.Loaded.Id + 1 > StageDb.Instance.StageList.Max(x => x.Id) ? 1 : StageModel.Loaded.Id + 1);
-
-            //#if UNITY_EDITOR
-            //            StageInfo.Loaded = StageDb.Instance == null
-            //                ? StageDb.Load(StageInfo.Loaded.Id + 1)
-            //                : StageDb.Instance.GetStage(StageInfo.Loaded.Id + 1);
-            //#else
-            //            StageInfo.Loaded = StageDb.Instance.GetStage(StageInfo.Loaded.Id + 1 > StageDb.Instance.StageList.Max(x => x.Id) ? 1 : StageInfo.Loaded.Id + 1);
-            //#endif
+            StageModel.Loaded = StageDb.Instance.GetStage(
+                StageModel.Loaded.Id + 1 > StageDb.Instance.StageList.Max(x => x.Id) ? 1 : StageModel.Loaded.Id + 1);
         }
     }
 }

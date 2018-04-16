@@ -1963,10 +1963,10 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 604bbe793263e5745a74586841681cdb, type: 3}
-    m_FontSize: 20
+    m_FontSize: 18
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 1
     m_MaxSize: 40
     m_Alignment: 0
     m_AlignByGeometry: 0
@@ -3198,6 +3198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _helpPanel: {fileID: 852458531}
+  _canvasManager: {fileID: 1410877794}
 --- !u!95 &1451766584 stripped
 Animator:
   m_PrefabParentObject: {fileID: 95191716280218792, guid: b2df1bf30ba44844cb4c3bf45413870d,

@@ -1,17 +1,13 @@
 ﻿using Ibit.Core.Audio;
+using System;
 using UnityEngine;
 
 namespace Ibit.Core.Game
 {
     public partial class GameManager
     {
-        public delegate void GamePauseHandler();
-
-        public delegate void GameUnPauseHandler();
-
-        public static event GamePauseHandler OnGamePause;
-
-        public static event GameUnPauseHandler OnGameResume;
+        public static Action OnGamePause;
+        public static Action OnGameUnPause;
 
         public static bool GameIsPaused { get; private set; }
 
@@ -36,7 +32,7 @@ namespace Ibit.Core.Game
 
             Time.timeScale = 1f;
             GameIsPaused = false;
-            OnGameResume?.Invoke();
+            OnGameUnPause?.Invoke();
         }
     }
 }

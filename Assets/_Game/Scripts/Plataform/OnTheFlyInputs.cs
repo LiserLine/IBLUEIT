@@ -1,10 +1,8 @@
-﻿using System;
-using Ibit.Core.Audio;
+﻿using Ibit.Core.Audio;
 using Ibit.Core.Game;
 using Ibit.Core.Serial;
 using Ibit.Plataform.Data;
 using Ibit.Plataform.Manager.Spawn;
-using Ibit.Plataform.Manager.Stage;
 using Ibit.Plataform.UI;
 using UnityEngine;
 
@@ -12,21 +10,27 @@ namespace Ibit.Plataform
 {
     public class OnTheFlyInputs : MonoBehaviour
     {
-        [SerializeField]
-        private GameObject _helpPanel;
+        [SerializeField] private GameObject _helpPanel;
+        [SerializeField] private CanvasManager _canvasManager;
+
+        private void Start()
+        {
+            if (_canvasManager == null)
+                _canvasManager = FindObjectOfType<CanvasManager>();
+        }
 
         private void Update()
         {
+            /* ToDo - A bug occurs when you press the GUI pause button and then unpause with space/esc.
+             * The pause function on the space/esc keeps calling pause() and unpause() at the same time.
+             * Maybe it can be solved by switching all GameManager.GameIsPaused references to pause events in GameManager. */
             // ESC - SPACE
             if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Space))
             {
-                if (FindObjectOfType<StageManager>().IsRunning)
-                {
-                    if (!GameManager.GameIsPaused)
-                        FindObjectOfType<CanvasManager>().PauseGame();
-                    else
-                        FindObjectOfType<CanvasManager>().UnPauseGame();
-                }
+                if (!GameManager.GameIsPaused)
+                    _canvasManager.PauseGame();
+                else
+                    _canvasManager.UnPauseGame();
             }
 
             // F1
