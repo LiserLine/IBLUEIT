@@ -140,65 +140,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b766b22cd710b0d4988e736335e3bafa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filename: Demonstration.csv
+  filename: 
   testStage:
-    Id: 9999
-    Phase: 4
+    Id: 0
+    Phase: 0
     Level: 0
-    ObjectSpeedFactor: 2
-    Loops: 1
-    HeightIncrement: 0.2
-    HeightUpThreshold: 2
-    HeightDownThreshold: 1
-    SizeIncrement: 0.15
-    SizeUpThreshold: 2
-    SizeDownThreshold: 1
-    StageObjects:
-    - Id: 25
-      Type: 1
-      DifficultyFactor: 0.2
-      PositionYFactor: 1
-      PositionXSpacing: 5
-    - Id: 26
-      Type: 1
-      DifficultyFactor: 0.4
-      PositionYFactor: -1
-      PositionXSpacing: 2
-    - Id: 29
-      Type: 2
-      DifficultyFactor: 0.4
-      PositionYFactor: -1
-      PositionXSpacing: 5
-    - Id: 30
-      Type: 2
-      DifficultyFactor: 0.8
-      PositionYFactor: 1
-      PositionXSpacing: 3.5
-    - Id: 33
-      Type: 3
-      DifficultyFactor: 0
-      PositionYFactor: 0
-      PositionXSpacing: 5
-    - Id: 36
-      Type: 1
-      DifficultyFactor: 0.2
-      PositionYFactor: 1
-      PositionXSpacing: 5
-    - Id: 37
-      Type: 1
-      DifficultyFactor: 0.4
-      PositionYFactor: 1
-      PositionXSpacing: 1
-    - Id: 38
-      Type: 1
-      DifficultyFactor: 0.6
-      PositionYFactor: 1
-      PositionXSpacing: 1
-    - Id: 39
-      Type: 2
-      DifficultyFactor: 1
-      PositionYFactor: 1
-      PositionXSpacing: 3.5
+    ObjectSpeedFactor: 0
+    Loops: 0
+    HeightIncrement: 0
+    HeightUpThreshold: 0
+    HeightDownThreshold: 0
+    SizeIncrement: 0
+    SizeUpThreshold: 0
+    SizeDownThreshold: 0
+    ObjectModels: []
 --- !u!4 &25974385
 Transform:
   m_ObjectHideFlags: 0
@@ -2525,7 +2480,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1252824015}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.5, y: 0, z: 0}
+  m_LocalPosition: {x: -6, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
