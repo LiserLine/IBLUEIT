@@ -7,7 +7,7 @@ namespace Ibit.Plataform
 {
     public partial class Target : MonoBehaviour
     {
-        private ObjectModel _model;
+        [SerializeField] private ObjectModel _model;
 
         public float Score { get; private set; }        
 

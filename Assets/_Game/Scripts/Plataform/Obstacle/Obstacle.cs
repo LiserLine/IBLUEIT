@@ -9,7 +9,7 @@ namespace Ibit.Plataform
     {
         [SerializeField] private int heartPoint = 1;
 
-        private ObjectModel _model;
+        [SerializeField] private ObjectModel _model;
 
         public int HeartPoint => heartPoint;
         public float Score { get; private set; }
