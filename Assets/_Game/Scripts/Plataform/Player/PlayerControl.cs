@@ -1,5 +1,4 @@
 ﻿using Ibit.Core.Data;
-using Ibit.Core.Game;
 using Ibit.Core.Util;
 using Ibit.Plataform.Camera;
 using UnityEngine;
@@ -17,16 +16,16 @@ namespace Ibit.Plataform
 
             sensorValue = sensorValue < -Pacient.Loaded.PitacoThreshold || sensorValue > Pacient.Loaded.PitacoThreshold ? sensorValue : 0f;
 
-            var peak = sensorValue > 0 ? Pacient.Loaded.Capacities.ExpPeakFlow * 0.4f : -Pacient.Loaded.Capacities.InsPeakFlow;
+            var peak = sensorValue > 0 ? Pacient.Loaded.Capacities.ExpPeakFlow * 0.5f : -Pacient.Loaded.Capacities.InsPeakFlow;
 
             var nextPosition = sensorValue * CameraLimits.Boundary / peak;
 
             nextPosition = Mathf.Clamp(nextPosition, -CameraLimits.Boundary, CameraLimits.Boundary);
 
             var from = this.transform.position;
-            var to = new Vector3(this.transform.position.x, -nextPosition, this.transform.position.z);
+            var to = new Vector3(this.transform.position.x, -nextPosition);
 
-            this.transform.position = Vector3.Lerp(from, to, Time.deltaTime * 9f);
+            this.transform.position = Vector3.Lerp(from, to, Time.deltaTime * 15f);
         }
     }
  }
