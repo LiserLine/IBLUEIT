@@ -31,11 +31,10 @@ namespace Ibit.Core.Audio
 
         private void OnDestroy()
         {
-            Destroy(this.gameObject);
             Instance = null;
         }
 
-        public void PlaySound(string soundName)
+        public void PlaySound(string soundName, bool oneshot = false)
         {
             var sound = sounds.First(snd => snd.name.Equals(soundName));
 
@@ -44,7 +43,7 @@ namespace Ibit.Core.Audio
                 bgm = sound;
             }
 
-            sound.Play();
+            sound.Play(oneshot);
         }
 
         public void PlayAnotherBgm()

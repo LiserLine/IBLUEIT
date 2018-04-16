@@ -31,12 +31,16 @@ namespace Ibit.Core.Audio
             audioSource.clip = clip;
         }
 
-        public void Play()
+        public void Play(bool oneshot = false)
         {
             audioSource.volume = volume * (1f + Random.Range(-randomVolume / 2f, randomVolume / 2f));
             audioSource.pitch = pitch * (1f + Random.Range(-randomPitch / 2f, randomPitch / 2f));
             audioSource.loop = loop;
-            audioSource.Play();
+
+            if (oneshot)
+                audioSource.PlayOneShot(this.clip);
+            else
+                audioSource.Play();
         }
 
         public void Pause()

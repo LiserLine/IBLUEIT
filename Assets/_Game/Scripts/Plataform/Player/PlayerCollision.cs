@@ -40,7 +40,7 @@ namespace Ibit.Plataform
             }
             else if (hit.CompareTag("RelaxObject"))
             {
-                SoundManager.Instance.PlaySound("BonusTargetGet");
+                SoundManager.Instance.PlaySound("BonusTargetGet", true);
             }
         }
 
