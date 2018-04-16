@@ -1,5 +1,5 @@
 StageId;Phase;Level;ObjectSpeedFactor;HeightIncrement;HeightUpThreshold;HeightDownThreshold;SizeIncrement;SizeUpThreshold;SizeDownThreshold;Loops
-9999;4;0;2;0.2;2;1;0.15;2;1;1
+9999;0;0;2;0;0;0;0;0;0;1
 
 %% HEADERS %%
 %The first 2 lines above are headers. They must never be removed!
@@ -23,18 +23,42 @@ StageId;Phase;Level;ObjectSpeedFactor;HeightIncrement;HeightUpThreshold;HeightDo
 %Relax command does not use DifficultyFactor and PositionYFactor
 
 %Targets Example
-Target;0.2;1;5
-Target;0.4;-1;2
+Target;0.3;1;5
+Target;0.3;-1;3
 
 %Obstacles Example
-Obstacle;0.4;-1;5
-Obstacle;0.8;1;3.5
+Obstacle;0.5;-1;7
+Obstacle;1;1;4
 
-%Relaxing Command
+%Relax Command
 Relax;0;0;5
 
-%Composed Example
+%Composed Example 1
 Target;0.2;1;5
-Target;0.4;1;1
-Target;0.6;1;1
+Target;0.2;1;2
+Target;0.2;1;2
 Obstacle;1;1;3.5
+
+%Composed Example 2
+Target;0.2;1;10
+Target;0.4;1;2
+Target;0.6;1;2
+Target;1;-1;3
+
+%Composed Example 3
+Target;0.2;1;5
+Target;0;1;2
+Target;0.2;1;2
+Target;0;1;2
+Target;0.2;1;2
+Target;0;1;2
+Target;1;-1;3
+
+%Composed Example 4
+Target;0.2;1;7
+Target;0;1;2
+Target;0.2;1;2
+Target;0;1;2
+Target;0.2;1;2
+Target;0;1;2
+Obstacle;1;1;3
