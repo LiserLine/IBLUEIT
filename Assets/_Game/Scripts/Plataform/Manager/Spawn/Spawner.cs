@@ -36,9 +36,9 @@ namespace Ibit.Plataform.Manager.Spawn
         [Button("Spawn")]
         private void Spawn()
         {
-            for (int i = 0; i < StageInfo.Loaded.Loops; i++)
+            for (int i = 0; i < StageModel.Loaded.Loops; i++)
             {
-                foreach (var stageObject in StageInfo.Loaded.StageObjects)
+                foreach (var stageObject in StageModel.Loaded.ObjectModels)
                 {
                     switch (stageObject.Type)
                     {
@@ -72,7 +72,7 @@ namespace Ibit.Plataform.Manager.Spawn
 
         private void UpdateSpeed(ref GameObject obj)
         {
-            obj.GetComponent<MoveObject>().Speed = StageInfo.Loaded.ObjectSpeedFactor;
+            obj.GetComponent<MoveObject>().Speed = StageModel.Loaded.ObjectSpeedFactor;
         }
 
         private void SpawnTutorialArrowAir(ref GameObject obj)

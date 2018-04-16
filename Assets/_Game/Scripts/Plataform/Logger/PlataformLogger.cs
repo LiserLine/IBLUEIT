@@ -35,7 +35,7 @@ namespace Ibit.Plataform.Logger
 
         private void LogPlaySession()
         {
-            if (StageInfo.Loaded.Id == Pacient.Loaded.UnlockedLevels)
+            if (StageModel.Loaded.Id == Pacient.Loaded.UnlockedLevels)
             {
                 if (scr.Result == GameResult.Success)
                 {
@@ -60,7 +60,7 @@ namespace Ibit.Plataform.Logger
             var historyPath = @"savedata/pacients/" + Pacient.Loaded.Id + @"/_PlataformHistory.csv";
 
             var data = $"{recordStart};{recordStop};{FindObjectOfType<StageManager>().Duration};{scr.Result};" +
-                       $"{StageInfo.Loaded.Id};{StageInfo.Loaded.Phase};{StageInfo.Loaded.Level};{spwn.RelaxTimeSpawned};" +
+                       $"{StageModel.Loaded.Id};{StageModel.Loaded.Phase};{StageModel.Loaded.Level};{spwn.RelaxTimeSpawned};" +
                        $"{scr.Score};{scr.MaxScore};{scr.Score / scr.MaxScore};" +
                        $"{spwn.TargetsSucceeded + spwn.TargetsFailed};{spwn.TargetsSucceeded};{spwn.TargetsFailed};" +
                        $"{spwn.ObstaclesSucceeded + spwn.ObstaclesFailed};{spwn.ObstaclesSucceeded};{spwn.ObstaclesFailed};" +

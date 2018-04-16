@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using System.Linq;
 
 namespace Ibit.Core.Database
 {
@@ -17,20 +18,20 @@ namespace Ibit.Core.Database
         private StageDb()
         {
             Instance = this;
-            StageList = new List<StageInfo>();
+            StageList = new List<StageModel>();
         }
 
         /// <summary>
         /// A list with all the stages avaiable.
         /// </summary>
-        public List<StageInfo> StageList { get; }
+        public List<StageModel> StageList { get; }
 
         /// <summary>
         /// Gets stage data from stage list.
         /// </summary>
         /// <param name="id">Stage Id</param>
         /// <returns></returns>
-        public StageInfo GetStage(int id) => StageList.Find(x => x.Id == id);
+        public StageModel GetStage(int id) => StageList.Find(x => x.Id == id);
 
         /// <summary>
         /// Load stages from csv files.
@@ -41,14 +42,19 @@ namespace Ibit.Core.Database
 
             var files = Directory.GetFiles(_stagesPath);
 
-            foreach (var file in files)
+            foreach (var path in files)
             {
-                var info = new FileInfo(file);
+                var file = new FileInfo(path);
 
-                if (info.Name.Contains("Demo") || !info.Name.EndsWith(".csv"))
+                if (!file.Name.StartsWith("F") || !file.Name.EndsWith(".csv"))
                     continue;
 
-                StageList.Add(LoadStageFromFile(info.Name));
+                var model = LoadStageFromFile(file.Name);
+
+                if (StageList.Any(m => m.Id == model.Id))
+                    throw new Exception($"Stage ID {model.Id} already exists!");
+
+                StageList.Add(model);
             }
 
             Debug.Log($"{StageList.Count} stages loaded.");
@@ -59,7 +65,7 @@ namespace Ibit.Core.Database
         /// </summary>
         /// <param name="filename">File to be loaded.</param>
         /// <returns></returns>
-        public static StageInfo LoadStageFromFile(string filename)
+        public static StageModel LoadStageFromFile(string filename)
         {
             var path = _stagesPath + filename;
 
@@ -73,7 +79,7 @@ namespace Ibit.Core.Database
             var stageHeader = $"{data[0]}\n{data[1]}";
             var grid = CsvParser2.Parse(stageHeader);
 
-            var stageInfo = new StageInfo
+            var stageInfo = new StageModel
             {
                 //header
                 Id = int.Parse(grid[1][0]),
@@ -97,18 +103,18 @@ namespace Ibit.Core.Database
                 if (data[i].StartsWith("%") || string.IsNullOrEmpty(data[i]))
                     continue;
 
-                var objDataGrid = CsvParser2.Parse($"{template}\n{data[i]}");
+                var modelGrid = CsvParser2.Parse($"{template}\n{data[i]}");
 
-                var obj = new StageObject
+                var model = new ObjectModel
                 {
                     Id = i,
-                    Type = (StageObjectType)Enum.Parse(typeof(StageObjectType), (objDataGrid[1][0])),
-                    DifficultyFactor = Parsers.Float(objDataGrid[1][1]),
-                    PositionYFactor = Parsers.Float(objDataGrid[1][2]),
-                    PositionXSpacing = Parsers.Float(objDataGrid[1][3]),
+                    Type = (StageObjectType)Enum.Parse(typeof(StageObjectType), (modelGrid[1][0])),
+                    DifficultyFactor = Parsers.Float(modelGrid[1][1]),
+                    PositionYFactor = Parsers.Float(modelGrid[1][2]),
+                    PositionXSpacing = Parsers.Float(modelGrid[1][3]),
                 };
 
-                stageInfo.StageObjects.Add(obj);
+                stageInfo.ObjectModels.Add(model);
             }
 
             return stageInfo;

@@ -8,7 +8,7 @@ namespace Ibit.MainMenu.UI
 {
     public class StageLoader : MonoBehaviour
     {
-        public StageInfo stage;
+        public StageModel stage;
 
         private void OnEnable() => this.GetComponent<Button>().onClick.AddListener(OnStageSelected);
 
@@ -30,7 +30,7 @@ namespace Ibit.MainMenu.UI
 
 #endif
 
-            StageInfo.Loaded = stage;
+            StageModel.Loaded = stage;
             FindObjectOfType<SceneLoader>().LoadScene(1);
             Debug.Log($"Stage {stage.Id} loaded.");
         }

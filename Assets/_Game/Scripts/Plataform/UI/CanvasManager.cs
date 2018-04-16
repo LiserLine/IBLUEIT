@@ -20,8 +20,8 @@ namespace Ibit.Plataform.UI
 
         private void OnEnable()
         {
-            stageLevel.text = StageInfo.Loaded.Level.ToString();
-            stagePhase.text = StageInfo.Loaded.Phase.ToString();
+            stageLevel.text = StageModel.Loaded.Level.ToString();
+            stagePhase.text = StageModel.Loaded.Phase.ToString();
         }
 
         public void PauseGame()
@@ -44,7 +44,7 @@ namespace Ibit.Plataform.UI
 
         public void SetNextStage()
         {
-            StageInfo.Loaded = StageDb.Instance.GetStage(StageInfo.Loaded.Id + 1 > StageDb.Instance.StageList.Max(x => x.Id) ? 1 : StageInfo.Loaded.Id + 1);
+            StageModel.Loaded = StageDb.Instance.GetStage(StageModel.Loaded.Id + 1 > StageDb.Instance.StageList.Max(x => x.Id) ? 1 : StageModel.Loaded.Id + 1);
 
             //#if UNITY_EDITOR
             //            StageInfo.Loaded = StageDb.Instance == null

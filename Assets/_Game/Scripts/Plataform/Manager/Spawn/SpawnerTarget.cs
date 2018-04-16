@@ -10,30 +10,30 @@ namespace Ibit.Plataform.Manager.Spawn
         [BoxGroup("Targets")] [SerializeField] private GameObject[] targetsAir;
         [BoxGroup("Targets")] [SerializeField] private GameObject[] targetsWater;
 
-        private void SpawnTarget(StageObject stageObject)
+        private void SpawnTarget(ObjectModel model)
         {
             GameObject instance;
 
-            if (stageObject.PositionYFactor > 0) //air
+            if (model.PositionYFactor > 0) //air
             {
                 instance = Instantiate(targetsAir[Random.Range(0, targetsAir.Length)],
-                    new Vector3(_lastSpawned.position.x + stageObject.PositionXSpacing, 0f),
+                    new Vector3(_lastSpawned.position.x + model.PositionXSpacing, 0f),
                     this.transform.rotation,
                     this.transform);
             }
             else //water
             {
                 instance = Instantiate(targetsWater[Random.Range(0, targetsWater.Length)],
-                    new Vector3(_lastSpawned.position.x + stageObject.PositionXSpacing, 0f),
+                    new Vector3(_lastSpawned.position.x + model.PositionXSpacing, 0f),
                     this.transform.rotation,
                     this.transform);
             }
 
-            instance.AddComponent<Target>().Build(stageObject);
+            instance.AddComponent<Target>().Build(model);
 
             UpdateSpeed(ref instance);
 
-            FindObjectOfType<Scorer>().UpdateMaxScore(stageObject.Type, ref instance, stageObject.DifficultyFactor);
+            FindObjectOfType<Scorer>().UpdateMaxScore(model.Type, ref instance, model.DifficultyFactor);
         }
     }
 }

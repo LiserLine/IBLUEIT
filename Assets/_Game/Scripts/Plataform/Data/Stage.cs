@@ -5,9 +5,9 @@ using UnityEngine;
 namespace Ibit.Plataform.Data
 {
     [Serializable]
-    public class StageInfo
+    public class StageModel
     {
-        public static StageInfo Loaded;
+        public static StageModel Loaded;
 
         [Header("Info")]
 
@@ -34,11 +34,11 @@ namespace Ibit.Plataform.Data
         [Space(5)]
         [Header("Stage Object List")]
 
-        public List<StageObject> StageObjects;
+        public List<ObjectModel> ObjectModels;
 
-        public StageInfo()
+        public StageModel()
         {
-            StageObjects = new List<StageObject>();
+            ObjectModels = new List<ObjectModel>();
         }
     }
 }

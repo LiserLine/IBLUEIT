@@ -11,19 +11,19 @@ namespace Ibit.Plataform.Manager.Spawn
         [BoxGroup("Obstacles")] [SerializeField] private GameObject[] obstaclesAir;
         [BoxGroup("Obstacles")] [SerializeField] private GameObject[] obstaclesWater;
 
-        private void SpawnObstacle(StageObject stageObject)
+        private void SpawnObstacle(ObjectModel model)
         {
             GameObject instance;
 
             //air
-            if (stageObject.PositionYFactor > 0)
+            if (model.PositionYFactor > 0)
             {
                 instance = Instantiate(obstaclesAir[Random.Range(0, obstaclesAir.Length)],
-                new Vector3(_lastSpawned.position.x + stageObject.PositionXSpacing, 0f),
+                new Vector3(_lastSpawned.position.x + model.PositionXSpacing, 0f),
                 this.transform.rotation,
                 this.transform);
 
-                if (StageInfo.Loaded.Level == 1)
+                if (StageModel.Loaded.Level == 1)
                 {
                     SpawnTutorialArrowWater(ref instance);
                 }
@@ -33,21 +33,21 @@ namespace Ibit.Plataform.Manager.Spawn
             else
             {
                 instance = Instantiate(obstaclesWater[Random.Range(0, obstaclesWater.Length)],
-                new Vector3(_lastSpawned.position.x + stageObject.PositionXSpacing, 0f),
+                new Vector3(_lastSpawned.position.x + model.PositionXSpacing, 0f),
                 this.transform.rotation,
                 this.transform);
 
-                if (StageInfo.Loaded.Level == 1)
+                if (StageModel.Loaded.Level == 1)
                 {
                     SpawnTutorialArrowAir(ref instance);
                 }
             }
 
-            instance.AddComponent<Obstacle>().Build(stageObject);
+            instance.AddComponent<Obstacle>().Build(model);
 
             UpdateSpeed(ref instance);
 
-            FindObjectOfType<Scorer>().UpdateMaxScore(stageObject.Type, ref instance, stageObject.DifficultyFactor);
+            FindObjectOfType<Scorer>().UpdateMaxScore(model.Type, ref instance, model.DifficultyFactor);
         }
     }
 }

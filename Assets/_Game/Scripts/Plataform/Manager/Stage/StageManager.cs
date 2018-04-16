@@ -33,10 +33,10 @@ namespace Ibit.Plataform.Manager.Stage
 
 #if UNITY_EDITOR
 
-            if (StageInfo.Loaded == null)
-                StageInfo.Loaded = testStage;
+            if (StageModel.Loaded == null)
+                StageModel.Loaded = testStage;
             else
-                testStage = StageInfo.Loaded;
+                testStage = StageModel.Loaded;
 #endif
 
             spawner = FindObjectOfType<Spawner>();

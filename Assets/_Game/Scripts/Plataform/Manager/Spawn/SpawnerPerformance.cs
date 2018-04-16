@@ -37,7 +37,7 @@ namespace Ibit.Plataform.Manager.Spawn
                 case "AirTarget":
                     airTargetsHit++;
                     TargetsSucceeded++;
-                    if (airTargetsHit >= StageInfo.Loaded.HeightUpThreshold)
+                    if (airTargetsHit >= StageModel.Loaded.HeightUpThreshold)
                     {
                         IncrementInsHeight();
                         airTargetsHit = 0;
@@ -47,7 +47,7 @@ namespace Ibit.Plataform.Manager.Spawn
                 case "WaterTarget":
                     waterTargetsHit++;
                     TargetsSucceeded++;
-                    if (waterTargetsHit >= StageInfo.Loaded.HeightUpThreshold)
+                    if (waterTargetsHit >= StageModel.Loaded.HeightUpThreshold)
                     {
                         IncrementExpHeight();
                         waterTargetsHit = 0;
@@ -57,7 +57,7 @@ namespace Ibit.Plataform.Manager.Spawn
                 case "AirObstacle":
                     airObstaclesHit--;
                     ObstaclesFailed++;
-                    if (airObstaclesHit <= -StageInfo.Loaded.SizeDownThreshold)
+                    if (airObstaclesHit <= -StageModel.Loaded.SizeDownThreshold)
                     {
                         DecrementExpSize();
                         airObstaclesHit = 0;
@@ -67,7 +67,7 @@ namespace Ibit.Plataform.Manager.Spawn
                 case "WaterObstacle":
                     waterObstaclesHit--;
                     ObstaclesFailed++;
-                    if (waterObstaclesHit <= -StageInfo.Loaded.SizeDownThreshold)
+                    if (waterObstaclesHit <= -StageModel.Loaded.SizeDownThreshold)
                     {
                         DecrementInsSize();
                         waterObstaclesHit = 0;
@@ -83,7 +83,7 @@ namespace Ibit.Plataform.Manager.Spawn
                 case "AirTarget":
                     airTargetsHit--;
                     TargetsFailed++;
-                    if (airTargetsHit <= -StageInfo.Loaded.HeightDownThreshold)
+                    if (airTargetsHit <= -StageModel.Loaded.HeightDownThreshold)
                     {
                         DecrementInsHeight();
                         airTargetsHit = 0;
@@ -93,7 +93,7 @@ namespace Ibit.Plataform.Manager.Spawn
                 case "WaterTarget":
                     waterTargetsHit--;
                     TargetsFailed++;
-                    if (waterTargetsHit <= -StageInfo.Loaded.HeightDownThreshold)
+                    if (waterTargetsHit <= -StageModel.Loaded.HeightDownThreshold)
                     {
                         DecrementExpHeight();
                         waterTargetsHit = 0;
@@ -103,7 +103,7 @@ namespace Ibit.Plataform.Manager.Spawn
                 case "AirObstacle":
                     airObstaclesHit++;
                     ObstaclesSucceeded++;
-                    if (airObstaclesHit >= StageInfo.Loaded.SizeUpThreshold)
+                    if (airObstaclesHit >= StageModel.Loaded.SizeUpThreshold)
                     {
                         IncrementExpSize();
                         airObstaclesHit = 0;
@@ -113,7 +113,7 @@ namespace Ibit.Plataform.Manager.Spawn
                 case "WaterObstacle":
                     waterObstaclesHit++;
                     ObstaclesSucceeded++;
-                    if (waterObstaclesHit >= StageInfo.Loaded.SizeUpThreshold)
+                    if (waterObstaclesHit >= StageModel.Loaded.SizeUpThreshold)
                     {
                         IncrementInsSize();
                         waterObstaclesHit = 0;
@@ -124,52 +124,52 @@ namespace Ibit.Plataform.Manager.Spawn
 
         public void IncrementInsHeight()
         {
-            insHeightAcc += StageInfo.Loaded.HeightIncrement;
+            insHeightAcc += StageModel.Loaded.HeightIncrement;
             OnUpdatedPerformanceTarget?.Invoke(insHeightAcc, expHeightAcc);
         }
 
         public void DecrementInsHeight()
         {
-            insHeightAcc -= StageInfo.Loaded.HeightIncrement;
+            insHeightAcc -= StageModel.Loaded.HeightIncrement;
             insHeightAcc = insHeightAcc < 0f ? 0f : insHeightAcc;
             OnUpdatedPerformanceTarget?.Invoke(insHeightAcc, expHeightAcc);
         }
 
         public void IncrementExpHeight()
         {
-            expHeightAcc += StageInfo.Loaded.HeightIncrement;
+            expHeightAcc += StageModel.Loaded.HeightIncrement;
             OnUpdatedPerformanceTarget?.Invoke(insHeightAcc, expHeightAcc);
         }
 
         public void DecrementExpHeight()
         {
-            expHeightAcc -= StageInfo.Loaded.HeightIncrement;
+            expHeightAcc -= StageModel.Loaded.HeightIncrement;
             expHeightAcc = expHeightAcc < 0f ? 0f : expHeightAcc;
             OnUpdatedPerformanceTarget?.Invoke(insHeightAcc, expHeightAcc);
         }
 
         public void IncrementInsSize()
         {
-            insSizeAcc += StageInfo.Loaded.SizeIncrement;
+            insSizeAcc += StageModel.Loaded.SizeIncrement;
             OnUpdatedPerformanceObstacle?.Invoke(insSizeAcc, expSizeAcc);
         }
 
         public void DecrementInsSize()
         {
-            insSizeAcc -= StageInfo.Loaded.SizeIncrement;
+            insSizeAcc -= StageModel.Loaded.SizeIncrement;
             insSizeAcc = insSizeAcc < 0f ? 0f : insSizeAcc;
             OnUpdatedPerformanceObstacle?.Invoke(insSizeAcc, expSizeAcc);
         }
 
         public void IncrementExpSize()
         {
-            expSizeAcc += StageInfo.Loaded.SizeIncrement;
+            expSizeAcc += StageModel.Loaded.SizeIncrement;
             OnUpdatedPerformanceObstacle?.Invoke(insSizeAcc, expSizeAcc);
         }
 
         public void DecrementExpSize()
         {
-            expSizeAcc -= StageInfo.Loaded.SizeIncrement;
+            expSizeAcc -= StageModel.Loaded.SizeIncrement;
             expSizeAcc = expSizeAcc < 0f ? 0f : expSizeAcc;
             OnUpdatedPerformanceObstacle?.Invoke(insSizeAcc, expSizeAcc);
         }

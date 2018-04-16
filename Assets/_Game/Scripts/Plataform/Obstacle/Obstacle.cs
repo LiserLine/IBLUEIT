@@ -9,14 +9,14 @@ namespace Ibit.Plataform
     {
         [SerializeField] private int heartPoint = 1;
 
-        public StageObject Properties;
-        public int HeartPoint => heartPoint;
+        private ObjectModel _model;
 
+        public int HeartPoint => heartPoint;
         public float Score { get; private set; }
 
-        public void Build(StageObject properties)
+        public void Build(ObjectModel model)
         {
-            this.Properties = properties;
+            _model = model;
             CalculateSize();
             CalculateScore();
             FindObjectOfType<Spawner>().OnUpdatedPerformanceObstacle += OnUpdatedPerformance;
@@ -24,15 +24,15 @@ namespace Ibit.Plataform
 
         private void OnUpdatedPerformance(float insAcc, float expAcc)
         {
-            CalculateSize(this.Properties.PositionYFactor > 0 ? expAcc : insAcc);
+            CalculateSize(this._model.PositionYFactor > 0 ? expAcc : insAcc);
         }
 
         private void CalculateSize(float performanceFactor = 0)
         {
             var tmpScale = this.transform.localScale;
 
-            tmpScale.x = (this.Properties.PositionYFactor > 0 ? Pacient.Loaded.Capacities.ExpFlowDuration : Pacient.Loaded.Capacities.InsFlowDuration)
-                / 1000f * (1f + performanceFactor) * this.Properties.DifficultyFactor;
+            tmpScale.x = (this._model.PositionYFactor > 0 ? Pacient.Loaded.Capacities.ExpFlowDuration : Pacient.Loaded.Capacities.InsFlowDuration) / 1000f *
+                (1f + performanceFactor) * this._model.DifficultyFactor;
 
             tmpScale.x = tmpScale.x < 1f ? 1f : tmpScale.x;
 
@@ -40,12 +40,12 @@ namespace Ibit.Plataform
 
             var spriteOffset = this.transform.localScale.y / 2f;
 
-            this.transform.position = new Vector3(this.transform.position.x, this.Properties.PositionYFactor > 0 ? spriteOffset : -spriteOffset);
+            this.transform.position = new Vector3(this.transform.position.x, this._model.PositionYFactor > 0 ? spriteOffset : -spriteOffset);
         }
 
         private void CalculateScore()
         {
-            Score = this.transform.localScale.x * (1f + this.Properties.DifficultyFactor) * 1000f;
+            Score = this.transform.localScale.x * (1f + this._model.DifficultyFactor) * 1000f;
         }
 
         private void OnDestroy()

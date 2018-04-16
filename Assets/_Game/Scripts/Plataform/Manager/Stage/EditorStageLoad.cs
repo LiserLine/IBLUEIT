@@ -10,7 +10,7 @@ namespace Ibit.Plataform.Manager.Stage
     public partial class StageManager
     {
         [SerializeField] private string filename;
-        [SerializeField] private StageInfo testStage;
+        [SerializeField] private StageModel testStage;
 
         [Button("Load Test Stage File")]
         public void EditorStageLoad()
@@ -23,7 +23,7 @@ namespace Ibit.Plataform.Manager.Stage
 
             testStage = StageDb.LoadStageFromFile(filename);
 
-            StageInfo.Loaded = testStage;
+            StageModel.Loaded = testStage;
 
             Debug.Log($"Stage {testStage.Id} loaded!");
         }

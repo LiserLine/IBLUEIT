@@ -34,7 +34,7 @@ namespace Ibit.Plataform.UI
 
         private void SwitchBackground()
         {
-            switch (StageInfo.Loaded.Phase)
+            switch (StageModel.Loaded.Phase)
             {
                 default:
                 case 1:

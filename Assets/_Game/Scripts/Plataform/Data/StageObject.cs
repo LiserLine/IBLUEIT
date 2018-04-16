@@ -3,7 +3,7 @@
 namespace Ibit.Plataform.Data
 {
     [Serializable]
-    public class StageObject
+    public class ObjectModel
     {
         public int Id;
         public StageObjectType Type;

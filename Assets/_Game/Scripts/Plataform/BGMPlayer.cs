@@ -23,7 +23,7 @@ namespace Ibit.Plataform
 
         private void PlayBGM()
         {
-            switch (StageInfo.Loaded.Phase)
+            switch (StageModel.Loaded.Phase)
             {
                 case 1:
                     SoundManager.Instance.PlaySound($"BGM_Day{Random.Range(1, numDay)}");

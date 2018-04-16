@@ -116,7 +116,7 @@ namespace Ibit.Plataform
 
         private void IncreaseSpeedFactor()
         {
-            StageInfo.Loaded.ObjectSpeedFactor *= 1.05f;
+            StageModel.Loaded.ObjectSpeedFactor *= 1.05f;
 
             foreach (var obj in FindObjectOfType<Spawner>().SpawnedObjects)
             {
@@ -126,7 +126,7 @@ namespace Ibit.Plataform
 
         private void DecreaseSpeedFactor()
         {
-            StageInfo.Loaded.ObjectSpeedFactor *= 0.95f;
+            StageModel.Loaded.ObjectSpeedFactor *= 0.95f;
 
             foreach (var obj in FindObjectOfType<Spawner>().SpawnedObjects)
             {
