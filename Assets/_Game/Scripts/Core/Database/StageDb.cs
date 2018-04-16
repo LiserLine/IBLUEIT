@@ -95,6 +95,8 @@ namespace Ibit.Core.Database
                 Loops = int.Parse(grid[1][10]),
             };
 
+            stageInfo.Loops = stageInfo.Loops == 0 ? 1 : stageInfo.Loops;
+
             var template = "ObjectType;DifficultyFactor;PositionYFactor;PositionXSpacing";
 
             // Read each line from the file to get objects to spawn
