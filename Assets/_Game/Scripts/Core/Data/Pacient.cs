@@ -41,10 +41,10 @@ namespace Ibit.Core.Data
                     Capacities = new Capacities
                     {
                         RespCycleDuration = 3000,
-                        ExpPeakFlow = 600,
-                        InsPeakFlow = -200,
+                        ExpPeakFlow = 1500,
+                        InsPeakFlow = -300,
                         ExpFlowDuration = 6000,
-                        InsFlowDuration = 6000
+                        InsFlowDuration = 3000
                     }
                 };
         }
