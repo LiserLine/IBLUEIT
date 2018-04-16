@@ -274,7 +274,7 @@ namespace Ibit.Calibration
 
                                     _flowWatch.Restart();
 
-                                    while (_flowMeter < -Pacient.Loaded.PitacoThreshold * 0.3f)
+                                    while (_flowMeter < -Pacient.Loaded.PitacoThreshold * 0.5f)
                                         yield return null;
 
                                     AirFlowDisable();
