@@ -3938,7 +3938,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Ciclo de Inspira\xE7\xE3o"
+  m_Text: "Ciclo de Respira\xE7\xE3o"
 --- !u!222 &496304386
 CanvasRenderer:
   m_ObjectHideFlags: 0
