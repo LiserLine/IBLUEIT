@@ -13,7 +13,7 @@ namespace Ibit.MainMenu.UI
         {
             var yearList = new List<string>();
 
-            for (var i = DateTime.Today.Year; i >= 1970; i--)
+            for (var i = DateTime.Today.Year; i >= 1900; i--)
                 yearList.Add(i.ToString());
 
             GetComponent<Dropdown>().AddOptions(yearList);

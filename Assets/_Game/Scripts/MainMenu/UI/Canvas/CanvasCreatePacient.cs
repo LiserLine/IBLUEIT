@@ -71,7 +71,7 @@ namespace Ibit.MainMenu.UI.Canvas
             {
                 height = Parsers.Float(GameObject.Find("HeightText").GetComponent<Text>().text);
 
-                if (height < 0.7f || height > 2.5f)
+                if (height < 70f || height > 250f)
                     throw new Exception();
             }
             catch (Exception)
