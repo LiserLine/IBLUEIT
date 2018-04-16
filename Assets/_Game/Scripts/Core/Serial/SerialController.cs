@@ -129,8 +129,10 @@ namespace Ibit.Core.Serial
         {
             var ports = GetPortNames();
 
+#if !UNITY_EDITOR
             if (ports.Length < 1)
                 SysMessage.Warning("PITACO não encontrado!");
+#endif
 
             foreach (var port in ports)
             {
