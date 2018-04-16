@@ -539,7 +539,7 @@ namespace Ibit.Calibration
 
         private void SaveAndQuit()
         {
-            Pacient.Loaded.CalibrationDone = Pacient.Loaded.IsCalibrationDone();
+            Pacient.Loaded.CalibrationDone = Pacient.Loaded.IsCalibrationDone;
             PacientDb.Instance.Save();
             FindObjectOfType<PitacoLogger>().StopLogging();
             _calibrationLogger.Save();

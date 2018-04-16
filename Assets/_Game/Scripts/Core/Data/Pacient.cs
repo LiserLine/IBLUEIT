@@ -23,6 +23,12 @@ namespace Ibit.Core.Data
         public float PitacoThreshold;
         public string Ethnicity;
 
+        public bool IsCalibrationDone => this.Capacities.RawInsPeakFlow < 0
+           && this.Capacities.RawInsFlowDuration > 0
+           && this.Capacities.RawExpPeakFlow > 0
+           && this.Capacities.RawExpFlowDuration > 0
+           && this.Capacities.RawRespCycleDuration > 0;
+
 #if UNITY_EDITOR
         static Pacient()
         {
@@ -50,14 +56,7 @@ namespace Ibit.Core.Data
         }
 #endif
 
-        public bool IsCalibrationDone()
-        {
-            return this.Capacities.RawInsPeakFlow < 0
-                   && this.Capacities.RawInsFlowDuration > 0
-                   && this.Capacities.RawExpPeakFlow > 0
-                   && this.Capacities.RawExpFlowDuration > 0
-                   && this.Capacities.RawRespCycleDuration > 0;
-        }
+
     }
 
     public enum ConditionType
