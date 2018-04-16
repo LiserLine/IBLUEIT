@@ -172,7 +172,7 @@ namespace Ibit.Calibration
                             switch (_currentStep)
                             {
                                 case 1:
-                                    DudeTalk("Neste exercício, você deve INSPIRAR FORTE. Serão 3 vezes. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
+                                    DudeTalk("Neste exercício, você deve INSPIRAR FORTE. Serão 3 tentativas. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
                                     ReadyNextStep();
                                     break;
 
@@ -248,7 +248,7 @@ namespace Ibit.Calibration
                             switch (_currentStep)
                             {
                                 case 1:
-                                    DudeTalk("Neste exercício, INSPIRE e MANTENHA o relógio GIRANDO o MÁXIMO QUE PUDER! Serão 3 vezes. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
+                                    DudeTalk("Neste exercício, INSPIRE e MANTENHA o relógio GIRANDO o MÁXIMO QUE PUDER! Serão 3 tentativas. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
                                     ReadyNextStep();
                                     break;
 
@@ -334,7 +334,7 @@ namespace Ibit.Calibration
                             switch (_currentStep)
                             {
                                 case 1:
-                                    DudeTalk("Neste exercício, você deve ASSOPRAR FORTE. Serão 3 vezes. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
+                                    DudeTalk("Neste exercício, você deve ASSOPRAR FORTE. Serão 3 tentativas. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
                                     ReadyNextStep();
                                     break;
 
@@ -411,7 +411,7 @@ namespace Ibit.Calibration
                             switch (_currentStep)
                             {
                                 case 1:
-                                    DudeTalk("Neste exercício, ASSOPRE e MANTENHA o relógio GIRANDO o MÁXIMO QUE PUDER! Serão 3 vezes. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
+                                    DudeTalk("Neste exercício, ASSOPRE e MANTENHA o relógio GIRANDO o MÁXIMO QUE PUDER! Serão 3 tentativas. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
                                     ReadyNextStep();
                                     break;
 
