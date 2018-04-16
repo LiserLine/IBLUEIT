@@ -98,7 +98,7 @@ namespace Ibit.Calibration
                             switch (_currentStep)
                             {
                                 case 1:
-                                    DudeTalk("Você deve respirar somente pela boca. Não precisa morder o PITACO. Pressione (►) para continuar.");
+                                    DudeTalk("Você deve respirar somente pela boca. Não precisa morder o PITACO. Mantenha o PITACO sempre para baixo. Pressione (►) para continuar.");
                                     ReadyNextStep();
                                     break;
 
