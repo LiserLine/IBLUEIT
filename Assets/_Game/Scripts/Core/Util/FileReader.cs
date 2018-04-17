@@ -5,27 +5,41 @@ namespace Ibit.Core.Util
 {
     public class FileManager
     {
-        public static void WriteAllText(string filepath, string contents)
+        public static void WriteAllText(string path, string contents)
         {
-            var directory = Path.GetDirectoryName(filepath);
+            var directory = Path.GetDirectoryName(path);
 
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
 
-            File.WriteAllText(filepath, contents, Encoding.UTF8);
+            File.WriteAllText(path, contents, Encoding.UTF8);
 
-            UnityEngine.Debug.LogFormat("File saved: {0}", filepath);
+            UnityEngine.Debug.LogFormat("File saved: {0}", path);
         }
 
-        public static string ReadAllText(string filepath) => File.ReadAllText(filepath, Encoding.UTF8);
-
-        public static string[] ReadAllLines(string filepath) => File.ReadAllLines(filepath, Encoding.UTF8);
-
-        public static void AppendAllText(string path, string contents) => File.AppendAllText(path, contents, Encoding.UTF8);
-
-        public static string ReadCsv(string filepath)
+        public static void WriteAllLines(string path, string[] contents)
         {
-            var text = ReadAllText(filepath);
+            File.WriteAllLines(path, contents);
+        }
+
+        public static string ReadAllText(string path)
+        {
+            return File.ReadAllText(path, Encoding.UTF8);
+        }
+
+        public static string[] ReadAllLines(string path)
+        {
+            return File.ReadAllLines(path, Encoding.UTF8);
+        }
+
+        public static void AppendAllText(string path, string contents)
+        {
+            File.AppendAllText(path, contents, Encoding.UTF8);
+        }
+
+        public static string ReadCsv(string path)
+        {
+            var text = ReadAllText(path);
 
             if (text.Split('\t').Length > 0)
                 text = text.Replace('\t', ';');

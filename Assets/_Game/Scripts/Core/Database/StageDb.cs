@@ -74,7 +74,7 @@ namespace Ibit.Core.Database
 
             var data = FileManager.ReadAllLines(path);
 
-            CleanData(ref data);
+            CleanData(ref data, path);
 
             var stageHeader = $"{data[0]}\n{data[1]}";
             var grid = CsvParser2.Parse(stageHeader);
@@ -131,18 +131,28 @@ namespace Ibit.Core.Database
         };
 
         /// <summary>
-        /// Cleans all excel unnecessary character / pattern in the file.
+        /// Cleans all excel unnecessary character pattern in the file.
         /// </summary>
         /// <param name="data">Array data from the stage file.</param>
-        private static void CleanData(ref string[] data)
+        /// <param name="path">Stage file path</param>
+        private static void CleanData(ref string[] data, string path)
         {
+            bool hasTrash = false;
+
             for (int i = 0; i < data.Length; i++)
             {
                 foreach (var pattern in _patternsToBeCleaned)
                 {
-                    data[i] = Regex.Replace(data[i], pattern, "");
+                    if (Regex.IsMatch(data[i], pattern))
+                    {
+                        data[i] = Regex.Replace(data[i], pattern, "");
+                        hasTrash = true;
+                    }
                 }
             }
+
+            if (hasTrash)
+                FileManager.WriteAllLines(path, data);
         }
     }
 }
