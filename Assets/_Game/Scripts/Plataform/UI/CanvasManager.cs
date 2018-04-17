@@ -18,6 +18,9 @@ namespace Ibit.Plataform.UI
         [SerializeField]
         private GameObject pauseMenu;
 
+        [SerializeField]
+        private GameObject helpPanel;
+
         private void OnEnable()
         {
             stageLevel.text = StageModel.Loaded.Level.ToString();
@@ -29,6 +32,7 @@ namespace Ibit.Plataform.UI
             if (GameManager.GameIsPaused)
                 return;
 
+            helpPanel.SetActive(true);
             pauseMenu.SetActive(true);
             GameManager.PauseGame();
         }
@@ -38,6 +42,7 @@ namespace Ibit.Plataform.UI
             if (!GameManager.GameIsPaused)
                 return;
 
+            helpPanel.SetActive(false);
             pauseMenu.SetActive(false);
             GameManager.UnPauseGame();
         }
