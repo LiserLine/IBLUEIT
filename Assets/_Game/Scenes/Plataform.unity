@@ -4045,6 +4045,7 @@ MonoBehaviour:
   - {fileID: 1698614461066178, guid: 635dc713c0ea81640a1bfd96efdb67eb, type: 2}
   - {fileID: 1798566247012108, guid: cf9845efd623eb64db906dda8d8cb26f, type: 2}
   - {fileID: 1713550843387982, guid: 005ebede8fcc0754c91b6e45868d9671, type: 2}
+  - {fileID: 1104845708456978, guid: 8c20ef0f1fc9af74b852425f00071070, type: 2}
   relaxInsPrefab: {fileID: 1883807985188296, guid: 8d39bb053491d8a488ef09def3d3f666,
     type: 2}
   relaxExpPrefab: {fileID: 1187751789533314, guid: 232f0d138e15f0440bf1ff4275a78875,
