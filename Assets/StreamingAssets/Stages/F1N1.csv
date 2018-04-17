@@ -1,5 +1,5 @@
 StageId;Phase;Level;ObjectSpeedFactor;HeightIncrement;HeightUpThreshold;HeightDownThreshold;SizeIncrement;SizeUpThreshold;SizeDownThreshold;Loops
-1;1;1;1.8;0.1;2;1;0;0;0;1
+1;1;1;1.8;0.1;2;99;0;0;0;1
 
 %% HEADERS %%
 %The first 2 lines above are headers. They must never be removed!
@@ -14,7 +14,7 @@ StageId;Phase;Level;ObjectSpeedFactor;HeightIncrement;HeightUpThreshold;HeightDo
 
 %% COMMANDS %% 
 %Commands always comes after the headers
-%Template: ObjectType;DifficultyFactor;PositionYFactor;PositionXSpacing
+%Template: ObjectType;DifficultyFactor;PositionYFactor;PositionXSpacing;
 %ObjectType = Command to spawn object (Target | Obstacle | Relax)
 %Target DifficultyFactor => Modifies Height (min: 0.0, max: 1.0)
 %Obstacle DifficultyFactor => Modifies Size (min: 0.0, max: 1.0)
@@ -22,34 +22,34 @@ StageId;Phase;Level;ObjectSpeedFactor;HeightIncrement;HeightUpThreshold;HeightDo
 %PositionXSpacing = Distance from the last spawned object in unity's metric unit
 %Relax command does not use DifficultyFactor and PositionYFactor
 
-Target;0.2;1;10
-Target;0.2;-1;2.5
+Target;0.2;1;10;
+Target;0.2;-1;2.5;
 
-Target;0.2;1;6
-Target;0.2;-1;2.5
+Target;0.2;1;6;
+Target;0.2;-1;2.5;
 
-Target;0.2;1;6
-Target;0.2;-1;2.5
+Target;0.2;1;6;
+Target;0.2;-1;2.5;
 
-Target;0.2;1;6
-Target;0.2;-1;2.5
+Target;0.2;1;6;
+Target;0.2;-1;2.5;
 
-Target;0.2;1;6
-Target;0.2;-1;2.5
+Target;0.2;1;6;
+Target;0.2;-1;2.5;
 
-Target;0.2;1;6
-Target;0.2;-1;2.5
+Target;0.2;1;6;
+Target;0.2;-1;2.5;
 
-Target;0.2;1;6
-Target;0.2;-1;2.5
+Target;0.2;1;6;
+Target;0.2;-1;2.5;
 
-Target;0.2;1;6
-Target;0.2;-1;2.5
+Target;0.2;1;6;
+Target;0.2;-1;2.5;
 
-Target;0.2;1;6
-Target;0.2;-1;2.5
+Target;0.2;1;6;
+Target;0.2;-1;2.5;
 
-Target;0.2;1;6
-Target;0.2;-1;2.5
+Target;0.2;1;6;
+Target;0.2;-1;2.5;
 
-Relax;0;0;3
+Relax;0;0;3;
