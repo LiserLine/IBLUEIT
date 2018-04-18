@@ -4186,6 +4186,8 @@ MonoBehaviour:
   - {fileID: 1596007118193250, guid: 2245c0c7b8a839449b4f0651efd04e5f, type: 2}
   - {fileID: 1079772737705790, guid: 894cc6132a08acb4f8f7be48eb10dcf9, type: 2}
   - {fileID: 1122608744294820, guid: f11a3e449ae561244b3c51f842f0a250, type: 2}
+  - {fileID: 1520643993526032, guid: 9f8656a5b8853584491ab69c4043a646, type: 2}
+  - {fileID: 1878124460477030, guid: 7a2c37cba61b7d3469e0c35ac0b3b8bb, type: 2}
   obstaclesWater:
   - {fileID: 1698614461066178, guid: 635dc713c0ea81640a1bfd96efdb67eb, type: 2}
   - {fileID: 1798566247012108, guid: cf9845efd623eb64db906dda8d8cb26f, type: 2}
@@ -4201,11 +4203,16 @@ MonoBehaviour:
   - {fileID: 1072828513018304, guid: ac53dd4aed6989848b40ba4277fdf961, type: 2}
   - {fileID: 1967573256947412, guid: f10efd4354e3e2448b83ec9ed79b5409, type: 2}
   - {fileID: 1907565229181380, guid: 811de7d33c427d84681cfbb1c4a4ef49, type: 2}
+  - {fileID: 1852781154454012, guid: 8524c1b6cadc3df47aefda36d5de4297, type: 2}
   targetsWater:
   - {fileID: 1724036100270406, guid: fb0d0551d86168242a70ed28da842126, type: 2}
   - {fileID: 1774716689977566, guid: d1752f78c2f593942bc47468330258f6, type: 2}
   - {fileID: 1979597902831624, guid: a670f0d87658b7d46ba729b539ff537f, type: 2}
   - {fileID: 1582079116040042, guid: 85cb7fcf034d3e6408a4335337549ba3, type: 2}
+  - {fileID: 1696021606376072, guid: 9c164337bb403694aa900e0283e72a80, type: 2}
+  - {fileID: 1721662302016926, guid: 817d28b4d5efa3b4cab6ea6294c87dc6, type: 2}
+  - {fileID: 1556534570371908, guid: d4ab8e5ab63f5c643a67725efd62ed7d, type: 2}
+  - {fileID: 1716382401229954, guid: 3c675ceeb59429f40a82ca6b38746aa6, type: 2}
 --- !u!1 &1813356614
 GameObject:
   m_ObjectHideFlags: 0
