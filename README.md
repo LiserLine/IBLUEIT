@@ -36,10 +36,10 @@ Você usa a sua respiração como controle. Inspirar -> Sobe; Expirar -> Desce.
 
 # Links
 
-Download: (ainda não disponível)
+• Download: (ainda não disponível)
 
-Manual de montagem do PITACO: (ainda não disponível)
+• Manual de montagem do PITACO: (ainda não disponível)
 
-Vídeo demonstração de uso: (ainda não disponível)
+• Vídeo demonstração de uso: (ainda não disponível)
 
-Vídeo demonstração do jogo: (ainda não disponível)
+• Vídeo demonstração do jogo: (ainda não disponível)
