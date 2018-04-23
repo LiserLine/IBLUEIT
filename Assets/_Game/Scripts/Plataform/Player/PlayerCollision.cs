@@ -35,7 +35,6 @@ namespace Ibit.Plataform
             else if (hit.CompareTag("WaterObstacle") || hit.CompareTag("AirObstacle"))
             {
                 TakeDamage();
-                StartCoroutine(DisableCollisionForXSeconds(invincibilityTime));
                 SoundManager.Instance.PlaySound("PlayerDamage");
             }
             else if (hit.CompareTag("RelaxObject"))
@@ -45,11 +44,15 @@ namespace Ibit.Plataform
         }
 
         private IEnumerator DisableCollisionForXSeconds(int i)
-        {
+        {            
             var component = this.GetComponent<Collider2D>();
             component.enabled = false;
+            animator.SetBool("DamageTaken", true);
+
             yield return new WaitForSeconds(i);
+                        
             component.enabled = true;
+            animator.SetBool("DamageTaken", false);
         }
 
         [Button("Take Damage")]
@@ -58,7 +61,7 @@ namespace Ibit.Plataform
             if (isPlayerDead)
                 return;
 
-            animator.SetTrigger("DamageTaken");
+            StartCoroutine(DisableCollisionForXSeconds(invincibilityTime));
 
             heartPoints--;
 
