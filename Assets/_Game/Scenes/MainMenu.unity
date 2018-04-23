@@ -1848,10 +1848,10 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 724caf3bbac81794eb04e17a54fce1d3, type: 3}
-    m_FontSize: 30
-    m_FontStyle: 0
+    m_FontSize: 27
+    m_FontStyle: 1
     m_BestFit: 0
-    m_MinSize: 3
+    m_MinSize: 2
     m_MaxSize: 43
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -1859,7 +1859,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Tempo de Inspira\xE7\xE3o"
+  m_Text: "Tempo  de  Inspira\xE7\xE3o"
 --- !u!222 &311603317
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3939,10 +3939,10 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 724caf3bbac81794eb04e17a54fce1d3, type: 3}
-    m_FontSize: 30
-    m_FontStyle: 0
+    m_FontSize: 27
+    m_FontStyle: 1
     m_BestFit: 0
-    m_MinSize: 3
+    m_MinSize: 2
     m_MaxSize: 43
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -3950,7 +3950,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Ciclo de Respira\xE7\xE3o"
+  m_Text: "Ciclo  de  Respira\xE7\xE3o"
 --- !u!222 &496304386
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4017,10 +4017,10 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 724caf3bbac81794eb04e17a54fce1d3, type: 3}
-    m_FontSize: 30
-    m_FontStyle: 0
+    m_FontSize: 27
+    m_FontStyle: 1
     m_BestFit: 0
-    m_MinSize: 3
+    m_MinSize: 2
     m_MaxSize: 43
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -4028,7 +4028,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Tempo de Expira\xE7\xE3o"
+  m_Text: "Tempo  de  Expira\xE7\xE3o"
 --- !u!222 &501505118
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5551,7 +5551,7 @@ MonoBehaviour:
   m_FontData:
     m_Font: {fileID: 12800000, guid: 724caf3bbac81794eb04e17a54fce1d3, type: 3}
     m_FontSize: 25
-    m_FontStyle: 0
+    m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 40
@@ -5701,10 +5701,10 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 724caf3bbac81794eb04e17a54fce1d3, type: 3}
-    m_FontSize: 30
-    m_FontStyle: 0
+    m_FontSize: 27
+    m_FontStyle: 1
     m_BestFit: 0
-    m_MinSize: 3
+    m_MinSize: 2
     m_MaxSize: 43
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -5712,7 +5712,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Pico de Expira\xE7\xE3o"
+  m_Text: "Pico  de  Expira\xE7\xE3o"
 --- !u!222 &727036241
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7112,7 +7112,7 @@ MonoBehaviour:
   m_FontData:
     m_Font: {fileID: 12800000, guid: 724caf3bbac81794eb04e17a54fce1d3, type: 3}
     m_FontSize: 45
-    m_FontStyle: 0
+    m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 46
@@ -13039,7 +13039,7 @@ MonoBehaviour:
   m_FontData:
     m_Font: {fileID: 12800000, guid: 724caf3bbac81794eb04e17a54fce1d3, type: 3}
     m_FontSize: 30
-    m_FontStyle: 0
+    m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 130
@@ -13049,7 +13049,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Carregar Perfil
+  m_Text: Carregar  Perfil
 --- !u!222 &1572562563
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -13115,7 +13115,7 @@ MonoBehaviour:
   m_FontData:
     m_Font: {fileID: 12800000, guid: 724caf3bbac81794eb04e17a54fce1d3, type: 3}
     m_FontSize: 160
-    m_FontStyle: 0
+    m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 1
     m_MaxSize: 160
@@ -13125,7 +13125,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: I Blue It
+  m_Text: ' I  Blue  It'
 --- !u!222 &1584677881
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -14791,10 +14791,10 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 724caf3bbac81794eb04e17a54fce1d3, type: 3}
-    m_FontSize: 30
-    m_FontStyle: 0
+    m_FontSize: 27
+    m_FontStyle: 1
     m_BestFit: 0
-    m_MinSize: 3
+    m_MinSize: 2
     m_MaxSize: 43
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -14802,7 +14802,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Pico de Inspira\xE7\xE3o"
+  m_Text: "Pico  de  Inspira\xE7\xE3o"
 --- !u!222 &1835010290
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -15082,7 +15082,7 @@ MonoBehaviour:
   m_FontData:
     m_Font: {fileID: 12800000, guid: 724caf3bbac81794eb04e17a54fce1d3, type: 3}
     m_FontSize: 25
-    m_FontStyle: 0
+    m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 40
@@ -15271,7 +15271,7 @@ MonoBehaviour:
   m_FontData:
     m_Font: {fileID: 12800000, guid: 724caf3bbac81794eb04e17a54fce1d3, type: 3}
     m_FontSize: 30
-    m_FontStyle: 0
+    m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 300
@@ -15281,7 +15281,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Novo Perfil
+  m_Text: Novo  Perfil
 --- !u!222 &1924053151
 CanvasRenderer:
   m_ObjectHideFlags: 0
