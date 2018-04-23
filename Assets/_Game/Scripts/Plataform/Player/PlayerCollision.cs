@@ -44,13 +44,13 @@ namespace Ibit.Plataform
         }
 
         private IEnumerator DisableCollisionForXSeconds(int i)
-        {            
+        {
             var component = this.GetComponent<Collider2D>();
             component.enabled = false;
             animator.SetBool("DamageTaken", true);
 
             yield return new WaitForSeconds(i);
-                        
+
             component.enabled = true;
             animator.SetBool("DamageTaken", false);
         }
