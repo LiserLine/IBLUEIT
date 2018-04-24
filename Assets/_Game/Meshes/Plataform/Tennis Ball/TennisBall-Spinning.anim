@@ -5,7 +5,7 @@ AnimationClip:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Tire-Spinning
+  m_Name: TennisBall-Spinning
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -18,21 +18,15 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 2
         time: 0
-        value: {x: 0, y: 0, z: 0.22029114}
+        value: {x: 0, y: 0, z: -0.11880875}
         inSlope: {x: 0, y: 0, z: 0}
-        outSlope: {x: 0, y: 0, z: 88.12829}
+        outSlope: {x: 0, y: 0, z: 179.6384}
         tangentMode: 0
       - serializedVersion: 2
-        time: 4
-        value: {x: 0, y: 0, z: 352.73346}
-        inSlope: {x: 0, y: 0, z: 88.12829}
-        outSlope: {x: 0, y: 0, z: 88.12829}
-        tangentMode: 0
-      - serializedVersion: 2
-        time: 4.0666666
-        value: {x: 0, y: 0, z: 358.60864}
-        inSlope: {x: 0, y: 0, z: 88.12829}
-        outSlope: {x: 0, y: 0, z: -1.0681152}
+        time: 2
+        value: {x: 0, y: 0, z: 359.158}
+        inSlope: {x: 0, y: 0, z: 179.6384}
+        outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -42,7 +36,7 @@ AnimationClip:
   m_ScaleCurves: []
   m_FloatCurves: []
   m_PPtrCurves: []
-  m_SampleRate: 15
+  m_SampleRate: 30
   m_WrapMode: 0
   m_Bounds:
     m_Center: {x: 0, y: 0, z: 0}
@@ -62,7 +56,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 4.0666666
+    m_StopTime: 2
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -88,7 +82,7 @@ AnimationClip:
         outSlope: 0
         tangentMode: 136
       - serializedVersion: 2
-        time: 4
+        time: 2
         value: 0
         inSlope: 0
         outSlope: 0
@@ -110,7 +104,7 @@ AnimationClip:
         outSlope: 0
         tangentMode: 136
       - serializedVersion: 2
-        time: 4
+        time: 2
         value: 0
         inSlope: 0
         outSlope: 0
@@ -127,15 +121,15 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 2
         time: 0
-        value: 0.22029114
+        value: -0.11880875
         inSlope: 0
-        outSlope: 88.12829
+        outSlope: 179.6384
         tangentMode: 69
       - serializedVersion: 2
-        time: 4.0666666
-        value: 358.60864
-        inSlope: 88.12829
-        outSlope: -1.0681152
+        time: 2
+        value: 359.158
+        inSlope: 179.6384
+        outSlope: 0
         tangentMode: 69
       m_PreInfinity: 2
       m_PostInfinity: 2

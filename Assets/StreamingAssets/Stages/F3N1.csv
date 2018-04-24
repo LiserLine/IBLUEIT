@@ -22,22 +22,22 @@ StageId;Phase;Level;ObjectSpeedFactor;HeightIncrement;HeightUpThreshold;HeightDo
 %PositionXSpacing = Distance from the last spawned object in unity's metric unit
 %Relax command does not use DifficultyFactor and PositionYFactor
 
-Obstacle;1;-1;10
-Obstacle;1;1;5
+Obstacle;0.5;-1;10
+Obstacle;0.5;1;5
 
-Obstacle;1;1;10
-Obstacle;1;-1;5
+Obstacle;0.5;1;10
+Obstacle;0.5;-1;5
 
-Obstacle;1;-1;10
-Obstacle;1;1;5
+Obstacle;0.5;-1;10
+Obstacle;0.5;1;5
 
-Obstacle;1;1;10
-Obstacle;1;-1;5
+Obstacle;0.5;1;10
+Obstacle;0.5;-1;5
 
-Obstacle;1;-1;10
-Obstacle;1;1;5
+Obstacle;0.5;-1;10
+Obstacle;0.5;1;5
 
-Obstacle;1;1;10
-Obstacle;1;-1;5
+Obstacle;0.5;1;10
+Obstacle;0.5;-1;5
 
 Relax;0;0;5

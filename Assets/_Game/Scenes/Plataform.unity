@@ -4101,7 +4101,6 @@ MonoBehaviour:
   - {fileID: 1079772737705790, guid: 894cc6132a08acb4f8f7be48eb10dcf9, type: 2}
   - {fileID: 1122608744294820, guid: f11a3e449ae561244b3c51f842f0a250, type: 2}
   - {fileID: 1520643993526032, guid: 9f8656a5b8853584491ab69c4043a646, type: 2}
-  - {fileID: 1878124460477030, guid: 7a2c37cba61b7d3469e0c35ac0b3b8bb, type: 2}
   obstaclesWater:
   - {fileID: 1698614461066178, guid: 635dc713c0ea81640a1bfd96efdb67eb, type: 2}
   - {fileID: 1798566247012108, guid: cf9845efd623eb64db906dda8d8cb26f, type: 2}

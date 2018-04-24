@@ -14,8 +14,8 @@ namespace Ibit.Plataform.Manager.Stage
     {
         #region Events
 
-        public Action OnStageStart;
-        public Action OnStageEnd;
+        public event Action OnStageStart;
+        public event Action OnStageEnd;
 
         #endregion Events
 

@@ -1,5 +1,5 @@
 StageId;Phase;Level;ObjectSpeedFactor;HeightIncrement;HeightUpThreshold;HeightDownThreshold;SizeIncrement;SizeUpThreshold;SizeDownThreshold;Loops
-8;2;3;5;0.2;1;99;0.3;1;99;4
+8;2;3;5;0.3;1;99;0.1;2;99;4
 
 %% HEADERS %%
 %The first 2 lines above are headers. They must never be removed!

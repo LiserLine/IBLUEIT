@@ -27,8 +27,8 @@ namespace Ibit.Plataform.Manager.Spawn
         private int waterTargetsHit;
         private int waterObstaclesHit;
 
-        public Action<float, float> OnUpdatedPerformanceTarget;
-        public Action<float, float> OnUpdatedPerformanceObstacle;
+        public event Action<float, float> OnUpdatedPerformanceTarget;
+        public event Action<float, float> OnUpdatedPerformanceObstacle;
 
         private void PerformanceOnPlayerHit(GameObject hit)
         {

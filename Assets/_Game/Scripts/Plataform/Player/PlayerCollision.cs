@@ -10,8 +10,8 @@ namespace Ibit.Plataform
     {
         #region Events
 
-        public Action OnPlayerDeath;
-        public Action<GameObject> OnObjectHit;
+        public event Action OnPlayerDeath;
+        public event Action<GameObject> OnObjectHit;
 
         #endregion Events
 
@@ -19,6 +19,7 @@ namespace Ibit.Plataform
         [SerializeField] [BoxGroup("Properties")] private int invincibilityTime = 2;
 
         private bool isPlayerDead;
+        private bool isInvulnerable;
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
@@ -45,20 +46,23 @@ namespace Ibit.Plataform
 
         private IEnumerator DisableCollisionForXSeconds(int i)
         {
+            isInvulnerable = true;
+            animator.SetBool("DamageTaken", isInvulnerable);
+
             var component = this.GetComponent<Collider2D>();
+
             component.enabled = false;
-            animator.SetBool("DamageTaken", true);
-
             yield return new WaitForSeconds(i);
-
             component.enabled = true;
-            animator.SetBool("DamageTaken", false);
+
+            isInvulnerable = false;
+            animator.SetBool("DamageTaken", isInvulnerable);
         }
 
         [Button("Take Damage")]
         private void TakeDamage()
         {
-            if (isPlayerDead)
+            if (isPlayerDead || isInvulnerable)
                 return;
 
             StartCoroutine(DisableCollisionForXSeconds(invincibilityTime));
