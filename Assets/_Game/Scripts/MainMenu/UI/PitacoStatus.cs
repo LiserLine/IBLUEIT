@@ -22,5 +22,7 @@ namespace Ibit.MainMenu.UI
         }
 
         private void FixedUpdate() => GetComponent<Image>().sprite = serialController.IsConnected ? online : offline;
+
+        public void Reboot() => UnityEngine.SceneManagement.SceneManager.LoadScene(0);
     }
 }

@@ -24,7 +24,7 @@ namespace Ibit.Core.Util
             FileManager.WriteAllText(@"DUMP/" + $"crash_{DateTime.Now:yyyyMMdd-HHmmss}.txt", errContent);
 
             SysMessage.Error("The game will be closed because of an unexpected program error. Please report this error to the developer.\n\n" +
-                             "An error file has been created!.\n\n" + errContent, "[Error Handler] An unexpected error has occured!!!");
+                             "An error file has been created!.\n\n" + message, "[Error Handler] An unexpected error has occured!!!");
 
             FindObjectOfType<GameManager>().QuitGame();
         }
