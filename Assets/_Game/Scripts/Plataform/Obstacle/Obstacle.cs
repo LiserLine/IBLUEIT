@@ -50,7 +50,9 @@ namespace Ibit.Plataform
 
         private void OnDestroy()
         {
-            FindObjectOfType<Spawner>().OnUpdatedPerformanceObstacle -= OnUpdatedPerformance;
+            var spwn = FindObjectOfType<Spawner>();
+            if (spwn != null)
+                spwn.OnUpdatedPerformanceObstacle -= OnUpdatedPerformance;
         }
     }
 }

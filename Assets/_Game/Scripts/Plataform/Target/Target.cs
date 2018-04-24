@@ -9,7 +9,7 @@ namespace Ibit.Plataform
     {
         [SerializeField] private ObjectModel _model;
 
-        public float Score { get; private set; }        
+        public float Score { get; private set; }
 
         public void Build(ObjectModel model)
         {
@@ -44,7 +44,9 @@ namespace Ibit.Plataform
 
         private void OnDestroy()
         {
-            FindObjectOfType<Spawner>().OnUpdatedPerformanceTarget -= OnUpdatedPerformance;
+            var spwn = FindObjectOfType<Spawner>();
+            if (spwn != null)
+                spwn.OnUpdatedPerformanceTarget -= OnUpdatedPerformance;
         }
     }
 }
