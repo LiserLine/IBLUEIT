@@ -1,13 +1,19 @@
-﻿using UnityEngine;
+﻿using Ibit.Plataform.Manager.Score;
+using UnityEngine;
 
 namespace Ibit.Plataform
 {
     public class Destroyer : MonoBehaviour
     {
-        private void Awake()
+        private void Start()
         {
-            var distance = UnityEngine.Camera.main.orthographicSize * UnityEngine.Camera.main.aspect;
-            this.gameObject.transform.Translate(-distance - 2f, 0f, 0f);
+            DistantiateFromScorer(2f);
+        }
+
+        private void DistantiateFromScorer(float units)
+        {
+            var x = FindObjectOfType<Scorer>().transform.position.x - units;
+            this.transform.position = new Vector3(x, 0, 0);
         }
 
         private void OnTriggerEnter2D(Collider2D collision) => Destroy(collision.gameObject);

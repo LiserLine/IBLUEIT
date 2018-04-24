@@ -1,4 +1,5 @@
-﻿using Ibit.Core.Game;
+﻿using System;
+using Ibit.Core.Game;
 using Ibit.Plataform.Data;
 using NaughtyAttributes;
 using UnityEngine;
@@ -46,6 +47,14 @@ namespace Ibit.Plataform.Manager.Score
             score = 0;
             maxScore = 0;
             FindObjectOfType<Player>().OnObjectHit += ScoreOnPlayerCollision;
+
+            DistantiateFromCameraCenter();
+        }
+
+        private void DistantiateFromCameraCenter()
+        {
+            var horzExtent = UnityEngine.Camera.main.orthographicSize * Screen.width / Screen.height;
+            this.gameObject.transform.position = new Vector3(-horzExtent / 2f, 0f, 0f);
         }
 
         public void UpdateMaxScore(StageObjectType type, ref GameObject obj, float difficultyFactor)
