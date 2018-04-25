@@ -46,11 +46,11 @@ namespace Ibit.Core.Data
                     PitacoThreshold = 7.5f,
                     Capacities = new Capacities
                     {
-                        RespCycleDuration = 3000,
-                        ExpPeakFlow = 1500,
-                        InsPeakFlow = -300,
-                        ExpFlowDuration = 6000,
-                        InsFlowDuration = 3000
+                        RespCycleDuration = 3200,
+                        ExpPeakFlow = 1600,
+                        InsPeakFlow = -330,
+                        ExpFlowDuration = 18000,
+                        InsFlowDuration = 10000
                     }
                 };
         }

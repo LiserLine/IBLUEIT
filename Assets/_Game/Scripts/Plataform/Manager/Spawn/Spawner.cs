@@ -1,6 +1,7 @@
 ﻿using Ibit.Plataform.Data;
 using Ibit.Plataform.Manager.Stage;
 using NaughtyAttributes;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -11,18 +12,18 @@ namespace Ibit.Plataform.Manager.Spawn
         [BoxGroup("Tutorial")] [SerializeField] private GameObject arrowUpPrefab;
         [BoxGroup("Tutorial")] [SerializeField] private GameObject arrowDownPrefab;
 
-        public Transform[] SpawnedObjects
+        public LinkedList<Transform> SpawnedObjects
         {
             get
             {
-                return this.GetComponentsInChildren<Transform>().
-                    Where(o => !o.name.Equals("Spawner") && !o.name.Equals("Sprite")).ToArray();
+                var array = this.GetComponentsInChildren<Transform>().Where(o => !o.name.Equals("Spawner") && !o.name.Equals("Sprite") && !o.name.StartsWith("Arrow"));
+                return new LinkedList<Transform>(array);
             }
         }
 
-        public int ObjectsOnScene => SpawnedObjects.Length;
+        public int ObjectsOnScene => SpawnedObjects.Count;
 
-        private Transform _lastSpawned => SpawnedObjects.Length > 0 ? SpawnedObjects[SpawnedObjects.Length - 1] : this.transform;
+        private Transform _lastSpawned => SpawnedObjects.Count > 0 ? SpawnedObjects.Last.Value : this.transform;
 
         private void Awake()
         {
@@ -58,7 +59,7 @@ namespace Ibit.Plataform.Manager.Spawn
 
         private void Clean()
         {
-            if (SpawnedObjects.Length < 1)
+            if (SpawnedObjects.Count < 1)
                 return;
 
             foreach (var tform in SpawnedObjects)
