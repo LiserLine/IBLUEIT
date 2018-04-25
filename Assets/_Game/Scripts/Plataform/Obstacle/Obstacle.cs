@@ -46,15 +46,13 @@ namespace Ibit.Plataform
             CalculateNewDistance();
         }
 
-        private const float minimumDistance = 3f;
-
         private void CalculateNewDistance()
         {
             // order: previous < this < next
             try
             {
                 var previousObject = FindObjectOfType<Spawner>().SpawnedObjects.Find(this.transform).Previous.Value;
-                this.transform.position = new Vector3(previousObject.position.x + previousObject.localScale.x / 2 + minimumDistance + this.transform.localScale.x / 2,
+                this.transform.position = new Vector3(previousObject.position.x + previousObject.localScale.x / 2 + _model.PositionXSpacing + this.transform.localScale.x / 2,
                     this.transform.position.y);
             }
             catch (NullReferenceException) { } // ignore new distances because the previous object might be destroyed
