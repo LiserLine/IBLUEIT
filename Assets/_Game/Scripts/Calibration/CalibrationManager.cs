@@ -429,7 +429,7 @@ namespace Ibit.Calibration
                                     yield return new WaitForSeconds(1f);
 
                                     AirFlowEnable(false);
-                                    _dialogText.text = "(ASSOPRE e mantenha o relógio girando o MÁXIMO QUE PUDER)";
+                                    _dialogText.text = "(ASSOPRE e MANTENHA o relógio GIRANDO o MÁXIMO QUE PUDER)";
 
                                     // Wait for player input to be greather than threshold
                                     while (_flowMeter <= Pacient.Loaded.PitacoThreshold)
