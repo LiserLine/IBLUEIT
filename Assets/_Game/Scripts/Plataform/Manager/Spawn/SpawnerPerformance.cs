@@ -8,12 +8,26 @@ namespace Ibit.Plataform.Manager.Spawn
     public partial class Spawner
     {
         #region Performance
+        
+        // Targets
 
-        public int TargetsSucceeded { get; private set; }
-        public int TargetsFailed { get; private set; }
+        public int TargetsSucceeded => TargetsExpSucceeded + TargetsInsSucceeded;
+        public int TargetsFailed => TargetsExpFailed + TargetsInsFailed;
 
-        public int ObstaclesSucceeded { get; private set; }
-        public int ObstaclesFailed { get; private set; }
+        public int TargetsInsSucceeded { get; private set; }
+        public int TargetsInsFailed { get; private set; }
+        public int TargetsExpSucceeded { get; private set; }
+        public int TargetsExpFailed { get; private set; }
+
+        // Obstacles
+
+        public int ObstaclesSucceeded => ObstaclesExpSucceeded + ObstaclesInsSucceeded;
+        public int ObstaclesFailed => ObstaclesExpFailed + ObstaclesInsFailed;
+
+        public int ObstaclesInsSucceeded { get; private set; }
+        public int ObstaclesInsFailed { get; private set; }
+        public int ObstaclesExpSucceeded { get; private set; }
+        public int ObstaclesExpFailed { get; private set; }
 
         #endregion Performance
 
@@ -36,7 +50,7 @@ namespace Ibit.Plataform.Manager.Spawn
             {
                 case "AirTarget":
                     airTargetsHit++;
-                    TargetsSucceeded++;
+                    TargetsInsSucceeded++;
                     if (airTargetsHit >= StageModel.Loaded.HeightUpThreshold)
                     {
                         IncrementInsHeight();
@@ -46,7 +60,7 @@ namespace Ibit.Plataform.Manager.Spawn
 
                 case "WaterTarget":
                     waterTargetsHit++;
-                    TargetsSucceeded++;
+                    TargetsExpSucceeded++;
                     if (waterTargetsHit >= StageModel.Loaded.HeightUpThreshold)
                     {
                         IncrementExpHeight();
@@ -56,7 +70,7 @@ namespace Ibit.Plataform.Manager.Spawn
 
                 case "AirObstacle":
                     airObstaclesHit--;
-                    ObstaclesFailed++;
+                    ObstaclesExpFailed++;
                     if (airObstaclesHit <= -StageModel.Loaded.SizeDownThreshold)
                     {
                         DecrementExpSize();
@@ -66,7 +80,7 @@ namespace Ibit.Plataform.Manager.Spawn
 
                 case "WaterObstacle":
                     waterObstaclesHit--;
-                    ObstaclesFailed++;
+                    ObstaclesInsFailed++;
                     if (waterObstaclesHit <= -StageModel.Loaded.SizeDownThreshold)
                     {
                         DecrementInsSize();
@@ -82,7 +96,7 @@ namespace Ibit.Plataform.Manager.Spawn
             {
                 case "AirTarget":
                     airTargetsHit--;
-                    TargetsFailed++;
+                    TargetsInsFailed++;
                     if (airTargetsHit <= -StageModel.Loaded.HeightDownThreshold)
                     {
                         DecrementInsHeight();
@@ -92,7 +106,7 @@ namespace Ibit.Plataform.Manager.Spawn
 
                 case "WaterTarget":
                     waterTargetsHit--;
-                    TargetsFailed++;
+                    TargetsExpFailed++;
                     if (waterTargetsHit <= -StageModel.Loaded.HeightDownThreshold)
                     {
                         DecrementExpHeight();
@@ -102,7 +116,7 @@ namespace Ibit.Plataform.Manager.Spawn
 
                 case "AirObstacle":
                     airObstaclesHit++;
-                    ObstaclesSucceeded++;
+                    ObstaclesExpSucceeded++;
                     if (airObstaclesHit >= StageModel.Loaded.SizeUpThreshold)
                     {
                         IncrementExpSize();
@@ -112,7 +126,7 @@ namespace Ibit.Plataform.Manager.Spawn
 
                 case "WaterObstacle":
                     waterObstaclesHit++;
-                    ObstaclesSucceeded++;
+                    ObstaclesInsSucceeded++;
                     if (waterObstaclesHit >= StageModel.Loaded.SizeUpThreshold)
                     {
                         IncrementInsSize();

@@ -62,8 +62,8 @@ namespace Ibit.Plataform.Logger
             var data = $"{recordStart};{recordStop};{FindObjectOfType<StageManager>().Duration};{scr.Result};" +
                        $"{StageModel.Loaded.Id};{StageModel.Loaded.Phase};{StageModel.Loaded.Level};{spwn.RelaxTimeSpawned};" +
                        $"{scr.Score};{scr.MaxScore};{scr.Score / scr.MaxScore};" +
-                       $"{spwn.TargetsSucceeded + spwn.TargetsFailed};{spwn.TargetsSucceeded};{spwn.TargetsFailed};" +
-                       $"{spwn.ObstaclesSucceeded + spwn.ObstaclesFailed};{spwn.ObstaclesSucceeded};{spwn.ObstaclesFailed};" +
+                       $"{spwn.TargetsSucceeded + spwn.TargetsFailed};{spwn.TargetsSucceeded};{spwn.TargetsInsSucceeded};{spwn.TargetsExpSucceeded};{spwn.TargetsFailed};{spwn.TargetsInsFailed};{spwn.TargetsExpFailed};" +
+                       $"{spwn.ObstaclesSucceeded + spwn.ObstaclesFailed};{spwn.ObstaclesSucceeded};{spwn.ObstaclesInsSucceeded};{spwn.ObstaclesExpSucceeded};{spwn.ObstaclesFailed};{spwn.ObstaclesInsFailed};{spwn.ObstaclesExpFailed};" +
                        $"{plr.HeartPoins};";
 
             sb.Clear();
@@ -77,8 +77,8 @@ namespace Ibit.Plataform.Logger
                 sb.AppendLine("playStart;playFinish;duration;result;" +
                               "stageId;phase;level;relaxTimeSpawned;" +
                               "score;maxScore;scoreRatio;" +
-                              "targetsSpawned;targetsSuccess;targetsFail;" +
-                              "obstaclesSpawned;obstaclesSuccess;obstaclesFail;" +
+                              "targetsSpawned;targetsSuccess;targetsInsSuccess;targetsExpSuccess;targetsFail;targetsInsFail;targetsExpFail;" +
+                              "obstaclesSpawned;obstaclesSuccess;obstaclesInsSuccess;obstaclesExpSuccess;obstaclesFail;obstaclesInsFail;obstaclesExpFail;" +
                               "playerHP;");
 
                 sb.AppendLine(data);
