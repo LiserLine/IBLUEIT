@@ -39,7 +39,7 @@ namespace Ibit.MainMenu.UI.Canvas
             var obstructive = GameObject.Find("ToggleObstructive").GetComponent<Toggle>().isOn;
             var restrictive = GameObject.Find("ToggleRestrictive").GetComponent<Toggle>().isOn;
 
-            if (normal == obstructive == restrictive == false)
+            if (normal == false && obstructive == false && restrictive == false)
             {
                 SysMessage.Warning("Condição Indefinida!");
                 return;
@@ -47,6 +47,15 @@ namespace Ibit.MainMenu.UI.Canvas
 
             var disfunction = restrictive ? ConditionType.Restrictive
                 : (obstructive ? ConditionType.Obstructive : ConditionType.Normal);
+
+            var male = GameObject.Find("ToggleMale").GetComponent<Toggle>().isOn;
+            var female = GameObject.Find("ToggleFemale").GetComponent<Toggle>().isOn;
+
+            if (male == false && female == false)
+            {
+                SysMessage.Warning("Sexo indefinido.");
+                return;
+            }
 
             var observations = GameObject.Find("Observations").GetComponent<InputField>().text;
 
@@ -99,6 +108,7 @@ namespace Ibit.MainMenu.UI.Canvas
                 Name = playerName,
                 Birthday = birthday,
                 Condition = disfunction,
+                Sex = male ? Sex.Male : Sex.Female,
                 Id = PacientDb.Instance.PacientList.Count > 0 ? PacientDb.Instance.PacientList.Max(x => x.Id) + 1 : 1,
                 Observations = observations,
                 Capacities = new Capacities(),
@@ -110,7 +120,8 @@ namespace Ibit.MainMenu.UI.Canvas
                 HowToPlayDone = false,
                 PitacoThreshold = threshold,
                 PlaySessionsDone = 0,
-                Weight = weight
+                Weight = weight,
+                CreatedOn = DateTime.Now
             };
 
             var tmpPlr = PacientDb.Instance.GetPacient(playerName);

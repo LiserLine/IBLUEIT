@@ -76,7 +76,9 @@ namespace Ibit.Core.Database
                     Ethnicity = grid[i][15],
                     Height = Parsers.Float(grid[i][16]),
                     Weight = Parsers.Float(grid[i][17]),
-                    PitacoThreshold = Parsers.Float(grid[i][18])
+                    PitacoThreshold = Parsers.Float(grid[i][18]),
+                    Sex = (Sex)Enum.Parse(typeof(Sex), grid[i][19]),
+                    CreatedOn = DateTime.Parse(grid[i][20])
                 };
 
                 PacientList.Add(plr);
@@ -88,7 +90,7 @@ namespace Ibit.Core.Database
             var items = new[] { "Id", "Name", "Birthday", "Observations", "Condition",
                 "InsPeakFlow", "ExpPeakFlow", "InsFlowDuration", "ExpFlowDuration", "RespCycleDuration",
                 "UnlockedLevels", "AccumulatedScore", "PlaySessionsDone", "CalibrationDone", "HowToPlayDone",
-                "Ethnicity", "Height", "Weight", "PitacoThreshold"
+                "Ethnicity", "Height", "Weight", "PitacoThreshold", "Sex", "CreatedOn"
             };
 
             var sb = new StringBuilder();
@@ -102,7 +104,7 @@ namespace Ibit.Core.Database
                     $"{pacient.Id};{pacient.Name};{pacient.Birthday:dd/MM/yyyy};{pacient.Observations};{pacient.Condition};" +
                     $"{pacient.Capacities.RawInsPeakFlow};{pacient.Capacities.RawExpPeakFlow};{pacient.Capacities.RawInsFlowDuration};{pacient.Capacities.RawExpFlowDuration};" +
                     $"{pacient.Capacities.RawRespCycleDuration};{pacient.UnlockedLevels};{pacient.AccumulatedScore};{pacient.PlaySessionsDone};{pacient.CalibrationDone};{pacient.HowToPlayDone};" +
-                    $"{pacient.Ethnicity};{pacient.Height};{pacient.Weight};{pacient.PitacoThreshold}"
+                    $"{pacient.Ethnicity};{pacient.Height};{pacient.Weight};{pacient.PitacoThreshold};{pacient.Sex};{pacient.CreatedOn};"
                     );
             }
 

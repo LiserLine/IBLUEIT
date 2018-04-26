@@ -9,6 +9,7 @@ namespace Ibit.Core.Data
 
         public int Id;
         public string Name;
+        public Sex Sex;
         public DateTime Birthday;
         public Capacities Capacities;
         public string Observations;
@@ -22,6 +23,7 @@ namespace Ibit.Core.Data
         public float Height;
         public float PitacoThreshold;
         public string Ethnicity;
+        public DateTime CreatedOn;
 
         public bool IsCalibrationDone => this.Capacities.RawInsPeakFlow < 0
            && this.Capacities.RawInsFlowDuration > 0
@@ -56,7 +58,6 @@ namespace Ibit.Core.Data
         }
 #endif
 
-
     }
 
     public enum ConditionType
@@ -64,5 +65,11 @@ namespace Ibit.Core.Data
         Restrictive = 1,
         Normal = 2,
         Obstructive = 3
+    }
+
+    public enum Sex
+    {
+        Male,
+        Female
     }
 }
