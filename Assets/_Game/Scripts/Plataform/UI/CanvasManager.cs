@@ -1,6 +1,7 @@
 ﻿using Ibit.Core.Database;
 using Ibit.Core.Game;
 using Ibit.Plataform.Data;
+using Ibit.Plataform.Manager.Score;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -51,6 +52,15 @@ namespace Ibit.Plataform.UI
         {
             StageModel.Loaded = StageDb.Instance.GetStage(
                 StageModel.Loaded.Id + 1 > StageDb.Instance.StageList.Max(x => x.Id) ? 1 : StageModel.Loaded.Id + 1);
+        }
+
+        public void SetLastStage()
+        {
+            var scr = FindObjectOfType<Scorer>();
+            if(scr.Score < scr.MaxScore * 0.3f)
+            {
+                StageModel.Loaded = StageDb.Instance.GetStage(StageModel.Loaded.Id - 1 <= 0 ? 1 : StageModel.Loaded.Id - 1);
+            }                
         }
     }
 }
