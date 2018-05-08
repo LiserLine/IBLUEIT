@@ -53,7 +53,7 @@ namespace Ibit.MainMenu.UI.Canvas
 
             if (male == false && female == false)
             {
-                SysMessage.Warning("Sexo indefinido.");
+                SysMessage.Warning("Sexo não selecionado.");
                 return;
             }
 

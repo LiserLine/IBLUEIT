@@ -1,5 +1,4 @@
 ﻿using Ibit.Core.Data;
-using Ibit.Core.Game;
 using Ibit.Core.Serial;
 using Ibit.Core.Util;
 using Ibit.Core.Audio;

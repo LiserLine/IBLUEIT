@@ -18,6 +18,8 @@ namespace Ibit.Calibration
 
         private const int FlowTimeThreshold = 1000; //ms
         private const int RespiratoryFrequencyThreshold = 500; //ms
+        private const int TimerRespFreq = 61; //seg
+        private const int TimerPeakExercise = 8; //seg,
 
         private bool _acceptingValues;
         private bool _calibrationDone;
@@ -36,7 +38,7 @@ namespace Ibit.Calibration
 
         private Stopwatch _timerWatch;
         private Capacities _tmpCapacities;
-        
+
         [SerializeField] private CalibrationExercise _currentExercise;
 
         [BoxGroup("UI")] [SerializeField] private Text _dialogText;
@@ -65,7 +67,7 @@ namespace Ibit.Calibration
 
         private void Start()
         {
-            DudeTalk("Vamos começar o exercício? Para avançar, pressione ENTER quando o ícone (►) aparecer!");
+            //DudeTalk("Para começar, pressione ENTER quando o ícone (►) aparecer!");
             StartCoroutine(ControlStates());
         }
 
@@ -77,6 +79,8 @@ namespace Ibit.Calibration
 
         private IEnumerator ControlStates()
         {
+            _runStep = true;
+
             while (!_calibrationDone)
             {
                 if (_runStep)
@@ -123,8 +127,8 @@ namespace Ibit.Calibration
 
                                     AirFlowEnable();
 
-                                    StartCoroutine(DisplayCountdown(32));
-                                    while (_flowWatch.ElapsedMilliseconds < 32 * 1000)
+                                    StartCoroutine(DisplayCountdown(TimerRespFreq));
+                                    while (_flowWatch.ElapsedMilliseconds < TimerRespFreq * 1000)
                                         yield return null;
 
                                     AirFlowDisable();
@@ -190,10 +194,10 @@ namespace Ibit.Calibration
                                     yield return new WaitForSeconds(1f);
 
                                     AirFlowEnable();
-                                    StartCoroutine(DisplayCountdown(10));
+                                    StartCoroutine(DisplayCountdown(TimerPeakExercise));
                                     _dialogText.text = "(INSPIRE FORTE e aguarde o próximo passo)";
 
-                                    yield return new WaitForSeconds(10);
+                                    yield return new WaitForSeconds(TimerPeakExercise);
 
                                     AirFlowDisable();
 
@@ -263,7 +267,7 @@ namespace Ibit.Calibration
                                     _serialController.StartSampling();
 
                                     _exerciseCountText.text = $"Exercício: {_currentExerciseCount + 1}/3";
-                                    yield return new WaitForSeconds(1f);
+                                    yield return new WaitForSeconds(1);
 
                                     AirFlowEnable(false);
                                     _dialogText.text = "(INSPIRE para manter o relógio GIRANDO o MÁXIMO QUE PUDER)";
@@ -277,7 +281,7 @@ namespace Ibit.Calibration
                                         yield return null;
 
                                     AirFlowDisable();
-                                    
+
                                     ResetFlowMeter();
 
                                     // Check for player input
@@ -308,7 +312,7 @@ namespace Ibit.Calibration
 
                                 case 4:
                                     SoundManager.Instance.PlaySound("Success");
-                                    DudeTalk($"Seu tempo de inspiração é de {(_tmpCapacities.RawInsFlowDuration / 1000f):F} segundos." +
+                                    DudeTalk($"Seu tempo de inspiração máximo é de {(_tmpCapacities.RawInsFlowDuration / 1000f):F} segundos." +
                                              " Pressione (►) para continuar com os outros exercícios.");
                                     ReadyNextStep();
                                     break;
@@ -349,14 +353,14 @@ namespace Ibit.Calibration
                                     _serialController.StartSampling();
 
                                     _exerciseCountText.text = $"Exercício: {_currentExerciseCount + 1}/3";
-                                    yield return new WaitForSeconds(1f);
+                                    yield return new WaitForSeconds(1);
 
                                     AirFlowEnable();
-                                    StartCoroutine(DisplayCountdown(10));
+                                    StartCoroutine(DisplayCountdown(TimerPeakExercise));
                                     _dialogText.text = "(ASSOPRE FORTE e aguarde o próximo passo)";
 
                                     // Wait for player input
-                                    yield return new WaitForSeconds(10);
+                                    yield return new WaitForSeconds(TimerPeakExercise);
 
                                     AirFlowDisable();
 
@@ -426,7 +430,7 @@ namespace Ibit.Calibration
                                     _serialController.StartSampling();
 
                                     _exerciseCountText.text = $"Exercício: {_currentExerciseCount + 1}/3";
-                                    yield return new WaitForSeconds(1f);
+                                    yield return new WaitForSeconds(1);
 
                                     AirFlowEnable(false);
                                     _dialogText.text = "(ASSOPRE e MANTENHA o relógio GIRANDO o MÁXIMO QUE PUDER)";
@@ -437,11 +441,11 @@ namespace Ibit.Calibration
 
                                     _flowWatch.Restart();
 
-                                    while (_flowMeter > Pacient.Loaded.PitacoThreshold * 0.3f)
+                                    while (_flowMeter > Pacient.Loaded.PitacoThreshold * 0.25f)
                                         yield return null;
 
                                     AirFlowDisable();
-                                    
+
                                     ResetFlowMeter();
 
                                     // Check for player input
@@ -471,7 +475,7 @@ namespace Ibit.Calibration
 
                                 case 4:
                                     SoundManager.Instance.PlaySound("Success");
-                                    DudeTalk($"Seu tempo de fluxo expiratório é de {(_tmpCapacities.RawExpFlowDuration / 1000f):F} segundos." +
+                                    DudeTalk($"Seu tempo de fluxo expiratório máximo é de {(_tmpCapacities.RawExpFlowDuration / 1000f):F} segundos." +
                                              " Pressione (►) para continuar com os outros exercícios.");
                                     ReadyNextStep();
                                     break;
