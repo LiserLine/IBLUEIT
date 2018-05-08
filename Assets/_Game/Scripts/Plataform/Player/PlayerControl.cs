@@ -16,11 +16,12 @@ namespace Ibit.Plataform
 
             sensorValue = sensorValue < -Pacient.Loaded.PitacoThreshold || sensorValue > Pacient.Loaded.PitacoThreshold ? sensorValue : 0f;
 
-            var peak = sensorValue > 0 ? Pacient.Loaded.Capacities.ExpPeakFlow * 0.5f : -Pacient.Loaded.Capacities.InsPeakFlow;
+            var peak = sensorValue > 0 ? Pacient.Loaded.Capacities.ExpPeakFlow * 0.3f : -Pacient.Loaded.Capacities.InsPeakFlow;
 
             var nextPosition = sensorValue * CameraLimits.Boundary / peak;
-
             nextPosition = Mathf.Clamp(nextPosition, -CameraLimits.Boundary, CameraLimits.Boundary);
+
+            //Debug.Log($"NextPosition: {nextPosition}\nPeak: {peak}\nSensorVal: {sensorValue}");
 
             var from = this.transform.position;
             var to = new Vector3(this.transform.position.x, -nextPosition);
@@ -28,4 +29,4 @@ namespace Ibit.Plataform
             this.transform.position = Vector3.Lerp(from, to, Time.deltaTime * 15f);
         }
     }
- }
+}
