@@ -20,6 +20,9 @@ namespace Ibit.Plataform.UI
         private Button pauseButton;
 
         [SerializeField]
+        private Button repeatStageButton;
+
+        [SerializeField]
         private Text scoreValue, scoreRatio;
 
         private void OnEnable()
@@ -35,12 +38,19 @@ namespace Ibit.Plataform.UI
             }
             else
             {
+                if(scorer.Score < scorer.MaxScore * 0.3f)
+                {
+                    repeatStageButton.interactable = false;
+                }
+
                 nextStageButton.interactable = false;
                 finalResult.text = "YOU BLEW IT";
                 finalResult.color = Color.red;
                 motivationText.text = "Você não conseguiu pontos suficientes. Não desista!";
                 SoundManager.Instance.PlaySound("PlayerDamage");
             }
+
+            
 
             var score = scorer.Score;
             var maxScore = scorer.MaxScore;
