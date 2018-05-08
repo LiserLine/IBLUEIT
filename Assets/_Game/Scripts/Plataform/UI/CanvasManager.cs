@@ -22,6 +22,9 @@ namespace Ibit.Plataform.UI
         [SerializeField]
         private GameObject helpPanel;
 
+        [SerializeField]
+        private GameObject _resultPanel;
+
         private void OnEnable()
         {
             stageLevel.text = StageModel.Loaded.Level.ToString();
@@ -30,6 +33,9 @@ namespace Ibit.Plataform.UI
 
         public void PauseGame()
         {
+            if (_resultPanel.activeSelf)
+                return;
+
             if (GameManager.GameIsPaused)
                 return;
 
@@ -40,6 +46,9 @@ namespace Ibit.Plataform.UI
 
         public void UnPauseGame()
         {
+            if (_resultPanel.activeSelf)
+                return;
+
             if (!GameManager.GameIsPaused)
                 return;
 
@@ -52,15 +61,6 @@ namespace Ibit.Plataform.UI
         {
             StageModel.Loaded = StageDb.Instance.GetStage(
                 StageModel.Loaded.Id + 1 > StageDb.Instance.StageList.Max(x => x.Id) ? 1 : StageModel.Loaded.Id + 1);
-        }
-
-        public void SetLastStage()
-        {
-            var scr = FindObjectOfType<Scorer>();
-            if(scr.Score < scr.MaxScore * 0.3f)
-            {
-                StageModel.Loaded = StageDb.Instance.GetStage(StageModel.Loaded.Id - 1 <= 0 ? 1 : StageModel.Loaded.Id - 1);
-            }                
         }
     }
 }
