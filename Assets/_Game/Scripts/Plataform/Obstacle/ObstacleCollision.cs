@@ -9,7 +9,6 @@ namespace Ibit.Plataform
         {
             if (collision.gameObject.CompareTag("Player"))
             {
-                FindObjectOfType<Spawner>().OnUpdatedPerformanceObstacle -= OnUpdatedPerformance;
                 TakeDamage();
             }
         }
