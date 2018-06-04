@@ -21,6 +21,7 @@ namespace Ibit.LeavesGame
             pikeString[1].text = "Folhas: " + roundScores[1].ToString();
             pikeString[2].text = "Folhas: " + roundScores[2].ToString();
         }
+        
         //public void ChangeFinalRoundScore(int starsQty, int roundNumber)
         //{
         //    //Debug.Log(starsQty + " " + roundNumber);

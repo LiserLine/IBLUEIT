@@ -13,12 +13,14 @@ namespace Ibit.LeavesGame
     public class Player : MonoBehaviour
     {
         #region Events
+
         /*Events Declaration*/
         public delegate void HaveStarDelegate(int roundScore, int roundNumber, float pikeValue);
         public event HaveStarDelegate HaveStarEvent;
 
         public delegate void EnablePlayDelegate();
         public event EnablePlayDelegate EnablePlayEvent;
+
         #endregion
 
         /*Player Variables*/
@@ -92,7 +94,7 @@ namespace Ibit.LeavesGame
             {
                 this.gameObject.GetComponent<Collider2D>().enabled = false;
                 stop = true;
-                StopCoroutine(lastCoroutine);                
+                StopCoroutine(lastCoroutine);
             }
         }
         public void ExecuteNextStep()
@@ -135,13 +137,9 @@ namespace Ibit.LeavesGame
 
                 yield return null;
             }
+
             //OnAuthorize();
         }
-
-
-
-
-
 
         private void Update()
         {
@@ -150,7 +148,6 @@ namespace Ibit.LeavesGame
                 ExecuteNextStep();
             }
         }
-
 
         public void OnTriggerEnter2D(Collider2D other)
         {
@@ -161,6 +158,5 @@ namespace Ibit.LeavesGame
             Debug.Log(score);
         }
     }
-
 
 }

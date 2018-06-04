@@ -9,7 +9,6 @@ namespace Ibit.LeavesGame
 
     public class Scorer : MonoBehaviour
     {
-
         public int[] totalScores;
         public FinalScorer finalScorer;
 
@@ -21,8 +20,6 @@ namespace Ibit.LeavesGame
         public static int scoreValue = 0;
         public Text score;
 
-        // Use this for initialization
-        
         void Start()
         {
             score.text = "Pontos: " + scoreValue;
@@ -32,7 +29,6 @@ namespace Ibit.LeavesGame
             //starsUI = gameObject.GetComponentsInChildren<Image>();
             totalScores = new int[3];
         }
-
 
         //Stores the score of the round and change the stars sprites
         //public void ReceivedStars(int roundScore, int roundNumber, float pikeValue)
@@ -47,17 +43,14 @@ namespace Ibit.LeavesGame
         //    }
         //}
 
-
-
-
-        
-
         //Clean the stars of the round
+
         public void PutScore()
         {
             scoreValue++;
             score.text = "Pontos: " + scoreValue;
         }
+
         public void CleanScore() => scoreValue = 0;
         public void DisableScoreText() => score.text = "";
         public void PutRoundScore(int roundNumber) => totalScores[roundNumber] = scoreValue;

@@ -10,6 +10,7 @@ namespace Ibit.LeavesGame
     public class RoundManager : MonoBehaviour
     {
         #region Events
+
         /*Events Declaration*/
         public delegate void PlayerFlowDelegate(bool hasPlayed);
         public event PlayerFlowDelegate AuthorizePlayerFlowEvent;
@@ -19,6 +20,7 @@ namespace Ibit.LeavesGame
 
         public delegate void CleanRoundDelegate();
         public event CleanRoundDelegate CleanRoundEvent;
+
         #endregion
 
         /*RoundManager Variables*/
@@ -29,7 +31,7 @@ namespace Ibit.LeavesGame
 
         private bool playable, finished, toBackup;
         [SerializeField] private int state, backupState, _roundNumber;
-        [SerializeField] private float countdownTime,timer;
+        [SerializeField] private float countdownTime, timer;
         private SerialController sc;
         private bool timeOver, hasTime;
         private Scorer _scorer;
@@ -57,6 +59,7 @@ namespace Ibit.LeavesGame
         }
 
         #region Sending Event Area
+
         protected virtual void EnablePlayerFlow(bool hasPlayed)
         {
             AuthorizePlayerFlowEvent?.Invoke(hasPlayed);
@@ -71,6 +74,7 @@ namespace Ibit.LeavesGame
         {
             ShowFinalScoreEvent?.Invoke();
         }
+
         #endregion
 
         public void OnSubmitTime()
@@ -81,7 +85,7 @@ namespace Ibit.LeavesGame
                 countdownTime = float.Parse(inputTime);
                 if (countdownTime > 300)
                     countdownTime = 300;
-            }   
+            }
             GameTimePanel.SetActive(false);
             Player.waitSignal = false;
             NotPlayable();
@@ -155,7 +159,7 @@ namespace Ibit.LeavesGame
 
                         playable = true;
                         break;
-                    
+
 
                     case 2:
                     case 4:
@@ -207,6 +211,7 @@ namespace Ibit.LeavesGame
                         playable = true;
                         break;
                 }
+                
                 yield return null;
             }
         }

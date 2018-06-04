@@ -27,9 +27,10 @@ namespace Ibit.LeavesGame
         public void CreatePool(GameObject objPrefab, int poolSize)
         {
             objPoolSize = poolSize;
+
             for (int i = 0; i < poolSize; i++)
             {
-                GameObject newObject = Instantiate(objPrefab) as GameObject;
+                GameObject newObject = Instantiate(objPrefab, this.transform);
                 newObject.SetActive(false);
                 objPool.Add(newObject);
             }

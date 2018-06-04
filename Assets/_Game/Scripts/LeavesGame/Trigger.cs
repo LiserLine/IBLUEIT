@@ -6,7 +6,6 @@ namespace Ibit.LeavesGame
 {
     public class Trigger : MonoBehaviour
     {
-
         private Spawner _spawner;
 
         void Start()
@@ -20,10 +19,6 @@ namespace Ibit.LeavesGame
             _spawner.SpawnObject();
 
         }
-
-
     }
-
-
 }
 

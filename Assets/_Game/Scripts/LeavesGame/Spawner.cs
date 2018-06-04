@@ -8,8 +8,6 @@ namespace Ibit.LeavesGame
     {
         public GameObject prefab;
         public bool passed = false;
-        public Transform track;
-        public Vector3 cachedPosition;
         public GameObject lastObj;
         public int poolSize;
 
@@ -45,12 +43,10 @@ namespace Ibit.LeavesGame
                 obj.SetActive(true);
                 lastObj = obj;
             }
-
-
         }
+
         public void SpawnObject()
         {
-  
             Vector3 lastPos = lastObj.transform.position;
             lastPos.x += 2;
             lastPos.y *= -1;
@@ -59,10 +55,6 @@ namespace Ibit.LeavesGame
             obj.transform.position = lastPos;
             obj.SetActive(true);
             lastObj = obj;
-
         }
-
-
     }
-    
 }

@@ -6,21 +6,28 @@ namespace Ibit.LeavesGame
 {
     public class BackgroundScroll : MonoBehaviour
     {
-        public float scrollSpeed = -1.5f;
+        public float ScrollSpeed = 0.1f;
+        private Renderer bgRenderer;
         Vector2 startPos;
+        private Vector2 _offset;
+        private MeshRenderer _mr;
 
-        void Start()
+        void Awake()
         {
-            startPos = transform.position;
+            bgRenderer = this.GetComponent<Renderer>();
+            _mr = this.GetComponent<MeshRenderer>();
         }
 
         void Update()
         {
-            float newPos = Mathf.Repeat(Time.time * scrollSpeed, 19);
-            transform.position = startPos + Vector2.right * newPos;
+            Scroll();
+        }
 
+        private void Scroll()
+        {
+            _offset = _mr.material.mainTextureOffset;
+            _offset.x += Time.deltaTime / (1f / ScrollSpeed);
+            _mr.material.mainTextureOffset = _offset;
         }
     }
-
-
 }
