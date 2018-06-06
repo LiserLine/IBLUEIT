@@ -31,6 +31,7 @@ namespace Ibit.WaterGame
 
         private void Awake()
         {
+            
             sc = FindObjectOfType<SerialController>();
         }
 
@@ -44,6 +45,7 @@ namespace Ibit.WaterGame
             _roundNumber = 0; //Defines in which round the the player is.
             FindObjectOfType<Player>().EnablePlayEvent += NotPlayable;
             StartCoroutine(PlayGame());//Starts the Gameplay State Machine
+            SoundManager.Instance.PlaySound("BGM");
         }
 
         //Sending Event Area
