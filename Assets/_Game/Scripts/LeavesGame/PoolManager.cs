@@ -6,7 +6,8 @@ namespace Ibit.LeavesGame
 {
     public class PoolManager : MonoBehaviour
     {
-
+        
+        public Dictionary<string, Queue<GameObject>> poolDictionary;
         public List<GameObject> objPool = new List<GameObject>();
         private int objPoolSize;
 
@@ -24,32 +25,47 @@ namespace Ibit.LeavesGame
             }
         }
 
-        public void CreatePool(GameObject objPrefab, int poolSize)
+        public void CreatePool(ref List<Spawner.Pool> pools)
         {
-            objPoolSize = poolSize;
+            poolDictionary = new Dictionary<string, Queue<GameObject>>();
 
-            for (int i = 0; i < poolSize; i++)
+            foreach (Spawner.Pool pool in pools)
             {
-                GameObject newObject = Instantiate(objPrefab, this.transform);
-                newObject.SetActive(false);
-                objPool.Add(newObject);
+                Queue<GameObject> objectPool = new Queue<GameObject>();
+                for (int i = 0; i < pool.size; i++)
+                {
+                    GameObject newObject = Instantiate(pool.prefab,this.transform);
+                    newObject.SetActive(false);
+                    objectPool.Enqueue(newObject);
+                }
+                poolDictionary.Add(pool.tag, objectPool);
             }
+            
         }
 
-        public GameObject GetObject()
+        public GameObject GetObject(string tag)
         {
-            if (objPool.Count > 0)
+            if (!poolDictionary.ContainsKey(tag))
             {
-                GameObject obj = objPool[0];
-                objPool.RemoveAt(0);
-                return obj;
+                Debug.LogWarning("A Pool com a tag " + tag + " não existe!");
+                return null;
             }
-            return null;
+            GameObject objectToSpawn = poolDictionary[tag].Dequeue();
+
+            poolDictionary[tag].Enqueue(objectToSpawn);
+            //if (objPool.Count > 0)
+            //{
+            //    GameObject obj = objPool[0];
+            //    objPool.RemoveAt(0);
+            //    return obj;
+            //}
+            //return null;
+            return objectToSpawn;
         }
 
         public void DestroyObjectPool(GameObject obj)
         {
-            objPool.Add(obj);
+            //objPool.Add(obj);
             obj.SetActive(false);
         }
         public void ClearPool()

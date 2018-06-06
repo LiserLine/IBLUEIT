@@ -153,6 +153,7 @@ GameObject:
   - component: {fileID: 71191789}
   - component: {fileID: 71191788}
   - component: {fileID: 71191793}
+  - component: {fileID: 71191794}
   - component: {fileID: 71191792}
   m_Layer: 0
   m_Name: Player
@@ -187,9 +188,9 @@ Animator:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 71191787}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: ad0511dbaa7cf334b813e168c4258376, type: 2}
+  m_Controller: {fileID: 9100000, guid: 6fd3d16534ee78148b7c1bea86a3f3a4, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -231,7 +232,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b6bece3c6578fc446aef8b5ad81dce08, type: 3}
+  m_Sprite: {fileID: 21300000, guid: cb433998c3fa0f240a55d140698add24, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -249,7 +250,7 @@ Transform:
   m_GameObject: {fileID: 71191787}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -7.48, y: 0.07, z: -0.3}
-  m_LocalScale: {x: 5.242585, y: 5, z: 0}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 14
@@ -280,25 +281,40 @@ BoxCollider2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 71191787}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.1338126, y: 0.0036005415}
+  m_Offset: {x: 0.17466536, y: 0.0036005415}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.35, y: 0.08}
+    oldSize: {x: 7.65, y: 6.3}
     newSize: {x: 0.35, y: 0.08}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.081705496, y: 0.072798885}
+  m_Size: {x: 0.0001, y: 0.072798885}
   m_EdgeRadius: 0
+--- !u!58 &71191794
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 71191787}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.43, y: 0}
+  serializedVersion: 2
+  m_Radius: 2.81
 --- !u!1 &73866554
 GameObject:
   m_ObjectHideFlags: 0
@@ -1427,6 +1443,14 @@ MonoBehaviour:
     randomPitch: 0
     loop: 0
     playOnAwake: 0
+  - name: BGM
+    clip: {fileID: 8300000, guid: ad0c996c5a89ac04eaa4efc194ef2322, type: 3}
+    volume: 1
+    pitch: 1
+    randomVolume: 0.3
+    randomPitch: 0
+    loop: 1
+    playOnAwake: 0
 --- !u!4 &485828626
 Transform:
   m_ObjectHideFlags: 0
@@ -2238,18 +2262,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 736974983}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: ExecuteNextStep
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &736974983
@@ -3708,7 +3721,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.39215687}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.448}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -3756,10 +3769,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c26e505e075016478ddc9b36f960159, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 1318964711002550, guid: 21e3c658aac0692419eb76b75c4bc1f2, type: 2}
   passed: 0
+  initialSpawnQuantity: 15
   lastObj: {fileID: 0}
-  poolSize: 15
+  pools:
+  - tag: Banana
+    prefab: {fileID: 1171424456024844, guid: 502c52b679aa3c94daead642ba643eb4, type: 2}
+    size: 8
+  - tag: Laranja
+    prefab: {fileID: 1396633296586518, guid: 4c15191964dcf164dbfaed2f4ffafc6f, type: 2}
+    size: 8
+  - tag: Melancia
+    prefab: {fileID: 1063081648015308, guid: 9897142481139d047a4377a9f82309e5, type: 2}
+    size: 8
+  - tag: Morango
+    prefab: {fileID: 1418039730132480, guid: 7a18f32b322ee894e870d7aae252599f, type: 2}
+    size: 8
+  - tag: Pera
+    prefab: {fileID: 1292616242968474, guid: f14b3d6f0b2ecb145bd247a52cbba342, type: 2}
+    size: 8
 --- !u!4 &1831960156
 Transform:
   m_ObjectHideFlags: 0

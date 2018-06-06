@@ -56,6 +56,7 @@ namespace Ibit.LeavesGame
             FindObjectOfType<Player>().EnablePlayEvent += NotPlayable;
             StartCoroutine(PlayGame());//Starts the Gameplay State Machine
             TextPanel.SetActive(false);
+            SoundManager.Instance.PlaySound("BGM");
         }
 
         #region Sending Event Area
@@ -153,7 +154,7 @@ namespace Ibit.LeavesGame
 
                     case 1://Introduction
                         TextPanel.SetActive(true);
-                        displayHowTo.text = "Bem-Vindo ao jogo Coletando as Folhas![ENTER]";
+                        displayHowTo.text = "Bem-Vindo ao jogo Coletando as Folhas! Pressione [ENTER] para continuar.";
                         while (playable)
                             yield return null;
 
