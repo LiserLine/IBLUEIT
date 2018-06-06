@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using Ibit.Core.Data;
-using Ibit.Core.Game;
 using Ibit.Core.Serial;
 using Ibit.Core.Util;
 using Ibit.Core.Audio;
@@ -111,8 +110,8 @@ namespace Ibit.WaterGame
 
         private void CalculateFlowPike(float pikeValue)
         {
-            var playerPike = -Pacient.Loaded.Capacities.InsPeakFlow;
-
+            var playerPike = -Pacient.Loaded.Capacities.RawInsPeakFlow;
+            
             var percentage = -pikeValue / playerPike;
             
             Debug.Log("Porcentagem: " + percentage);
