@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using Ibit.Core.Audio;
 using Ibit.Core.Serial;
-using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -159,7 +158,7 @@ namespace Ibit.WaterGame
                         playable = true;
                         break;
                     case 8:
-                        sc.StopSampling ();
+                        sc.StopSampling ();                        
                         TextPanel.SetActive (true);
                         displayHowTo.text = "Pressione [Enter] para visualizar sua pontuação.";
                         break;

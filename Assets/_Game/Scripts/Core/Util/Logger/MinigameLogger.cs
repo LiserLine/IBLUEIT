@@ -22,9 +22,6 @@ namespace Ibit.Core
 
             _path = @"savedata/pacients/" + Pacient.Loaded.Id + @"/" + $"_{_filename}History.csv";
 
-            if (!File.Exists (_path))
-                _sb.AppendLine ("dateTime;value");
-
             Debug.Log ("MinigameLogger loaded.");
         }
 
@@ -36,13 +33,18 @@ namespace Ibit.Core
 
         public void Save ()
         {
-            if(_dataWritten < 1)
+            if (_dataWritten < 1)
                 return;
 
             if (!File.Exists (_path))
+            {
+                _sb.Insert (0, "dateTime;value\n");
                 FileManager.WriteAllText (_path, _sb.ToString ());
+            }
             else
+            {
                 FileManager.AppendAllText (_path, _sb.ToString ());
+            }
         }
     }
 }

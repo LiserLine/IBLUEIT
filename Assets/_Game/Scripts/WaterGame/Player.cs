@@ -4,6 +4,7 @@ using Ibit.Core.Serial;
 using Ibit.Core.Util;
 using Ibit.Core.Audio;
 using UnityEngine;
+using Ibit.Core;
 
 namespace Ibit.WaterGame
 {
@@ -102,6 +103,8 @@ namespace Ibit.WaterGame
             }
 
             SoundManager.Instance.PlaySound("Success");
+
+            FindObjectOfType<MinigameLogger>().Write(FlowMath.ToLitresPerMinute(sensorValue));
 
             CalculateFlowPike(maximumPeak);
             waitSignal = false;
