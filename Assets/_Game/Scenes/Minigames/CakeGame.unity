@@ -1214,6 +1214,14 @@ MonoBehaviour:
     randomPitch: 0
     loop: 0
     playOnAwake: 0
+  - name: BGM
+    clip: {fileID: 8300000, guid: ea710f66e37d8a646bb40329954d722c, type: 3}
+    volume: 1.5
+    pitch: 1
+    randomVolume: 0.3
+    randomPitch: 0
+    loop: 1
+    playOnAwake: 1
 --- !u!4 &708323623
 Transform:
   m_ObjectHideFlags: 0
@@ -1465,7 +1473,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60dd70acad3a04542b9872967c34ab27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FileName: Minigame1-Pitaco-Logs
+  FileName: CakeGame-PitacoLogs
 --- !u!4 &858747749
 Transform:
   m_ObjectHideFlags: 0

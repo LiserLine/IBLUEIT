@@ -434,6 +434,7 @@ GameObject:
   m_Component:
   - component: {fileID: 547103888}
   - component: {fileID: 547103887}
+  - component: {fileID: 547103889}
   m_Layer: 0
   m_Name: Logger
   m_TagString: Untagged
@@ -452,7 +453,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60dd70acad3a04542b9872967c34ab27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FileName: PITACO-Minigame1-LOG
+  FileName: WaterGame-PitacoLogs
 --- !u!4 &547103888
 Transform:
   m_ObjectHideFlags: 0
@@ -466,6 +467,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &547103889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 547103886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6324378470d054941b6118ddb3e9358f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _filename: WaterGame
 --- !u!1 &548722491
 GameObject:
   m_ObjectHideFlags: 0
@@ -2907,6 +2920,14 @@ MonoBehaviour:
     randomPitch: 0
     loop: 0
     playOnAwake: 0
+  - name: BGM
+    clip: {fileID: 8300000, guid: b811ed55b701c7f419b997da3404e8b8, type: 3}
+    volume: 1
+    pitch: 1
+    randomVolume: 0.3
+    randomPitch: 0
+    loop: 1
+    playOnAwake: 1
 --- !u!4 &2027941004
 Transform:
   m_ObjectHideFlags: 0

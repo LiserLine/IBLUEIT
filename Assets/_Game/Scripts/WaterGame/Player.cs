@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using Ibit.Core.Data;
-using Ibit.Core.Game;
 using Ibit.Core.Serial;
 using Ibit.Core.Util;
 using Ibit.Core.Audio;
 using UnityEngine;
+using Ibit.Core;
 
 namespace Ibit.WaterGame
 {
@@ -95,7 +95,7 @@ namespace Ibit.WaterGame
                 if (sensorValue < maximumPeak)
                 {
                     maximumPeak = sensorValue;
-                    Debug.Log("Novo pico máximo: " + maximumPeak);
+                    //Debug.Log("Novo pico máximo: " + maximumPeak);
                 }
 
                 //calculate the percentage of the pike.
@@ -104,6 +104,8 @@ namespace Ibit.WaterGame
 
             SoundManager.Instance.PlaySound("Success");
 
+            FindObjectOfType<MinigameLogger>().Write(FlowMath.ToLitresPerMinute(sensorValue));
+
             CalculateFlowPike(maximumPeak);
             waitSignal = false;
             OnAuthorize();
@@ -111,8 +113,8 @@ namespace Ibit.WaterGame
 
         private void CalculateFlowPike(float pikeValue)
         {
-            var playerPike = -Pacient.Loaded.Capacities.InsPeakFlow;
-
+            var playerPike = -Pacient.Loaded.Capacities.RawInsPeakFlow;
+            
             var percentage = -pikeValue / playerPike;
             
             Debug.Log("Porcentagem: " + percentage);
