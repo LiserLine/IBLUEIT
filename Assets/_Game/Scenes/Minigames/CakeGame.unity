@@ -1214,6 +1214,14 @@ MonoBehaviour:
     randomPitch: 0
     loop: 0
     playOnAwake: 0
+  - name: BGM
+    clip: {fileID: 8300000, guid: ea710f66e37d8a646bb40329954d722c, type: 3}
+    volume: 1.5
+    pitch: 1
+    randomVolume: 0.3
+    randomPitch: 0
+    loop: 1
+    playOnAwake: 1
 --- !u!4 &708323623
 Transform:
   m_ObjectHideFlags: 0
