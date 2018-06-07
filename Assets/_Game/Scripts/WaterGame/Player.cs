@@ -94,7 +94,7 @@ namespace Ibit.WaterGame
                 if (sensorValue < maximumPeak)
                 {
                     maximumPeak = sensorValue;
-                    Debug.Log("Novo pico máximo: " + maximumPeak);
+                    //Debug.Log("Novo pico máximo: " + maximumPeak);
                 }
 
                 //calculate the percentage of the pike.
