@@ -158,9 +158,11 @@ namespace Ibit.WaterGame
                         playable = true;
                         break;
                     case 8:
-                        sc.StopSampling ();                        
+                        sc.StopSampling ();
                         TextPanel.SetActive (true);
                         displayHowTo.text = "Pressione [Enter] para visualizar sua pontuação.";
+                        FindObjectOfType<Core.MinigameLogger>().Save();
+                        Debug.Log("Saving minigame data...");
                         break;
                     case 9:
                         TextPanel.SetActive (false);
