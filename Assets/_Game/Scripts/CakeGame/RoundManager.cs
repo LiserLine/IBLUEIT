@@ -278,6 +278,7 @@ namespace Ibit.CakeGame
                 TextPanel.SetActive(false);
                 finalScoreMenu.DisplayFinalScore(finalScore[0], finalScore[1], finalScore[2]);
                 finalScoreMenu.ToggleScoreMenu();
+                FindObjectOfType<MinigameLogger>().Save();
             }
         }
     }
