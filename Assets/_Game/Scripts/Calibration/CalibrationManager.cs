@@ -74,6 +74,9 @@ namespace Ibit.Calibration
         {
             if (Input.GetKeyDown (KeyCode.KeypadEnter) || Input.GetKeyDown (KeyCode.Return))
                 NextStep ();
+
+            if(Input.GetKeyDown(KeyCode.F2))
+                _serialController.Recalibrate();
         }
 
         private IEnumerator ControlStates ()
