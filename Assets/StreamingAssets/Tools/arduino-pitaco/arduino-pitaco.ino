@@ -3,8 +3,8 @@
  * https://github.com/huenato/iblueit
  */
 
-#define SAMPLESIZE 70
-#define MOVING_AVERAGE true
+#define SAMPLESIZE 200
+#define MOVING_AVERAGE false
 #define DEBUG false
 
 bool isCalibrated = false;
