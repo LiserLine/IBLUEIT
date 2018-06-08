@@ -19,9 +19,10 @@ void Calibrate()
 
 float vals[SAMPLESIZE];
 long sum = 0;
+float value;
 float ReadSensor()
 {
-	float value = voutToPa(digitalToVout(analogRead(A2)));
+	 value = voutToPa(digitalToVout(analogRead(A2)));
 
 	for (int i = SAMPLESIZE - 1; i > 0; i--)
 	{
@@ -86,7 +87,6 @@ void loop()
 
 #if DEBUG
 	isSampling = true;
-	isCalibrated = true;
 #endif
 
 	if (Serial.available() > 0)
