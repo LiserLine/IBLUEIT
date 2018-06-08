@@ -7,7 +7,7 @@ public class FlowMathTest
     [Test]
     public void TestEquations()
     {
-        var diffpress = 1500f;
+        var diffpress = 1100f;
         Debug.Log("Volumetric Flow Rate: " + FlowMath.ToLitresPerMinute(diffpress) + " L/min");
     }
 }

@@ -71,7 +71,7 @@ namespace Ibit.Core.Util
         private const float LitresPerMinuteConverter = 60000;
 
         /* Pitaco Measures */
-        private const float tubeRadius = 0.016f;
+        private const float tubeRadius = 0.018f;
         private const float tubeLenght = 0.2f;
         private const float airViscosity = 18.2f * 0.000001f;
 
