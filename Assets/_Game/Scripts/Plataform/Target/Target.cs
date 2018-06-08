@@ -11,40 +11,40 @@ namespace Ibit.Plataform
 
         public float Score { get; private set; }
 
-        public void Build(ObjectModel model)
+        public void Build (ObjectModel model)
         {
             _model = model;
-            CalculateHeight();
-            CalculateScore();
-            FindObjectOfType<Spawner>().OnUpdatedPerformanceTarget += OnUpdatedPerformance;
+            CalculateHeight ();
+            CalculateScore ();
+            FindObjectOfType<Spawner> ().OnUpdatedPerformanceTarget += OnUpdatedPerformance;
         }
 
-        private void OnUpdatedPerformance(float insAcc, float expAcc)
+        private void OnUpdatedPerformance (float insAcc, float expAcc)
         {
-            CalculateHeight(_model.PositionYFactor > 0 ? insAcc : expAcc);
+            CalculateHeight (_model.PositionYFactor > 0 ? insAcc : expAcc);
         }
 
-        private void CalculateScore()
+        private void CalculateScore ()
         {
-            Score = Mathf.Abs(this.transform.position.y) * (1f + _model.DifficultyFactor) * 1000f;
+            Score = Mathf.Abs (this.transform.position.y) * (1f + _model.DifficultyFactor) * 100f;
         }
 
-        private void CalculateHeight(float performanceAccumulator = 0)
+        private void CalculateHeight (float performanceAccumulator = 0)
         {
             var tmpPos = this.transform.position;
 
             tmpPos.y = (1f + performanceAccumulator) * CameraLimits.Boundary * _model.DifficultyFactor;
 
             tmpPos.y = _model.PositionYFactor > 0 ?
-                Mathf.Clamp(tmpPos.y, 0f, CameraLimits.Boundary) :
-                Mathf.Clamp(-tmpPos.y, -CameraLimits.Boundary, 0f);
+                Mathf.Clamp (tmpPos.y, 0f, CameraLimits.Boundary) :
+                Mathf.Clamp (-tmpPos.y, -CameraLimits.Boundary, 0f);
 
             this.transform.position = tmpPos;
         }
 
-        private void OnDestroy()
+        private void OnDestroy ()
         {
-            var spwn = FindObjectOfType<Spawner>();
+            var spwn = FindObjectOfType<Spawner> ();
             if (spwn != null)
                 spwn.OnUpdatedPerformanceTarget -= OnUpdatedPerformance;
         }
