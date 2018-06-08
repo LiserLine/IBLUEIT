@@ -3,7 +3,7 @@
  * https://github.com/huenato/iblueit
  */
 
-#define SAMPLESIZE 75
+#define SAMPLESIZE 70
 #define MOVING_AVERAGE true
 #define DEBUG false
 
@@ -22,7 +22,7 @@ long sum = 0;
 float value;
 float ReadSensor()
 {
-	 value = voutToPa(digitalToVout(analogRead(A2)));
+	value = voutToPa(digitalToVout(analogRead(A2)));
 
 	for (int i = SAMPLESIZE - 1; i > 0; i--)
 	{
@@ -75,9 +75,15 @@ void ListenCommand(char cmd)
 		isCalibrated = false;
 	}
 
+/*
+ * ToDo - Check why calibration is not working correctly with moving MOVING_AVERAGE.
+ */
+#if !MOVING_AVERAGE
 	//RECALIBRATE
 	else if (cmd == 'c' || cmd == 'C')
 		isCalibrated = false;
+#endif
+
 }
 
 void setup() { Serial.begin(115200); }
@@ -96,7 +102,11 @@ void loop()
 		Calibrate();
 
 	if (isSampling && isCalibrated)
+#if MOVING_AVERAGE // remove this tag after moving MOVING_AVERAGE calibration is fixed
+		Serial.println(ReadSensor() - calibrationValue + 10.0);
+#else
 		Serial.println(ReadSensor() - calibrationValue);
+#endif
 }
 
 /**
