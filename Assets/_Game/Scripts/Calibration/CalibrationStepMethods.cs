@@ -13,7 +13,7 @@
         /// </summary>
         /// <param name="step">Step number</param>
         /// <param name="jumpToStep">Flag to execute the next step automatically</param>
-        private void ReadyStep(int step, bool jumpToStep = false)
+        private void SetupStep(int step, bool jumpToStep = false)
         {
             _currentStep = step;
             _runStep = jumpToStep;
@@ -23,7 +23,7 @@
         /// Sets the next step to be executed on next step iteration.
         /// </summary>
         /// <param name="jumpToStep">Flag to execute the next step automatically</param>
-        private void ReadyNextStep(bool jumpToStep = false)
+        private void SetupNextStep(bool jumpToStep = false)
         {
             _currentStep++;
             _runStep = jumpToStep;
