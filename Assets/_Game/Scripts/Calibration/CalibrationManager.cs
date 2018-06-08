@@ -17,7 +17,7 @@ namespace Ibit.Calibration
         public static CalibrationExercise CalibrationToLoad = 0;
 
         private const int FlowTimeThreshold = 1000; //ms
-        private const int RespiratoryFrequencyThreshold = 0; //ms
+        private const float RespiratoryFrequencyThreshold = 0.05f; //ms
         private const int TimerRespFreq = 60; //seg
         private const int TimerPeakExercise = 8; //seg,
 
