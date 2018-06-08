@@ -8,7 +8,7 @@ namespace Ibit.Core.Data
         public float RawExpPeakFlow { get; private set; }
         public float RawInsFlowDuration { get; private set; }
         public float RawExpFlowDuration { get; private set; }
-        public float RawRespCycleDuration { get; private set; }
+        public float RawRespRate { get; private set; }
 
         public float InsPeakFlow
         {
@@ -41,12 +41,12 @@ namespace Ibit.Core.Data
         }
 
         /// <summary>
-        /// Respiration Frequency (mean time of one cycle, in milliseconds)
+        /// Respiration Rate (breaths per second)
         /// </summary>
-        public float RespCycleDuration
+        public float RespiratoryRate
         {
-            get { return RawRespCycleDuration / GameManager.CapacityMultiplier; }
-            set { RawRespCycleDuration = value; }
+            get { return RawRespRate / GameManager.CapacityMultiplier; }
+            set { RawRespRate = value; }
         }
 
         public void Reset()
@@ -55,7 +55,7 @@ namespace Ibit.Core.Data
             RawExpPeakFlow = 0f;
             RawInsFlowDuration = 0f;
             RawExpFlowDuration = 0f;
-            RawRespCycleDuration = 0f;
+            RawRespRate = 0f;
         }
     }
 }

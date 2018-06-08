@@ -19,7 +19,7 @@ namespace Ibit.MainMenu.UI
             switch (_calibrationToLoad)
             {
                 case CalibrationExercise.RespiratoryFrequency:
-                    if (Pacient.Loaded.Capacities.RespCycleDuration != 0)
+                    if (Pacient.Loaded.Capacities.RespiratoryRate != 0)
                     {
                         CheckExercise();
                     }

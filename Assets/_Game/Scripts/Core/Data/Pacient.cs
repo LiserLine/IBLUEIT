@@ -29,7 +29,7 @@ namespace Ibit.Core.Data
            && this.Capacities.RawInsFlowDuration > 0
            && this.Capacities.RawExpPeakFlow > 0
            && this.Capacities.RawExpFlowDuration > 0
-           && this.Capacities.RawRespCycleDuration > 0;
+           && this.Capacities.RawRespRate > 0;
 
 #if UNITY_EDITOR
         static Pacient()
@@ -48,7 +48,7 @@ namespace Ibit.Core.Data
                     PitacoThreshold = 7.5f,
                     Capacities = new Capacities
                     {
-                        RespCycleDuration = 3200,
+                        RespiratoryRate = 3200,
                         ExpPeakFlow = 1600,
                         InsPeakFlow = -330,
                         ExpFlowDuration = 18000,

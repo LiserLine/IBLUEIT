@@ -66,7 +66,7 @@ namespace Ibit.Core.Database
                         ExpPeakFlow = Parsers.Float(grid[i][6]),
                         InsFlowDuration = Parsers.Float(grid[i][7]),
                         ExpFlowDuration = Parsers.Float(grid[i][8]),
-                        RespCycleDuration = Parsers.Float(grid[i][9]),
+                        RespiratoryRate = Parsers.Float(grid[i][9]),
                     },
                     UnlockedLevels = int.Parse(grid[i][10]),
                     AccumulatedScore = Parsers.Float(grid[i][11]),
@@ -88,7 +88,7 @@ namespace Ibit.Core.Database
         public void Save()
         {
             var items = new[] { "Id", "Name", "Birthday", "Observations", "Condition",
-                "InsPeakFlow", "ExpPeakFlow", "InsFlowDuration", "ExpFlowDuration", "RespCycleDuration",
+                "InsPeakFlow", "ExpPeakFlow", "InsFlowDuration", "ExpFlowDuration", "RespiratoryRate",
                 "UnlockedLevels", "AccumulatedScore", "PlaySessionsDone", "CalibrationDone", "HowToPlayDone",
                 "Ethnicity", "Height", "Weight", "PitacoThreshold", "Sex", "CreatedOn"
             };
@@ -103,7 +103,7 @@ namespace Ibit.Core.Database
                 sb.AppendLine(
                     $"{pacient.Id};{pacient.Name};{pacient.Birthday:dd/MM/yyyy};{pacient.Observations};{pacient.Condition};" +
                     $"{pacient.Capacities.RawInsPeakFlow};{pacient.Capacities.RawExpPeakFlow};{pacient.Capacities.RawInsFlowDuration};{pacient.Capacities.RawExpFlowDuration};" +
-                    $"{pacient.Capacities.RawRespCycleDuration};{pacient.UnlockedLevels};{pacient.AccumulatedScore};{pacient.PlaySessionsDone};{pacient.CalibrationDone};{pacient.HowToPlayDone};" +
+                    $"{pacient.Capacities.RawRespRate};{pacient.UnlockedLevels};{pacient.AccumulatedScore};{pacient.PlaySessionsDone};{pacient.CalibrationDone};{pacient.HowToPlayDone};" +
                     $"{pacient.Ethnicity};{pacient.Height};{pacient.Weight};{pacient.PitacoThreshold};{pacient.Sex};{pacient.CreatedOn};"
                     );
             }
