@@ -2,69 +2,101 @@
  * Pitaco Serial Connection - MPX5010DP
  * https://github.com/huenato/iblueit
  */
- 
-#define SAMPLEQUANT 200
- 
+
+#define SAMPLESIZE 75
+#define MOVING_AVERAGE true
+#define DEBUG false
+
 bool isCalibrated = false;
 float calibrationValue = 0.0;
-void Calibrate(int sampleQuantity)
+void Calibrate()
 {
-	calibrationValue = GetSample(sampleQuantity);
+	calibrationValue = ReadSensor();
 	isCalibrated = true;
 }
 
-bool isSampling = false;
+#if MOVING_AVERAGE
+
+float vals[SAMPLESIZE];
+long sum = 0;
+float ReadSensor()
+{
+	float value = voutToPa(digitalToVout(analogRead(A2)));
+
+	for (int i = SAMPLESIZE - 1; i > 0; i--)
+	{
+		vals[i] = vals[i - 1];
+	}
+
+	vals[0] = value;
+
+	sum = 0;
+
+	for (int i = 0; i < SAMPLESIZE; i++)
+	{
+		sum = sum + vals[i];
+	}
+
+	return sum / SAMPLESIZE;
+}
+
+#else
+
 float diffPressure = 0.0;
 int i = 0;
-float GetSample(int sampleQuantity)
+float ReadSensor()
 {
 	diffPressure = 0.0;
-	
-	for(i = 0; i < sampleQuantity; i++)
+
+	for (i = 0; i < SAMPLESIZE; i++)
 		diffPressure += voutToPa(digitalToVout(analogRead(A2)));
-		
-	return diffPressure / sampleQuantity;
+
+	return diffPressure / SAMPLESIZE;
 }
 
-float Sample(int sampleQuantity)
-{
-	return GetSample(sampleQuantity) - calibrationValue;
-}
+#endif
 
+bool isSampling = false;
 void ListenCommand(char cmd)
 {
 	//ECHO
-	if (cmd == 'e' || cmd == 'E') 
+	if (cmd == 'e' || cmd == 'E')
 		Serial.println("echo");
-	
+
 	//ENABLE SAMPLING
 	else if (cmd == 'r' || cmd == 'R')
 		isSampling = true;
-	
+
 	//DISABLE SAMPLING
 	else if (cmd == 'f' || cmd == 'F')
 	{
 		isSampling = false;
 		isCalibrated = false;
 	}
-	
+
 	//RECALIBRATE
 	else if (cmd == 'c' || cmd == 'C')
 		isCalibrated = false;
 }
 
-void setup() {	Serial.begin(115200); }
+void setup() { Serial.begin(115200); }
 
 void loop()
-{		
-	if(Serial.available() > 0)
+{
+
+#if DEBUG
+	isSampling = true;
+	isCalibrated = true;
+#endif
+
+	if (Serial.available() > 0)
 		ListenCommand(Serial.read());
-	
-	if(isSampling && !isCalibrated)
-		Calibrate(500);	
-	
-	if(isSampling && isCalibrated)
-		Serial.println(Sample(SAMPLEQUANT));
+
+	if (isSampling && !isCalibrated)
+		Calibrate();
+
+	if (isSampling && isCalibrated)
+		Serial.println(ReadSensor() - calibrationValue);
 }
 
 /**
@@ -82,18 +114,17 @@ const float MIN_VOUT = (VCC * COEFF_OFFSET_KPA);
 // Max Vout 4.7 for standard values above
 const float MAX_VOUT = (VCC * ((COEFF_LIN_KPA * MAX_KPA) + COEFF_OFFSET_KPA));
 
-float voutToKPa(float v) 
+float voutToKPa(float v)
 {
-  return ( v - MIN_VOUT ) / (VCC * COEFF_LIN_KPA);
+	return (v - MIN_VOUT) / (VCC * COEFF_LIN_KPA);
 }
 
-float digitalToVout(long d) 
+float digitalToVout(long d)
 {
-  return (VCC * d) / 1023.0;
+	return (VCC * d) / 1023.0;
 }
 
-float voutToPa(float v) 
+float voutToPa(float v)
 {
-  return 1000.0 * voutToKPa(v);
+	return 1000.0 * voutToKPa(v);
 }
-
