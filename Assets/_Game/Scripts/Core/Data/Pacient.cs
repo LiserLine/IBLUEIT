@@ -25,14 +25,14 @@ namespace Ibit.Core.Data
         public string Ethnicity;
         public DateTime CreatedOn;
 
-        public bool IsCalibrationDone => this.Capacities.RawInsPeakFlow < 0
-           && this.Capacities.RawInsFlowDuration > 0
-           && this.Capacities.RawExpPeakFlow > 0
-           && this.Capacities.RawExpFlowDuration > 0
-           && this.Capacities.RawRespRate > 0;
+        public bool IsCalibrationDone => this.Capacities.RawInsPeakFlow < 0 &&
+            this.Capacities.RawInsFlowDuration > 0 &&
+            this.Capacities.RawExpPeakFlow > 0 &&
+            this.Capacities.RawExpFlowDuration > 0 &&
+            this.Capacities.RawRespRate > 0;
 
 #if UNITY_EDITOR
-        static Pacient()
+        static Pacient ()
         {
             if (Loaded == null)
                 Loaded = new Pacient
@@ -48,11 +48,11 @@ namespace Ibit.Core.Data
                     PitacoThreshold = 7.5f,
                     Capacities = new Capacities
                     {
-                        RespiratoryRate = 3200,
-                        ExpPeakFlow = 1600,
-                        InsPeakFlow = -330,
-                        ExpFlowDuration = 18000,
-                        InsFlowDuration = 10000
+                    RespiratoryRate = 3200,
+                    ExpPeakFlow = 1600,
+                    InsPeakFlow = -330,
+                    ExpFlowDuration = 18000,
+                    InsFlowDuration = 10000
                     }
                 };
         }

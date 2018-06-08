@@ -1,12 +1,12 @@
-﻿using Ibit.Core.Audio;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Ibit.Core.Audio;
 using Ibit.Core.Data;
 using Ibit.Core.Database;
 using Ibit.Core.Serial;
 using Ibit.Core.Util;
 using NaughtyAttributes;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,8 +17,8 @@ namespace Ibit.Calibration
         public static CalibrationExercise CalibrationToLoad = 0;
 
         private const int FlowTimeThreshold = 1000; //ms
-        private const int RespiratoryFrequencyThreshold = 500; //ms
-        private const int TimerRespFreq = 61; //seg
+        private const int RespiratoryFrequencyThreshold = 0; //ms
+        private const int TimerRespFreq = 60; //seg
         private const int TimerPeakExercise = 8; //seg,
 
         private bool _acceptingValues;
@@ -26,7 +26,7 @@ namespace Ibit.Calibration
         private bool _runStep;
 
         private CalibrationLogger _calibrationLogger;
-        private Dictionary<long, float> _capturedSamples;
+        Dictionary<long, float> _capturedSamples;
 
         private int _currentExerciseCount;
         private int _currentStep = 1; //default: 1
@@ -40,44 +40,43 @@ namespace Ibit.Calibration
         private Capacities _tmpCapacities;
 
         [SerializeField] private CalibrationExercise _currentExercise;
-
-        [BoxGroup("UI")] [SerializeField] private Text _dialogText;
-        [BoxGroup("UI")] [SerializeField] private Text _exerciseCountText;
-        [BoxGroup("UI")] [SerializeField] private Text _timerText;
-        [BoxGroup("UI")] [SerializeField] private GameObject _enterButton;
+        [BoxGroup ("UI")][SerializeField] private Text _dialogText;
+        [BoxGroup ("UI")][SerializeField] private Text _exerciseCountText;
+        [BoxGroup ("UI")][SerializeField] private Text _timerText;
+        [BoxGroup ("UI")][SerializeField] private GameObject _enterButton;
 
         [SerializeField] private GameObject _clockObject;
         [SerializeField] private GameObject _dudeObject;
 
-        private void Awake()
+        private void Awake ()
         {
-            _serialController = FindObjectOfType<SerialController>();
+            _serialController = FindObjectOfType<SerialController> ();
             _serialController.OnSerialMessageReceived += OnSerialMessageReceived;
-            _tmpCapacities = new Capacities();
-            _flowWatch = new Stopwatch();
-            _timerWatch = new Stopwatch();
+            _tmpCapacities = new Capacities ();
+            _flowWatch = new Stopwatch ();
+            _timerWatch = new Stopwatch ();
             _capturedSamples = new Dictionary<long, float>();
-            _calibrationLogger = new CalibrationLogger();
+            _calibrationLogger = new CalibrationLogger ();
 
-            _dudeObject.transform.Translate(-Camera.main.orthographicSize * Camera.main.aspect + (_dudeObject.transform.localScale.x / 2f), 0f, 0f);
+            _dudeObject.transform.Translate (-Camera.main.orthographicSize * Camera.main.aspect + (_dudeObject.transform.localScale.x / 2f), 0f, 0f);
 
             if (CalibrationToLoad > 0)
                 _currentExercise = CalibrationToLoad;
         }
 
-        private void Start()
+        private void Start ()
         {
             //DudeTalk("Para começar, pressione ENTER quando o ícone (►) aparecer!");
-            StartCoroutine(ControlStates());
+            StartCoroutine (ControlStates ());
         }
 
-        private void Update()
+        private void Update ()
         {
-            if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
-                NextStep();
+            if (Input.GetKeyDown (KeyCode.KeypadEnter) || Input.GetKeyDown (KeyCode.Return))
+                NextStep ();
         }
 
-        private IEnumerator ControlStates()
+        private IEnumerator ControlStates ()
         {
             _runStep = true;
 
@@ -86,11 +85,11 @@ namespace Ibit.Calibration
                 if (_runStep)
                 {
                     // Clear screen
-                    _enterButton.SetActive(false);
-                    DudeClearMessage();
+                    _enterButton.SetActive (false);
+                    DudeClearMessage ();
 
                     // Wait to show next step
-                    yield return new WaitForSeconds(0.7f);
+                    yield return new WaitForSeconds (0.7f);
 
                     switch (_currentExercise)
                     {
@@ -102,391 +101,391 @@ namespace Ibit.Calibration
                             switch (_currentStep)
                             {
                                 case 1:
-                                    DudeTalk("Você deve respirar somente pela boca. Não precisa morder o PITACO. Mantenha o PITACO sempre para baixo. Pressione (►) para continuar.");
-                                    ReadyNextStep();
+                                    DudeTalk ("Você deve respirar somente pela boca. Não precisa morder o PITACO. Mantenha o PITACO sempre para baixo. Pressione (►) para continuar.");
+                                    SetupNextStep ();
                                     break;
 
                                 case 2:
-                                    DudeTalk("Neste exercício, você deve RESPIRAR NORMALMENTE por 30 segundos. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
-                                    ReadyNextStep();
+                                    DudeTalk ($"Neste exercício, você deve RESPIRAR NORMALMENTE por {TimerRespFreq} segundos. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
+                                    SetupNextStep ();
                                     break;
 
                                 case 3:
                                     if (!_serialController.IsConnected)
                                     {
-                                        SerialDisconnectedWarning();
+                                        SerialDisconnectedWarning ();
                                         continue;
                                     }
 
-                                    _capturedSamples.Clear();
-                                    _serialController.Recalibrate();
-                                    _serialController.StartSampling();
+                                    _capturedSamples.Clear ();
+                                    _serialController.Recalibrate ();
+                                    _serialController.StartSampling ();
 
-                                    yield return new WaitForSeconds(1f);
+                                    yield return new WaitForSeconds (1f);
                                     _dialogText.text = "(relaxe e RESPIRE NORMALMENTE)";
 
-                                    AirFlowEnable();
+                                    AirFlowEnable ();
 
-                                    StartCoroutine(DisplayCountdown(TimerRespFreq));
+                                    StartCoroutine (DisplayCountdown (TimerRespFreq));
                                     while (_flowWatch.ElapsedMilliseconds < TimerRespFreq * 1000)
                                         yield return null;
 
-                                    AirFlowDisable();
+                                    AirFlowDisable ();
 
-                                    _flowMeter = FlowMath.MeanFlow(_capturedSamples);
+                                    _flowMeter = FlowMath.RespiratoryRate (_capturedSamples, TimerRespFreq);
 
                                     if (_flowMeter > RespiratoryFrequencyThreshold)
                                     {
-                                        _calibrationLogger.Write(CalibrationExerciseResult.Success, _currentExercise, _flowMeter);
-                                        _tmpCapacities.RespCycleDuration = _flowMeter;
-                                        ReadyNextStep(true);
+                                        _calibrationLogger.Write (CalibrationExerciseResult.Success, _currentExercise, _flowMeter);
+                                        _tmpCapacities.RespiratoryRate = _flowMeter;
+                                        SetupNextStep (true);
                                         continue;
                                     }
                                     else
                                     {
-                                        _calibrationLogger.Write(CalibrationExerciseResult.Failure, _currentExercise, _flowMeter);
-                                        DudeWarnUnknownFlow();
-                                        ReadyStep(_currentStep);
+                                        _calibrationLogger.Write (CalibrationExerciseResult.Failure, _currentExercise, _flowMeter);
+                                        DudeWarnUnknownFlow ();
+                                        SetupStep (_currentStep);
                                         break;
                                     }
 
                                 case 4:
-                                    SoundManager.Instance.PlaySound("Success");
-                                    DudeTalk($"Sua média de frequência respiratória é de {(_tmpCapacities.RawRespCycleDuration / 1000f):F} seg/ciclo." +
-                                             " Pressione (►) para continuar com os outros exercícios.");
-                                    ReadyNextStep();
+                                    SoundManager.Instance.PlaySound ("Success");
+                                    DudeTalk ($"Sua média de frequência respiratória é de {(_tmpCapacities.RawRespRate * 60f):F} resp/min." +
+                                        " Pressione (►) para continuar com os outros exercícios.");
+                                    SetupNextStep ();
                                     break;
 
                                 case 5:
-                                    Pacient.Loaded.Capacities.RespCycleDuration = _tmpCapacities.RawRespCycleDuration;
-                                    SaveAndQuit();
+                                    Pacient.Loaded.Capacities.RespiratoryRate = _tmpCapacities.RawRespRate;
+                                    SaveAndQuit ();
                                     break;
 
                                 default:
-                                    FindObjectOfType<SceneLoader>().LoadScene(0);
+                                    FindObjectOfType<SceneLoader> ().LoadScene (0);
                                     break;
                             }
                             break;
 
-                        #endregion
+                            #endregion
 
-                        #region Inspiratory Peak
+                            #region Inspiratory Peak
 
                         case CalibrationExercise.InspiratoryPeak:
                             switch (_currentStep)
                             {
                                 case 1:
-                                    DudeTalk("Neste exercício, você deve INSPIRAR FORTE. Serão 3 tentativas. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
-                                    ReadyNextStep();
+                                    DudeTalk ("Neste exercício, você deve INSPIRAR FORTE. Serão 3 tentativas. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
+                                    SetupNextStep ();
                                     break;
 
                                 case 2:
                                     if (!_serialController.IsConnected)
                                     {
-                                        SerialDisconnectedWarning();
+                                        SerialDisconnectedWarning ();
                                         continue;
                                     }
 
-                                    _serialController.Recalibrate();
-                                    _serialController.StartSampling();
+                                    _serialController.Recalibrate ();
+                                    _serialController.StartSampling ();
 
                                     _exerciseCountText.text = $"Exercício: {_currentExerciseCount + 1}/3";
-                                    yield return new WaitForSeconds(1f);
+                                    yield return new WaitForSeconds (1f);
 
-                                    AirFlowEnable();
-                                    StartCoroutine(DisplayCountdown(TimerPeakExercise));
+                                    AirFlowEnable ();
+                                    StartCoroutine (DisplayCountdown (TimerPeakExercise));
                                     _dialogText.text = "(INSPIRE FORTE e aguarde o próximo passo)";
 
-                                    yield return new WaitForSeconds(TimerPeakExercise);
+                                    yield return new WaitForSeconds (TimerPeakExercise);
 
-                                    AirFlowDisable();
+                                    AirFlowDisable ();
 
                                     var insCheck = _flowMeter;
-                                    ResetFlowMeter();
+                                    ResetFlowMeter ();
 
                                     if (insCheck < -Pacient.Loaded.PitacoThreshold)
                                     {
-                                        _calibrationLogger.Write(CalibrationExerciseResult.Success, _currentExercise, insCheck);
+                                        _calibrationLogger.Write (CalibrationExerciseResult.Success, _currentExercise, insCheck);
                                         _currentExerciseCount++;
-                                        ReadyNextStep(true);
+                                        SetupNextStep (true);
                                         continue;
                                     }
                                     else
                                     {
-                                        _calibrationLogger.Write(CalibrationExerciseResult.Failure, _currentExercise, insCheck);
-                                        DudeWarnUnknownFlow();
-                                        ReadyStep(_currentStep);
+                                        _calibrationLogger.Write (CalibrationExerciseResult.Failure, _currentExercise, insCheck);
+                                        DudeWarnUnknownFlow ();
+                                        SetupStep (_currentStep);
                                         break;
                                     }
 
                                 case 3:
-                                    DudeCongratulate();
-                                    ReadyStep(_currentExerciseCount == 3 ? _currentStep + 1 : _currentStep - 1);
+                                    DudeCongratulate ();
+                                    SetupStep (_currentExerciseCount == 3 ? _currentStep + 1 : _currentStep - 1);
                                     break;
 
                                 case 4:
-                                    SoundManager.Instance.PlaySound("Success");
-                                    DudeTalk($"Seu pico inspiratório é de {FlowMath.ToLitresPerMinute(_tmpCapacities.RawInsPeakFlow):F} L/min." +
-                                             " Pressione (►) para continuar com os outros exercícios.");
-                                    ReadyNextStep();
+                                    SoundManager.Instance.PlaySound ("Success");
+                                    DudeTalk ($"Seu pico inspiratório é de {FlowMath.ToLitresPerMinute(_tmpCapacities.RawInsPeakFlow):F} L/min." +
+                                        " Pressione (►) para continuar com os outros exercícios.");
+                                    SetupNextStep ();
                                     break;
 
                                 case 5:
                                     Pacient.Loaded.Capacities.InsPeakFlow = _tmpCapacities.RawInsPeakFlow;
-                                    SaveAndQuit();
+                                    SaveAndQuit ();
                                     break;
 
                                 default:
-                                    FindObjectOfType<SceneLoader>().LoadScene(0);
+                                    FindObjectOfType<SceneLoader> ().LoadScene (0);
                                     break;
                             }
 
                             break;
 
-                        #endregion
+                            #endregion
 
-                        #region Inspiratory Duration
+                            #region Inspiratory Duration
 
                         case CalibrationExercise.InspiratoryDuration:
 
                             switch (_currentStep)
                             {
                                 case 1:
-                                    DudeTalk("Neste exercício, INSPIRE e MANTENHA o relógio GIRANDO o MÁXIMO QUE PUDER! Serão 3 tentativas. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
-                                    ReadyNextStep();
+                                    DudeTalk ("Neste exercício, INSPIRE e MANTENHA o relógio GIRANDO o MÁXIMO QUE PUDER! Serão 3 tentativas. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
+                                    SetupNextStep ();
                                     break;
 
                                 case 2:
                                     if (!_serialController.IsConnected)
                                     {
-                                        SerialDisconnectedWarning();
+                                        SerialDisconnectedWarning ();
                                         continue;
                                     }
 
-                                    _serialController.Recalibrate();
-                                    _serialController.StartSampling();
+                                    _serialController.Recalibrate ();
+                                    _serialController.StartSampling ();
 
                                     _exerciseCountText.text = $"Exercício: {_currentExerciseCount + 1}/3";
-                                    yield return new WaitForSeconds(1);
+                                    yield return new WaitForSeconds (1);
 
-                                    AirFlowEnable(false);
+                                    AirFlowEnable (false);
                                     _dialogText.text = "(INSPIRE para manter o relógio GIRANDO o MÁXIMO QUE PUDER)";
 
                                     while (_flowMeter >= -Pacient.Loaded.PitacoThreshold)
                                         yield return null;
 
-                                    _flowWatch.Restart();
+                                    _flowWatch.Restart ();
 
                                     while (_flowMeter < -Pacient.Loaded.PitacoThreshold * 0.25f)
                                         yield return null;
 
-                                    AirFlowDisable();
+                                    AirFlowDisable ();
 
-                                    ResetFlowMeter();
+                                    ResetFlowMeter ();
 
                                     // Check for player input
                                     if (_flowWatch.ElapsedMilliseconds > FlowTimeThreshold)
                                     {
-                                        _calibrationLogger.Write(CalibrationExerciseResult.Success, _currentExercise, _flowWatch.ElapsedMilliseconds);
+                                        _calibrationLogger.Write (CalibrationExerciseResult.Success, _currentExercise, _flowWatch.ElapsedMilliseconds);
 
                                         if (_flowWatch.ElapsedMilliseconds > _tmpCapacities.InsFlowDuration)
                                             _tmpCapacities.InsFlowDuration = _flowWatch.ElapsedMilliseconds;
 
                                         _currentExerciseCount++;
 
-                                        ReadyNextStep(true);
+                                        SetupNextStep (true);
                                         continue;
                                     }
                                     else
                                     {
-                                        _calibrationLogger.Write(CalibrationExerciseResult.Failure, _currentExercise, _flowWatch.ElapsedMilliseconds);
-                                        DudeWarnUnknownFlow();
-                                        ReadyStep(_currentStep);
+                                        _calibrationLogger.Write (CalibrationExerciseResult.Failure, _currentExercise, _flowWatch.ElapsedMilliseconds);
+                                        DudeWarnUnknownFlow ();
+                                        SetupStep (_currentStep);
                                         break;
                                     }
 
                                 case 3:
-                                    DudeCongratulate();
-                                    ReadyStep(_currentExerciseCount == 3 ? _currentStep + 1 : _currentStep - 1);
+                                    DudeCongratulate ();
+                                    SetupStep (_currentExerciseCount == 3 ? _currentStep + 1 : _currentStep - 1);
                                     break;
 
                                 case 4:
-                                    SoundManager.Instance.PlaySound("Success");
-                                    DudeTalk($"Seu tempo de inspiração máximo é de {(_tmpCapacities.RawInsFlowDuration / 1000f):F} segundos." +
-                                             " Pressione (►) para continuar com os outros exercícios.");
-                                    ReadyNextStep();
+                                    SoundManager.Instance.PlaySound ("Success");
+                                    DudeTalk ($"Seu tempo de inspiração máximo é de {(_tmpCapacities.RawInsFlowDuration / 1000f):F} segundos." +
+                                        " Pressione (►) para continuar com os outros exercícios.");
+                                    SetupNextStep ();
                                     break;
 
                                 case 5:
                                     Pacient.Loaded.Capacities.InsFlowDuration = _tmpCapacities.RawInsFlowDuration;
-                                    SaveAndQuit();
+                                    SaveAndQuit ();
                                     break;
 
                                 default:
-                                    FindObjectOfType<SceneLoader>().LoadScene(0);
+                                    FindObjectOfType<SceneLoader> ().LoadScene (0);
                                     break;
                             }
 
                             break;
 
-                        #endregion
+                            #endregion
 
-                        #region Expiratory Peak
+                            #region Expiratory Peak
 
                         case CalibrationExercise.ExpiratoryPeak:
 
                             switch (_currentStep)
                             {
                                 case 1:
-                                    DudeTalk("Neste exercício, você deve ASSOPRAR FORTE. Serão 3 tentativas. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
-                                    ReadyNextStep();
+                                    DudeTalk ("Neste exercício, você deve ASSOPRAR FORTE. Serão 3 tentativas. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
+                                    SetupNextStep ();
                                     break;
 
                                 case 2:
                                     if (!_serialController.IsConnected)
                                     {
-                                        SerialDisconnectedWarning();
+                                        SerialDisconnectedWarning ();
                                         continue;
                                     }
 
-                                    _serialController.Recalibrate();
-                                    _serialController.StartSampling();
+                                    _serialController.Recalibrate ();
+                                    _serialController.StartSampling ();
 
                                     _exerciseCountText.text = $"Exercício: {_currentExerciseCount + 1}/3";
-                                    yield return new WaitForSeconds(1);
+                                    yield return new WaitForSeconds (1);
 
-                                    AirFlowEnable();
-                                    StartCoroutine(DisplayCountdown(TimerPeakExercise));
+                                    AirFlowEnable ();
+                                    StartCoroutine (DisplayCountdown (TimerPeakExercise));
                                     _dialogText.text = "(ASSOPRE FORTE e aguarde o próximo passo)";
 
                                     // Wait for player input
-                                    yield return new WaitForSeconds(TimerPeakExercise);
+                                    yield return new WaitForSeconds (TimerPeakExercise);
 
-                                    AirFlowDisable();
+                                    AirFlowDisable ();
 
                                     var expCheck = _flowMeter;
-                                    ResetFlowMeter();
+                                    ResetFlowMeter ();
 
                                     if (expCheck > Pacient.Loaded.PitacoThreshold)
                                     {
-                                        _calibrationLogger.Write(CalibrationExerciseResult.Success, _currentExercise, expCheck);
+                                        _calibrationLogger.Write (CalibrationExerciseResult.Success, _currentExercise, expCheck);
                                         _currentExerciseCount++;
-                                        ReadyNextStep(true);
+                                        SetupNextStep (true);
                                         continue;
                                     }
                                     else
                                     {
-                                        _calibrationLogger.Write(CalibrationExerciseResult.Failure, _currentExercise, expCheck);
-                                        DudeWarnUnknownFlow();
-                                        ReadyStep(_currentStep);
+                                        _calibrationLogger.Write (CalibrationExerciseResult.Failure, _currentExercise, expCheck);
+                                        DudeWarnUnknownFlow ();
+                                        SetupStep (_currentStep);
                                         break;
                                     }
 
                                 case 3:
-                                    DudeCongratulate();
-                                    ReadyStep(_currentExerciseCount == 3 ? _currentStep + 1 : _currentStep - 1);
+                                    DudeCongratulate ();
+                                    SetupStep (_currentExerciseCount == 3 ? _currentStep + 1 : _currentStep - 1);
                                     break;
 
                                 case 4:
-                                    SoundManager.Instance.PlaySound("Success");
-                                    DudeTalk($"Seu pico expiratório é de {FlowMath.ToLitresPerMinute(_tmpCapacities.RawExpPeakFlow):F} L/min." +
-                                             " Pressione (►) para continuar com os outros exercícios.");
-                                    ReadyNextStep();
+                                    SoundManager.Instance.PlaySound ("Success");
+                                    DudeTalk ($"Seu pico expiratório é de {FlowMath.ToLitresPerMinute(_tmpCapacities.RawExpPeakFlow):F} L/min." +
+                                        " Pressione (►) para continuar com os outros exercícios.");
+                                    SetupNextStep ();
                                     break;
 
                                 case 5:
                                     Pacient.Loaded.Capacities.ExpPeakFlow = _tmpCapacities.RawExpPeakFlow;
-                                    SaveAndQuit();
+                                    SaveAndQuit ();
                                     break;
 
                                 default:
-                                    FindObjectOfType<SceneLoader>().LoadScene(0);
+                                    FindObjectOfType<SceneLoader> ().LoadScene (0);
                                     break;
                             }
 
                             break;
 
-                        #endregion
+                            #endregion
 
-                        #region Expiratory Duration
+                            #region Expiratory Duration
 
                         case CalibrationExercise.ExpiratoryDuration:
 
                             switch (_currentStep)
                             {
                                 case 1:
-                                    DudeTalk("Neste exercício, ASSOPRE e MANTENHA o relógio GIRANDO o MÁXIMO QUE PUDER! Serão 3 tentativas. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
-                                    ReadyNextStep();
+                                    DudeTalk ("Neste exercício, ASSOPRE e MANTENHA o relógio GIRANDO o MÁXIMO QUE PUDER! Serão 3 tentativas. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
+                                    SetupNextStep ();
                                     break;
 
                                 case 2:
                                     if (!_serialController.IsConnected)
                                     {
-                                        SerialDisconnectedWarning();
+                                        SerialDisconnectedWarning ();
                                         continue;
                                     }
 
-                                    _serialController.Recalibrate();
-                                    _serialController.StartSampling();
+                                    _serialController.Recalibrate ();
+                                    _serialController.StartSampling ();
 
                                     _exerciseCountText.text = $"Exercício: {_currentExerciseCount + 1}/3";
-                                    yield return new WaitForSeconds(1);
+                                    yield return new WaitForSeconds (1);
 
-                                    AirFlowEnable(false);
+                                    AirFlowEnable (false);
                                     _dialogText.text = "(ASSOPRE e MANTENHA o relógio GIRANDO o MÁXIMO QUE PUDER)";
 
                                     // Wait for player input to be greather than threshold
                                     while (_flowMeter <= Pacient.Loaded.PitacoThreshold)
                                         yield return null;
 
-                                    _flowWatch.Restart();
+                                    _flowWatch.Restart ();
 
                                     while (_flowMeter > Pacient.Loaded.PitacoThreshold * 0.25f)
                                         yield return null;
 
-                                    AirFlowDisable();
+                                    AirFlowDisable ();
 
-                                    ResetFlowMeter();
+                                    ResetFlowMeter ();
 
                                     // Check for player input
                                     if (_flowWatch.ElapsedMilliseconds > FlowTimeThreshold)
                                     {
-                                        _calibrationLogger.Write(CalibrationExerciseResult.Success, _currentExercise, _flowWatch.ElapsedMilliseconds);
+                                        _calibrationLogger.Write (CalibrationExerciseResult.Success, _currentExercise, _flowWatch.ElapsedMilliseconds);
 
                                         if (_flowWatch.ElapsedMilliseconds > _tmpCapacities.ExpFlowDuration)
                                             _tmpCapacities.ExpFlowDuration = _flowWatch.ElapsedMilliseconds;
 
                                         _currentExerciseCount++;
-                                        ReadyNextStep(true);
+                                        SetupNextStep (true);
                                         continue;
                                     }
                                     else
                                     {
-                                        _calibrationLogger.Write(CalibrationExerciseResult.Failure, _currentExercise, _flowWatch.ElapsedMilliseconds);
-                                        DudeWarnUnknownFlow();
-                                        ReadyStep(_currentStep);
+                                        _calibrationLogger.Write (CalibrationExerciseResult.Failure, _currentExercise, _flowWatch.ElapsedMilliseconds);
+                                        DudeWarnUnknownFlow ();
+                                        SetupStep (_currentStep);
                                         break;
                                     }
 
                                 case 3:
-                                    DudeCongratulate();
-                                    ReadyStep(_currentExerciseCount == 3 ? _currentStep + 1 : _currentStep - 1);
+                                    DudeCongratulate ();
+                                    SetupStep (_currentExerciseCount == 3 ? _currentStep + 1 : _currentStep - 1);
                                     break;
 
                                 case 4:
-                                    SoundManager.Instance.PlaySound("Success");
-                                    DudeTalk($"Seu tempo de fluxo expiratório máximo é de {(_tmpCapacities.RawExpFlowDuration / 1000f):F} segundos." +
-                                             " Pressione (►) para continuar com os outros exercícios.");
-                                    ReadyNextStep();
+                                    SoundManager.Instance.PlaySound ("Success");
+                                    DudeTalk ($"Seu tempo de fluxo expiratório máximo é de {(_tmpCapacities.RawExpFlowDuration / 1000f):F} segundos." +
+                                        " Pressione (►) para continuar com os outros exercícios.");
+                                    SetupNextStep ();
                                     break;
 
                                 case 5:
                                     Pacient.Loaded.Capacities.ExpFlowDuration = _tmpCapacities.RawExpFlowDuration;
-                                    SaveAndQuit();
+                                    SaveAndQuit ();
                                     break;
 
                                 default:
-                                    FindObjectOfType<SceneLoader>().LoadScene(0);
+                                    FindObjectOfType<SceneLoader> ().LoadScene (0);
                                     break;
                             }
 
@@ -496,7 +495,7 @@ namespace Ibit.Calibration
 
                     }
 
-                    _enterButton.SetActive(true);
+                    _enterButton.SetActive (true);
                     _runStep = false;
                 }
 
@@ -504,10 +503,10 @@ namespace Ibit.Calibration
             }
         }
 
-        private IEnumerator DisplayCountdown(long timer)
+        private IEnumerator DisplayCountdown (long timer)
         {
             timer *= 1000;
-            _timerWatch.Restart();
+            _timerWatch.Restart ();
             while (_timerWatch.ElapsedMilliseconds < timer)
             {
                 yield return null;
@@ -516,45 +515,45 @@ namespace Ibit.Calibration
             _timerText.text = "";
         }
 
-        private void ResetFlowMeter() => _flowMeter = 0f;
+        private void ResetFlowMeter () => _flowMeter = 0f;
 
-        private void AirFlowDisable()
+        private void AirFlowDisable ()
         {
-            _flowWatch.Stop();
+            _flowWatch.Stop ();
 
             //FindObjectOfType<PitacoLogger>().Pause(true);
 
-            _clockObject.GetComponent<SpriteRenderer>().color = Color.white;
-            _clockObject.GetComponentInChildren<ClockArrow>().SpinClock = false;
+            _clockObject.GetComponent<SpriteRenderer> ().color = Color.white;
+            _clockObject.GetComponentInChildren<ClockArrow> ().SpinClock = false;
             _acceptingValues = false;
         }
 
-        private void AirFlowEnable(bool restartWatch = true)
+        private void AirFlowEnable (bool restartWatch = true)
         {
             if (restartWatch)
-                _flowWatch.Restart();
+                _flowWatch.Restart ();
 
             //FindObjectOfType<PitacoLogger>().Pause(false);
 
-            _clockObject.GetComponent<SpriteRenderer>().color = Color.green;
-            _clockObject.GetComponentInChildren<ClockArrow>().SpinClock = true;
+            _clockObject.GetComponent<SpriteRenderer> ().color = Color.green;
+            _clockObject.GetComponentInChildren<ClockArrow> ().SpinClock = true;
             _acceptingValues = true;
         }
 
-        private void SaveAndQuit()
+        private void SaveAndQuit ()
         {
             Pacient.Loaded.CalibrationDone = Pacient.Loaded.IsCalibrationDone;
-            PacientDb.Instance.Save();
-            FindObjectOfType<PitacoLogger>().StopLogging();
-            _calibrationLogger.Save();
-            FindObjectOfType<SceneLoader>().LoadScene(0);
+            PacientDb.Instance.Save ();
+            FindObjectOfType<PitacoLogger> ().StopLogging ();
+            _calibrationLogger.Save ();
+            FindObjectOfType<SceneLoader> ().LoadScene (0);
         }
 
-        private void SerialDisconnectedWarning()
+        private void SerialDisconnectedWarning ()
         {
-            _enterButton.SetActive(true);
-            DudeWarnPitacoDisconnected();
-            ReadyStep(99);
+            _enterButton.SetActive (true);
+            DudeWarnPitacoDisconnected ();
+            SetupStep (99);
         }
     }
 }

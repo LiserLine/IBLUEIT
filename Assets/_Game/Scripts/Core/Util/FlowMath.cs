@@ -1,6 +1,6 @@
-﻿using Ibit.Core.Data;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Ibit.Core.Data;
 using UnityEngine;
 
 namespace Ibit.Core.Util
@@ -11,9 +11,10 @@ namespace Ibit.Core.Util
         /// Calculates a mean of respiratory duration in Seconds per Cycle.
         /// </summary>
         /// <param name="data">Dictionary containing respiratory samples from PITACO.</param>
-        public static float MeanFlow(Dictionary<long, float> data)
+        /// <param name="duration">Duration of the sample capture.</param>
+        public static float RespiratoryRate (Dictionary<long, float> data, int duration)
         {
-            var samples = data.ToList();
+            var samples = data.ToList ();
 
             long startTime = 0, firstCurveTime = 0, secondCurveTime = 0, sumTimes = 0;
             float quantCycles = 0;
@@ -59,10 +60,11 @@ namespace Ibit.Core.Util
                 secondCurveTime = 0;
             }
 
-            return sumTimes / quantCycles;
+            //UnityEngine.Debug.Log($"{quantCycles}/{duration} = {quantCycles/duration} ({quantCycles/duration*60} bpm)");
+
+            return quantCycles / duration;
         }
 
-        
         /// <summary>
         /// Converts m³/s to L/min
         /// </summary>
@@ -78,14 +80,15 @@ namespace Ibit.Core.Util
         /// </summary>
         /// <param name="differentialPressure">Pressure difference in Pascal (Pa)</param>
         /// <returns></returns>
-        private static float Poiseulle(float differentialPressure) =>
-            differentialPressure * Mathf.PI * Mathf.Pow(tubeRadius, 4) / (8 * airViscosity * tubeLenght);
+        private static float Poiseulle (float differentialPressure) =>
+            differentialPressure * Mathf.PI * Mathf.Pow (tubeRadius, 4) / (8 * airViscosity * tubeLenght);
 
         /// <summary>
         /// Returns the volumetric flow of air in Litres/Minute
         /// </summary>
         /// <param name="differentialPressure">Pressure difference in Pascal (Pa)</param>
         /// <returns></returns>
-        public static float ToLitresPerMinute(float differentialPressure) => Poiseulle(differentialPressure / 1000f) * LitresPerMinuteConverter;
+        public static float ToLitresPerMinute (float differentialPressure) =>
+            Poiseulle (differentialPressure / 1000f) * LitresPerMinuteConverter;
     }
 }
