@@ -48,11 +48,11 @@ namespace Ibit.Core.Data
                     PitacoThreshold = 7.5f,
                     Capacities = new Capacities
                     {
-                    RespiratoryRate = 3200,
-                    ExpPeakFlow = 1600,
-                    InsPeakFlow = -330,
-                    ExpFlowDuration = 18000,
-                    InsFlowDuration = 10000
+                        RespiratoryRate = 0.3f,
+                        ExpPeakFlow = 1600,
+                        InsPeakFlow = -330,
+                        ExpFlowDuration = 18000,
+                        InsFlowDuration = 10000
                     }
                 };
         }
