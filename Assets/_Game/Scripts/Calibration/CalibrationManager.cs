@@ -178,7 +178,7 @@ namespace Ibit.Calibration
                             switch (_currentStep)
                             {
                                 case 1:
-                                    DudeTalk ("Neste exercício, você deve INSPIRAR FORTE. Serão 3 tentativas. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
+                                    DudeTalk ("Neste exercício, você deve PUXAR O AR COM FORÇA. Serão 3 tentativas. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
                                     SetupNextStep ();
                                     break;
 
@@ -197,7 +197,7 @@ namespace Ibit.Calibration
 
                                     AirFlowEnable ();
                                     StartCoroutine (DisplayCountdown (TimerPeakExercise));
-                                    _dialogText.text = "(INSPIRE FORTE e aguarde o próximo passo)";
+                                    _dialogText.text = "(PUXE O AR COM FORÇA 1 vez! E aguarde o próximo passo...)";
 
                                     yield return new WaitForSeconds (TimerPeakExercise);
 
@@ -254,7 +254,7 @@ namespace Ibit.Calibration
                             switch (_currentStep)
                             {
                                 case 1:
-                                    DudeTalk ("Neste exercício, INSPIRE e MANTENHA o relógio GIRANDO o MÁXIMO QUE PUDER! Serão 3 tentativas. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
+                                    DudeTalk ("Neste exercício, MANTENHA o relógio GIRANDO, PUXANDO O AR! Serão 3 tentativas. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
                                     SetupNextStep ();
                                     break;
 
@@ -272,7 +272,7 @@ namespace Ibit.Calibration
                                     yield return new WaitForSeconds (1);
 
                                     AirFlowEnable (false);
-                                    _dialogText.text = "(INSPIRE para manter o relógio GIRANDO o MÁXIMO QUE PUDER)";
+                                    _dialogText.text = "(MANTENHA o relógio GIRANDO, PUXANDO O AR!)";
 
                                     while (_flowMeter >= -Pacient.Loaded.PitacoThreshold)
                                         yield return null;
@@ -359,7 +359,7 @@ namespace Ibit.Calibration
 
                                     AirFlowEnable ();
                                     StartCoroutine (DisplayCountdown (TimerPeakExercise));
-                                    _dialogText.text = "(ASSOPRE FORTE e aguarde o próximo passo)";
+                                    _dialogText.text = "(ASSOPRE FORTE 1 vez! E aguarde o próximo passo...)";
 
                                     // Wait for player input
                                     yield return new WaitForSeconds (TimerPeakExercise);
@@ -417,7 +417,7 @@ namespace Ibit.Calibration
                             switch (_currentStep)
                             {
                                 case 1:
-                                    DudeTalk ("Neste exercício, ASSOPRE e MANTENHA o relógio GIRANDO o MÁXIMO QUE PUDER! Serão 3 tentativas. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
+                                    DudeTalk ("Neste exercício, MANTENHA o relógio GIRANDO, ASSOPRANDO! Serão 3 tentativas. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
                                     SetupNextStep ();
                                     break;
 
@@ -435,7 +435,7 @@ namespace Ibit.Calibration
                                     yield return new WaitForSeconds (1);
 
                                     AirFlowEnable (false);
-                                    _dialogText.text = "(ASSOPRE e MANTENHA o relógio GIRANDO o MÁXIMO QUE PUDER)";
+                                    _dialogText.text = "(MANTENHA o relógio GIRANDO, ASSOPRANDO!)";
 
                                     // Wait for player input to be greather than threshold
                                     while (_flowMeter <= Pacient.Loaded.PitacoThreshold)
