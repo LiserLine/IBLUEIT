@@ -107,19 +107,6 @@ namespace Ibit.LeavesGame
         {
             while (!stop)
             {
-                //Debug.Log("Sensor Value: " + sensorValue + " | Threshold: " + Pacient.Loaded.PitacoThreshold + "| ExpPeakFlow: " + Pacient.Loaded.Capacities.RawExpPeakFlow * 0.3f);
-                //if (sensorValue > Pacient.Loaded.PitacoThreshold && sensorValue > Pacient.Loaded.Capacities.RawExpPeakFlow * 0.3f)
-                //{
-                //    _animator.SetBool("toGreen", true);
-                //}
-                //else
-                //{
-                //    _animator.SetBool("toGreen", false);
-                //}
-                //if (sensorValue > Pacient.Loaded.Capacities.RawExpPeakFlow * 0.4f)
-                //{
-                //}//VERMELHO
-
 
                 sensorValue = sensorValue < -Pacient.Loaded.PitacoThreshold || sensorValue > Pacient.Loaded.PitacoThreshold ? sensorValue : 0f;
 
@@ -138,8 +125,6 @@ namespace Ibit.LeavesGame
 
                 yield return null;
             }
-
-            //OnAuthorize();
         }
 
         private void Update()
