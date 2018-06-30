@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using NaughtyAttributes;
 using Ibit.Core.Audio;
 using Ibit.Core.Serial;
+using Ibit.Core.Util;
 
 namespace Ibit.LeavesGame
 {
@@ -127,6 +128,7 @@ namespace Ibit.LeavesGame
 
         private void PlayerWakeUp()
         {
+            Debug.Log(FlowMath.RespiratoryRate(Player.playerRespiratoryInfo,(int)countdownTime) + " bps");
             displayHowTo.text = "Acabou o tempo![Enter] para continuar.";
             //Se não jogou mandar sinal false para a permissão do jogador.
             EnablePlayerFlow(false);

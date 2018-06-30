@@ -7,6 +7,7 @@ using Ibit.Core.Util;
 using Ibit.Core.Audio;
 using UnityEngine;
 using Ibit.Plataform.Camera;
+using System;
 
 namespace Ibit.LeavesGame
 {

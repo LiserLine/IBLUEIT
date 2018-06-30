@@ -12,11 +12,11 @@ namespace Ibit.Core.Util
         /// </summary>
         /// <param name="data">Dictionary containing respiratory samples from PITACO.</param>
         /// <param name="duration">Duration of the sample capture.</param>
-        public static float RespiratoryRate (Dictionary<long, float> data, int duration)
+        public static float RespiratoryRate (Dictionary<float, float> data, int duration)
         {
             var samples = data.ToList ();
 
-            long startTime = 0, firstCurveTime = 0, secondCurveTime = 0, sumTimes = 0;
+            float startTime = 0, firstCurveTime = 0, secondCurveTime = 0, sumTimes = 0;
             float quantCycles = 0;
 
             for (var i = 1; i < samples.Count; i++)

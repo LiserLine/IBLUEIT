@@ -26,7 +26,7 @@ namespace Ibit.Calibration
         private bool _runStep;
 
         private CalibrationLogger _calibrationLogger;
-        Dictionary<long, float> _capturedSamples;
+        Dictionary<float, float> _capturedSamples;
 
         private int _currentExerciseCount;
         private int _currentStep = 1; //default: 1
@@ -55,7 +55,7 @@ namespace Ibit.Calibration
             _tmpCapacities = new Capacities ();
             _flowWatch = new Stopwatch ();
             _timerWatch = new Stopwatch ();
-            _capturedSamples = new Dictionary<long, float>();
+            _capturedSamples = new Dictionary<float, float>();
             _calibrationLogger = new CalibrationLogger ();
 
             _dudeObject.transform.Translate (-Camera.main.orthographicSize * Camera.main.aspect + (_dudeObject.transform.localScale.x / 2f), 0f, 0f);
