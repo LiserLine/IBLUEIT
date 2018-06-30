@@ -254,7 +254,7 @@ namespace Ibit.Calibration
                             switch (_currentStep)
                             {
                                 case 1:
-                                    DudeTalk ("Neste exercício, MANTENHA o relógio GIRANDO, PUXANDO O AR! Serão 3 tentativas. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
+                                    DudeTalk ("Neste exercício, MANTENHA o ponteiro GIRANDO, PUXANDO O AR! Serão 3 tentativas. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
                                     SetupNextStep ();
                                     break;
 
@@ -272,7 +272,7 @@ namespace Ibit.Calibration
                                     yield return new WaitForSeconds (1);
 
                                     AirFlowEnable (false);
-                                    _dialogText.text = "(MANTENHA o relógio GIRANDO, PUXANDO O AR!)";
+                                    _dialogText.text = "(MANTENHA o ponteiro GIRANDO, PUXANDO O AR!)";
 
                                     while (_flowMeter >= -Pacient.Loaded.PitacoThreshold)
                                         yield return null;
@@ -417,7 +417,7 @@ namespace Ibit.Calibration
                             switch (_currentStep)
                             {
                                 case 1:
-                                    DudeTalk ("Neste exercício, MANTENHA o relógio GIRANDO, ASSOPRANDO! Serão 3 tentativas. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
+                                    DudeTalk ("Neste exercício, MANTENHA o ponteiro GIRANDO, ASSOPRANDO! Serão 3 tentativas. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
                                     SetupNextStep ();
                                     break;
 
@@ -435,7 +435,7 @@ namespace Ibit.Calibration
                                     yield return new WaitForSeconds (1);
 
                                     AirFlowEnable (false);
-                                    _dialogText.text = "(MANTENHA o relógio GIRANDO, ASSOPRANDO!)";
+                                    _dialogText.text = "(MANTENHA o ponteiro GIRANDO, ASSOPRANDO!)";
 
                                     // Wait for player input to be greather than threshold
                                     while (_flowMeter <= Pacient.Loaded.PitacoThreshold)
