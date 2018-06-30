@@ -10,13 +10,13 @@ namespace Ibit.Core.Util
         /// <summary>
         /// Calculates a mean of respiratory duration in Seconds per Cycle.
         /// </summary>
-        /// <param name="data">Dictionary containing respiratory samples from PITACO.</param>
+        /// <param name="data">Dictionary containing respiratory samples as [time,value] from PITACO.</param>
         /// <param name="duration">Duration of the sample capture.</param>
         public static float RespiratoryRate (Dictionary<float, float> data, int duration)
         {
             var samples = data.ToList ();
 
-            float startTime = 0, firstCurveTime = 0, secondCurveTime = 0, sumTimes = 0;
+            float startTime = 0, firstCurveTime = 0, secondCurveTime = 0;
             float quantCycles = 0;
 
             for (var i = 1; i < samples.Count; i++)
@@ -53,8 +53,6 @@ namespace Ibit.Core.Util
                 if (firstCurveTime == 0 || secondCurveTime == 0)
                     continue;
 
-                var cycleTime = firstCurveTime + secondCurveTime;
-                sumTimes += cycleTime;
                 quantCycles++;
                 firstCurveTime = 0;
                 secondCurveTime = 0;
