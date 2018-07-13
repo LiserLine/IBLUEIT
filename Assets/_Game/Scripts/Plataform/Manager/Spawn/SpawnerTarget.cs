@@ -17,14 +17,14 @@ namespace Ibit.Plataform.Manager.Spawn
             if (model.PositionYFactor > 0) //air
             {
                 instance = Instantiate(targetsAir[Random.Range(0, targetsAir.Length)],
-                    new Vector3(_lastSpawned.position.x + model.PositionXSpacing, 0f),
+                    new Vector3(_lastSpawned.position.x + _lastSpawned.localScale.x / 2 + model.PositionXSpacing, 0f),
                     this.transform.rotation,
                     this.transform);
             }
             else //water
             {
                 instance = Instantiate(targetsWater[Random.Range(0, targetsWater.Length)],
-                    new Vector3(_lastSpawned.position.x + model.PositionXSpacing, 0f),
+                    new Vector3(_lastSpawned.position.x + _lastSpawned.localScale.x / 2 + model.PositionXSpacing, 0f),
                     this.transform.rotation,
                     this.transform);
             }

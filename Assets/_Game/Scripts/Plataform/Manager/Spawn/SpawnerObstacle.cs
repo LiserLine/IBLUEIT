@@ -19,9 +19,9 @@ namespace Ibit.Plataform.Manager.Spawn
             if (model.PositionYFactor > 0)
             {
                 instance = Instantiate(obstaclesAir[Random.Range(0, obstaclesAir.Length)],
-                new Vector3(_lastSpawned.position.x + model.PositionXSpacing, 0f),
-                this.transform.rotation,
-                this.transform);
+                    new Vector3(_lastSpawned.position.x + _lastSpawned.localScale.x / 2 + model.PositionXSpacing, 0f),
+                    this.transform.rotation,
+                    this.transform);
 
                 if (StageModel.Loaded.Level == 1)
                 {
@@ -33,9 +33,9 @@ namespace Ibit.Plataform.Manager.Spawn
             else
             {
                 instance = Instantiate(obstaclesWater[Random.Range(0, obstaclesWater.Length)],
-                new Vector3(_lastSpawned.position.x + model.PositionXSpacing, 0f),
-                this.transform.rotation,
-                this.transform);
+                    new Vector3(_lastSpawned.position.x + _lastSpawned.localScale.x / 2 + model.PositionXSpacing, 0f),
+                    this.transform.rotation,
+                    this.transform);
 
                 if (StageModel.Loaded.Level == 1)
                 {
