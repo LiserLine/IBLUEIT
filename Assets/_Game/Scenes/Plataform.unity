@@ -1692,7 +1692,7 @@ MonoBehaviour:
   resultInfo: {fileID: 1625377248}
   nextStageButton: {fileID: 1396947450}
   pauseButton: {fileID: 1465862126}
-  repeatStageButton: {fileID: 0}
+  repeatStageButton: {fileID: 1230036278}
   scoreValue: {fileID: 671556474}
   scoreRatio: {fileID: 945308320}
 --- !u!1 &921868975
