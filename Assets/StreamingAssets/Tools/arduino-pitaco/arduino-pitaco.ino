@@ -3,7 +3,7 @@
  * https://github.com/huenato/iblueit
  */
 
-#define SAMPLESIZE 50
+#define SAMPLESIZE 100
 #define MOVING_AVERAGE true
 #define DEBUG false
 
