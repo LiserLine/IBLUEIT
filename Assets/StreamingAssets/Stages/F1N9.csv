@@ -1,5 +1,5 @@
 StageId;Phase;Level;ObjectSpeedFactor;HeightIncrement;HeightUpThreshold;HeightDownThreshold;SizeIncrement;SizeUpThreshold;SizeDownThreshold;Loops
-1;1;1;1;0.0;0;0;0.0;0;0;1
+9;1;9;2;0.0;0;0;0.0;0;0;5
 
 %% HEADERS %%
 %The first 2 lines above are headers. Never remove them!
@@ -21,16 +21,16 @@ StageId;Phase;Level;ObjectSpeedFactor;HeightIncrement;HeightUpThreshold;HeightDo
 %PositionXSpacing = Distance from the last spawned object in unity's metric unit
 %Relax command does not use DifficultyFactor and PositionYFactor
 
-Target;0.2;1;2;
-Target;0.2;-1;2.5;
+Target;0.6;1;2;
+Target;0.6;-1;2.5;
 
-Target;0.2;1;2.5;
-Target;0.2;-1;2.5;
+Target;0.6;1;2.5;
+Target;0.6;-1;2.5;
 
-Target;0.2;1;2.5;
-Target;0.2;-1;2.5;
+Target;0.6;1;2.5;
+Target;0.6;-1;2.5;
 
-Target;0.2;1;2.5;
-Target;0.2;-1;2.5;
+Target;0.6;1;2.5;
+Target;0.6;-1;2.5;
 
 Relax;0;0;1;
