@@ -1,5 +1,5 @@
 StageId;Phase;Level;ObjectSpeedFactor;HeightIncrement;HeightUpThreshold;HeightDownThreshold;SizeIncrement;SizeUpThreshold;SizeDownThreshold;Loops
-30;4;1;1;0;0;0;0;0;0;3
+31;4;2;1;0.2;6;6;0.1;1;1;5
 
 %% HEADERS %%
 %The first 2 lines above are headers. Never remove them!
@@ -17,15 +17,19 @@ StageId;Phase;Level;ObjectSpeedFactor;HeightIncrement;HeightUpThreshold;HeightDo
 %Template: ObjectType;DifficultyFactor;PositionYFactor;PositionXSpacing;
 %ObjectType = Object to spawn (Target | Obstacle | Relax)
 %DifficultyFactor => Modifies Height/Size (min: 0.0, max: 1.0)
-%PositionYFactor = Relative Position as INSpiratory or EXPiratory (AIR = 1, WATER = -1)
+%PositionYFactor = Where the object should be spawned (AIR = 1, WATER = -1)
 %PositionXSpacing = Distance from the last spawned object in unity's metric unit
 %Relax command does not use DifficultyFactor and PositionYFactor
 
-Target;0.7;1;2;
-Target;1.0;-1;2.5;
+Target;0.10;1;1;
+Target;0.10;1;0.2;
 
-% Fake Relaxamento
+Target;0.2;1;0.75;
+Target;0.2;1;0.2;
 
-Target;0;-1;2;
-Target;0;-1;1;
-Target;0;-1;1;
+Target;0.3;1;0.75;
+Target;0.3;1;0.2;
+
+Obstacle;0.3;1;2.5
+
+Relax;0;0;1;
