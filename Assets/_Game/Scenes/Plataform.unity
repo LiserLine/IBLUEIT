@@ -140,20 +140,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b766b22cd710b0d4988e736335e3bafa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filename: 
+  filename: f2n4.csv
   testStage:
-    Id: 0
-    Phase: 0
-    Level: 0
-    ObjectSpeedFactor: 0
-    Loops: 0
+    Id: 12
+    Phase: 2
+    Level: 3
+    ObjectSpeedFactor: 1
+    Loops: 1
     HeightIncrement: 0
     HeightUpThreshold: 0
     HeightDownThreshold: 0
     SizeIncrement: 0
     SizeUpThreshold: 0
     SizeDownThreshold: 0
-    ObjectModels: []
+    ObjectModels:
+    - Id: 24
+      Type: 2
+      DifficultyFactor: 0.75
+      PositionYFactor: -1
+      PositionXSpacing: 0
+    - Id: 25
+      Type: 2
+      DifficultyFactor: 0.75
+      PositionYFactor: 1
+      PositionXSpacing: 2.5
+    - Id: 27
+      Type: 1
+      DifficultyFactor: 0.2
+      PositionYFactor: 1
+      PositionXSpacing: 2
+    - Id: 28
+      Type: 1
+      DifficultyFactor: 0.2
+      PositionYFactor: -1
+      PositionXSpacing: 2.5
+    - Id: 30
+      Type: 2
+      DifficultyFactor: 0.75
+      PositionYFactor: -1
+      PositionXSpacing: 3
+    - Id: 31
+      Type: 2
+      DifficultyFactor: 0.75
+      PositionYFactor: 1
+      PositionXSpacing: 2.5
+    - Id: 33
+      Type: 3
+      DifficultyFactor: 0
+      PositionYFactor: 0
+      PositionXSpacing: 1
 --- !u!4 &25974385
 Transform:
   m_ObjectHideFlags: 0
@@ -2684,6 +2719,11 @@ Prefab:
     - target: {fileID: 4910625395335724, guid: 64e32705b368692408fc503937d1a5da, type: 2}
       propertyPath: m_RootOrder
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114359194260650610, guid: 64e32705b368692408fc503937d1a5da,
+        type: 2}
+      propertyPath: _gameTempo
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 64e32705b368692408fc503937d1a5da, type: 2}

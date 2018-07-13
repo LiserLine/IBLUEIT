@@ -32,6 +32,13 @@ namespace Ibit.Core.Game
             isLoaded = true;
         }
 
+        [SerializeField] private float _gameTempo = 1f;
+
+        private void Update()
+        {
+            Time.timeScale = _gameTempo;
+        }
+
         private void LoadGlobals()
         {
             var data = FileManager.ReadCsv(Application.streamingAssetsPath + @"/Constants.csv");
