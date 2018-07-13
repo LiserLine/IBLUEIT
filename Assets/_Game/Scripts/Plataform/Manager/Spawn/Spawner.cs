@@ -1,16 +1,16 @@
-﻿using Ibit.Plataform.Data;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Ibit.Plataform.Data;
 using Ibit.Plataform.Manager.Stage;
 using NaughtyAttributes;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace Ibit.Plataform.Manager.Spawn
 {
     public partial class Spawner : MonoBehaviour
     {
-        [BoxGroup("Tutorial")] [SerializeField] private GameObject arrowUpPrefab;
-        [BoxGroup("Tutorial")] [SerializeField] private GameObject arrowDownPrefab;
+        [BoxGroup("Tutorial")][SerializeField] private GameObject arrowUpPrefab;
+        [BoxGroup("Tutorial")][SerializeField] private GameObject arrowDownPrefab;
 
         public LinkedList<Transform> SpawnedObjects
         {

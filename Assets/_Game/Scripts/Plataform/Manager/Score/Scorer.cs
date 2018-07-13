@@ -14,13 +14,9 @@ namespace Ibit.Plataform.Manager.Score
 
     public partial class Scorer : MonoBehaviour
     {
-        [SerializeField]
-        [ReadOnly]
-        private float maxScore;
+        [SerializeField][ReadOnly] private float maxScore;
 
-        [SerializeField]
-        [ReadOnly]
-        private float score;
+        [SerializeField][ReadOnly] private float score;
 
         public float MaxScore => maxScore;
         public GameResult Result { get; private set; }
@@ -34,9 +30,9 @@ namespace Ibit.Plataform.Manager.Score
             }
             else
             {
-                Result = Score >= MaxScore * GameManager.LevelUnlockScoreThreshold
-                    ? GameResult.Success
-                    : GameResult.Failure;
+                Result = Score >= MaxScore * GameManager.LevelUnlockScoreThreshold ?
+                    GameResult.Success :
+                    GameResult.Failure;
             }
 
             return Result;

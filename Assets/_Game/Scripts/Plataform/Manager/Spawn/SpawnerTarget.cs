@@ -7,8 +7,8 @@ namespace Ibit.Plataform.Manager.Spawn
 {
     public partial class Spawner
     {
-        [BoxGroup("Targets")] [SerializeField] private GameObject[] targetsAir;
-        [BoxGroup("Targets")] [SerializeField] private GameObject[] targetsWater;
+        [BoxGroup("Targets")][SerializeField] private GameObject[] targetsAir;
+        [BoxGroup("Targets")][SerializeField] private GameObject[] targetsWater;
 
         private void SpawnTarget(ObjectModel model)
         {

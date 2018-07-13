@@ -1,6 +1,6 @@
-﻿using Ibit.Plataform.Data;
+﻿using System;
+using Ibit.Plataform.Data;
 using NaughtyAttributes;
-using System;
 using UnityEngine;
 
 namespace Ibit.Plataform.Manager.Spawn
@@ -8,7 +8,7 @@ namespace Ibit.Plataform.Manager.Spawn
     public partial class Spawner
     {
         #region Performance
-        
+
         // Targets
 
         public int TargetsSucceeded => TargetsExpSucceeded + TargetsInsSucceeded;

@@ -7,9 +7,9 @@ namespace Ibit.Plataform.Manager.Spawn
 {
     public partial class Spawner
     {
-        [BoxGroup("Relax Time")] [SerializeField] private GameObject relaxInsPrefab;
-        [BoxGroup("Relax Time")] [SerializeField] private GameObject relaxExpPrefab;
-        [BoxGroup("Relax Time")] [SerializeField] private GameObject relaxZeroPrefab;
+        [BoxGroup("Relax Time")][SerializeField] private GameObject relaxInsPrefab;
+        [BoxGroup("Relax Time")][SerializeField] private GameObject relaxExpPrefab;
+        [BoxGroup("Relax Time")][SerializeField] private GameObject relaxZeroPrefab;
 
         public bool RelaxTimeSpawned { get; private set; }
 

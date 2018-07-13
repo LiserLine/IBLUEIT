@@ -8,8 +8,8 @@ namespace Ibit.Plataform.Manager.Spawn
 {
     public partial class Spawner
     {
-        [BoxGroup("Obstacles")] [SerializeField] private GameObject[] obstaclesAir;
-        [BoxGroup("Obstacles")] [SerializeField] private GameObject[] obstaclesWater;
+        [BoxGroup("Obstacles")][SerializeField] private GameObject[] obstaclesAir;
+        [BoxGroup("Obstacles")][SerializeField] private GameObject[] obstaclesWater;
 
         private void SpawnObstacle(ObjectModel model)
         {

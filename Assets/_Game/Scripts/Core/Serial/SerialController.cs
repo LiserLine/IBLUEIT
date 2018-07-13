@@ -1,6 +1,4 @@
-﻿using Ibit.Core.Util;
-
-/**
+﻿/**
  * SerialCommUnity (Serial Communication for Unity)
  * Author: Daniel Wilches <dwilches@gmail.com>
  *
@@ -9,6 +7,7 @@
  */
 
 using System;
+using System.Collections;
 using System.IO;
 using System.IO.Ports;
 using System.Linq;
@@ -34,13 +33,7 @@ namespace Ibit.Core.Serial
 {
     public partial class SerialController : MonoBehaviour
     {
-        // Constants used to mark the start and end of a connection. There is no
-        // way you can generate clashing messages from your serial device, as I
-        // compare the references of these strings, no their contents. So if you
-        // send these same strings from the serial device, upon reconstruction they
-        // will have different reference ids.
         public const string SERIAL_DEVICE_CONNECTED = "__Connected__";
-
         public const string SERIAL_DEVICE_DISCONNECTED = "__Disconnected__";
 
         [SerializeField]
@@ -49,51 +42,42 @@ namespace Ibit.Core.Serial
 
         [SerializeField]
         [Tooltip("Maximum number of unread data messages in the queue. " +
-                 "New messages will be discarded.")]
+            "New messages will be discarded.")]
         private int maxUnreadMessages = 1;
 
         [SerializeField]
         [Tooltip("After an error in the serial communication, or an unsuccessful " +
-                 "connect, how many milliseconds we should wait.")]
+            "connect, how many milliseconds we should wait.")]
         private int reconnectionDelay = 1000;
 
         private SerialThread serialThread;
 
-        // Internal reference to the Thread and the object that runs in it.
         private Thread thread;
 
-        public delegate void SerialConnectedHandler();
-
-        public delegate void SerialDisconnectedHandler();
-
-        public delegate void SerialMessageReceivedHandler(string msg);
+        #region Events
 
         // ------------------------------------------------------------------------
         // Executes a user-defined function before Unity closes the COM port, so
         // the user can send some tear-down message to the hardware reliably.
         // ------------------------------------------------------------------------
         public delegate void TearDownFunction();
-
         private TearDownFunction userDefinedTearDownFunction;
 
+        public delegate void SerialConnectedHandler();
         public event SerialConnectedHandler OnSerialConnected;
 
+        public delegate void SerialDisconnectedHandler();
         public event SerialDisconnectedHandler OnSerialDisconnected;
 
+        public delegate void SerialMessageReceivedHandler(string msg);
         public event SerialMessageReceivedHandler OnSerialMessageReceived;
+
+        #endregion Events
 
         public bool IsConnected { get; private set; }
 
-        // ------------------------------------------------------------------------
-        // Returns a new unread message from the serial device. You only need to
-        // call this if you preferrred to not provide a message listener.
-        // ------------------------------------------------------------------------
         public string ReadSerialMessage() => serialThread.ReadSerialMessage();
 
-        // ------------------------------------------------------------------------
-        // Puts a message in the outgoing queue. The thread object will send the
-        // message to the serial device when it considers it appropriate.
-        // ------------------------------------------------------------------------
         public void SendSerialMessage(string message)
         {
             if (!IsConnected)
@@ -104,10 +88,6 @@ namespace Ibit.Core.Serial
 
         public void SetTearDownFunction(TearDownFunction userFunction) => this.userDefinedTearDownFunction = userFunction;
 
-        /// <summary>
-        /// Get Ports avaiable.
-        /// </summary>
-        /// <returns></returns>
         private static string[] GetPortNames()
         {
             if (Application.platform == RuntimePlatform.OSXPlayer ||
@@ -121,10 +101,6 @@ namespace Ibit.Core.Serial
             return SerialPort.GetPortNames(); //windows
         }
 
-        /// <summary>
-        /// Autoconnects the first device that answers "echo". Adaptation for the game.
-        /// </summary>
-        /// <returns></returns>
         private string AutoConnect()
         {
             var ports = GetPortNames();
@@ -171,10 +147,15 @@ namespace Ibit.Core.Serial
             return null;
         }
 
-        private void Awake() => Connect();
+        private void Awake()
+        {
+            Connect();
+        }
 
         private void Connect()
         {
+            Debug.Log("Looking for a serial port...");
+
             var portName = AutoConnect();
 
             if (string.IsNullOrEmpty(portName))
