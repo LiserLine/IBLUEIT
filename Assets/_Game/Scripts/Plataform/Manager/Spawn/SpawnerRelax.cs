@@ -13,7 +13,7 @@ namespace Ibit.Plataform.Manager.Spawn
 
         public bool RelaxTimeSpawned { get; private set; }
 
-        private const float distanceFactor = 2f; //higher = closer
+        private const float distanceFactor = 1.5f; //higher = closer
 
         private Vector3 _spawnPosition;
 
