@@ -138,12 +138,18 @@ namespace Ibit.Plataform.Manager.Spawn
 
         public void IncrementInsHeight()
         {
+            if (StageModel.Loaded.HeightIncrement == 0)
+                return;
+
             insHeightAcc += StageModel.Loaded.HeightIncrement;
             OnUpdatedPerformanceTarget?.Invoke(insHeightAcc, expHeightAcc);
         }
 
         public void DecrementInsHeight()
         {
+            if (StageModel.Loaded.HeightIncrement == 0)
+                return;
+
             insHeightAcc -= StageModel.Loaded.HeightIncrement;
             insHeightAcc = insHeightAcc < 0f ? 0f : insHeightAcc;
             OnUpdatedPerformanceTarget?.Invoke(insHeightAcc, expHeightAcc);
@@ -151,12 +157,18 @@ namespace Ibit.Plataform.Manager.Spawn
 
         public void IncrementExpHeight()
         {
+            if (StageModel.Loaded.HeightIncrement == 0)
+                return;
+
             expHeightAcc += StageModel.Loaded.HeightIncrement;
             OnUpdatedPerformanceTarget?.Invoke(insHeightAcc, expHeightAcc);
         }
 
         public void DecrementExpHeight()
         {
+            if (StageModel.Loaded.HeightIncrement == 0)
+                return;
+
             expHeightAcc -= StageModel.Loaded.HeightIncrement;
             expHeightAcc = expHeightAcc < 0f ? 0f : expHeightAcc;
             OnUpdatedPerformanceTarget?.Invoke(insHeightAcc, expHeightAcc);
@@ -164,12 +176,18 @@ namespace Ibit.Plataform.Manager.Spawn
 
         public void IncrementInsSize()
         {
+            if (StageModel.Loaded.SizeIncrement == 0)
+                return;
+
             insSizeAcc += StageModel.Loaded.SizeIncrement;
             OnUpdatedPerformanceObstacle?.Invoke(insSizeAcc, expSizeAcc);
         }
 
         public void DecrementInsSize()
         {
+            if (StageModel.Loaded.SizeIncrement == 0)
+                return;
+
             insSizeAcc -= StageModel.Loaded.SizeIncrement;
             insSizeAcc = insSizeAcc < 0f ? 0f : insSizeAcc;
             OnUpdatedPerformanceObstacle?.Invoke(insSizeAcc, expSizeAcc);
@@ -177,12 +195,18 @@ namespace Ibit.Plataform.Manager.Spawn
 
         public void IncrementExpSize()
         {
+            if (StageModel.Loaded.SizeIncrement == 0)
+                return;
+
             expSizeAcc += StageModel.Loaded.SizeIncrement;
             OnUpdatedPerformanceObstacle?.Invoke(insSizeAcc, expSizeAcc);
         }
 
         public void DecrementExpSize()
         {
+            if (StageModel.Loaded.SizeIncrement == 0)
+                return;
+
             expSizeAcc -= StageModel.Loaded.SizeIncrement;
             expSizeAcc = expSizeAcc < 0f ? 0f : expSizeAcc;
             OnUpdatedPerformanceObstacle?.Invoke(insSizeAcc, expSizeAcc);
