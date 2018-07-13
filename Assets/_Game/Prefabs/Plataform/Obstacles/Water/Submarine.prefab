@@ -36,10 +36,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4755805358270764}
   - component: {fileID: 50139944587801026}
-  - component: {fileID: 114206458803687086}
   - component: {fileID: 199566836814508064}
-  - component: {fileID: 198290437450622604}
   - component: {fileID: 61960682150397744}
+  - component: {fileID: 114206458803687086}
+  - component: {fileID: 198290437450622604}
   m_Layer: 9
   m_Name: Submarine
   m_TagString: WaterObstacle
@@ -103,7 +103,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.107171446, y: -1.5251322}
