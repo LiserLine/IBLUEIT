@@ -5,13 +5,18 @@
 
 #define SAMPLESIZE 100
 #define MOVING_AVERAGE true
-#define DEBUG false
+#define DEBUG true
 
 bool isCalibrated = false;
 float calibrationValue = 0.0;
 void Calibrate()
 {
-	calibrationValue = ReadSensor();
+	float sum = 0.0;
+  
+	for (int i = 0; i < 3000; i++)
+		sum += voutToPa(digitalToVout(analogRead(A2)));
+	
+	calibrationValue = sum / 3000;	
 	isCalibrated = true;
 }
 
@@ -87,6 +92,8 @@ void setup()
 
 void loop()
 {
+	if(!isCalibrated)
+		Calibrate();
 
 #if DEBUG
 	isSampling = true;
