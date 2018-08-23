@@ -1,4 +1,5 @@
-﻿using Ibit.Core.Data;
+﻿using System.IO;
+using Ibit.Core.Data;
 using Ibit.Core.Database;
 using Ibit.Core.Game;
 using Ibit.Core.Util;
@@ -6,7 +7,6 @@ using Ibit.Plataform.Data;
 using Ibit.Plataform.Manager.Score;
 using Ibit.Plataform.Manager.Spawn;
 using Ibit.Plataform.Manager.Stage;
-using System.IO;
 using UnityEngine;
 
 namespace Ibit.Plataform.Logger
@@ -51,7 +51,6 @@ namespace Ibit.Plataform.Logger
                         Pacient.Loaded.UnlockedLevels = 1;
                 }
             }
-                
 
             Pacient.Loaded.PlaySessionsDone++;
             Pacient.Loaded.AccumulatedScore += scr.Score;
@@ -60,11 +59,11 @@ namespace Ibit.Plataform.Logger
             var historyPath = @"savedata/pacients/" + Pacient.Loaded.Id + @"/_PlataformHistory.csv";
 
             var data = $"{recordStart};{recordStop};{FindObjectOfType<StageManager>().Duration};{scr.Result};" +
-                       $"{StageModel.Loaded.Id};{StageModel.Loaded.Phase};{StageModel.Loaded.Level};{spwn.RelaxTimeSpawned};" +
-                       $"{scr.Score};{scr.MaxScore};{scr.Score / scr.MaxScore};" +
-                       $"{spwn.TargetsSucceeded + spwn.TargetsFailed};{spwn.TargetsSucceeded};{spwn.TargetsInsSucceeded};{spwn.TargetsExpSucceeded};{spwn.TargetsFailed};{spwn.TargetsInsFailed};{spwn.TargetsExpFailed};" +
-                       $"{spwn.ObstaclesSucceeded + spwn.ObstaclesFailed};{spwn.ObstaclesSucceeded};{spwn.ObstaclesInsSucceeded};{spwn.ObstaclesExpSucceeded};{spwn.ObstaclesFailed};{spwn.ObstaclesInsFailed};{spwn.ObstaclesExpFailed};" +
-                       $"{plr.HeartPoins};";
+                $"{StageModel.Loaded.Id};{StageModel.Loaded.Phase};{StageModel.Loaded.Level};{spwn.RelaxTimeSpawned};" +
+                $"{scr.Score};{scr.MaxScore};{scr.Score / scr.MaxScore};" +
+                $"{spwn.TargetsSucceeded + spwn.TargetsFailed};{spwn.TargetsSucceeded};{spwn.TargetsInsSucceeded};{spwn.TargetsExpSucceeded};{spwn.TargetsFailed};{spwn.TargetsInsFailed};{spwn.TargetsExpFailed};" +
+                $"{spwn.ObstaclesSucceeded + spwn.ObstaclesFailed};{spwn.ObstaclesSucceeded};{spwn.ObstaclesInsSucceeded};{spwn.ObstaclesExpSucceeded};{spwn.ObstaclesFailed};{spwn.ObstaclesInsFailed};{spwn.ObstaclesExpFailed};" +
+                $"{plr.HeartPoins};";
 
             sb.Clear();
 
@@ -75,11 +74,11 @@ namespace Ibit.Plataform.Logger
                 sb.AppendLine($"Condition: {Pacient.Loaded.Condition}");
                 sb.AppendLine();
                 sb.AppendLine("playStart;playFinish;duration;result;" +
-                              "stageId;phase;level;relaxTimeSpawned;" +
-                              "score;maxScore;scoreRatio;" +
-                              "targetsSpawned;targetsSuccess;targetsInsSuccess;targetsExpSuccess;targetsFail;targetsInsFail;targetsExpFail;" +
-                              "obstaclesSpawned;obstaclesSuccess;obstaclesInsSuccess;obstaclesExpSuccess;obstaclesFail;obstaclesInsFail;obstaclesExpFail;" +
-                              "playerHP;");
+                    "stageId;phase;level;relaxTimeSpawned;" +
+                    "score;maxScore;scoreRatio;" +
+                    "targetsSpawned;targetsSuccess;targetsInsSuccess;targetsExpSuccess;targetsFail;targetsInsFail;targetsExpFail;" +
+                    "obstaclesSpawned;obstaclesSuccess;obstaclesInsSuccess;obstaclesExpSuccess;obstaclesFail;obstaclesInsFail;obstaclesExpFail;" +
+                    "playerHP;");
 
                 sb.AppendLine(data);
                 FileManager.WriteAllText(historyPath, sb.ToString());
