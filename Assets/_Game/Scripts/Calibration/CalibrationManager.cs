@@ -126,7 +126,7 @@ namespace Ibit.Calibration
                                     }
 
                                     _capturedSamples.Clear();
-                                    _serialController.Recalibrate();
+                                    //_serialController.Recalibrate();
                                     _serialController.StartSampling();
 
                                     yield return new WaitForSeconds(1f);
@@ -194,7 +194,7 @@ namespace Ibit.Calibration
                                         continue;
                                     }
 
-                                    _serialController.Recalibrate();
+                                    //_serialController.Recalibrate();
                                     _serialController.StartSampling();
 
                                     _exerciseCountText.text = $"Exercício: {_currentExerciseCount + 1}/3";
@@ -270,7 +270,7 @@ namespace Ibit.Calibration
                                         continue;
                                     }
 
-                                    _serialController.Recalibrate();
+                                    //_serialController.Recalibrate();
                                     _serialController.StartSampling();
 
                                     _exerciseCountText.text = $"Exercício: {_currentExerciseCount + 1}/3";
@@ -279,8 +279,8 @@ namespace Ibit.Calibration
                                     AirFlowEnable(false);
                                     _dialogText.text = "(MANTENHA o ponteiro GIRANDO, PUXANDO O AR!)";
 
-                                    var tmpThreshold = Pacient.Loaded.PitacoThreshold * 0.25f;
-                                    Pacient.Loaded.PitacoThreshold = tmpThreshold;
+                                    var tmpThreshold = Pacient.Loaded.PitacoThreshold;
+                                    Pacient.Loaded.PitacoThreshold = tmpThreshold  * 0.4f;
 
                                     while (_flowMeter >= -Pacient.Loaded.PitacoThreshold)
                                         yield return null;
@@ -359,7 +359,7 @@ namespace Ibit.Calibration
                                         continue;
                                     }
 
-                                    _serialController.Recalibrate();
+                                    //_serialController.Recalibrate();
                                     _serialController.StartSampling();
 
                                     _exerciseCountText.text = $"Exercício: {_currentExerciseCount + 1}/3";
@@ -436,7 +436,7 @@ namespace Ibit.Calibration
                                         continue;
                                     }
 
-                                    _serialController.Recalibrate();
+                                    //_serialController.Recalibrate();
                                     _serialController.StartSampling();
 
                                     _exerciseCountText.text = $"Exercício: {_currentExerciseCount + 1}/3";
