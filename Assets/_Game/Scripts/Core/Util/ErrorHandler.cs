@@ -6,6 +6,7 @@ namespace Ibit.Core.Util
 {
     public class ErrorHandler : MonoBehaviour
     {
+        
 #if !UNITY_EDITOR
     private void OnEnable() => Application.logMessageReceived += OnLogMessageReceived;
     private void OnDisable() => Application.logMessageReceived -= OnLogMessageReceived;

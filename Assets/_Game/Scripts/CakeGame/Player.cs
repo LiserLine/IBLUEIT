@@ -25,6 +25,14 @@ namespace Ibit.CakeGame
                 picoExpiratorio = sensorValue;
         }
 
-        private void Start() => FindObjectOfType<SerialController>().OnSerialMessageReceived += OnMessageReceived;
+        private void Start() 
+        {
+            FindObjectOfType<SerialController>().OnSerialMessageReceived += OnMessageReceived;
+        } 
+
+        private void OnDestroy()
+        {
+            FindObjectOfType<SerialController>().OnSerialMessageReceived -= OnMessageReceived;
+        }
     }
 }

@@ -7,7 +7,7 @@ using Ibit.Core.Game;
 
 namespace Ibit.Calibration
 {
-    public class CalibrationLogger //MinigameLogger
+    public class CalibrationLogger
     {
         private StringBuilder sb;
         private string path;
@@ -16,21 +16,21 @@ namespace Ibit.Calibration
         {
             sb = new StringBuilder();
 
-            path = @"savedata/pacients/" + Pacient.Loaded.Id + @"/"+ $"{GameManager.GameStart:yyyyMMdd-HHmmss}-Calibration.csv";
+            path = @"savedata/pacients/" + Pacient.Loaded.Id + @"/Calibration-History.csv";
 
             if (!File.Exists(path))
                 sb.AppendLine("dateTime;result;exercise;value");
         }
 
-        public void Write(CalibrationExerciseResult cr, CalibrationExercise ce, float value)
+        public void Write(CalibrationExerciseResult result, CalibrationExercise exercise, float value)
         {
-            if (ce == CalibrationExercise.ExpiratoryPeak || ce == CalibrationExercise.InspiratoryPeak)
+            if (exercise == CalibrationExercise.ExpiratoryPeak || exercise == CalibrationExercise.InspiratoryPeak)
             {
-                sb.AppendLine($"{DateTime.Now:s};{cr};{ce};{FlowMath.ToLitresPerMinute(value)};");
+                sb.AppendLine($"{DateTime.Now:s};{result};{exercise};{FlowMath.ToLitresPerMinute(value)};");
             }
             else
             {
-                sb.AppendLine($"{DateTime.Now:s};{cr};{ce};{value / 1000f};");
+                sb.AppendLine($"{DateTime.Now:s};{result};{exercise};{value / 1000f};");
             }
         }
 

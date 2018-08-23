@@ -14,6 +14,11 @@ namespace Ibit.Core.Util
             FindObjectOfType<SerialController>().OnSerialMessageReceived += OnSerialMessageReceived;
         }
 
+        private void OnDestroy()
+        {
+            FindObjectOfType<SerialController>().OnSerialMessageReceived -= OnSerialMessageReceived;
+        }
+
         protected override void Save()
         {
             var textData = sb.ToString();
@@ -32,7 +37,5 @@ namespace Ibit.Core.Util
 
             sb.AppendLine($"{Time.time:F};{Parsers.Float(msg):F}");
         }
-
-        //public void Pause(bool toggle) => isLogging = !toggle;
     }
 }

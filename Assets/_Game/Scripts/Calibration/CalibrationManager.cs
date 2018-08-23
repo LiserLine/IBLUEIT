@@ -64,6 +64,11 @@ namespace Ibit.Calibration
                 _currentExercise = CalibrationToLoad;
         }
 
+        private void OnDestroy()
+        {
+            _serialController.OnSerialMessageReceived -= OnSerialMessageReceived;
+        }
+
         private void Start()
         {
             //DudeTalk("Para começar, pressione ENTER quando o ícone (Enter) aparecer!");

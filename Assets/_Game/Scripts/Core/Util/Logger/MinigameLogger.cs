@@ -20,7 +20,7 @@ namespace Ibit.Core
             _dt = DateTime.Now;
             _sb = new StringBuilder ();
 
-            _path = @"savedata/pacients/" + Pacient.Loaded.Id + @"/" + $"_{_filename}History.csv";
+            _path = @"savedata/pacients/" + Pacient.Loaded.Id + @"/" + $"{_filename}-History.csv";
 
             Debug.Log ("MinigameLogger loaded.");
         }

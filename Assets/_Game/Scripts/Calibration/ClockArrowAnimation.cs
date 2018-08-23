@@ -14,6 +14,11 @@ namespace Ibit.Calibration
             FindObjectOfType<SerialController>().OnSerialMessageReceived += OnSerialMessageReceived;
         }
 
+        private void OnDestroy()
+        {
+            FindObjectOfType<SerialController>().OnSerialMessageReceived -= OnSerialMessageReceived;
+        }
+
         private void OnSerialMessageReceived(string msg)
         {
             if (!SpinClock)
