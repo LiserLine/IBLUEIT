@@ -66,7 +66,7 @@ namespace Ibit.Calibration
 
         private void Start()
         {
-            //DudeTalk("Para começar, pressione ENTER quando o ícone (►) aparecer!");
+            //DudeTalk("Para começar, pressione ENTER quando o ícone (Enter) aparecer!");
             StartCoroutine(ControlStates());
         }
 
@@ -104,12 +104,12 @@ namespace Ibit.Calibration
                             switch (_currentStep)
                             {
                                 case 1:
-                                    DudeTalk("Você deve respirar somente pela boca. Não precisa morder o PITACO. Mantenha o PITACO sempre para baixo. Pressione (►) para continuar.");
+                                    DudeTalk("Você deve respirar somente pela boca. Não precisa morder o PITACO. Mantenha o PITACO sempre para baixo. Pressione (Enter) para continuar.");
                                     SetupNextStep();
                                     break;
 
                                 case 2:
-                                    DudeTalk($"Neste exercício, você deve RESPIRAR NORMALMENTE por {TimerRespFreq} segundos. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
+                                    DudeTalk($"Neste exercício, você deve RESPIRAR NORMALMENTE por {TimerRespFreq} segundos. Ao apertar (Enter), o relógio ficará verde para você começar o exercício.");
                                     SetupNextStep();
                                     break;
 
@@ -155,7 +155,7 @@ namespace Ibit.Calibration
                                 case 4:
                                     SoundManager.Instance.PlaySound("Success");
                                     DudeTalk($"Sua média de frequência respiratória é de {(_tmpCapacities.RawRespRate * 60f):F} resp/min." +
-                                        " Pressione (►) para continuar com os outros exercícios.");
+                                        " Pressione (Enter) para continuar com os outros exercícios.");
                                     SetupNextStep();
                                     break;
 
@@ -178,7 +178,7 @@ namespace Ibit.Calibration
                             switch (_currentStep)
                             {
                                 case 1:
-                                    DudeTalk("Neste exercício, você deve PUXAR O AR COM FORÇA. Serão 3 tentativas. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
+                                    DudeTalk("Neste exercício, você deve PUXAR O AR COM FORÇA. Serão 3 tentativas. Ao apertar (Enter), o relógio ficará verde para você começar o exercício.");
                                     SetupNextStep();
                                     break;
 
@@ -229,7 +229,7 @@ namespace Ibit.Calibration
                                 case 4:
                                     SoundManager.Instance.PlaySound("Success");
                                     DudeTalk($"Seu pico inspiratório é de {FlowMath.ToLitresPerMinute(_tmpCapacities.RawInsPeakFlow):F} L/min." +
-                                        " Pressione (►) para continuar com os outros exercícios.");
+                                        " Pressione (Enter) para continuar com os outros exercícios.");
                                     SetupNextStep();
                                     break;
 
@@ -254,7 +254,7 @@ namespace Ibit.Calibration
                             switch (_currentStep)
                             {
                                 case 1:
-                                    DudeTalk("Neste exercício, MANTENHA o ponteiro GIRANDO, PUXANDO O AR! Serão 3 tentativas. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
+                                    DudeTalk("Neste exercício, MANTENHA o ponteiro GIRANDO, PUXANDO O AR! Serão 3 tentativas. Ao apertar (Enter), o relógio ficará verde para você começar o exercício.");
                                     SetupNextStep();
                                     break;
 
@@ -318,7 +318,7 @@ namespace Ibit.Calibration
                                 case 4:
                                     SoundManager.Instance.PlaySound("Success");
                                     DudeTalk($"Seu tempo de inspiração máximo é de {(_tmpCapacities.RawInsFlowDuration / 1000f):F} segundos." +
-                                        " Pressione (►) para continuar com os outros exercícios.");
+                                        " Pressione (Enter) para continuar com os outros exercícios.");
                                     SetupNextStep();
                                     break;
 
@@ -343,7 +343,7 @@ namespace Ibit.Calibration
                             switch (_currentStep)
                             {
                                 case 1:
-                                    DudeTalk("Neste exercício, você deve ASSOPRAR FORTE. Serão 3 tentativas. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
+                                    DudeTalk("Neste exercício, você deve ASSOPRAR FORTE. Serão 3 tentativas. Ao apertar (Enter), o relógio ficará verde para você começar o exercício.");
                                     SetupNextStep();
                                     break;
 
@@ -395,7 +395,7 @@ namespace Ibit.Calibration
                                 case 4:
                                     SoundManager.Instance.PlaySound("Success");
                                     DudeTalk($"Seu pico expiratório é de {FlowMath.ToLitresPerMinute(_tmpCapacities.RawExpPeakFlow):F} L/min." +
-                                        " Pressione (►) para continuar com os outros exercícios.");
+                                        " Pressione (Enter) para continuar com os outros exercícios.");
                                     SetupNextStep();
                                     break;
 
@@ -420,7 +420,7 @@ namespace Ibit.Calibration
                             switch (_currentStep)
                             {
                                 case 1:
-                                    DudeTalk("Neste exercício, MANTENHA o ponteiro GIRANDO, ASSOPRANDO! Serão 3 tentativas. Ao apertar (►), o relógio ficará verde para você começar o exercício.");
+                                    DudeTalk("Neste exercício, MANTENHA o ponteiro GIRANDO, ASSOPRANDO! Serão 3 tentativas. Ao apertar (Enter), o relógio ficará verde para você começar o exercício.");
                                     SetupNextStep();
                                     break;
 
@@ -485,7 +485,7 @@ namespace Ibit.Calibration
                                 case 4:
                                     SoundManager.Instance.PlaySound("Success");
                                     DudeTalk($"Seu tempo de fluxo expiratório máximo é de {(_tmpCapacities.RawExpFlowDuration / 1000f):F} segundos." +
-                                        " Pressione (►) para continuar com os outros exercícios.");
+                                        " Pressione (Enter) para continuar com os outros exercícios.");
                                     SetupNextStep();
                                     break;
 

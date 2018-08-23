@@ -20,15 +20,18 @@ namespace Ibit.Calibration
         private void DudeCongratulate()
         {
             SoundManager.Instance.PlaySound("Success");
-            DudeTalk("Muito bem! Pressione (►) para continuar.");
+            DudeTalk("Muito bem! Pressione (Enter) para continuar.");
         }
 
         private void DudeWarnUnknownFlow()
         {
             SoundManager.Instance.PlaySound("Failure");
-            DudeTalk("Não consegui medir seu exercício. Vamos tentar novamente? Pressione (►) para continuar.");
+            DudeTalk("Não consegui medir seu exercício. Vamos tentar novamente? Pressione (Enter) para continuar.");
         }
 
-        private void DudeWarnPitacoDisconnected() => DudeTalk("O PITACO não está conectado. Conecte-o ao computador! Pressione (►) para continuar.");
+        private void DudeWarnPitacoDisconnected()
+        {
+            DudeTalk("O PITACO não está conectado. Conecte-o ao computador! Pressione (Enter) para continuar.");
+        }
     }
 }
