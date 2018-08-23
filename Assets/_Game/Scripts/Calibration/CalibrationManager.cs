@@ -16,7 +16,7 @@ namespace Ibit.Calibration
     {
         public static CalibrationExercise CalibrationToLoad = 0;
 
-        private const int FlowTimeThreshold = 1000; //ms
+        private const int FlowTimeThreshold = 2000; //ms
         private const float RespiratoryFrequencyThreshold = 0.05f; //ms
         private const int TimerRespFreq = 60; //seg
         private const int TimerPeakExercise = 8; //seg,
@@ -274,18 +274,21 @@ namespace Ibit.Calibration
                                     AirFlowEnable (false);
                                     _dialogText.text = "(MANTENHA o ponteiro GIRANDO, PUXANDO O AR!)";
 
+                                    var tmpThreshold = Pacient.Loaded.PitacoThreshold  * 0.25f;
+                                    Pacient.Loaded.PitacoThreshold = tmpThreshold;
+
                                     while (_flowMeter >= -Pacient.Loaded.PitacoThreshold)
                                         yield return null;
 
                                     _flowWatch.Restart ();
 
-                                    while (_flowMeter < -Pacient.Loaded.PitacoThreshold * 0.25f)
+                                    while (_flowMeter < -Pacient.Loaded.PitacoThreshold)
                                         yield return null;
 
                                     AirFlowDisable ();
-
                                     ResetFlowMeter ();
-
+                                    Pacient.Loaded.PitacoThreshold = tmpThreshold;
+                                    
                                     // Check for player input
                                     if (_flowWatch.ElapsedMilliseconds > FlowTimeThreshold)
                                     {
@@ -437,18 +440,22 @@ namespace Ibit.Calibration
                                     AirFlowEnable (false);
                                     _dialogText.text = "(MANTENHA o ponteiro GIRANDO, ASSOPRANDO!)";
 
+                                    var tmpThreshold = Pacient.Loaded.PitacoThreshold;
+                                    Pacient.Loaded.PitacoThreshold = tmpThreshold  * 0.25f; //this helps the player expel all his air
+
                                     // Wait for player input to be greather than threshold
                                     while (_flowMeter <= Pacient.Loaded.PitacoThreshold)
                                         yield return null;
 
                                     _flowWatch.Restart ();
 
-                                    while (_flowMeter > Pacient.Loaded.PitacoThreshold * 0.25f)
+                                    while (_flowMeter > Pacient.Loaded.PitacoThreshold)
                                         yield return null;
 
                                     AirFlowDisable ();
-
                                     ResetFlowMeter ();
+
+                                    Pacient.Loaded.PitacoThreshold = tmpThreshold;
 
                                     // Check for player input
                                     if (_flowWatch.ElapsedMilliseconds > FlowTimeThreshold)
@@ -527,7 +534,7 @@ namespace Ibit.Calibration
             //FindObjectOfType<PitacoLogger>().Pause(true);
 
             _clockObject.GetComponent<SpriteRenderer> ().color = Color.white;
-            _clockObject.GetComponentInChildren<ClockArrow> ().SpinClock = false;
+            _clockObject.GetComponentInChildren<ClockArrowAnimation> ().SpinClock = false;
             _acceptingValues = false;
         }
 
@@ -539,7 +546,7 @@ namespace Ibit.Calibration
             //FindObjectOfType<PitacoLogger>().Pause(false);
 
             _clockObject.GetComponent<SpriteRenderer> ().color = Color.green;
-            _clockObject.GetComponentInChildren<ClockArrow> ().SpinClock = true;
+            _clockObject.GetComponentInChildren<ClockArrowAnimation> ().SpinClock = true;
             _acceptingValues = true;
         }
 

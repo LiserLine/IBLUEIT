@@ -5,11 +5,14 @@ using UnityEngine;
 
 namespace Ibit.Calibration
 {
-    public class ClockArrow : MonoBehaviour
+    public class ClockArrowAnimation : MonoBehaviour
     {
         public bool SpinClock { get; set; }
 
-        private void Awake() => FindObjectOfType<SerialController>().OnSerialMessageReceived += OnSerialMessageReceived;
+        private void Awake()
+        {
+            FindObjectOfType<SerialController>().OnSerialMessageReceived += OnSerialMessageReceived;
+        }
 
         private void OnSerialMessageReceived(string msg)
         {
@@ -21,7 +24,7 @@ namespace Ibit.Calibration
 
             var snsrVal = Parsers.Float(msg);
 
-            snsrVal = snsrVal < -Pacient.Loaded.PitacoThreshold * 0.3f || snsrVal > Pacient.Loaded.PitacoThreshold * 0.3f ? snsrVal : 0f;
+            snsrVal = snsrVal < -Pacient.Loaded.PitacoThreshold || snsrVal > Pacient.Loaded.PitacoThreshold ? snsrVal : 0f;
 
             this.transform.Rotate(Vector3.back, snsrVal);
         }
