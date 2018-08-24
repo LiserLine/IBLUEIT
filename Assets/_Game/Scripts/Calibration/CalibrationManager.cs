@@ -280,7 +280,7 @@ namespace Ibit.Calibration
                                     _dialogText.text = "(MANTENHA o ponteiro GIRANDO, PUXANDO O AR!)";
 
                                     var tmpThreshold = Pacient.Loaded.PitacoThreshold;
-                                    Pacient.Loaded.PitacoThreshold = tmpThreshold  * 0.4f;
+                                    Pacient.Loaded.PitacoThreshold = tmpThreshold  * 0.25f;
 
                                     while (_flowMeter >= -Pacient.Loaded.PitacoThreshold)
                                         yield return null;

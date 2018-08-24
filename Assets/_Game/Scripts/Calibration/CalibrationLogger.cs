@@ -28,6 +28,10 @@ namespace Ibit.Calibration
             {
                 sb.AppendLine($"{DateTime.Now:s};{result};{exercise};{FlowMath.ToLitresPerMinute(value)};");
             }
+            else if(exercise == CalibrationExercise.RespiratoryFrequency)
+            {
+                sb.AppendLine($"{DateTime.Now:s};{result};{exercise};{value * 60f};");
+            }
             else
             {
                 sb.AppendLine($"{DateTime.Now:s};{result};{exercise};{value / 1000f};");
