@@ -50,8 +50,6 @@ namespace Ibit.Plataform.UI
                 SoundManager.Instance.PlaySound("PlayerDamage");
             }
 
-            
-
             var score = scorer.Score;
             var maxScore = scorer.MaxScore;
             score = Mathf.Clamp(score, 0f, maxScore);
