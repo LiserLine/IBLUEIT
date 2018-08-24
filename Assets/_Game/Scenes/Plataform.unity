@@ -783,7 +783,7 @@ RectTransform:
   - {fileID: 1217053240}
   - {fileID: 689656703}
   m_Father: {fileID: 1410877793}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -996,12 +996,12 @@ MonoBehaviour:
     m_MinSize: 2
     m_MaxSize: 40
     m_Alignment: 4
-    m_AlignByGeometry: 0
+    m_AlignByGeometry: 1
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Pr\xF3ximo N\xEDvel\n\u25BA"
+  m_Text: "Pr\xF3ximo\nN\xEDvel"
 --- !u!222 &637393540
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1563,7 +1563,7 @@ RectTransform:
   - {fileID: 1079216225}
   - {fileID: 986922324}
   m_Father: {fileID: 1410877793}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.1, y: 0.6}
   m_AnchorMax: {x: 0.4, y: 0.9}
@@ -1615,7 +1615,7 @@ GameObject:
   - component: {fileID: 914892911}
   - component: {fileID: 914892913}
   m_Layer: 5
-  m_Name: ResultScreen
+  m_Name: Result Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1811,12 +1811,14 @@ MonoBehaviour:
     m_MinSize: 2
     m_MaxSize: 40
     m_Alignment: 4
-    m_AlignByGeometry: 0
+    m_AlignByGeometry: 1
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Menu Principal\n\u25C4"
+  m_Text: 'Menu
+
+    Principal'
 --- !u!222 &937830975
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2378,6 +2380,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 852458531}
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1217053242
@@ -2830,12 +2843,12 @@ MonoBehaviour:
     m_MinSize: 2
     m_MaxSize: 40
     m_Alignment: 4
-    m_AlignByGeometry: 0
+    m_AlignByGeometry: 1
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Repetir N\xEDvel\n\u25BC"
+  m_Text: "Repetir\nN\xEDvel"
 --- !u!222 &1325865908
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3153,8 +3166,8 @@ RectTransform:
   m_Children:
   - {fileID: 195858451}
   - {fileID: 1465862123}
-  - {fileID: 527857474}
   - {fileID: 852458532}
+  - {fileID: 527857474}
   - {fileID: 914892910}
   m_Father: {fileID: 0}
   m_RootOrder: 6
@@ -3175,10 +3188,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dfcd2c5f0c2caa45b35f99b1f015339, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stageLevel: {fileID: 1163031531}
-  stagePhase: {fileID: 1278849929}
-  pauseMenu: {fileID: 527857473}
-  helpPanel: {fileID: 852458531}
+  _stageLevel: {fileID: 1163031531}
+  _stagePhase: {fileID: 1278849929}
+  _pauseMenu: {fileID: 527857473}
+  _helpPanel: {fileID: 852458531}
   _resultPanel: {fileID: 914892909}
 --- !u!114 &1410877795
 MonoBehaviour:
@@ -3318,6 +3331,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 852458531}
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
       - m_Target: {fileID: 1410877794}
         m_MethodName: PauseGame
         m_Mode: 1
@@ -3327,7 +3351,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null

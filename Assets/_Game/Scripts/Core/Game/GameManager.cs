@@ -1,5 +1,5 @@
-﻿using Ibit.Core.Util;
-using System;
+﻿using System;
+using Ibit.Core.Util;
 using UnityEngine;
 
 namespace Ibit.Core.Game
@@ -7,36 +7,33 @@ namespace Ibit.Core.Game
     public partial class GameManager : MonoBehaviour
     {
         private static bool isLoaded;
-
         public static DateTime GameStart;
-
         public static float CapacityMultiplier { get; private set; } = 0.4f;
         public static float LevelUnlockScoreThreshold { get; private set; } = 0.7f;
         public static float PitacoFlowThreshold { get; private set; } = 7.5f;
 
 #if UNITY_EDITOR
-        public void QuitGame() => Debug.Log("Quit Game!");
+        public void QuitGame()
+        {
+            Debug.Log("Quit Game!");
+        }
 #else
-        public void QuitGame() => System.Diagnostics.Process.GetCurrentProcess().Kill();
+        public void QuitGame()
+        {
+            System.Diagnostics.Process.GetCurrentProcess().Kill();
+        }
 #endif
 
         private void Awake()
         {
             if (isLoaded)
                 return;
-            
+
             GameStart = DateTime.Now;
 
             LoadGlobals();
 
             isLoaded = true;
-        }
-
-        [SerializeField] private float _gameTempo = 1f;
-
-        private void Update()
-        {
-            Time.timeScale = _gameTempo;
         }
 
         private void LoadGlobals()

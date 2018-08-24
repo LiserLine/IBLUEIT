@@ -89,7 +89,7 @@ namespace Ibit.Plataform.Logger
                 FileManager.AppendAllText(historyPath, sb.ToString());
             }
 
-            GameObject.Find("Canvas").transform.Find("ResultScreen").gameObject.SetActive(true);
+            GameObject.Find("Canvas").transform.Find("Result Panel").gameObject.SetActive(true);
         }
 
         private void Update()
