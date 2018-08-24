@@ -56,7 +56,7 @@ namespace Ibit.Plataform.Logger
             Pacient.Loaded.AccumulatedScore += scr.Score;
             PacientDb.Instance?.Save();
 
-            var historyPath = @"savedata/pacients/" + Pacient.Loaded.Id + @"/_PlataformHistory.csv";
+            var historyPath = @"savedata/pacients/" + Pacient.Loaded.Id + @"/Plataform-History.csv";
 
             var data = $"{recordStart};{recordStop};{FindObjectOfType<StageManager>().Duration};{scr.Result};" +
                 $"{StageModel.Loaded.Id};{StageModel.Loaded.Phase};{StageModel.Loaded.Level};{spwn.RelaxTimeSpawned};" +
