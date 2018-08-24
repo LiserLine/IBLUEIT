@@ -19,7 +19,7 @@ namespace Ibit.Core.Util
 
                 loadingScreen.GetComponentInChildren<Slider>().value = progress;
 
-                Debug.Log($"LoadingScene - sceneIndex:{sceneIndex} progress:{progress}");
+                //Debug.Log($"LoadingScene - sceneIndex:{sceneIndex} progress:{progress}");
 
                 yield return null;
             }

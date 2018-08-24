@@ -1,8 +1,8 @@
-﻿using Ibit.Core.Database;
+﻿using System.Linq;
+using Ibit.Core.Database;
 using Ibit.Core.Game;
 using Ibit.Plataform.Data;
 using Ibit.Plataform.Manager.Score;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,25 +10,16 @@ namespace Ibit.Plataform.UI
 {
     public class CanvasManager : MonoBehaviour
     {
-        [SerializeField]
-        private Text stageLevel;
-
-        [SerializeField]
-        private Text stagePhase;
-
-        [SerializeField]
-        private GameObject pauseMenu;
-
-        [SerializeField]
-        private GameObject helpPanel;
-
-        [SerializeField]
-        private GameObject _resultPanel;
+        [SerializeField] private Text _stageLevel;
+        [SerializeField] private Text _stagePhase;
+        [SerializeField] private GameObject _pauseMenu;
+        [SerializeField] private GameObject _helpPanel;
+        [SerializeField] private GameObject _resultPanel;
 
         private void OnEnable()
         {
-            stageLevel.text = StageModel.Loaded.Level.ToString();
-            stagePhase.text = StageModel.Loaded.Phase.ToString();
+            _stageLevel.text = StageModel.Loaded.Level.ToString();
+            _stagePhase.text = StageModel.Loaded.Phase.ToString();
         }
 
         public void PauseGame()
@@ -39,8 +30,8 @@ namespace Ibit.Plataform.UI
             if (GameManager.GameIsPaused)
                 return;
 
-            helpPanel.SetActive(true);
-            pauseMenu.SetActive(true);
+            _helpPanel.SetActive(true);
+            _pauseMenu.SetActive(true);
             GameManager.PauseGame();
         }
 
@@ -52,8 +43,8 @@ namespace Ibit.Plataform.UI
             if (!GameManager.GameIsPaused)
                 return;
 
-            helpPanel.SetActive(false);
-            pauseMenu.SetActive(false);
+            _helpPanel.SetActive(false);
+            _pauseMenu.SetActive(false);
             GameManager.UnPauseGame();
         }
 
