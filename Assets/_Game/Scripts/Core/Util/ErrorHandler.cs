@@ -22,7 +22,7 @@ namespace Ibit.Core.Util
 
             var errContent = $"{message}\r\n\r\n{stackTrace}\r\n\r\n{MachineSpecs.Get()}";
 
-            FileManager.WriteAllText(@"DUMP/" + $"crash_{DateTime.Now:yyyyMMdd-HHmmss}.txt", errContent);
+            FileManager.WriteAllText(@"dump/" + $"crash_{DateTime.Now:yyyyMMdd-HHmmss}.txt", errContent);
 
             SysMessage.Error("The game will be closed because of an unexpected program error. Please report this error to the developer.\n\n" +
                              "An error file has been created!.\n\n" + message, "[Error Handler] An unexpected error has occured!!!");
