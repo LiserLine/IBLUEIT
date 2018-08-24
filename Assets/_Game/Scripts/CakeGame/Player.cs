@@ -28,11 +28,6 @@ namespace Ibit.CakeGame
         private void Start() 
         {
             FindObjectOfType<SerialController>().OnSerialMessageReceived += OnMessageReceived;
-        } 
-
-        private void OnDestroy()
-        {
-            FindObjectOfType<SerialController>().OnSerialMessageReceived -= OnMessageReceived;
         }
     }
 }

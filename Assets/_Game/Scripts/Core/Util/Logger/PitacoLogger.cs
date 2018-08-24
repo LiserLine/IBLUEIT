@@ -14,11 +14,6 @@ namespace Ibit.Core.Util
             FindObjectOfType<SerialController>().OnSerialMessageReceived += OnSerialMessageReceived;
         }
 
-        private void OnDestroy()
-        {
-            FindObjectOfType<SerialController>().OnSerialMessageReceived -= OnSerialMessageReceived;
-        }
-
         protected override void Save()
         {
             var textData = sb.ToString();
