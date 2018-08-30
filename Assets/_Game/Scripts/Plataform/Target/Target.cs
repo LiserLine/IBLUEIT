@@ -26,7 +26,7 @@ namespace Ibit.Plataform
 
         private void CalculateScore()
         {
-            Score = Mathf.Abs(this.transform.position.y) * (1f + _model.DifficultyFactor) * 100f;
+            Score = Mathf.Abs(this.transform.position.y) * (1f + _model.DifficultyFactor) * (1 + StageModel.Loaded.ObjectSpeedFactor);
         }
 
         private void CalculateHeight(float performanceAccumulator = 0)

@@ -67,7 +67,7 @@ namespace Ibit.Plataform
 
         private void CalculateScore()
         {
-            Score = 2f * this.transform.localScale.x * (1f + this._model.DifficultyFactor) * 100f;
+            Score = 2f * this.transform.localScale.x * (1f + this._model.DifficultyFactor) * (1 + StageModel.Loaded.ObjectSpeedFactor);
         }
 
         private void OnDestroy()
