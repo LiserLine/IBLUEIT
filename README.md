@@ -2,11 +2,11 @@
 
 # Público Alvo: 
 
-Jogadores com disfunções respiratórias (crianças e adultos).
+Jogadores com enfermidades respiratórias (crianças e adultos).
 
 # Funcionamento:
 
-O jogo digital se comunica com um dispositivo similar a um pneumotacógrafo (PITACO) que permite a captura do fluxo respiratório do jogador. Os movimentos do Blue (o golfinho azul) são controlados em função das ações respiratórias (inspirar ou expirar) que o jogador fizer no dispositivo.
+O jogo digital se comunica com um dispositivo similar a um pneumotacógrafo (PITACO) que permite a captura do processo respiratório do jogador. Os movimentos do Blue (o golfinho) são controlados em função das ações respiratórias (inspirar ou expirar) que o jogador fizer no dispositivo.
 
 # Regras:
 
@@ -18,28 +18,22 @@ Você usa a sua respiração como controle. Inspirar -> Sobe; Expirar -> Desce.
 
 # Requisitos:
 
-• Sistema Operacional: Windows / Linux;
+• Sistema Operacional: Windows / Linux (em breve);
 
-• PITACO (dispositivo de captura);
+• PITACO (dispositivo de captura, manual abaixo);
 
-• Pacote de instalação do jogo (ibit-setup.exe);
+• Pacote de instalação do jogo (ibit-setup.exe, link abaixo);
 
 • Um responsável (especialista) para acompanhar o uso do jogo.
 
 # Screenshots
 
-<img src="http://i.epvpimg.com/QNvSeab.png"/>
-
-<img src="http://i.epvpimg.com/KYB9bab.png"/>
-
-<img src="http://i.epvpimg.com/k3qWdab.png"/>
+<img src="https://image.ibb.co/kV5ZQK/vlcsnap_2018_09_03_17h57m44s519.png"/>
 
 # Links
 
-• Download: (ainda não disponível)
+• Download: https://drive.google.com/uc?id=1dSzWp0a-BEYvkv__IfMXQMjR0E5Axyai&export=download
 
-• Manual de montagem do PITACO: (ainda não disponível)
+• Manual de montagem do PITACO: https://udesc-my.sharepoint.com/:w:/g/personal/01702713237_edu_udesc_br/ERF815YxUnZFkQGV9SCuVBwB9CRHM8Kf9EwcWZRPLmxARg?e=pqh1Bb
 
-• Vídeo demonstração de uso: (ainda não disponível)
-
-• Vídeo demonstração do jogo: (ainda não disponível)
+• Vídeo demonstração do jogo: https://www.youtube.com/watch?v=Pw-f9pR77W0
