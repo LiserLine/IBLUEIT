@@ -154,13 +154,13 @@ namespace Ibit.Core.Serial
 
         private void Connect()
         {
-            Debug.Log("Looking for a serial port...");
+            Debug.Log("Looking for a PITACO device...");
 
             var portName = AutoConnect();
 
             if (string.IsNullOrEmpty(portName))
             {
-                Debug.LogWarning("Failed to connect to a serial device!");
+                Debug.LogWarning("Failed to connect to a PITACO device!");
                 return;
             }
 
