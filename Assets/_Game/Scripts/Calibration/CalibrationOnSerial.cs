@@ -5,12 +5,12 @@ namespace Ibit.Calibration
 {
     public partial class CalibrationManager
     {
-        private void OnSerialMessageReceived (string msg)
+        private void OnSerialMessageReceived(string msg)
         {
             if (!_acceptingValues || msg.Length < 1)
                 return;
 
-            var tmp = Parsers.Float (msg);
+            var tmp = Parsers.Float(msg);
 
             switch (_currentExercise)
             {
@@ -41,7 +41,7 @@ namespace Ibit.Calibration
 
                 case CalibrationExercise.RespiratoryFrequency:
                     if (_flowWatch.IsRunning)
-                        _capturedSamples.Add (_flowWatch.ElapsedMilliseconds, tmp);
+                        _capturedSamples.Add(_flowWatch.ElapsedMilliseconds, tmp);
                     break;
             }
         }

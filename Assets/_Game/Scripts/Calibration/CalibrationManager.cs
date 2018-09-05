@@ -16,37 +16,30 @@ namespace Ibit.Calibration
     {
         public static CalibrationExercise CalibrationToLoad = 0;
 
-        private const int FlowTimeThreshold = 2000; //ms
-        private const float RespiratoryFrequencyThreshold = 0.05f; //ms
-        private const int TimerRespFreq = 60; //seg
-        private const int TimerPeakExercise = 8; //seg,
-
-        private bool _acceptingValues;
-        private bool _calibrationDone;
-        private bool _runStep;
-
-        private CalibrationLogger _calibrationLogger;
-        Dictionary<float, float> _capturedSamples;
-
-        private int _currentExerciseCount;
-        private int _currentStep = 1; //default: 1
-
-        private float _flowMeter;
-        private Stopwatch _flowWatch;
-
-        private SerialController _serialController;
-
-        private Stopwatch _timerWatch;
-        private Capacities _tmpCapacities;
-
-        [SerializeField] private CalibrationExercise _currentExercise;
+        [BoxGroup("Controls")][SerializeField] private CalibrationExercise _currentExercise;
+        [BoxGroup("Controls")][SerializeField] private int FlowTimeThreshold = 2000; //ms
+        [BoxGroup("Controls")][SerializeField] private float RespiratoryFrequencyThreshold = 0.05f; //s
+        [BoxGroup("Controls")][SerializeField] private int TimerRespFreq = 60; //seg
+        [BoxGroup("Controls")][SerializeField] private int TimerPeakExercise = 8; //seg        
+        [BoxGroup("Controls")][SerializeField] private int _currentStep = 1; //default: 1 
+        [BoxGroup("Screen Objects")][SerializeField] private GameObject _clockObject;
+        [BoxGroup("Screen Objects")][SerializeField] private GameObject _dudeObject;
         [BoxGroup("UI")][SerializeField] private Text _dialogText;
         [BoxGroup("UI")][SerializeField] private Text _exerciseCountText;
         [BoxGroup("UI")][SerializeField] private Text _timerText;
         [BoxGroup("UI")][SerializeField] private GameObject _enterButton;
 
-        [SerializeField] private GameObject _clockObject;
-        [SerializeField] private GameObject _dudeObject;
+        private bool _acceptingValues;
+        private bool _calibrationDone;
+        private bool _runStep;
+        private int _currentExerciseCount;
+        private float _flowMeter;
+        private Stopwatch _flowWatch;
+        private Stopwatch _timerWatch;
+        private Capacities _tmpCapacities;
+        private CalibrationLogger _calibrationLogger;
+        private Dictionary<float, float> _capturedSamples;
+        private SerialController _serialController;
 
         private void Awake()
         {
@@ -69,22 +62,16 @@ namespace Ibit.Calibration
             _serialController.OnSerialMessageReceived -= OnSerialMessageReceived;
         }
 
-        private void Start()
-        {
-            //DudeTalk("Para começar, pressione ENTER quando o ícone (Enter) aparecer!");
-            StartCoroutine(ControlStates());
-        }
-
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
-                NextStep();
+                SkipStep();
 
             if (Input.GetKeyDown(KeyCode.F2))
                 _serialController.Recalibrate();
         }
 
-        private IEnumerator ControlStates()
+        private IEnumerator Start()
         {
             _runStep = true;
 
@@ -101,8 +88,6 @@ namespace Ibit.Calibration
 
                     switch (_currentExercise)
                     {
-
-                        #region Respiratory Frequency
 
                         case CalibrationExercise.RespiratoryFrequency:
 
@@ -126,7 +111,6 @@ namespace Ibit.Calibration
                                     }
 
                                     _capturedSamples.Clear();
-                                    //_serialController.Recalibrate();
                                     _serialController.StartSampling();
 
                                     yield return new WaitForSeconds(1f);
@@ -175,10 +159,6 @@ namespace Ibit.Calibration
                             }
                             break;
 
-                            #endregion
-
-                            #region Inspiratory Peak
-
                         case CalibrationExercise.InspiratoryPeak:
                             switch (_currentStep)
                             {
@@ -194,7 +174,6 @@ namespace Ibit.Calibration
                                         continue;
                                     }
 
-                                    //_serialController.Recalibrate();
                                     _serialController.StartSampling();
 
                                     _exerciseCountText.text = $"Exercício: {_currentExerciseCount + 1}/3";
@@ -250,10 +229,6 @@ namespace Ibit.Calibration
 
                             break;
 
-                            #endregion
-
-                            #region Inspiratory Duration
-
                         case CalibrationExercise.InspiratoryDuration:
 
                             switch (_currentStep)
@@ -270,7 +245,6 @@ namespace Ibit.Calibration
                                         continue;
                                     }
 
-                                    //_serialController.Recalibrate();
                                     _serialController.StartSampling();
 
                                     _exerciseCountText.text = $"Exercício: {_currentExerciseCount + 1}/3";
@@ -280,7 +254,7 @@ namespace Ibit.Calibration
                                     _dialogText.text = "(MANTENHA o ponteiro GIRANDO, PUXANDO O AR!)";
 
                                     var tmpThreshold = Pacient.Loaded.PitacoThreshold;
-                                    Pacient.Loaded.PitacoThreshold = tmpThreshold  * 0.25f;
+                                    Pacient.Loaded.PitacoThreshold = tmpThreshold * 0.25f;
 
                                     while (_flowMeter >= -Pacient.Loaded.PitacoThreshold)
                                         yield return null;
@@ -294,7 +268,7 @@ namespace Ibit.Calibration
                                     ResetFlowMeter();
                                     Pacient.Loaded.PitacoThreshold = tmpThreshold;
 
-                                    // Check for player input
+                                    // Validate for player input
                                     if (_flowWatch.ElapsedMilliseconds > FlowTimeThreshold)
                                     {
                                         _calibrationLogger.Write(CalibrationExerciseResult.Success, _currentExercise, _flowWatch.ElapsedMilliseconds);
@@ -339,10 +313,6 @@ namespace Ibit.Calibration
 
                             break;
 
-                            #endregion
-
-                            #region Expiratory Peak
-
                         case CalibrationExercise.ExpiratoryPeak:
 
                             switch (_currentStep)
@@ -359,7 +329,6 @@ namespace Ibit.Calibration
                                         continue;
                                     }
 
-                                    //_serialController.Recalibrate();
                                     _serialController.StartSampling();
 
                                     _exerciseCountText.text = $"Exercício: {_currentExerciseCount + 1}/3";
@@ -416,10 +385,6 @@ namespace Ibit.Calibration
 
                             break;
 
-                            #endregion
-
-                            #region Expiratory Duration
-
                         case CalibrationExercise.ExpiratoryDuration:
 
                             switch (_currentStep)
@@ -436,7 +401,6 @@ namespace Ibit.Calibration
                                         continue;
                                     }
 
-                                    //_serialController.Recalibrate();
                                     _serialController.StartSampling();
 
                                     _exerciseCountText.text = $"Exercício: {_currentExerciseCount + 1}/3";
@@ -462,7 +426,7 @@ namespace Ibit.Calibration
 
                                     Pacient.Loaded.PitacoThreshold = tmpThreshold;
 
-                                    // Check for player input
+                                    // Validate for player input
                                     if (_flowWatch.ElapsedMilliseconds > FlowTimeThreshold)
                                     {
                                         _calibrationLogger.Write(CalibrationExerciseResult.Success, _currentExercise, _flowWatch.ElapsedMilliseconds);
@@ -500,14 +464,11 @@ namespace Ibit.Calibration
                                     break;
 
                                 default:
-                                    FindObjectOfType<SceneLoader>().LoadScene(0);
+                                    ReturnToMainMenu();
                                     break;
                             }
 
                             break;
-
-                            #endregion
-
                     }
 
                     _enterButton.SetActive(true);
@@ -522,22 +483,24 @@ namespace Ibit.Calibration
         {
             timer *= 1000;
             _timerWatch.Restart();
+
             while (_timerWatch.ElapsedMilliseconds < timer)
             {
                 yield return null;
                 _timerText.text = $"TIMER: {(timer - _timerWatch.ElapsedMilliseconds) / 1000}";
             }
+
             _timerText.text = "";
         }
 
-        private void ResetFlowMeter() => _flowMeter = 0f;
+        private void ResetFlowMeter()
+        {
+            _flowMeter = 0f;
+        }
 
         private void AirFlowDisable()
         {
             _flowWatch.Stop();
-
-            //FindObjectOfType<PitacoLogger>().Pause(true);
-
             _clockObject.GetComponent<SpriteRenderer>().color = Color.white;
             _clockObject.GetComponentInChildren<ClockArrowAnimation>().SpinClock = false;
             _acceptingValues = false;
@@ -547,8 +510,6 @@ namespace Ibit.Calibration
         {
             if (restartWatch)
                 _flowWatch.Restart();
-
-            //FindObjectOfType<PitacoLogger>().Pause(false);
 
             _clockObject.GetComponent<SpriteRenderer>().color = Color.green;
             _clockObject.GetComponentInChildren<ClockArrowAnimation>().SpinClock = true;
@@ -561,6 +522,11 @@ namespace Ibit.Calibration
             PacientDb.Instance.Save();
             FindObjectOfType<PitacoLogger>().StopLogging();
             _calibrationLogger.Save();
+            ReturnToMainMenu();
+        }
+
+        private void ReturnToMainMenu()
+        {
             FindObjectOfType<SceneLoader>().LoadScene(0);
         }
 

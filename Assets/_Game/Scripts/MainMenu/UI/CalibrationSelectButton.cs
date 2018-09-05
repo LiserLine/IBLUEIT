@@ -7,15 +7,18 @@ namespace Ibit.MainMenu.UI
 {
     public class CalibrationSelectButton : MonoBehaviour
     {
-        [SerializeField]
-        private CalibrationExercise _calibrationToLoad;
-
+        [SerializeField] private CalibrationExercise _calibrationToLoad;
+        private string _originalLabel;
         private const string _checkmark = "  ✓";
 
-        private void Start()
+        private void Awake()
         {
+            _originalLabel = GetComponentInChildren<Text>().text;
             this.GetComponent<Button>().onClick.AddListener(SetExercise);
+        }
 
+        private void OnEnable()
+        {
             switch (_calibrationToLoad)
             {
                 case CalibrationExercise.RespiratoryFrequency:
@@ -49,6 +52,11 @@ namespace Ibit.MainMenu.UI
                     }
                     break;
             }
+        }
+
+        private void OnDisable()
+        {
+            GetComponentInChildren<Text>().text = _originalLabel;
         }
 
         private void CheckExercise()
