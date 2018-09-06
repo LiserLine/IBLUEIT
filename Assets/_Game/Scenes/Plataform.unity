@@ -4139,8 +4139,72 @@ MonoBehaviour:
     randomPitch: 0
     loop: 0
     playOnAwake: 0
+  - name: BGM_Day1
+    clip: {fileID: 8300000, guid: ad0c996c5a89ac04eaa4efc194ef2322, type: 3}
+    volume: 0.7
+    pitch: 1
+    randomVolume: 0
+    randomPitch: 0
+    loop: 1
+    playOnAwake: 0
+  - name: BGM_Day2
+    clip: {fileID: 8300000, guid: 3f96d603037667e459ec67581ba17d66, type: 3}
+    volume: 0.7
+    pitch: 1
+    randomVolume: 0
+    randomPitch: 0
+    loop: 1
+    playOnAwake: 0
+  - name: BGM_Day3
+    clip: {fileID: 8300000, guid: 452e76472e7e2ea46b54685e49fb7577, type: 3}
+    volume: 0.7
+    pitch: 1
+    randomVolume: 0
+    randomPitch: 0
+    loop: 1
+    playOnAwake: 0
+  - name: BGM_Day4
+    clip: {fileID: 8300000, guid: abc87cc7131ff834b9b742cdb57fb139, type: 3}
+    volume: 0.7
+    pitch: 1
+    randomVolume: 0
+    randomPitch: 0
+    loop: 1
+    playOnAwake: 0
+  - name: BGM_Afternoon1
+    clip: {fileID: 8300000, guid: e7b26d25ab712f84ba499ddfe219c883, type: 3}
+    volume: 0.7
+    pitch: 1
+    randomVolume: 0
+    randomPitch: 0
+    loop: 1
+    playOnAwake: 0
+  - name: BGM_Afternoon2
+    clip: {fileID: 8300000, guid: 33d8abf27271fd5449470b0c2dc11662, type: 3}
+    volume: 0.7
+    pitch: 1
+    randomVolume: 0
+    randomPitch: 0
+    loop: 1
+    playOnAwake: 0
+  - name: BGM_Afternoon3
+    clip: {fileID: 8300000, guid: b333e720753446142be5afde33650ebd, type: 3}
+    volume: 0.7
+    pitch: 1
+    randomVolume: 0
+    randomPitch: 0
+    loop: 1
+    playOnAwake: 0
+  - name: BGM_Afternoon4
+    clip: {fileID: 8300000, guid: c28a6f5a94382d742be26177001fd8a2, type: 3}
+    volume: 0.7
+    pitch: 1
+    randomVolume: 0
+    randomPitch: 0
+    loop: 1
+    playOnAwake: 0
   - name: BGM_Night1
-    clip: {fileID: 8300000, guid: be0a09f4cac24b04c929234eac58944e, type: 3}
+    clip: {fileID: 8300000, guid: ea710f66e37d8a646bb40329954d722c, type: 3}
     volume: 0.7
     pitch: 1
     randomVolume: 0
@@ -4148,80 +4212,24 @@ MonoBehaviour:
     loop: 1
     playOnAwake: 0
   - name: BGM_Night2
-    clip: {fileID: 8300000, guid: a0f19e7280f3ee8448d1db5db45395de, type: 3}
-    volume: 0.5
-    pitch: 1
-    randomVolume: 0
-    randomPitch: 0
-    loop: 1
-    playOnAwake: 0
-  - name: BGM_Afternoon1
-    clip: {fileID: 8300000, guid: abc87cc7131ff834b9b742cdb57fb139, type: 3}
-    volume: 0.2
-    pitch: 1
-    randomVolume: 0
-    randomPitch: 0
-    loop: 1
-    playOnAwake: 0
-  - name: BGM_Day1
-    clip: {fileID: 8300000, guid: b7aaf9323476ca24097b558f0753752d, type: 3}
-    volume: 0.2
-    pitch: 1
-    randomVolume: 0
-    randomPitch: 0
-    loop: 1
-    playOnAwake: 0
-  - name: BGM_Day2
-    clip: {fileID: 8300000, guid: ad0c996c5a89ac04eaa4efc194ef2322, type: 3}
-    volume: 0.2
-    pitch: 1
-    randomVolume: 0
-    randomPitch: 0
-    loop: 1
-    playOnAwake: 0
-  - name: BGM_Day3
-    clip: {fileID: 8300000, guid: 2251b8241fa2d144bbb944d9b4a9c377, type: 3}
-    volume: 0.2
-    pitch: 1
-    randomVolume: 0
-    randomPitch: 0
-    loop: 1
-    playOnAwake: 0
-  - name: BGM_Day4
-    clip: {fileID: 8300000, guid: 6304be64d465e6a49b9cc30b5326ff32, type: 3}
-    volume: 0.2
-    pitch: 1
-    randomVolume: 0
-    randomPitch: 0
-    loop: 1
-    playOnAwake: 0
-  - name: BGM_Afternoon2
-    clip: {fileID: 8300000, guid: b811ed55b701c7f419b997da3404e8b8, type: 3}
-    volume: 0.2
-    pitch: 1
-    randomVolume: 0
-    randomPitch: 0
-    loop: 1
-    playOnAwake: 0
-  - name: BGM_Afternoon3
-    clip: {fileID: 8300000, guid: 31921751149a02d4693ba9529b895005, type: 3}
-    volume: 0.2
+    clip: {fileID: 8300000, guid: 83f403da560a0f24193ff94c7016c56b, type: 3}
+    volume: 0.7
     pitch: 1
     randomVolume: 0
     randomPitch: 0
     loop: 1
     playOnAwake: 0
   - name: BGM_Night3
-    clip: {fileID: 8300000, guid: 9d62ae7b39efaec469a915a565d5ca83, type: 3}
-    volume: 0.2
+    clip: {fileID: 8300000, guid: be0a09f4cac24b04c929234eac58944e, type: 3}
+    volume: 0.7
     pitch: 1
     randomVolume: 0
     randomPitch: 0
     loop: 1
     playOnAwake: 0
   - name: BGM_Night4
-    clip: {fileID: 8300000, guid: 0fea52029aba7c144a472131cf068477, type: 3}
-    volume: 0.2
+    clip: {fileID: 8300000, guid: bca522433f26e2f4d91a0ee2bd8356bf, type: 3}
+    volume: 0.7
     pitch: 1
     randomVolume: 0
     randomPitch: 0
