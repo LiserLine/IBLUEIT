@@ -1,7 +1,7 @@
-﻿using Ibit.Core.Data;
-using Ibit.Core.Database;
-using System.Collections;
+﻿using System.Collections;
 using System.Linq;
+using Ibit.Core.Data;
+using Ibit.Core.Database;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,17 +9,13 @@ namespace Ibit.MainMenu.UI
 {
     public class FillStageList : MonoBehaviour
     {
-        [SerializeField]
-        private GameObject buttonPrefab;
-
-        [SerializeField]
-        private Scrollbar scrollbar;
-
-        private bool populated;
+        [SerializeField] private GameObject buttonPrefab;
+        [SerializeField] private Scrollbar scrollbar;
+        private bool _populated;
 
         private void OnEnable()
         {
-            if (populated)
+            if (_populated)
             {
                 var children = (from Transform child in transform select child.gameObject).ToList();
                 children.ForEach(Destroy);
@@ -40,7 +36,7 @@ namespace Ibit.MainMenu.UI
 
             StartCoroutine(AdjustGrip());
 
-            populated = true;
+            _populated = true;
         }
 
         private IEnumerator AdjustGrip()

@@ -10,7 +10,10 @@ namespace Ibit.MainMenu.UI
     {
         public StageModel stage;
 
-        private void OnEnable() => this.GetComponent<Button>().onClick.AddListener(OnStageSelected);
+        private void OnEnable()
+        {
+            this.GetComponent<Button>().onClick.AddListener(OnStageSelected);
+        }
 
         private void OnStageSelected()
         {
@@ -22,11 +25,11 @@ namespace Ibit.MainMenu.UI
 
 #if !UNITY_EDITOR
 
-        if (!FindObjectOfType<Ibit.Core.Serial.SerialController>().IsConnected)
-        {
-            SysMessage.Warning("Pitaco não está conectado! Conecte antes de jogar!");
-            return;
-        }
+            if (!FindObjectOfType<Ibit.Core.Serial.SerialController>().IsConnected)
+            {
+                SysMessage.Warning("Pitaco não está conectado! Conecte antes de jogar!");
+                return;
+            }
 
 #endif
 

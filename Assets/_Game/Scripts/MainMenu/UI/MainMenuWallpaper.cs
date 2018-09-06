@@ -4,44 +4,42 @@ public class MainMenuWallpaper : MonoBehaviour
 {
     private Vector2 _offset;
     private MeshRenderer _mr;
-    private Renderer bgRenderer;
-
-    [SerializeField]
-    private bool scroll;
-
-    [SerializeField]
-    private float scrollSpeed = 0.1f;
-
-    [SerializeField]
-    private Material day;
-
-    [SerializeField]
-    private Material afternoon;
+    private Renderer _bgRenderer;
+    [SerializeField] private bool scroll;
+    [SerializeField] private float scrollSpeed = 0.1f;
+    [SerializeField] private Material day;
+    [SerializeField] private Material afternoon;
 
     private void Awake()
     {
-        bgRenderer = this.GetComponent<Renderer>();
+        _bgRenderer = this.GetComponent<Renderer>();
         _mr = this.GetComponent<MeshRenderer>();
     }
 
-    private void Start() => SwitchBackground();
+    private void Start()
+    {
+        SwitchBackground();
+    }
 
     private void SwitchBackground()
     {
-        switch (Random.Range(0,2))
+        switch (Random.Range(0, 2))
         {
             default:
-            case 0:
-                bgRenderer.material = day;
-                break;
+                case 0:
+                _bgRenderer.material = day;
+            break;
 
             case 1:
-                bgRenderer.material = afternoon;
+                    _bgRenderer.material = afternoon;
                 break;
         }
     }
 
-    private void Update() => Scroll();
+    private void Update()
+    {
+        Scroll();
+    }
 
     private void Scroll()
     {

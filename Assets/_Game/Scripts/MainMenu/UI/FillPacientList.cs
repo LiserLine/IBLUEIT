@@ -1,7 +1,7 @@
-﻿using Ibit.Core.Data;
-using Ibit.Core.Database;
-using System.Collections;
+﻿using System.Collections;
 using System.Linq;
+using Ibit.Core.Data;
+using Ibit.Core.Database;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,12 +10,8 @@ namespace Ibit.MainMenu.UI
     public class FillPacientList : MonoBehaviour
     {
         private bool _populated;
-
-        [SerializeField]
-        private GameObject itemPrefab;
-
-        [SerializeField]
-        private Scrollbar scrollbar;
+        [SerializeField] private GameObject itemPrefab;
+        [SerializeField] private Scrollbar scrollbar;
 
         private void OnEnable()
         {
@@ -41,8 +37,8 @@ namespace Ibit.MainMenu.UI
                 var holder = item.AddComponent<PacientLoader>();
                 holder.pacient = pacient;
 
-                var disfunction = pacient.Condition == ConditionType.Normal ? normalTranslation
-                    : (pacient.Condition == ConditionType.Obstructive ? obstructiveTranslation : restrictiveTranslation);
+                var disfunction = pacient.Condition == ConditionType.Normal ? normalTranslation :
+                    (pacient.Condition == ConditionType.Obstructive ? obstructiveTranslation : restrictiveTranslation);
 
                 item.GetComponentInChildren<Text>().text = $"{pacient.Name} - {pacient.Birthday:dd/MM/yyyy} - {disfunction} - ID: {pacient.Id}";
             }

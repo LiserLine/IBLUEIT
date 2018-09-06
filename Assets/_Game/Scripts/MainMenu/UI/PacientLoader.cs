@@ -8,7 +8,10 @@ namespace Ibit.MainMenu.UI
     {
         public Pacient pacient;
 
-        private void OnEnable() => this.GetComponent<Button>().onClick.AddListener(OnPacientSelected);
+        private void OnEnable()
+        {
+            this.GetComponent<Button>().onClick.AddListener(OnPacientSelected);
+        }
 
         private void OnPacientSelected()
         {

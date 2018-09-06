@@ -7,7 +7,10 @@ namespace Ibit.MainMenu.UI
 {
     public class FillYearsDropdown : MonoBehaviour
     {
-        private void OnEnable() => FillWithYears();
+        private void OnEnable()
+        {
+            FillWithYears();
+        }
 
         private void FillWithYears()
         {
