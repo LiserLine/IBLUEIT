@@ -1,14 +1,13 @@
-﻿using NaughtyAttributes;
-using System;
+﻿using System;
 using System.Text;
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace Ibit.Core.Util
 {
     public abstract class Logger<T> : MonoBehaviour
     {
-        [SerializeField]
-        protected string FileName;
+        [SerializeField] protected string FileName;
 
         protected bool isLogging;
         protected DateTime recordStart, recordStop;

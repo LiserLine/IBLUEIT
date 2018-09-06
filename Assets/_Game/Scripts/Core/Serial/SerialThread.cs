@@ -55,8 +55,8 @@ namespace Ibit.Core.Serial
         private bool stopRequested;
 
         /**************************************************************************
-     * Methods intended to be invoked from the Unity thread.
-     *************************************************************************/
+         * Methods intended to be invoked from the Unity thread.
+         *************************************************************************/
 
         // ------------------------------------------------------------------------
         // Constructs the thread object. This object is not a thread actually, but
@@ -103,16 +103,16 @@ namespace Ibit.Core.Serial
         // ------------------------------------------------------------------------
         public void RequestStop()
         {
-            lock (this)
+            lock(this)
             {
                 stopRequested = true;
             }
         }
 
         /**************************************************************************
-     * Methods intended to be invoked from the SerialComm thread (the one
-     * created by the SerialController).
-     *************************************************************************/
+         * Methods intended to be invoked from the SerialComm thread (the one
+         * created by the SerialController).
+         *************************************************************************/
 
         // ------------------------------------------------------------------------
         // Enters an almost infinite loop of attempting conenction to the serial
@@ -217,7 +217,7 @@ namespace Ibit.Core.Serial
         // ------------------------------------------------------------------------
         private bool IsStopRequested()
         {
-            lock (this)
+            lock(this)
             {
                 return stopRequested;
             }

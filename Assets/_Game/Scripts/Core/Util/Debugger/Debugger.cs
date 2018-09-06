@@ -14,8 +14,8 @@ namespace Ibit.Core.Util
         private void Awake()
         {
 #if !UNITY_EDITOR
-        Destroy(this.gameObject);
-        return;
+            Destroy(this.gameObject);
+            return;
 #endif
 
             Application.logMessageReceived += (message, stacktrace, type) =>

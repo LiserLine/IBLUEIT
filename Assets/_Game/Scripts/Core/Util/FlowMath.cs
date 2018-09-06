@@ -12,9 +12,9 @@ namespace Ibit.Core.Util
         /// </summary>
         /// <param name="data">Dictionary containing respiratory samples as [time,value] from PITACO.</param>
         /// <param name="duration">Duration of the sample capture.</param>
-        public static float RespiratoryRate (Dictionary<float, float> data, int duration)
+        public static float RespiratoryRate(Dictionary<float, float> data, int duration)
         {
-            var samples = data.ToList ();
+            var samples = data.ToList();
 
             float startTime = 0, firstCurveTime = 0, secondCurveTime = 0;
             float quantCycles = 0;
@@ -73,15 +73,15 @@ namespace Ibit.Core.Util
         /// </summary>
         /// <param name="differentialPressure">Pressure difference in Pascal (Pa)</param>
         /// <returns></returns>
-        private static float Poiseulle (float differentialPressure) =>
-            differentialPressure * Mathf.PI * Mathf.Pow (Pitaco.Radius, 4) / (8 * Pitaco.AirViscosity * Pitaco.Lenght);
+        private static float Poiseulle(float differentialPressure) =>
+            differentialPressure * Mathf.PI * Mathf.Pow(Pitaco.Radius, 4) / (8 * Pitaco.AirViscosity * Pitaco.Lenght);
 
         /// <summary>
         /// Returns the volumetric flow of air in Litres/Minute
         /// </summary>
         /// <param name="differentialPressure">Pressure difference in Pascal (Pa)</param>
         /// <returns></returns>
-        public static float ToLitresPerMinute (float differentialPressure) =>
-            Poiseulle (differentialPressure / 1000f) * LitresPerMinuteConverter;
+        public static float ToLitresPerMinute(float differentialPressure) =>
+            Poiseulle(differentialPressure / 1000f) * LitresPerMinuteConverter;
     }
 }

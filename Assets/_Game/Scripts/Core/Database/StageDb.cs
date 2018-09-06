@@ -1,11 +1,11 @@
-﻿using Ibit.Core.Util;
-using Ibit.Plataform.Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;
-using UnityEngine;
 using System.Linq;
+using System.Text.RegularExpressions;
+using Ibit.Core.Util;
+using Ibit.Plataform.Data;
+using UnityEngine;
 
 namespace Ibit.Core.Database
 {
@@ -125,8 +125,7 @@ namespace Ibit.Core.Database
         /// <summary>
         /// Regex Patterns to be cleaned on CleanData() call.
         /// </summary>
-        private static readonly string[] _patternsToBeCleaned =
-        {
+        private static readonly string[] _patternsToBeCleaned = {
             ";;"
         };
 

@@ -1,5 +1,5 @@
-﻿using Ibit.Core.Audio;
-using System;
+﻿using System;
+using Ibit.Core.Audio;
 using UnityEngine;
 
 namespace Ibit.Core.Game

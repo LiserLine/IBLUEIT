@@ -9,10 +9,9 @@ namespace Ibit.Core.Audio
 
         public Sound[] Sounds => sounds;
 
-        [SerializeField]
-        private Sound[] sounds;
+        [SerializeField] private Sound[] sounds;
 
-        private Sound bgm;
+        private Sound _bgm;
 
         private void Awake()
         {
@@ -40,7 +39,7 @@ namespace Ibit.Core.Audio
 
             if (soundName.Contains("BGM"))
             {
-                bgm = sound;
+                _bgm = sound;
             }
 
             sound.Play(oneshot);
@@ -48,12 +47,12 @@ namespace Ibit.Core.Audio
 
         public void PlayAnotherBgm()
         {
-            bgm?.Pause();
+            _bgm?.Pause();
 
             var playables = sounds.Where(sound => sound.name.Contains("BGM"));
             var music = playables.ElementAt(Random.Range(0, playables.Count() - 1));
-            bgm = music;
-            bgm.Play();
+            _bgm = music;
+            _bgm.Play();
         }
     }
 }

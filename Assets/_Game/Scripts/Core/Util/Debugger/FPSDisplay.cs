@@ -1,7 +1,7 @@
 ﻿/*
  * Adaptation from:
  * http://wiki.unity3d.com/index.php?title=FramesPerSecond
-*/
+ */
 
 using UnityEngine;
 

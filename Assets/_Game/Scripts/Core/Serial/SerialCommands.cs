@@ -1,5 +1,5 @@
-﻿using NaughtyAttributes;
-using System.Collections;
+﻿using System.Collections;
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace Ibit.Core.Serial

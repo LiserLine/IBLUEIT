@@ -7,8 +7,7 @@ namespace Ibit.Core.Util
 {
     public class SceneLoader : MonoBehaviour
     {
-        [SerializeField]
-        private GameObject loadingScreen;
+        [SerializeField] private GameObject loadingScreen;
 
         private IEnumerator LoadSceneAsync(int sceneIndex)
         {

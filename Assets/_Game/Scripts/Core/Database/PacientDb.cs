@@ -1,11 +1,11 @@
-using Ibit.Core.Data;
-using Ibit.Core.Util;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Ibit.Core.Data;
+using Ibit.Core.Util;
 
 namespace Ibit.Core.Database
 {
@@ -62,11 +62,11 @@ namespace Ibit.Core.Database
                     Condition = (ConditionType)Enum.Parse(typeof(ConditionType), grid[i][4]),
                     Capacities = new Capacities
                     {
-                        InsPeakFlow = Parsers.Float(grid[i][5]),
-                        ExpPeakFlow = Parsers.Float(grid[i][6]),
-                        InsFlowDuration = Parsers.Float(grid[i][7]),
-                        ExpFlowDuration = Parsers.Float(grid[i][8]),
-                        RespiratoryRate = Parsers.Float(grid[i][9]),
+                    InsPeakFlow = Parsers.Float(grid[i][5]),
+                    ExpPeakFlow = Parsers.Float(grid[i][6]),
+                    InsFlowDuration = Parsers.Float(grid[i][7]),
+                    ExpFlowDuration = Parsers.Float(grid[i][8]),
+                    RespiratoryRate = Parsers.Float(grid[i][9]),
                     },
                     UnlockedLevels = int.Parse(grid[i][10]),
                     AccumulatedScore = Parsers.Float(grid[i][11]),
@@ -87,10 +87,29 @@ namespace Ibit.Core.Database
 
         public void Save()
         {
-            var items = new[] { "Id", "Name", "Birthday", "Observations", "Condition",
-                "InsPeakFlow", "ExpPeakFlow", "InsFlowDuration", "ExpFlowDuration", "RespiratoryRate",
-                "UnlockedLevels", "AccumulatedScore", "PlaySessionsDone", "CalibrationDone", "HowToPlayDone",
-                "Ethnicity", "Height", "Weight", "PitacoThreshold", "Sex", "CreatedOn"
+            var items = new []
+            {
+                "Id",
+                "Name",
+                "Birthday",
+                "Observations",
+                "Condition",
+                "InsPeakFlow",
+                "ExpPeakFlow",
+                "InsFlowDuration",
+                "ExpFlowDuration",
+                "RespiratoryRate",
+                "UnlockedLevels",
+                "AccumulatedScore",
+                "PlaySessionsDone",
+                "CalibrationDone",
+                "HowToPlayDone",
+                "Ethnicity",
+                "Height",
+                "Weight",
+                "PitacoThreshold",
+                "Sex",
+                "CreatedOn"
             };
 
             var sb = new StringBuilder();
@@ -105,7 +124,7 @@ namespace Ibit.Core.Database
                     $"{pacient.Capacities.RawInsPeakFlow};{pacient.Capacities.RawExpPeakFlow};{pacient.Capacities.RawInsFlowDuration};{pacient.Capacities.RawExpFlowDuration};" +
                     $"{pacient.Capacities.RawRespRate};{pacient.UnlockedLevels};{pacient.AccumulatedScore};{pacient.PlaySessionsDone};{pacient.CalibrationDone};{pacient.HowToPlayDone};" +
                     $"{pacient.Ethnicity};{pacient.Height};{pacient.Weight};{pacient.PitacoThreshold};{pacient.Sex};{pacient.CreatedOn};"
-                    );
+                );
             }
 
             FileManager.WriteAllText(filePath, sb.ToString());
