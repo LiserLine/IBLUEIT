@@ -37,3 +37,5 @@ Você usa a sua respiração como controle. Inspirar -> Sobe; Expirar -> Desce.
 • Manual de montagem do PITACO: https://udesc-my.sharepoint.com/:w:/g/personal/01702713237_edu_udesc_br/ERF815YxUnZFkQGV9SCuVBwB9CRHM8Kf9EwcWZRPLmxARg?e=pqh1Bb
 
 • Vídeo demonstração do jogo: https://www.youtube.com/watch?v=Pw-f9pR77W0
+
+• Dissertação de Mestrado: https://drive.google.com/open?id=1TOilD4HCH9VaHwWfTK3c2EA2ZrM0aYv0
