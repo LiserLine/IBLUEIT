@@ -40,6 +40,6 @@ Você usa a sua respiração como controle. Inspirar -> Sobe; Expirar -> Desce.
 
 • Dissertação de Mestrado: https://drive.google.com/open?id=1TOilD4HCH9VaHwWfTK3c2EA2ZrM0aYv0
 
-# Links
+# Awards
 
-<img src="http://www.laurelleavesawardmaker.com/dl/DCF4B6EE53_20181014_131931_leaf_sized.png" />
+<img src="http://www.laurelleavesawardmaker.com/dl/8DFBEA2EEE_20181014_132140_leaf_sized.png" />
