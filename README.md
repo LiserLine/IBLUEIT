@@ -38,7 +38,7 @@ Você usa a sua respiração como controle. Inspirar -> Sobe; Expirar -> Desce.
 
 • [Vídeo demonstração do jogo](https://www.youtube.com/watch?v=Pw-f9pR77W0)
 
-• [Dissertação de Mestrado - PDF] https://drive.google.com/open?id=1TOilD4HCH9VaHwWfTK3c2EA2ZrM0aYv0
+• [Dissertação de Mestrado - PDF](https://drive.google.com/open?id=1TOilD4HCH9VaHwWfTK3c2EA2ZrM0aYv0)
 
 # Awards
 
